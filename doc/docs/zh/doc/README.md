@@ -137,8 +137,9 @@ require("yue")("你的脚本入口文件")
 手动引入月之脚本模块并重写错误消息来帮助调试。
 ```lua
 local yue = require("yue")
+yue.insert_loaders()
 local success, result = xpcall(function()
-  yue.require("yuescript_module_name")
+  require("yuescript_module_name")
 end, function(err)
   return yue.traceback(err)
 end)

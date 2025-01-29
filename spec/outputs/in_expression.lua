@@ -213,4 +213,17 @@ do
 	local a = 1
 	print((false))
 end
+do
+	local a = 1
+	print((1 == a or 2 == a or 1 == a))
+end
+do
+	local a = -1
+	print((-1 == a or 11 == a or 2 == a or -1 == a or 0 == a or -1 == a))
+end
+do
+	local a = 1
+	local b = 1
+	print((b == a or 10 == a or b == a))
+end
 return nil

@@ -137,8 +137,9 @@ require("yue")("your_yuescript_entry")
 Require YueScript module and rewite message by hand.
 ```lua
 local yue = require("yue")
+yue.insert_loader()
 local success, result = xpcall(function()
-  yue.require("yuescript_module_name")
+  require("yuescript_module_name")
 end, function(err)
   return yue.traceback(err)
 end)
