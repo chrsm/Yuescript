@@ -139,7 +139,7 @@ Require YueScript module and rewite message by hand.
 local yue = require("yue")
 yue.insert_loader()
 local success, result = xpcall(function()
-  require("yuescript_module_name")
+  return require("yuescript_module_name")
 end, function(err)
   return yue.traceback(err)
 end)
