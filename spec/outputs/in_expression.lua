@@ -226,4 +226,14 @@ do
 	local b = 1
 	print((b == a or 10 == a or b == a))
 end
+do
+	print((function()
+		local _val_0 = x
+		return "" == _val_0 or "" == _val_0
+	end)())
+	print((function()
+		local _val_0 = 1
+		return 1 == _val_0 or 2 == _val_0 or 1 == _val_0
+	end)())
+end
 return nil

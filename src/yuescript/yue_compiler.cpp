@@ -75,7 +75,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.26.2"sv;
+const std::string_view version = "0.26.3"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -7031,7 +7031,7 @@ private:
 				} else {
 					for (const auto& exp : tmp) {
 						_buf << exp << " == "sv << newVar;
-						if (exp != tmp.back()) {
+						if (&exp != &tmp.back()) {
 							_buf << " or "sv;
 						}
 					}

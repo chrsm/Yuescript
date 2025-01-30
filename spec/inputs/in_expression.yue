@@ -89,5 +89,9 @@ do
 	b = 1
 	print a in [b, 10, b]
 
+do
+	print x in ["", ""]
+	print 1 in [1, 2, 1]
+
 nil
 
