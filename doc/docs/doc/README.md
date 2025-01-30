@@ -278,12 +278,11 @@ macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "fail to assign to the Yue defined variable"
 
--- take care and let YueScript know the
+-- YueScript knows the
 -- local variables you declared in Lua code
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
-  locals: {var}
 }
 $luaFunc funcB
 funcB = -> "assign to the Lua defined variable"
@@ -307,12 +306,11 @@ macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "fail to assign to the Yue defined variable"
 
--- take care and let YueScript know the
+-- YueScript knows the
 -- local variables you declared in Lua codes
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
-  locals: {var}
 }
 $luaFunc funcB
 funcB = -> "assign to the Lua defined variable"

@@ -277,11 +277,10 @@ macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "无法访问宏生成月之脚本里定义的变量"
 
--- 让月之脚本知道你在Lua代码中声明的局部变量
+-- 月之脚本会知道你在 Lua 代码中声明的局部变量
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
-  locals: {var}
 }
 $luaFunc funcB
 funcB = -> "访问宏生成Lua代码里定义的变量"
@@ -305,11 +304,10 @@ macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "无法访问宏生成月之脚本里定义的变量"
 
--- 让月之脚本知道你在Lua代码中声明的局部变量
+-- 月之脚本会知道你在 Lua 代码中声明的局部变量
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
-  locals: {var}
 }
 $luaFunc funcB
 funcB = -> "访问宏生成Lua代码里定义的变量"

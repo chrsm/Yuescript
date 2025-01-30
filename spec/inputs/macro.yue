@@ -340,6 +340,15 @@ _1 = ->
 	print 2
 	print 3
 
+do
+	macro foo = -> code: "tb:func(123)", type: "lua"
+	f = ->
+		x = $foo\bar 456
+		$foo!
+	f1 = ->
+		$foo!
+		return
+
 macro implicitReturnMacroIsAllowed = -> "print 'abc'\n123"
 
 $implicitReturnMacroIsAllowed

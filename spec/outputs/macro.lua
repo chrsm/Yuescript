@@ -330,6 +330,17 @@ _1 = function()
 	return _accum_0
 end
 do
+	f = function()
+		x = (tb:func(123)):bar(456)
+		return (tb:func(123))
+	end
+	local f1
+	f1 = function()
+tb:func(123)
+		return
+	end
+end
+do
 	print('abc')
 	return 123
 end
