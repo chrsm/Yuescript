@@ -282,16 +282,14 @@ A macro function can either return a YueScript string or a config table containi
 ```moonscript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
-funcA = -> "fail to assign to the Yue defined variable"
+funcA = -> "fail to assign to the Yue macro defined variable"
 
--- YueScript knows the
--- local variables you declared in Lua code
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
 }
 $luaFunc funcB
-funcB = -> "assign to the Lua defined variable"
+funcB = -> "fail to assign to the Lua macro defined variable"
 
 macro lua = (code) -> {
   :code
@@ -310,16 +308,14 @@ end
 <pre>
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
-funcA = -> "fail to assign to the Yue defined variable"
+funcA = -> "fail to assign to the Yue macro defined variable"
 
--- YueScript knows the
--- local variables you declared in Lua codes
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
 }
 $luaFunc funcB
-funcB = -> "assign to the Lua defined variable"
+funcB = -> "fail to assign to the Lua macro defined variable"
 
 macro lua = (code) -> {
   :code

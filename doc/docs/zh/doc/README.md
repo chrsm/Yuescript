@@ -277,19 +277,18 @@ if $and f1!, f2!, f3!
 
 ### 直接插入代码
 
-宏函数可以返回一个包含月之脚本代码的字符串，或是一个包含Lua代码字符串的配置表。
+宏函数可以返回一个包含月之脚本代码的字符串，或是一个包含 Lua 代码字符串的配置表。
 ```moonscript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "无法访问宏生成月之脚本里定义的变量"
 
--- 月之脚本会知道你在 Lua 代码中声明的局部变量
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
 }
 $luaFunc funcB
-funcB = -> "访问宏生成Lua代码里定义的变量"
+funcB = -> "无法访问宏生成 Lua 代码里定义的变量"
 
 macro lua = (code) -> {
   :code
@@ -310,13 +309,12 @@ macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "无法访问宏生成月之脚本里定义的变量"
 
--- 月之脚本会知道你在 Lua 代码中声明的局部变量
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
 }
 $luaFunc funcB
-funcB = -> "访问宏生成Lua代码里定义的变量"
+funcB = -> "无法访问宏生成 Lua 代码里定义的变量"
 
 macro lua = (code) -> {
   :code

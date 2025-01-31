@@ -179,12 +179,16 @@ do
 	_u6253_u5370(_u53d8_u91cfa)
 end
 local _u53d8_u91cfx = 0
+do
 local function f(a)
 	return a + 1
 end
 x = x + f(3)
+end
+do
 function tb:func()
 	print(123)
+end
 end
 _u6253_u5370(_u53d8_u91cfx)
 local sel
@@ -195,6 +199,7 @@ sel = function(_u53c2_u6570a, _u53c2_u6570b, _u53c2_u6570c)
 		return _u53c2_u6570c
 	end
 end
+do
 local function sel(a, b, c)
 	if a then
 		return b
@@ -202,10 +207,15 @@ local function sel(a, b, c)
 		return c
 	end
 end
+end
+do
 local function dummy()
 	
 end
+end
+do
 -- 这有个注释
+end
 local _ = require('下划线')
 local _call_0 = (_({
 	1,
@@ -275,11 +285,13 @@ do
 		_6["摧毁"](_6)
 	end
 end
+do
 local _call_0 = _u539f_u70b9["变换"]["根节点"]["游戏对象"]
 _call_0["父节点"](_call_0):_u540e_u4ee3():_u9009_u62e9_u542f_u7528():_u9009_u62e9_u53ef_u89c1():_u6807_u7b7e_u7b49_u4e8e("fx"):_u5176_u4e2d(function(x)
 	local _call_0 = x["名称"]
 	return _call_0["结尾为"](_call_0, "(克隆)")
 end):_u6467_u6bc1()
+end
 _u6253_u5370((setmetatable({
 	'abc',
 	["字段a"] = 123,
@@ -311,7 +323,9 @@ _u6253_u5370((setmetatable({
 }))
 _u6253_u5370("当前代码行数: " .. tostring(268))
 do
+	do
 -- 待实现
+	end
 end
 do
 	_u6253_u5370(1)

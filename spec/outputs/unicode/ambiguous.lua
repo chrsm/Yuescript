@@ -39,9 +39,11 @@ end
 do
 	_u6253_u5370()
 	_u5f02_u6b65_u51fd_u6570(function()
-		_u6253_u5370();
+		_u6253_u5370()
+		do
 --[[a comment to insert]]
 		(haha)()
+		end
 		return nil
 	end)
 end

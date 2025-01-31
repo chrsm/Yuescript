@@ -39,9 +39,11 @@ end
 do
 	print()
 	async_fn(function()
-		print();
+		print()
+		do
 --[[a comment to insert]]
 		(haha)()
+		end
 		return nil
 	end)
 end

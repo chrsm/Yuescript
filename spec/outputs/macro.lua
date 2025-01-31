@@ -5,7 +5,9 @@ do
 	end
 	print(456)
 	do
+		do
 -- TODO: "todo in a do block"
+		end
 	end
 end
 do
@@ -201,12 +203,16 @@ do
 	print(a)
 end
 local x = 0
+do
 local function f(a)
 	return a + 1
 end
 x = x + f(3)
+end
+do
 function tb:func()
 	print(123)
+end
 end
 print(x)
 local sel
@@ -217,6 +223,7 @@ sel = function(a, b, c)
 		return c
 	end
 end
+do
 local function sel(a, b, c)
 	if a then
 		return b
@@ -224,10 +231,15 @@ local function sel(a, b, c)
 		return c
 	end
 end
+end
+do
 local function dummy()
 	
 end
+end
+do
 -- a comment here
+end
 local _ = require('underscore')
 local a = ((((_({
 	1,
@@ -279,9 +291,11 @@ do
 		_6:Destroy()
 	end
 end
+do
 origin.transform.root.gameObject:Parents():Descendants():SelectEnable():SelectVisible():TagEqual("fx"):Where(function(x)
 	return x.name:EndsWith("(Clone)")
 end):Destroy()
+end
 print((setmetatable({
 	'abc',
 	a = 123,
@@ -313,7 +327,9 @@ print((setmetatable({
 }))
 print("current line: " .. tostring(323))
 do
+	do
 -- TODO
+	end
 end
 do
 	print(1)
@@ -336,7 +352,9 @@ do
 	end
 	local f1
 	f1 = function()
+		do
 tb:func(123)
+		end
 		return
 	end
 end

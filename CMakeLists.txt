@@ -1,36 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(yue CXX)
 
-include(FetchContent)
-
-execute_process(
-	COMMAND ${LUA} -v
-	OUTPUT_VARIABLE LUA_VERSION_OUTPUT
-	ERROR_VARIABLE LUA_VERSION_OUTPUT
-	OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-string(REGEX MATCH "Lua ([0-9]+)\\.([0-9]+)\\.([0-9]+)" LUA_VERSION_MATCH ${LUA_VERSION_OUTPUT})
-set(LUA_VERSION "${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}")
-
-set(LUA_TARBALL_URL "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz")
-
-message(STATUS "Detected Lua version: ${LUA_VERSION}")
-message(STATUS "Downloading Lua source from: ${LUA_TARBALL_URL}")
-
-FetchContent_Declare(
-	lua_source
-	URL ${LUA_TARBALL_URL}
-)
-
-FetchContent_MakeAvailable(lua_source)
-
-set(LUA_SOURCE_DIR "${lua_source_SOURCE_DIR}")
-
-include_directories(${LUA_SOURCE_DIR}/src)
-
-message(STATUS "Lua source directory: ${LUA_SOURCE_DIR}/src")
-
 set(LUA_LIBDIR ${LUA_INCDIR}/../lib ${LUA_INCDIR}/../../lib)
 set(LUA_INCLUDE_DIR "${LUA_INCDIR}")
 

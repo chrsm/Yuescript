@@ -59,15 +59,20 @@ do
 end
 local funcA
 funcA = function()
-	return "fail to assign to the Yue defined variable"
+	return "fail to assign to the Yue macro defined variable"
 end
+do
 local function funcB() end
-funcB = function()
-	return "assign to the Lua defined variable"
 end
+local funcB
+funcB = function()
+	return "fail to assign to the Lua macro defined variable"
+end
+do
 -- raw Lua codes insertion
 if cond then
   print("output")
+end
 end
 print("yuescript")
 print(3)
@@ -2065,15 +2070,20 @@ do
 end
 local funcA
 funcA = function()
-	return "fail to assign to the Yue defined variable"
+	return "fail to assign to the Yue macro defined variable"
 end
+do
 local function funcB() end
-funcB = function()
-	return "assign to the Lua defined variable"
 end
+local funcB
+funcB = function()
+	return "fail to assign to the Lua macro defined variable"
+end
+do
 -- raw Lua codes insertion
 if cond then
   print("output")
+end
 end
 print("yuescript")
 print(3)

@@ -61,13 +61,18 @@ local funcA
 funcA = function()
 	return "无法访问宏生成月之脚本里定义的变量"
 end
+do
 local function funcB() end
-funcB = function()
-	return "访问宏生成Lua代码里定义的变量"
 end
+local funcB
+funcB = function()
+	return "无法访问宏生成 Lua 代码里定义的变量"
+end
+do
 -- 插入原始Lua代码
 if cond then
   print("输出")
+end
 end
 print("yuescript")
 print(3)
@@ -2061,13 +2066,18 @@ local funcA
 funcA = function()
 	return "无法访问宏生成月之脚本里定义的变量"
 end
+do
 local function funcB() end
-funcB = function()
-	return "访问宏生成Lua代码里定义的变量"
 end
+local funcB
+funcB = function()
+	return "无法访问宏生成 Lua 代码里定义的变量"
+end
+do
 -- 插入原始Lua代码
 if cond then
   print("输出")
+end
 end
 print("yuescript")
 print(3)
