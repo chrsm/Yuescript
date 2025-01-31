@@ -103,7 +103,7 @@ export 🌛 = "月之脚本"
 
 &emsp;Then get the binary file from path **bin/shared/yue.so**.
 
-* **Binary Tool**
+* **Build Binary Tool**
 
 &emsp;Clone this repo, then build and install executable with:
 ```
@@ -119,6 +119,12 @@ export 🌛 = "月之脚本"
 ```
 > make install NO_LUA=true
 ```
+
+* **Download Precompiled Binary**
+
+&emsp;You can download precompiled binary files, including binary executable files compatible with different Lua versions and library files.
+
+&emsp;Download precompiled binary files from [here](https://github.com/IppClub/YueScript/releases).
 
 ## Usage
 

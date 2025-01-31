@@ -103,7 +103,7 @@ export 🌛 = "月之脚本"
 
 &emsp;然后从路径 **bin/shared/yue.so** 获取二进制文件。
 
-* **二进制工具**
+* **构建二进制工具**
 
 &emsp;克隆项目仓库，然后构建并安装可执行文件：
 ```
@@ -119,6 +119,12 @@ export 🌛 = "月之脚本"
 ```
 > make install NO_LUA=true
 ```
+
+* **下载预编译的二进制程序**
+
+&emsp;您可以下载预编译的二进制程序，包括兼容不同 Lua 版本的二进制可执行文件和库文件。
+
+&emsp;在[这里](https://github.com/IppClub/YueScript/releases)下载预编译的二进制程序。
 
 ## 使用方法
 
