@@ -65,7 +65,6 @@ backpack = {
 local start = {
 	something = "cold"
 }
-local bathe
-bathe = {
+local bathe = {
 	on = "fire"
 }

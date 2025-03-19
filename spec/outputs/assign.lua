@@ -181,5 +181,30 @@ return _(function()
 		local b = val
 		local c = val
 	end
+	do
+		local a = a .. "abc"
+		a = a // 2
+		a = a or def
+		a = a and false
+		a = a >> 10
+		a = a << 10
+		local _obj_0 = a.b
+		if _obj_0.c == nil then
+			_obj_0.c = 123
+		end
+		local _obj_1 = a.b
+		_obj_1.c = _obj_1.c + 1
+		local _obj_2 = a.b
+		_obj_2.c = _obj_2.c - 2
+		local _obj_3 = a.b
+		_obj_3.c = _obj_3.c * 3
+		local _obj_4 = a.b
+		_obj_4.c = _obj_4.c / 4
+		local _obj_5 = a.b
+		_obj_5.c = _obj_5.c % 5
+		a = a & 6
+		a = a | 7
+		a = a ^ 8
+	end
 	return nil
 end)

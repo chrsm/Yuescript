@@ -67,7 +67,6 @@ _u80cc_u5305 = {
 local _u5f00_u59cb = {
 	["东西"] = "冷"
 }
-local _u6d17_u6fa1
-_u6d17_u6fa1 = {
+local _u6d17_u6fa1 = {
 	["在"] = "火"
 }

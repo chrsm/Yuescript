@@ -167,13 +167,11 @@ end
 do
 	local _u53d8_u91cfa = 8
 	_u53d8_u91cfa = (function()
-		local _u53d8_u91cfa
-		_u53d8_u91cfa = 1
+		local _u53d8_u91cfa = 1
 		return _u53d8_u91cfa + 1
 	end)()
 	_u53d8_u91cfa = _u53d8_u91cfa + (function()
-		local _u53d8_u91cfa
-		_u53d8_u91cfa = 1
+		local _u53d8_u91cfa = 1
 		return _u53d8_u91cfa + 1
 	end)()
 	_u6253_u5370(_u53d8_u91cfa)

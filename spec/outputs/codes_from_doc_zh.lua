@@ -467,8 +467,7 @@ local x = f()
 local y = x
 local z = x
 do
-	local a
-	a = 1
+	local a = 1
 	local x, y, z
 	print("预先声明后续所有变量为局部变量")
 	x = function()
@@ -478,8 +477,7 @@ do
 	instance = Item:new()
 end
 do
-	local X
-	X = 1
+	local X = 1
 	local B
 	print("只预先声明后续大写的变量为局部变量")
 	local a = 1
@@ -499,8 +497,7 @@ do
 	print("只预先声明大写的变量为全局变量")
 	local a = 1
 	local B = 2
-	local Temp
-	Temp = "一个局部值"
+	local Temp = "一个局部值"
 end
 local thing = {
 	1,
@@ -2472,8 +2469,7 @@ local x = f()
 local y = x
 local z = x
 do
-	local a
-	a = 1
+	local a = 1
 	local x, y, z
 	print("预先声明后续所有变量为局部变量")
 	x = function()
@@ -2483,8 +2479,7 @@ do
 	instance = Item:new()
 end
 do
-	local X
-	X = 1
+	local X = 1
 	local B
 	print("只预先声明后续大写的变量为局部变量")
 	local a = 1
@@ -2504,8 +2499,7 @@ do
 	print("只预先声明大写的变量为全局变量")
 	local a = 1
 	local B = 2
-	local Temp
-	Temp = "一个局部值"
+	local Temp = "一个局部值"
 end
 local thing = {
 	1,

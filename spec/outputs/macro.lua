@@ -191,13 +191,11 @@ end
 do
 	local a = 8
 	a = (function()
-		local a
-		a = 1
+		local a = 1
 		return a + 1
 	end)()
 	a = a + (function()
-		local a
-		a = 1
+		local a = 1
 		return a + 1
 	end)()
 	print(a)
@@ -274,18 +272,12 @@ local result = ((((((origin.transform.root.gameObject:Parents()):Descendants()):
 end)):Destroy()
 do
 	do
-		local _1
-		_1 = origin.transform.root.gameObject:Parents()
-		local _2
-		_2 = _1:Descendants()
-		local _3
-		_3 = _2:SelectEnable()
-		local _4
-		_4 = _3:SelectVisible()
-		local _5
-		_5 = _4:TagEqual("fx")
-		local _6
-		_6 = _5:Where(function(x)
+		local _1 = origin.transform.root.gameObject:Parents()
+		local _2 = _1:Descendants()
+		local _3 = _2:SelectEnable()
+		local _4 = _3:SelectVisible()
+		local _5 = _4:TagEqual("fx")
+		local _6 = _5:Where(function(x)
 			return x.name:EndsWith("(Clone)")
 		end)
 		_6:Destroy()

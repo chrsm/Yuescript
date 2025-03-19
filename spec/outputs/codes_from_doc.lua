@@ -467,8 +467,7 @@ local x = f()
 local y = x
 local z = x
 do
-	local a
-	a = 1
+	local a = 1
 	local x, y, z
 	print("forward declare all variables as locals")
 	x = function()
@@ -478,8 +477,7 @@ do
 	instance = Item:new()
 end
 do
-	local X
-	X = 1
+	local X = 1
 	local B
 	print("only forward declare upper case variables")
 	local a = 1
@@ -499,8 +497,7 @@ do
 	print("only declare upper case variables as globals")
 	local a = 1
 	local B = 2
-	local Temp
-	Temp = "a local value"
+	local Temp = "a local value"
 end
 local thing = {
 	1,
@@ -2478,8 +2475,7 @@ local x = f()
 local y = x
 local z = x
 do
-	local a
-	a = 1
+	local a = 1
 	local x, y, z
 	print("forward declare all variables as locals")
 	x = function()
@@ -2489,8 +2485,7 @@ do
 	instance = Item:new()
 end
 do
-	local X
-	X = 1
+	local X = 1
 	local B
 	print("only forward declare upper case variables")
 	local a = 1
@@ -2510,8 +2505,7 @@ do
 	print("only declare upper case variables as globals")
 	local a = 1
 	local B = 2
-	local Temp
-	Temp = "a local value"
+	local Temp = "a local value"
 end
 local thing = {
 	1,
