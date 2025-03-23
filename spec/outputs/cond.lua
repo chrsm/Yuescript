@@ -313,14 +313,12 @@ do
 	end
 end
 do
-	do
-		local _des_0 = { }
-		if _des_0 then
-			_M = _des_0
-			local Thing = _M.Thing
-			local _obj_0 = _M
-			a, b = _obj_0.a, _obj_0.b
-		end
+	local _des_0 = { }
+	if _des_0 then
+		_M = _des_0
+		local Thing = _M.Thing
+		local _obj_0 = _M
+		a, b = _obj_0.a, _obj_0.b
 	end
 end
 do

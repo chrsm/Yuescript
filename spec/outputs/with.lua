@@ -158,17 +158,15 @@ do
 	}
 end
 do
-	do
-		local _with_0 = SolidRect({
-			width = w,
-			height = h,
-			color = 0x66000000
-		})
-		mask = _with_0
-		if _with_0 ~= nil then
-			_with_0.touchEnabled = true
-			_with_0.swallowTouches = true
-		end
+	local _with_0 = SolidRect({
+		width = w,
+		height = h,
+		color = 0x66000000
+	})
+	mask = _with_0
+	if _with_0 ~= nil then
+		_with_0.touchEnabled = true
+		_with_0.swallowTouches = true
 	end
 end
 do

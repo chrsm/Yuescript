@@ -486,17 +486,16 @@ end
 do
 	a = 1
 	print("预先声明所有变量为全局变量")
-	local x
 	x = function()
 		return 1 + y + z
 	end
-	local y, z = 2, 3
+	y, z = 2, 3
 end
 do
 	x = 1
 	print("只预先声明大写的变量为全局变量")
 	local a = 1
-	local B = 2
+	B = 2
 	local Temp = "一个局部值"
 end
 local thing = {
@@ -2488,17 +2487,16 @@ end
 do
 	a = 1
 	print("预先声明所有变量为全局变量")
-	local x
 	x = function()
 		return 1 + y + z
 	end
-	local y, z = 2, 3
+	y, z = 2, 3
 end
 do
 	x = 1
 	print("只预先声明大写的变量为全局变量")
 	local a = 1
-	local B = 2
+	B = 2
 	local Temp = "一个局部值"
 end
 local thing = {

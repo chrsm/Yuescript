@@ -161,17 +161,15 @@ do
 	}
 end
 do
-	do
-		local _with_0 = _u5b9e_u5fc3_u77e9_u5f62({
-			["宽"] = w,
-			["高"] = h,
-			["颜色"] = 0x66000000
-		})
-		_u63a9_u7801 = _with_0
-		if _with_0 ~= nil then
-			_with_0["触摸启用"] = true
-			_with_0["吞噬触摸"] = true
-		end
+	local _with_0 = _u5b9e_u5fc3_u77e9_u5f62({
+		["宽"] = w,
+		["高"] = h,
+		["颜色"] = 0x66000000
+	})
+	_u63a9_u7801 = _with_0
+	if _with_0 ~= nil then
+		_with_0["触摸启用"] = true
+		_with_0["吞噬触摸"] = true
 	end
 end
 do

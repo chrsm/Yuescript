@@ -486,17 +486,16 @@ end
 do
 	a = 1
 	print("declare all variables as globals")
-	local x
 	x = function()
 		return 1 + y + z
 	end
-	local y, z = 2, 3
+	y, z = 2, 3
 end
 do
 	X = 1
 	print("only declare upper case variables as globals")
 	local a = 1
-	local B = 2
+	B = 2
 	local Temp = "a local value"
 end
 local thing = {
@@ -2494,17 +2493,16 @@ end
 do
 	a = 1
 	print("declare all variables as globals")
-	local x
 	x = function()
 		return 1 + y + z
 	end
-	local y, z = 2, 3
+	y, z = 2, 3
 end
 do
 	X = 1
 	print("only declare upper case variables as globals")
 	local a = 1
-	local B = 2
+	B = 2
 	local Temp = "a local value"
 end
 local thing = {
