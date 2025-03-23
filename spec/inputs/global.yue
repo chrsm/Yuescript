@@ -75,3 +75,10 @@ do
 
 	h = 100
 
+do
+	global x = y
+	global ^
+	foobar = "all lowercase"
+	FooBar = "pascal case"
+	FOOBAR = "all uppercase"
+

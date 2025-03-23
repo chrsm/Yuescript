@@ -87,3 +87,9 @@ do
 	end
 	local h = 100
 end
+do
+	x = y
+	local foobar = "all lowercase"
+	FooBar = "pascal case"
+	FOOBAR = "all uppercase"
+end
