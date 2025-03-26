@@ -5,12 +5,36 @@ do
 			return print("closed")
 		end
 	})
-	local _close_0 = assert(getmetatable(a).__close)
-	local _close_1 = assert(getmetatable(b).__close);
+	local _close_0
+	if (function()
+		local _val_0 = type(a)
+		return 'table' == _val_0 or 'userdata' == _val_0
+	end)() then
+		_close_0 = assert(getmetatable(a) and getmetatable(a).__close, "variable 'a' got a non-closable value")
+	elseif a == nil then
+		_close_0 = nil
+	else
+		_close_0 = error("variable 'a' got a non-closable value")
+	end
+	local _close_1
+	if (function()
+		local _val_0 = type(b)
+		return 'table' == _val_0 or 'userdata' == _val_0
+	end)() then
+		_close_1 = assert(getmetatable(b) and getmetatable(b).__close, "variable 'b' got a non-closable value")
+	elseif b == nil then
+		_close_1 = nil
+	else
+		_close_1 = error("variable 'b' got a non-closable value")
+	end
 	(function(_arg_0, ...)
 		local _ok_0 = _arg_0
-		_close_1(b)
-		_close_0(a)
+		if _close_1 ~= nil then
+			_close_1(b)
+		end
+		if _close_0 ~= nil then
+			_close_0(a)
+		end
 		if _ok_0 then
 			return ...
 		else
@@ -53,10 +77,22 @@ do
 			__close = function(self) end
 		})
 	end
-	local _close_0 = assert(getmetatable(v).__close);
+	local _close_0
+	if (function()
+		local _val_0 = type(v)
+		return 'table' == _val_0 or 'userdata' == _val_0
+	end)() then
+		_close_0 = assert(getmetatable(v) and getmetatable(v).__close, "variable 'v' got a non-closable value")
+	elseif v == nil then
+		_close_0 = nil
+	else
+		_close_0 = error("variable 'v' got a non-closable value")
+	end
 	(function(_arg_0, ...)
 		local _ok_0 = _arg_0
-		_close_0(v)
+		if _close_0 ~= nil then
+			_close_0(v)
+		end
 		if _ok_0 then
 			return ...
 		else
@@ -69,10 +105,22 @@ do
 			_with_0:write("Hello")
 			f = _with_0
 		end
-		local _close_1 = assert(getmetatable(f).__close)
+		local _close_1
+		if (function()
+			local _val_0 = type(f)
+			return 'table' == _val_0 or 'userdata' == _val_0
+		end)() then
+			_close_1 = assert(getmetatable(f) and getmetatable(f).__close, "variable 'f' got a non-closable value")
+		elseif f == nil then
+			_close_1 = nil
+		else
+			_close_1 = error("variable 'f' got a non-closable value")
+		end
 		return (function(_arg_0, ...)
 			local _ok_0 = _arg_0
-			_close_1(f)
+			if _close_1 ~= nil then
+				_close_1(f)
+			end
 			if _ok_0 then
 				return ...
 			else
@@ -92,10 +140,22 @@ do
 			b = 1
 		end
 	end
-	local _close_0 = assert(getmetatable(b).__close);
+	local _close_0
+	if (function()
+		local _val_0 = type(b)
+		return 'table' == _val_0 or 'userdata' == _val_0
+	end)() then
+		_close_0 = assert(getmetatable(b) and getmetatable(b).__close, "variable 'b' got a non-closable value")
+	elseif b == nil then
+		_close_0 = nil
+	else
+		_close_0 = error("variable 'b' got a non-closable value")
+	end
 	(function(_arg_0, ...)
 		local _ok_0 = _arg_0
-		_close_0(b)
+		if _close_0 ~= nil then
+			_close_0(b)
+		end
 		if _ok_0 then
 			return ...
 		else
@@ -121,10 +181,22 @@ do
 				value = value
 			}
 		end
-		local _close_1 = assert(getmetatable(d).__close)
+		local _close_1
+		if (function()
+			local _val_0 = type(d)
+			return 'table' == _val_0 or 'userdata' == _val_0
+		end)() then
+			_close_1 = assert(getmetatable(d) and getmetatable(d).__close, "variable 'd' got a non-closable value")
+		elseif d == nil then
+			_close_1 = nil
+		else
+			_close_1 = error("variable 'd' got a non-closable value")
+		end
 		return (function(_arg_0, ...)
 			local _ok_0 = _arg_0
-			_close_1(d)
+			if _close_1 ~= nil then
+				_close_1(d)
+			end
 			if _ok_0 then
 				return ...
 			else
@@ -140,10 +212,22 @@ do
 		_with_0:write("Hello")
 		_ = _with_0
 	end
-	local _close_0 = assert(getmetatable(_).__close);
+	local _close_0
+	if (function()
+		local _val_0 = type(_)
+		return 'table' == _val_0 or 'userdata' == _val_0
+	end)() then
+		_close_0 = assert(getmetatable(_) and getmetatable(_).__close, "variable '_' got a non-closable value")
+	elseif _ == nil then
+		_close_0 = nil
+	else
+		_close_0 = error("variable '_' got a non-closable value")
+	end
 	(function(_arg_0, ...)
 		local _ok_0 = _arg_0
-		_close_0(_)
+		if _close_0 ~= nil then
+			_close_0(_)
+		end
 		if _ok_0 then
 			return ...
 		else
@@ -155,10 +239,22 @@ do
 				return print("second")
 			end
 		})
-		local _close_1 = assert(getmetatable(_).__close)
+		local _close_1
+		if (function()
+			local _val_0 = type(_)
+			return 'table' == _val_0 or 'userdata' == _val_0
+		end)() then
+			_close_1 = assert(getmetatable(_) and getmetatable(_).__close, "variable '_' got a non-closable value")
+		elseif _ == nil then
+			_close_1 = nil
+		else
+			_close_1 = error("variable '_' got a non-closable value")
+		end
 		return (function(_arg_0, ...)
 			local _ok_0 = _arg_0
-			_close_1(_)
+			if _close_1 ~= nil then
+				_close_1(_)
+			end
 			if _ok_0 then
 				return ...
 			else
@@ -170,10 +266,22 @@ do
 					return print("first")
 				end
 			})
-			local _close_2 = assert(getmetatable(_).__close)
+			local _close_2
+			if (function()
+				local _val_0 = type(_)
+				return 'table' == _val_0 or 'userdata' == _val_0
+			end)() then
+				_close_2 = assert(getmetatable(_) and getmetatable(_).__close, "variable '_' got a non-closable value")
+			elseif _ == nil then
+				_close_2 = nil
+			else
+				_close_2 = error("variable '_' got a non-closable value")
+			end
 			return (function(_arg_0, ...)
 				local _ok_0 = _arg_0
-				_close_2(_)
+				if _close_2 ~= nil then
+					_close_2(_)
+				end
 				if _ok_0 then
 					return ...
 				else
@@ -200,10 +308,22 @@ do
 	local _ = def(function()
 		return print(3)
 	end)
-	local _close_0 = assert(getmetatable(_).__close)
+	local _close_0
+	if (function()
+		local _val_0 = type(_)
+		return 'table' == _val_0 or 'userdata' == _val_0
+	end)() then
+		_close_0 = assert(getmetatable(_) and getmetatable(_).__close, "variable '_' got a non-closable value")
+	elseif _ == nil then
+		_close_0 = nil
+	else
+		_close_0 = error("variable '_' got a non-closable value")
+	end
 	return (function(_arg_0, ...)
 		local _ok_0 = _arg_0
-		_close_0(_)
+		if _close_0 ~= nil then
+			_close_0(_)
+		end
 		if _ok_0 then
 			return ...
 		else
@@ -213,10 +333,22 @@ do
 		local _ = def(function()
 			return print(2)
 		end)
-		local _close_1 = assert(getmetatable(_).__close)
+		local _close_1
+		if (function()
+			local _val_0 = type(_)
+			return 'table' == _val_0 or 'userdata' == _val_0
+		end)() then
+			_close_1 = assert(getmetatable(_) and getmetatable(_).__close, "variable '_' got a non-closable value")
+		elseif _ == nil then
+			_close_1 = nil
+		else
+			_close_1 = error("variable '_' got a non-closable value")
+		end
 		return (function(_arg_0, ...)
 			local _ok_0 = _arg_0
-			_close_1(_)
+			if _close_1 ~= nil then
+				_close_1(_)
+			end
 			if _ok_0 then
 				return ...
 			else
@@ -226,10 +358,22 @@ do
 			local _ = def(function()
 				return print(1)
 			end)
-			local _close_2 = assert(getmetatable(_).__close)
+			local _close_2
+			if (function()
+				local _val_0 = type(_)
+				return 'table' == _val_0 or 'userdata' == _val_0
+			end)() then
+				_close_2 = assert(getmetatable(_) and getmetatable(_).__close, "variable '_' got a non-closable value")
+			elseif _ == nil then
+				_close_2 = nil
+			else
+				_close_2 = error("variable '_' got a non-closable value")
+			end
 			return (function(_arg_0, ...)
 				local _ok_0 = _arg_0
-				_close_2(_)
+				if _close_2 ~= nil then
+					_close_2(_)
+				end
 				if _ok_0 then
 					return ...
 				else
