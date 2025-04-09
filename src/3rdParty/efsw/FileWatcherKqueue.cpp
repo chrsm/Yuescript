@@ -45,7 +45,7 @@ FileWatcherKqueue::~FileWatcherKqueue() {
 }
 
 WatchID FileWatcherKqueue::addWatch( const std::string& directory, FileWatchListener* watcher,
-									 bool recursive ) {
+									 bool recursive, const std::vector<WatcherOption>& /*options*/ ) {
 	static bool s_ug = false;
 
 	std::string dir( directory );
@@ -184,10 +184,12 @@ void FileWatcherKqueue::run() {
 void FileWatcherKqueue::handleAction( Watcher* /*watch*/, const std::string& /*filename*/,
 									  unsigned long /*action*/, std::string /*oldFilename*/ ) {}
 
-std::list<std::string> FileWatcherKqueue::directories() {
-	std::list<std::string> dirs;
+std::vector<std::string> FileWatcherKqueue::directories() {
+	std::vector<std::string> dirs;
 
 	Lock lock( mWatchesLock );
+
+	dirs.reserve( mWatches.size() );
 
 	WatchMap::iterator it = mWatches.begin();
 

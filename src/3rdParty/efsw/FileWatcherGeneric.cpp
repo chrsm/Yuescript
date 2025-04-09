@@ -25,7 +25,7 @@ FileWatcherGeneric::~FileWatcherGeneric() {
 }
 
 WatchID FileWatcherGeneric::addWatch( const std::string& directory, FileWatchListener* watcher,
-									  bool recursive ) {
+									  bool recursive, const std::vector<WatcherOption>& options ) {
 	std::string dir( directory );
 
 	FileSystem::dirAddSlashAtEnd( dir );
@@ -127,10 +127,12 @@ void FileWatcherGeneric::handleAction( Watcher*, const std::string&, unsigned lo
 	/// Not used
 }
 
-std::list<std::string> FileWatcherGeneric::directories() {
-	std::list<std::string> dirs;
+std::vector<std::string> FileWatcherGeneric::directories() {
+	std::vector<std::string> dirs;
 
 	Lock lock( mWatchesLock );
+
+	dirs.reserve( mWatches.size() );
 
 	WatchList::iterator it = mWatches.begin();
 

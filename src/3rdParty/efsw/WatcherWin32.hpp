@@ -3,6 +3,7 @@
 
 #include <efsw/FileInfo.hpp>
 #include <efsw/FileWatcherImpl.hpp>
+#include <vector>
 
 #if EFSW_PLATFORM == EFSW_PLATFORM_WIN32
 
@@ -21,6 +22,8 @@ namespace efsw {
 
 class WatcherWin32;
 
+enum RefreshResult { Failed, Success, SucessEx };
+
 /// Internal watch data
 struct WatcherStructWin32 {
 	OVERLAPPED Overlapped;
@@ -32,39 +35,41 @@ struct sLastModifiedEvent {
 	std::string fileName;
 };
 
-bool RefreshWatch( WatcherStructWin32* pWatch );
+RefreshResult RefreshWatch( WatcherStructWin32* pWatch );
 
 void CALLBACK WatchCallback( DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped );
 
 void DestroyWatch( WatcherStructWin32* pWatch );
 
-WatcherStructWin32* CreateWatch( LPCWSTR szDirectory, bool recursive, DWORD NotifyFilter,
-								 HANDLE iocp );
+WatcherStructWin32* CreateWatch( LPCWSTR szDirectory, bool recursive,
+							     DWORD bufferSize, DWORD notifyFilter, HANDLE iocp );
 
 class WatcherWin32 : public Watcher {
   public:
-	WatcherWin32() :
+	WatcherWin32(DWORD dwBufferSize) :
 		Struct( NULL ),
 		DirHandle( NULL ),
+		Buffer(),
 		lParam( 0 ),
 		NotifyFilter( 0 ),
 		StopNow( false ),
+		Extended( false ),
 		Watch( NULL ),
-		DirName( NULL ) {}
+		DirName( NULL ) {
+			Buffer.resize(dwBufferSize);
+		}
 
 	WatcherStructWin32* Struct;
 	HANDLE DirHandle;
-	BYTE Buffer
-		[63 *
-		 1024]; // do NOT make this bigger than 64K because it will fail if the folder being watched
-				// is on the network! (see
-				// http://msdn.microsoft.com/en-us/library/windows/desktop/aa365465(v=vs.85).aspx)
+	std::vector<BYTE> Buffer;
 	LPARAM lParam;
 	DWORD NotifyFilter;
 	bool StopNow;
+	bool Extended;
 	FileWatcherImpl* Watch;
 	char* DirName;
 	sLastModifiedEvent LastModifiedEvent;
+	std::vector<std::pair<std::string, LARGE_INTEGER>> OldFiles;
 };
 
 } // namespace efsw

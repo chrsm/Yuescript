@@ -1,8 +1,17 @@
+#include <cstring>
 #include <efsw/FileSystem.hpp>
 #include <efsw/platform/platformimpl.hpp>
+#include <climits>
 
 #if EFSW_OS == EFSW_OS_MACOSX
 #include <CoreFoundation/CoreFoundation.h>
+#endif
+
+#if EFSW_OS == EFSW_OS_WIN
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
 #endif
 
 namespace efsw {
@@ -26,13 +35,13 @@ bool FileSystem::slashAtEnd( std::string& dir ) {
 }
 
 void FileSystem::dirAddSlashAtEnd( std::string& dir ) {
-	if ( dir.size() > 1 && dir[dir.size() - 1] != getOSSlash() ) {
+	if ( dir.size() >= 1 && dir[dir.size() - 1] != getOSSlash() ) {
 		dir.push_back( getOSSlash() );
 	}
 }
 
 void FileSystem::dirRemoveSlashAtEnd( std::string& dir ) {
-	if ( dir.size() > 1 && dir[dir.size() - 1] == getOSSlash() ) {
+	if ( dir.size() >= 1 && dir[dir.size() - 1] == getOSSlash() ) {
 		dir.erase( dir.size() - 1 );
 	}
 }
@@ -91,13 +100,30 @@ std::string FileSystem::precomposeFileName( const std::string& name ) {
 
 	CFStringNormalize( cfMutable, kCFStringNormalizationFormC );
 
-	char c_str[255 + 1];
-	CFStringGetCString( cfMutable, c_str, sizeof( c_str ) - 1, kCFStringEncodingUTF8 );
+	const char* c_str = CFStringGetCStringPtr( cfMutable, kCFStringEncodingUTF8 );
+	if ( c_str != NULL ) {
+		std::string result( c_str );
+		CFRelease( cfStringRef );
+		CFRelease( cfMutable );
+		return result;
+	}
+	CFIndex length = CFStringGetLength( cfMutable );
+	CFIndex maxSize = CFStringGetMaximumSizeForEncoding( length, kCFStringEncodingUTF8 );
+	if ( maxSize == kCFNotFound ) {
+		CFRelease( cfStringRef );
+		CFRelease( cfMutable );
+		return std::string();
+	}
 
-	CFRelease( cfStringRef );
-	CFRelease( cfMutable );
-
-	return std::string( c_str );
+	std::string result( maxSize + 1, '\0' );
+	if ( CFStringGetCString( cfMutable, &result[0], result.size(), kCFStringEncodingUTF8 ) ) {
+		result.resize( std::strlen( result.c_str() ) );
+		CFRelease( cfStringRef );
+		CFRelease( cfMutable );
+	} else {
+		result.clear();
+	}
+	return result;
 #else
 	return name;
 #endif
@@ -113,6 +139,23 @@ bool FileSystem::changeWorkingDirectory( const std::string& directory ) {
 
 std::string FileSystem::getCurrentWorkingDirectory() {
 	return Platform::FileSystem::getCurrentWorkingDirectory();
+}
+
+std::string FileSystem::getRealPath( const std::string& path ) {
+	std::string realPath;
+#if defined( EFSW_PLATFORM_POSIX )
+	char dir[PATH_MAX];
+	realpath( path.c_str(), &dir[0] );
+	realPath = std::string( dir );
+#elif EFSW_OS == EFSW_OS_WIN
+	wchar_t dir[_MAX_PATH + 1];
+	GetFullPathNameW( String::fromUtf8( path ).toWideString().c_str(), _MAX_PATH, &dir[0],
+					  nullptr );
+	realPath = String( dir ).toUtf8();
+#else
+#warning FileSystem::getRealPath() not implemented on this platform.
+#endif
+	return realPath;
 }
 
 } // namespace efsw

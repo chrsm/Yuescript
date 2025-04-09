@@ -26,11 +26,12 @@ FileWatcherWin32::~FileWatcherWin32() {
 
 	removeAllWatches();
 
-	CloseHandle( mIOCP );
+	if ( mIOCP )
+		CloseHandle( mIOCP );
 }
 
 WatchID FileWatcherWin32::addWatch( const std::string& directory, FileWatchListener* watcher,
-									bool recursive ) {
+									bool recursive, const std::vector<WatcherOption> &options ) {
 	std::string dir( directory );
 
 	FileInfo fi( dir );
@@ -51,11 +52,14 @@ WatchID FileWatcherWin32::addWatch( const std::string& directory, FileWatchListe
 
 	WatchID watchid = ++mLastWatchID;
 
-	WatcherStructWin32* watch = CreateWatch(
-		String::fromUtf8( dir ).toWideString().c_str(), recursive,
-		FILE_NOTIFY_CHANGE_CREATION | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_FILE_NAME |
-			FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
-		mIOCP );
+	DWORD bufferSize = static_cast<DWORD>( getOptionValue(options, Option::WinBufferSize, 63 * 1024) );
+	DWORD notifyFilter = static_cast<DWORD>( getOptionValue(options, Option::WinNotifyFilter,
+		FILE_NOTIFY_CHANGE_CREATION | FILE_NOTIFY_CHANGE_LAST_WRITE |
+		FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME |
+		FILE_NOTIFY_CHANGE_SIZE) );
+
+	WatcherStructWin32* watch = CreateWatch( String::fromUtf8( dir ).toWideString().c_str(),
+											 recursive, bufferSize, notifyFilter, mIOCP );
 
 	if ( NULL == watch ) {
 		return Errors::Log::createLastError( Errors::FileNotFound, dir );
@@ -140,7 +144,8 @@ void FileWatcherWin32::run() {
 					break;
 				} else {
 					Lock lock( mWatchesLock );
-					WatchCallback( numOfBytes, ov );
+					if (mWatches.find( (WatcherStructWin32*)ov ) != mWatches.end())
+						WatchCallback( numOfBytes, ov );
 				}
 			}
 		} else {
@@ -191,7 +196,8 @@ void FileWatcherWin32::handleAction( Watcher* watch, const std::string& filename
 				watch->OldFileName.substr( 0, watch->OldFileName.find_last_of( "/\\" ) );
 
 			if ( sepPos != std::string::npos ) {
-				folderPath += filename.substr( 0, sepPos );
+				folderPath +=
+					filename.substr( 0, sepPos + 1 < filename.size() ? sepPos + 1 : sepPos );
 				realFilename = filename.substr( sepPos + 1 );
 			}
 
@@ -221,17 +227,21 @@ void FileWatcherWin32::handleAction( Watcher* watch, const std::string& filename
 	std::size_t sepPos = filename.find_last_of( "/\\" );
 
 	if ( sepPos != std::string::npos ) {
-		folderPath += filename.substr( 0, sepPos );
+		folderPath += filename.substr( 0, sepPos + 1 < filename.size() ? sepPos + 1 : sepPos );
 		realFilename = filename.substr( sepPos + 1 );
 	}
+
+	FileSystem::dirAddSlashAtEnd( folderPath );
 
 	watch->Listener->handleFileAction( watch->ID, folderPath, realFilename, fwAction );
 }
 
-std::list<std::string> FileWatcherWin32::directories() {
-	std::list<std::string> dirs;
+std::vector<std::string> FileWatcherWin32::directories() {
+	std::vector<std::string> dirs;
 
 	Lock lock( mWatchesLock );
+
+	dirs.reserve( mWatches.size() );
 
 	for ( Watches::iterator it = mWatches.begin(); it != mWatches.end(); ++it ) {
 		dirs.push_back( std::string( ( *it )->Watch->DirName ) );

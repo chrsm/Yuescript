@@ -41,6 +41,32 @@ bool FileWatcherFSEvents::isGranular() {
 	return getOSXReleaseNumber() >= 11;
 }
 
+static std::string convertCFStringToStdString( CFStringRef cfString ) {
+	// Try to get the C string pointer directly
+	const char* cStr = CFStringGetCStringPtr( cfString, kCFStringEncodingUTF8 );
+
+	if ( cStr ) {
+		// If the pointer is valid, directly return a std::string from it
+		return std::string( cStr );
+	} else {
+		// If not, manually convert it
+		CFIndex length = CFStringGetLength( cfString );
+		CFIndex maxSize = CFStringGetMaximumSizeForEncoding( length, kCFStringEncodingUTF8 ) +
+						  1; // +1 for null terminator
+
+		char* buffer = new char[maxSize];
+
+		if ( CFStringGetCString( cfString, buffer, maxSize, kCFStringEncodingUTF8 ) ) {
+			std::string result( buffer );
+			delete[] buffer;
+			return result;
+		} else {
+			delete[] buffer;
+			return "";
+		}
+	}
+}
+
 void FileWatcherFSEvents::FSEventCallback( ConstFSEventStreamRef /*streamRef*/, void* userData,
 										   size_t numEvents, void* eventPaths,
 										   const FSEventStreamEventFlags eventFlags[],
@@ -51,8 +77,24 @@ void FileWatcherFSEvents::FSEventCallback( ConstFSEventStreamRef /*streamRef*/, 
 	events.reserve( numEvents );
 
 	for ( size_t i = 0; i < numEvents; i++ ) {
-		events.push_back( FSEvent( std::string( ( (char**)eventPaths )[i] ), (long)eventFlags[i],
-								   (Uint64)eventIds[i] ) );
+		if ( isGranular() ) {
+			CFDictionaryRef pathInfoDict =
+				static_cast<CFDictionaryRef>( CFArrayGetValueAtIndex( (CFArrayRef)eventPaths, i ) );
+			CFStringRef path = static_cast<CFStringRef>(
+				CFDictionaryGetValue( pathInfoDict, kFSEventStreamEventExtendedDataPathKey ) );
+			CFNumberRef cfInode = static_cast<CFNumberRef>(
+				CFDictionaryGetValue( pathInfoDict, kFSEventStreamEventExtendedFileIDKey ) );
+
+			if ( cfInode ) {
+				unsigned long inode = 0;
+				CFNumberGetValue( cfInode, kCFNumberLongType, &inode );
+				events.push_back( FSEvent( convertCFStringToStdString( path ), (long)eventFlags[i],
+										   (Uint64)eventIds[i], inode ) );
+			}
+		} else {
+			events.push_back( FSEvent( std::string( ( (char**)eventPaths )[i] ),
+									   (long)eventFlags[i], (Uint64)eventIds[i] ) );
+		}
 	}
 
 	watcher->handleActions( events );
@@ -63,7 +105,7 @@ void FileWatcherFSEvents::FSEventCallback( ConstFSEventStreamRef /*streamRef*/, 
 }
 
 FileWatcherFSEvents::FileWatcherFSEvents( FileWatcher* parent ) :
-	FileWatcherImpl( parent ), mRunLoopRef( NULL ), mLastWatchID( 0 ), mThread( NULL ) {
+	FileWatcherImpl( parent ), mLastWatchID( 0 ) {
 	mInitOK = true;
 
 	watch();
@@ -72,10 +114,7 @@ FileWatcherFSEvents::FileWatcherFSEvents( FileWatcher* parent ) :
 FileWatcherFSEvents::~FileWatcherFSEvents() {
 	mInitOK = false;
 
-	if ( mRunLoopRef.load() )
-		CFRunLoopStop( mRunLoopRef.load() );
-
-	efSAFE_DELETE( mThread );
+	mWatchCond.notify_all();
 
 	WatchMap::iterator iter = mWatches.begin();
 
@@ -84,18 +123,11 @@ FileWatcherFSEvents::~FileWatcherFSEvents() {
 
 		efSAFE_DELETE( watch );
 	}
-
-	mWatches.clear();
 }
 
 WatchID FileWatcherFSEvents::addWatch( const std::string& directory, FileWatchListener* watcher,
-									   bool recursive ) {
-	/// Wait to the RunLoopRef to be ready
-	while ( NULL == mRunLoopRef.load() ) {
-		System::sleep( 1 );
-	}
-
-	std::string dir( directory );
+									   bool recursive, const std::vector<WatcherOption>& options ) {
+	std::string dir( FileSystem::getRealPath( directory ) );
 
 	FileInfo fi( dir );
 
@@ -135,12 +167,18 @@ WatchID FileWatcherFSEvents::addWatch( const std::string& directory, FileWatchLi
 	pWatch->Directory = dir;
 	pWatch->Recursive = recursive;
 	pWatch->FWatcher = this;
+	pWatch->ModifiedFlags =
+		getOptionValue( options, Option::MacModifiedFilter, efswFSEventsModified );
+	pWatch->SanitizeEvents = getOptionValue( options, Option::MacSanitizeEvents, 0 ) != 0;
 
 	pWatch->init();
 
-	Lock lock( mWatchesLock );
-	mWatches.insert( std::make_pair( mLastWatchID, pWatch ) );
+	{
+		Lock lock( mWatchesLock );
+		mWatches.insert( std::make_pair( mLastWatchID, pWatch ) );
+	}
 
+	mWatchCond.notify_all();
 	return pWatch->ID;
 }
 
@@ -174,49 +212,19 @@ void FileWatcherFSEvents::removeWatch( WatchID watchid ) {
 	efSAFE_DELETE( watch );
 }
 
-void FileWatcherFSEvents::watch() {
-	if ( NULL == mThread ) {
-		mThread = new Thread( &FileWatcherFSEvents::run, this );
-		mThread->launch();
-	}
-}
-
-void FileWatcherFSEvents::run() {
-	mRunLoopRef = CFRunLoopGetCurrent();
-
-	while ( mInitOK ) {
-		mNeedInitMutex.lock();
-
-		if ( !mNeedInit.empty() ) {
-			for ( std::vector<WatcherFSEvents*>::iterator it = mNeedInit.begin();
-				  it != mNeedInit.end(); ++it ) {
-				( *it )->initAsync();
-			}
-
-			mNeedInit.clear();
-		}
-
-		mNeedInitMutex.unlock();
-
-		if ( mWatches.empty() ) {
-			System::sleep( 100 );
-		} else {
-			CFRunLoopRunInMode( kCFRunLoopDefaultMode, 0.5, kCFRunLoopRunTimedOut );
-		}
-	}
-
-	mRunLoopRef = NULL;
-}
+void FileWatcherFSEvents::watch() {}
 
 void FileWatcherFSEvents::handleAction( Watcher* /*watch*/, const std::string& /*filename*/,
 										unsigned long /*action*/, std::string /*oldFilename*/ ) {
 	/// Not used
 }
 
-std::list<std::string> FileWatcherFSEvents::directories() {
-	std::list<std::string> dirs;
+std::vector<std::string> FileWatcherFSEvents::directories() {
+	std::vector<std::string> dirs;
 
 	Lock lock( mWatchesLock );
+
+	dirs.reserve( mWatches.size() );
 
 	for ( WatchMap::iterator it = mWatches.begin(); it != mWatches.end(); ++it ) {
 		dirs.push_back( std::string( it->second->Directory ) );

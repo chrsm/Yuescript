@@ -2,7 +2,7 @@
 #define EFSW_FILEINFO_HPP
 
 #include <efsw/base.hpp>
-#include <list>
+#include <vector>
 #include <map>
 #include <string>
 
@@ -18,11 +18,11 @@ class FileInfo {
 
 	FileInfo();
 
-	explicit FileInfo( const std::string& filepath );
+	FileInfo( const std::string& filepath );
 
 	FileInfo( const std::string& filepath, bool linkInfo );
 
-	FileInfo( const FileInfo& ) = default;
+	FileInfo(const FileInfo&) = default;
 
 	bool operator==( const FileInfo& Other ) const;
 
@@ -58,8 +58,8 @@ class FileInfo {
 };
 
 typedef std::map<std::string, FileInfo> FileInfoMap;
-typedef std::list<FileInfo> FileInfoList;
-typedef std::list<std::pair<std::string, FileInfo>> MovedList;
+typedef std::vector<FileInfo> FileInfoList;
+typedef std::vector<std::pair<std::string, FileInfo>> MovedList;
 
 } // namespace efsw
 

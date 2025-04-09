@@ -34,7 +34,8 @@ void Thread::terminate() {
 }
 
 void Thread::run() {
-	mEntryPoint->run();
+	if ( mEntryPoint )
+		mEntryPoint->run();
 }
 
 } // namespace efsw

@@ -139,7 +139,7 @@ void WatcherKqueue::addAll() {
 void WatcherKqueue::removeAll() {
 	efDEBUG( "removeAll(): Removing all child watchers\n" );
 
-	std::list<WatchID> erase;
+	std::vector<WatchID> erase;
 
 	for ( WatchMap::iterator it = mWatches.begin(); it != mWatches.end(); it++ ) {
 		efDEBUG( "removeAll(): Removed child watcher %s\n", it->second->Directory.c_str() );
@@ -147,7 +147,7 @@ void WatcherKqueue::removeAll() {
 		erase.push_back( it->second->ID );
 	}
 
-	for ( std::list<WatchID>::iterator eit = erase.begin(); eit != erase.end(); eit++ ) {
+	for ( std::vector<WatchID>::iterator eit = erase.begin(); eit != erase.end(); eit++ ) {
 		removeWatch( *eit );
 	}
 }
@@ -354,7 +354,8 @@ void WatcherKqueue::watch() {
 	bool needScan = false;
 
 	// Then we get the the events of the current folder
-	while ( ( nev = kevent( mKqueue, &mChangeList[0], mChangeListCount + 1, &event, 1,
+	while ( !mChangeList.empty() &&
+			( nev = kevent( mKqueue, mChangeList.data(), mChangeListCount + 1, &event, 1,
 							&mWatcher->mTimeOut ) ) != 0 ) {
 		// An error ocurred?
 		if ( nev == -1 ) {
@@ -436,7 +437,6 @@ void WatcherKqueue::moveDirectory( std::string oldPath, std::string newPath, boo
 
 WatchID WatcherKqueue::addWatch( const std::string& directory, FileWatchListener* watcher,
 								 bool recursive, WatcherKqueue* parent ) {
-	static long s_fc = 0;
 	static bool s_ug = false;
 
 	std::string dir( directory );
@@ -478,8 +478,6 @@ WatchID WatcherKqueue::addWatch( const std::string& directory, FileWatchListener
 
 		watch->addAll();
 
-		s_fc++;
-
 		// if failed to open the directory... erase the watcher
 		if ( !watch->initOK() ) {
 			int le = watch->lastErrno();
@@ -502,9 +500,8 @@ WatchID WatcherKqueue::addWatch( const std::string& directory, FileWatchListener
 		}
 	} else {
 		if ( !s_ug ) {
-			efDEBUG( "Started using WatcherGeneric, reached file descriptors limit: %ld. Folders "
-					 "added: %ld\n",
-					 mWatcher->mFileDescriptorCount, s_fc );
+			efDEBUG( "Started using WatcherGeneric, reached file descriptors limit: %ld.\n",
+					 mWatcher->mFileDescriptorCount );
 			s_ug = true;
 		}
 

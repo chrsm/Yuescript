@@ -10,15 +10,13 @@ class WatcherInotify : public Watcher {
   public:
 	WatcherInotify();
 
-	WatcherInotify( WatchID id, std::string directory, FileWatchListener* listener, bool recursive,
-					WatcherInotify* parent = NULL );
-
 	bool inParentTree( WatcherInotify* parent );
 
 	WatcherInotify* Parent;
 	WatchID InotifyID;
 
 	FileInfo DirInfo;
+	bool syntheticEvents{ false };
 };
 
 } // namespace efsw
