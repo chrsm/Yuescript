@@ -136,9 +136,11 @@ do
 	end
 	local b
 	if not false then
-		if x then
-			b = 1
-		end
+		b = ((function()
+			if x then
+				return 1
+			end
+		end)())
 	end
 	local _close_0
 	if (function()
@@ -164,10 +166,12 @@ do
 	end)(pcall(function()
 		local c
 		if true then
-			local _exp_0 = x
-			if "abc" == _exp_0 then
-				c = 998
-			end
+			c = ((function()
+				local _exp_0 = x
+				if "abc" == _exp_0 then
+					return 998
+				end
+			end)())
 		end
 		local d
 		if (function()

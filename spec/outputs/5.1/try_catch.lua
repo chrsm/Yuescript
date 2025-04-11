@@ -8,10 +8,10 @@ local _anon_func_2 = function(tb)
 	return tb.func()
 end
 local _anon_func_3 = function(tb)
-	return tb.func()
+	return (tb.func())
 end
 local _anon_func_4 = function(tb)
-	return tb:func(1, 2, 3)
+	return (tb:func(1, 2, 3))
 end
 local _anon_func_5 = function(tb)
 	return tb.func(1)
@@ -64,7 +64,7 @@ f = function()
 		print("OK")
 	end
 	if xpcall(function()
-		return func(1)
+		return (func(1))
 	end, function(err)
 		return print(err)
 	end) then

@@ -258,9 +258,11 @@ _u53d8_u91cfx = 0
 local _list_0 = _u503c
 for _index_0 = 1, #_list_0 do
 	local _u53d8_u91cfv = _list_0[_index_0]
-	if ntype(_u53d8_u91cfv) == "函数定义" then
-		_ = _u53d8_u91cfx + 1
-	end
+	_ = ((function()
+		if ntype(_u53d8_u91cfv) == "函数定义" then
+			return _u53d8_u91cfx + 1
+		end
+	end)())
 end
 _u4f60_u597d = {
 	["某物"] = _u4e16_u754c,

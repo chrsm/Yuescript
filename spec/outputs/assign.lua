@@ -36,10 +36,10 @@ local x
 do
 	local f = getHandler()
 	if f then
-		do
+		x = ((function()
 			f()
-			x = 123
-		end
+			return 123
+		end)())
 	end
 end
 local _anon_func_0 = function(print)

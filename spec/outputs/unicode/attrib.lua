@@ -48,17 +48,21 @@ do
 	end
 	local _u5173_u95ed_u53d8_u91cfb
 	if not false then
-		if _u6761_u4ef6x then
-			_u5173_u95ed_u53d8_u91cfb = 1
-		end
+		_u5173_u95ed_u53d8_u91cfb = ((function()
+			if _u6761_u4ef6x then
+				return 1
+			end
+		end)())
 	end
 	local _close_0 <close> = _u5173_u95ed_u53d8_u91cfb
 	local _u5e38_u91cfc
 	if true then
-		local _exp_0 = _u6761_u4ef6x
-		if "abc" == _exp_0 then
-			_u5e38_u91cfc = 998
-		end
+		_u5e38_u91cfc = ((function()
+			local _exp_0 = _u6761_u4ef6x
+			if "abc" == _exp_0 then
+				return 998
+			end
+		end)())
 	end
 	local _u5173_u95ed_u53d8_u91cfd
 	if (function()

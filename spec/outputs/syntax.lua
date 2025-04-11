@@ -239,9 +239,11 @@ x = 0
 local _list_0 = values
 for _index_0 = 1, #_list_0 do
 	local v = _list_0[_index_0]
-	if ntype(v) == "fndef" then
-		_ = x + 1
-	end
+	_ = ((function()
+		if ntype(v) == "fndef" then
+			return x + 1
+		end
+	end)())
 end
 hello = {
 	something = world,

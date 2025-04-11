@@ -36,10 +36,10 @@ local _u53d8_u91cfx
 do
 	local _u51fd_u6570 = _u83b7_u53d6_u5904_u7406_u51fd_u6570()
 	if _u51fd_u6570 then
-		do
+		_u53d8_u91cfx = ((function()
 			_u51fd_u6570()
-			_u53d8_u91cfx = 123
-		end
+			return 123
+		end)())
 	end
 end
 local _anon_func_0 = function(_u6253_u5370)

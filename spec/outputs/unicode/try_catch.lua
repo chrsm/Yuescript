@@ -32,11 +32,13 @@ pcall(function()
 	return _u8868["函数"]()
 end)
 pcall(function()
-	return _u8868["函数"]()
+	return (_u8868["函数"]())
 end)
 pcall(function()
-	local _call_0 = _u8868
-	return _call_0["函数"](_call_0, 1, 2, 3)
+	return ((function()
+		local _call_0 = _u8868
+		return _call_0["函数"](_call_0, 1, 2, 3)
+	end)())
 end)
 pcall(function()
 	return _u8868["函数"](1)
@@ -52,7 +54,7 @@ end)) then
 	_u6253_u5370("好的")
 end
 if xpcall(function()
-	return _u51fd_u6570(1)
+	return (_u51fd_u6570(1))
 end, function(_u9519_u8bef)
 	return _u6253_u5370(_u9519_u8bef)
 end) then

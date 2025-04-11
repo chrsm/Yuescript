@@ -32,10 +32,10 @@ local _u53d8_u91cft = {
 }
 return function(_u53c2_u6570y, _u53c2_u6570k)
 	if _u53c2_u6570y == nil then
-		do
+		_u53c2_u6570y = ((function()
 			_u53d8_u91cfx = 10 + 2
-			_u53c2_u6570y = _u53d8_u91cfx
-		end
+			return _u53d8_u91cfx
+		end)())
 	end
 	if _u53c2_u6570k == nil then
 		do

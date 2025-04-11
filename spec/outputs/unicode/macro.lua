@@ -215,52 +215,85 @@ do
 -- 这有个注释
 end
 local _ = require('下划线')
-local _call_0 = (_({
-	1,
-	2,
-	3,
-	4,
-	-2,
-	3
-}))
-_call_0 = _call_0["链"](_call_0)
-_call_0 = _call_0["映射"](_call_0, function(self)
-	return self * 2
-end)
-_call_0 = _call_0["过滤"](_call_0, function(self)
-	return self > 3
-end)
-local _u7ed3_u679ca = _call_0["取值"](_call_0)
-do
-	local _call_1 = (_({
-		1,
-		2,
-		3,
-		4,
-		-2,
-		3
-	}))
-	_call_1 = _call_1["链"](_call_1)
-	_call_1 = _call_1["映射"](_call_1, function(self)
-		return self * 2
-	end)
-	_call_1 = _call_1["过滤"](_call_1, function(self)
+local _anon_func_0 = function(_)
+	do
+		local _call_0 = (_({
+			1,
+			2,
+			3,
+			4,
+			-2,
+			3
+		}))
+		return _call_0["链"](_call_0)
+	end
+end
+local _call_0 = ((function()
+	local _call_0 = ((function()
+		local _call_0 = (_anon_func_0(_))
+		return _call_0["映射"](_call_0, function(self)
+			return self * 2
+		end)
+	end)())
+	return _call_0["过滤"](_call_0, function(self)
 		return self > 3
 	end)
+end)())
+local _u7ed3_u679ca = _call_0["取值"](_call_0)
+local _anon_func_1 = function(_)
+	do
+		local _call_1 = (_({
+			1,
+			2,
+			3,
+			4,
+			-2,
+			3
+		}))
+		return _call_1["链"](_call_1)
+	end
+end
+do
+	local _call_1 = ((function()
+		local _call_1 = ((function()
+			local _call_1 = (_anon_func_1(_))
+			return _call_1["映射"](_call_1, function(self)
+				return self * 2
+			end)
+		end)())
+		return _call_1["过滤"](_call_1, function(self)
+			return self > 3
+		end)
+	end)())
 	_call_1["每一个"](_call_1, function(self)
 		return _u6253_u5370(self)
 	end)
 end
-local _call_1 = _u539f_u70b9["变换"]["根节点"]["游戏对象"]
-_call_1 = _call_1["父节点"](_call_1)
-_call_1 = _call_1["后代"](_call_1)
-_call_1 = _call_1["选择启用"](_call_1)
-_call_1 = _call_1["选择可见"](_call_1)
-_call_1 = _call_1["标签等于"](_call_1, "fx")
-_call_1 = _call_1["其中"](_call_1, function(x)
-	local _call_2 = x["名称"]
-	return _call_2["结尾为"](_call_2, "(克隆)")
-end)
+local _anon_func_2 = function(_u539f_u70b9)
+	do
+		local _call_1 = _u539f_u70b9["变换"]["根节点"]["游戏对象"]
+		return _call_1["父节点"](_call_1)
+	end
+end
+local _call_1 = ((function()
+	local _call_1 = ((function()
+		local _call_1 = ((function()
+			local _call_1 = ((function()
+				local _call_1 = ((function()
+					local _call_1 = (_anon_func_2(_u539f_u70b9))
+					return _call_1["后代"](_call_1)
+				end)())
+				return _call_1["选择启用"](_call_1)
+			end)())
+			return _call_1["选择可见"](_call_1)
+		end)())
+		return _call_1["标签等于"](_call_1, "fx")
+	end)())
+	return _call_1["其中"](_call_1, function(x)
+		local _call_2 = x["名称"]
+		return _call_2["结尾为"](_call_2, "(克隆)")
+	end)
+end)())
 _u7ed3_u679c = _call_1["摧毁"](_call_1)
 do
 	do
