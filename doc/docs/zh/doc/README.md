@@ -2057,13 +2057,11 @@ doubled = [item * 2 for i, item in ipairs items]
 可以使用when子句筛选新表中包含的项目：
 
 ```moonscript
-iter = ipairs items
-slice = [item for i, item in iter when i > 1 and i < 3]
+slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
 <YueDisplay>
 <pre>
-iter = ipairs items
-slice = [item for i, item in iter when i > 1 and i < 3]
+slice = [item for i, item in ipairs items when i > 1 and i < 3]
 </pre>
 </YueDisplay>
 
