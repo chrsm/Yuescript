@@ -16,6 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <unordered_set>
 #include <variant>
 #include <vector>
+#include <iomanip>
+#include <ostream>
 
 #include "yuescript/yue_compiler.h"
 #include "yuescript/yue_parser.h"
@@ -75,7 +77,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.27.4"sv;
+const std::string_view version = "0.27.5"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -7144,6 +7146,33 @@ private:
 	void transformNum(Num_t* num, str_list& out) {
 		std::string numStr = _parser.toString(num);
 		numStr.erase(std::remove(numStr.begin(), numStr.end(), '_'), numStr.end());
+		if (numStr.size() > 2 && numStr[0] == '0') {
+			if (numStr[1] == 'b' || numStr[1] == 'B') {
+				std::string binaryPart = numStr.substr(2);
+				try {
+					unsigned long long value = std::stoull(binaryPart, nullptr, 2);
+					numStr = std::to_string(value);
+				} catch (const std::exception& e) {
+					throw CompileError("invalid binary literal"sv, num);
+				}
+			} else if (getLuaTarget(num) < 502) {
+				if (numStr[1] == 'x' || numStr[1] == 'X') {
+					if (numStr.find_first_of(".-"sv) != std::string::npos) {
+						std::stringstream ss(numStr);
+						double v;
+						ss >> std::hexfloat >> v;
+						if (ss.fail() || !std::isfinite(v)) {
+							throw CompileError("invalid hex‑float literal"sv, num);
+						}
+						std::ostringstream outSs;
+						outSs << std::setprecision(17) << v;
+						numStr = outSs.str();
+					} else {
+						numStr.erase(std::remove(numStr.begin(), numStr.end(), '+'), numStr.end());
+					}
+				}
+			}
+		}
 		out.push_back(numStr);
 	}
 
