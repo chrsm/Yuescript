@@ -7,17 +7,18 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include <chrono>
+#include <cmath>
+#include <iomanip>
 #include <memory>
 #include <optional>
 #include <set>
+#include <sstream>
 #include <stack>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
 #include <vector>
-#include <iomanip>
-#include <ostream>
 
 #include "yuescript/yue_compiler.h"
 #include "yuescript/yue_parser.h"
@@ -4799,7 +4800,7 @@ private:
 					auto varName = variableToString(ast_to<Variable_t>(var));
 					auto closeVar = getUnusedName("_close_"sv);
 					addToScope(closeVar);
-					getCloses.push_back(closeVar + "=if type("s + varName + ") in ['table', 'userdata'] then assert "s + varName + ".<> and "s + varName +".<close>, \""s + "variable '"s + varName + "' got a non-closable value\" elseif "s + varName + " == nil then nil else error \""s + "variable '"s + varName + "' got a non-closable value\"");
+					getCloses.push_back(closeVar + "=if type("s + varName + ") in ['table', 'userdata'] then assert "s + varName + ".<> and "s + varName + ".<close>, \""s + "variable '"s + varName + "' got a non-closable value\" elseif "s + varName + " == nil then nil else error \""s + "variable '"s + varName + "' got a non-closable value\"");
 					doCloses.push_front(closeVar + "? "s + varName);
 				}
 				popScope();
