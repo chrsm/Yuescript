@@ -2814,19 +2814,19 @@ private:
 						if (!varDefOnly) throw e;
 					}
 					if (!assignable && !varDefOnly) {
-						if (optional) {
-							if (defVal) {
-								throw CompileError("default value is not supported here"sv, defVal);
-							}
-							auto exp = static_cast<Exp_t*>(pair);
-							auto chain = exp->new_ptr<ChainValue_t>();
-							auto indexItem = toAst<Exp_t>(std::to_string(index), exp);
-							chain->items.push_back(indexItem);
-							pairs.push_back({exp, Empty, chain, nullptr});
-							break;
-						} else {
-							throw CompileError("can't destructure value"sv, pair);
+						if (optional) break;
+						throw CompileError("can't destructure value"sv, pair);
+					}
+					if (optional && varDefOnly && !assignable) {
+						if (defVal) {
+							throw CompileError("default value is not supported here"sv, defVal);
 						}
+						auto exp = static_cast<Exp_t*>(pair);
+						auto chain = exp->new_ptr<ChainValue_t>();
+						auto indexItem = toAst<Exp_t>(std::to_string(index), exp);
+						chain->items.push_back(indexItem);
+						pairs.push_back({exp, Empty, chain, nullptr});
+						break;
 					}
 					auto value = singleValueFrom(pair);
 					auto item = value->item.get();
@@ -2914,17 +2914,17 @@ private:
 							if (!varDefOnly) throw e;
 						}
 						if (!assignable && !varDefOnly) {
-							if (optional) {
-								if (defVal) {
-									throw CompileError("default value is not supported here"sv, defVal);
-								}
-								auto chain = exp->new_ptr<ChainValue_t>();
-								if (keyIndex) chain->items.push_back(keyIndex);
-								pairs.push_back({exp, Empty, chain, nullptr});
-								break;
-							} else {
-								throw CompileError("can't destructure value"sv, exp);
+							if (optional) break;
+							throw CompileError("can't destructure value"sv, pair);
+						}
+						if (optional && varDefOnly && !assignable) {
+							if (defVal) {
+								throw CompileError("default value is not supported here"sv, defVal);
 							}
+							auto chain = exp->new_ptr<ChainValue_t>();
+							if (keyIndex) chain->items.push_back(keyIndex);
+							pairs.push_back({exp, Empty, chain, nullptr});
+							break;
 						}
 						auto item = singleValueFrom(exp)->item.get();
 						ast_node* subExp = ast_cast<SimpleTable_t>(item);
@@ -10652,16 +10652,26 @@ private:
 					for (const auto& item : destruct.items) {
 						if (!item.defVal) {
 							if (!isAssignable(item.target)) {
-								transformExp(item.target, conds, ExpUsage::Closure);
 								auto callable = chainValue->items.front();
 								auto chain = callable->new_ptr<ChainValue_t>();
 								chain->items.push_back(callable);
 								chain->items.dup(item.structure->items);
-								transformChainValue(chain, conds, ExpUsage::Closure);
-								auto vStr = conds.back();
-								conds.pop_back();
-								conds.back().append(" == "s);
-								conds.back().append(vStr);
+								if (specialChainValue(chain) == ChainType::Common) {
+									transformChainValue(chain, conds, ExpUsage::Closure);
+									auto vStr = conds.back();
+									conds.pop_back();
+									transformExp(item.target, conds, ExpUsage::Closure);
+									conds.back().append(" == "s);
+									conds.back().append(vStr);
+								} else {
+									auto varName = getUnusedName("_val_"sv);
+									auto vExp = toAst<Exp_t>(varName, chain);
+									auto asmt = assignmentFrom(vExp, newExp(chain, chain), chain);
+									transformAssignment(asmt, temp);
+									transformExp(item.target, conds, ExpUsage::Closure);
+									conds.back().append(" == "s);
+									conds.back().append(varName);
+								}
 							} else {
 								transformExp(item.target, conds, ExpUsage::Closure);
 								conds.back().append(" ~= nil"s);
