@@ -132,14 +132,14 @@ export 🌛 = "月之脚本"
 
 &emsp;Use YueScript module in Lua:
 
-* **Case 1**  
+* **Case 1**
 Require "your_yuescript_entry.yue" in Lua.
 ```Lua
 require("yue")("your_yuescript_entry")
 ```
 &emsp;And this code still works when you compile "your_yuescript_entry.yue"  to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
 
-* **Case 2**  
+* **Case 2**
 Require YueScript module and rewite message by hand.
 ```lua
 local yue = require("yue")
@@ -151,7 +151,7 @@ end, function(err)
 end)
 ```
 
-* **Case 3**  
+* **Case 3**
 Use the YueScript compiler function in Lua.
 ```lua
 local yue = require("yue")
@@ -203,12 +203,12 @@ Usage: yue [options|files|directories] ...
    Execute without options to enter REPL, type symbol '$'
    in a single line to start/stop multi-line mode
 ```
-&emsp;&emsp;Use cases:  
-&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**  
-&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**  
-&emsp;&emsp;Compile and reserve debug info:  **yue -l .**  
-&emsp;&emsp;Compile and generate minified codes:  **yue -m .**  
-&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**  
+&emsp;&emsp;Use cases:
+&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
+&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**
+&emsp;&emsp;Compile and reserve debug info:  **yue -l .**
+&emsp;&emsp;Compile and generate minified codes:  **yue -m .**
+&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**
 &emsp;&emsp;Execute a YueScript file:  **yue -e main.yue**
 
 ## Macro
@@ -570,7 +570,7 @@ merge = {...a, ...b}
 
 The **<>** operator can be used as a shortcut for metatable manipulation.
 
-* **Metatable Creation**  
+* **Metatable Creation**
 Create normal table with empty bracekets **<>** or metamethod key which is surrounded by **<>**.
 
 ```moonscript
@@ -606,7 +606,7 @@ close _ = &lt;close&gt;: -> print "out of scope"
 </pre>
 </YueDisplay>
 
-* **Metatable Accessing**  
+* **Metatable Accessing**
 Accessing metatable with **<>** or metamethod name surrounded by **<>** or writing some expression in **<>**.
 
 ```moonscript
@@ -630,7 +630,7 @@ print tb.item
 </pre>
 </YueDisplay>
 
-* **Metatable Destructure**  
+* **Metatable Destructure**
 Destruct metatable with metamethod key surrounded by **<>**.
 
 ```moonscript
@@ -860,7 +860,7 @@ do
 
 The export statement offers a concise way to define modules.
 
-* **Named Export**  
+* **Named Export**
 Named export will define a local variable as well as adding a field in the exported table.
 
 ```moonscript
@@ -924,7 +924,7 @@ export["a-b-c"] = 123
 </pre>
 </YueDisplay>
 
-* **Unnamed Export**  
+* **Unnamed Export**
 Unnamed export will add the target item into the array part of the exported table.
 
 ```moonscript
@@ -954,7 +954,7 @@ export with tmp
 </pre>
 </YueDisplay>
 
-* **Default Export**  
+* **Default Export**
 Using the **default** keyword in export statement to replace the exported table with any thing.
 
 ```moonscript
@@ -2779,6 +2779,102 @@ item = {}
 switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- table destructuring will still pass
+</pre>
+</YueDisplay>
+
+You can also match against array elements, table fields, and even nested structures with array or table literals.
+
+Match against array elements.
+
+```moonscript
+switch tb
+  when [1, 2, 3]
+    print "1, 2, 3"
+  when [1, b, 3]
+    print "1, #{b}, 3"
+  when [1, 2, b = 3] -- b has a default value
+    print "1, 2, #{b}"
+```
+<YueDisplay>
+<pre>
+switch tb
+  when [1, 2, 3]
+    print "1, 2, 3"
+  when [1, b, 3]
+    print "1, #{b}, 3"
+  when [1, 2, b = 3] -- b has a default value
+    print "1, 2, #{b}"
+</pre>
+</YueDisplay>
+
+Match against table fields with destructuring.
+
+```moonscript
+switch tb
+  when success: true, :result
+    print "success", result
+  when success: false
+    print "failed", result
+  else
+    print "invalid"
+```
+<YueDisplay>
+<pre>
+switch tb
+  when success: true, :result
+    print "success", result
+  when success: false
+    print "failed", result
+  else
+    print "invalid"
+</pre>
+</YueDisplay>
+
+Match against nested table structures.
+
+```moonscript
+switch tb
+  when data: {type: "success", :content}
+    print "success", content
+  when data: {type: "error", :content}
+    print "failed", content
+  else
+    print "invalid"
+```
+<YueDisplay>
+<pre>
+switch tb
+  when data: {type: "success", :content}
+    print "success", content
+  when data: {type: "error", :content}
+    print "failed", content
+  else
+    print "invalid"
+</pre>
+</YueDisplay>
+
+Match against array of tables.
+
+```moonscript
+switch tb
+  when [
+      {a: 1, b: 2}
+      {a: 3, b: 4}
+      {a: 5, b: 6}
+      fourth
+    ]
+    print "matched", fourth
+```
+<YueDisplay>
+<pre>
+switch tb
+  when [
+      {a: 1, b: 2}
+      {a: 3, b: 4}
+      {a: 5, b: 6}
+      fourth
+    ]
+    print "matched", fourth
 </pre>
 </YueDisplay>
 
