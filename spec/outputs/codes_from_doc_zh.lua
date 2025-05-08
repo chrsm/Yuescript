@@ -1274,6 +1274,163 @@ if _tab_0 then
 	end
 	print("Vec2 " .. tostring(x) .. ", " .. tostring(y))
 end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+local _match_0 = false
+if _tab_0 then
+	if 1 == _exp_0[1] and 2 == _exp_0[2] and 3 == _exp_0[3] then
+		_match_0 = true
+		print("1, 2, 3")
+	end
+end
+if not _match_0 then
+	local _match_1 = false
+	if _tab_0 then
+		local b = _exp_0[2]
+		if 1 == _exp_0[1] and b ~= nil and 3 == _exp_0[3] then
+			_match_1 = true
+			print("1, " .. tostring(b) .. ", 3")
+		end
+	end
+	if not _match_1 then
+		if _tab_0 then
+			local b = _exp_0[3]
+			if b == nil then
+				b = 3
+			end
+			if 1 == _exp_0[1] and 2 == _exp_0[2] then
+				print("1, 2, " .. tostring(b))
+			end
+		end
+	end
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+local _match_0 = false
+if _tab_0 then
+	local result = _exp_0.result
+	if true == _exp_0.success and result ~= nil then
+		_match_0 = true
+		print("成功", result)
+	end
+end
+if not _match_0 then
+	local _match_1 = false
+	if _tab_0 then
+		if false == _exp_0.success then
+			_match_1 = true
+			print("失败", result)
+		end
+	end
+	if not _match_1 then
+		print("无效值")
+	end
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+local _match_0 = false
+if _tab_0 then
+	local content
+	do
+		local _obj_0 = _exp_0.data
+		local _type_1 = type(_obj_0)
+		if "table" == _type_1 or "userdata" == _type_1 then
+			content = _obj_0.content
+		end
+	end
+	local _val_0
+	do
+		local _obj_0 = _exp_0.data
+		if _obj_0 ~= nil then
+			_val_0 = _obj_0.type
+		end
+	end
+	if "success" == _val_0 and content ~= nil then
+		_match_0 = true
+		print("成功", content)
+	end
+end
+if not _match_0 then
+	local _match_1 = false
+	if _tab_0 then
+		local content
+		do
+			local _obj_0 = _exp_0.data
+			local _type_1 = type(_obj_0)
+			if "table" == _type_1 or "userdata" == _type_1 then
+				content = _obj_0.content
+			end
+		end
+		local _val_0
+		do
+			local _obj_0 = _exp_0.data
+			if _obj_0 ~= nil then
+				_val_0 = _obj_0.type
+			end
+		end
+		if "error" == _val_0 and content ~= nil then
+			_match_1 = true
+			print("失败", content)
+		end
+	end
+	if not _match_1 then
+		print("无效值")
+	end
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+if _tab_0 then
+	local fourth = _exp_0[4]
+	local _val_0
+	do
+		local _obj_0 = _exp_0[1]
+		if _obj_0 ~= nil then
+			_val_0 = _obj_0.a
+		end
+	end
+	local _val_1
+	do
+		local _obj_0 = _exp_0[1]
+		if _obj_0 ~= nil then
+			_val_1 = _obj_0.b
+		end
+	end
+	local _val_2
+	do
+		local _obj_0 = _exp_0[2]
+		if _obj_0 ~= nil then
+			_val_2 = _obj_0.a
+		end
+	end
+	local _val_3
+	do
+		local _obj_0 = _exp_0[2]
+		if _obj_0 ~= nil then
+			_val_3 = _obj_0.b
+		end
+	end
+	local _val_4
+	do
+		local _obj_0 = _exp_0[3]
+		if _obj_0 ~= nil then
+			_val_4 = _obj_0.a
+		end
+	end
+	local _val_5
+	do
+		local _obj_0 = _exp_0[3]
+		if _obj_0 ~= nil then
+			_val_5 = _obj_0.b
+		end
+	end
+	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
+		print("匹配成功", fourth)
+	end
+end
 local Inventory
 local _class_0
 local _base_0 = {
@@ -3273,6 +3430,163 @@ if _tab_0 then
 		y = 200
 	end
 	print("Vec2 " .. tostring(x) .. ", " .. tostring(y))
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+local _match_0 = false
+if _tab_0 then
+	if 1 == _exp_0[1] and 2 == _exp_0[2] and 3 == _exp_0[3] then
+		_match_0 = true
+		print("1, 2, 3")
+	end
+end
+if not _match_0 then
+	local _match_1 = false
+	if _tab_0 then
+		local b = _exp_0[2]
+		if 1 == _exp_0[1] and b ~= nil and 3 == _exp_0[3] then
+			_match_1 = true
+			print("1, " .. tostring(b) .. ", 3")
+		end
+	end
+	if not _match_1 then
+		if _tab_0 then
+			local b = _exp_0[3]
+			if b == nil then
+				b = 3
+			end
+			if 1 == _exp_0[1] and 2 == _exp_0[2] then
+				print("1, 2, " .. tostring(b))
+			end
+		end
+	end
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+local _match_0 = false
+if _tab_0 then
+	local result = _exp_0.result
+	if true == _exp_0.success and result ~= nil then
+		_match_0 = true
+		print("成功", result)
+	end
+end
+if not _match_0 then
+	local _match_1 = false
+	if _tab_0 then
+		if false == _exp_0.success then
+			_match_1 = true
+			print("失败", result)
+		end
+	end
+	if not _match_1 then
+		print("无效值")
+	end
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+local _match_0 = false
+if _tab_0 then
+	local content
+	do
+		local _obj_0 = _exp_0.data
+		local _type_1 = type(_obj_0)
+		if "table" == _type_1 or "userdata" == _type_1 then
+			content = _obj_0.content
+		end
+	end
+	local _val_0
+	do
+		local _obj_0 = _exp_0.data
+		if _obj_0 ~= nil then
+			_val_0 = _obj_0.type
+		end
+	end
+	if "success" == _val_0 and content ~= nil then
+		_match_0 = true
+		print("成功", content)
+	end
+end
+if not _match_0 then
+	local _match_1 = false
+	if _tab_0 then
+		local content
+		do
+			local _obj_0 = _exp_0.data
+			local _type_1 = type(_obj_0)
+			if "table" == _type_1 or "userdata" == _type_1 then
+				content = _obj_0.content
+			end
+		end
+		local _val_0
+		do
+			local _obj_0 = _exp_0.data
+			if _obj_0 ~= nil then
+				_val_0 = _obj_0.type
+			end
+		end
+		if "error" == _val_0 and content ~= nil then
+			_match_1 = true
+			print("失败", content)
+		end
+	end
+	if not _match_1 then
+		print("无效值")
+	end
+end
+local _exp_0 = tb
+local _type_0 = type(_exp_0)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+if _tab_0 then
+	local fourth = _exp_0[4]
+	local _val_0
+	do
+		local _obj_0 = _exp_0[1]
+		if _obj_0 ~= nil then
+			_val_0 = _obj_0.a
+		end
+	end
+	local _val_1
+	do
+		local _obj_0 = _exp_0[1]
+		if _obj_0 ~= nil then
+			_val_1 = _obj_0.b
+		end
+	end
+	local _val_2
+	do
+		local _obj_0 = _exp_0[2]
+		if _obj_0 ~= nil then
+			_val_2 = _obj_0.a
+		end
+	end
+	local _val_3
+	do
+		local _obj_0 = _exp_0[2]
+		if _obj_0 ~= nil then
+			_val_3 = _obj_0.b
+		end
+	end
+	local _val_4
+	do
+		local _obj_0 = _exp_0[3]
+		if _obj_0 ~= nil then
+			_val_4 = _obj_0.a
+		end
+	end
+	local _val_5
+	do
+		local _obj_0 = _exp_0[3]
+		if _obj_0 ~= nil then
+			_val_5 = _obj_0.b
+		end
+	end
+	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
+		print("匹配成功", fourth)
+	end
 end
 local Inventory
 local _class_0
