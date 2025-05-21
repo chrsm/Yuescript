@@ -429,8 +429,9 @@ private:
 	};
 	enum class VarType {
 		Local = 0,
-		Const = 1,
-		Global = 2
+		LocalConst = 1,
+		Global = 2,
+		GlobalConst = 3
 	};
 	struct Scope {
 		GlobalMode mode = GlobalMode::None;
@@ -558,7 +559,7 @@ private:
 		for (auto it = _scopes.rbegin(); it != _scopes.rend(); ++it) {
 			auto vars = it->vars.get();
 			auto vit = vars->find(name);
-			if (vit != vars->end() && vit->second != VarType::Global) {
+			if (vit != vars->end() && (vit->second == VarType::Local || vit->second == VarType::LocalConst)) {
 				local = true;
 				break;
 			}
@@ -571,7 +572,7 @@ private:
 		for (auto it = _scopes.rbegin(); it != _scopes.rend(); ++it) {
 			auto vars = it->vars.get();
 			auto vit = vars->find(name);
-			if (vit != vars->end() && vit->second == VarType::Global) {
+			if (vit != vars->end() && (vit->second == VarType::Global || vit->second == VarType::GlobalConst)) {
 				global = true;
 				break;
 			}
@@ -593,7 +594,7 @@ private:
 			auto vars = it->vars.get();
 			auto vit = vars->find(name);
 			if (vit != vars->end()) {
-				isConst = (vit->second == VarType::Const);
+				isConst = (vit->second == VarType::LocalConst || vit->second == VarType::GlobalConst);
 				break;
 			}
 			if (checkShadowScopeOnly && it->allows) break;
@@ -874,9 +875,9 @@ private:
 		return false;
 	}
 
-	void markVarConst(const std::string& name) {
+	void markVarLocalConst(const std::string& name) {
 		auto& scope = _scopes.back();
-		scope.vars->insert_or_assign(name, VarType::Const);
+		scope.vars->insert_or_assign(name, VarType::LocalConst);
 	}
 
 	void markVarShadowed() {
@@ -893,6 +894,11 @@ private:
 		if (isLocal(name)) throw CompileError("can not declare a local variable to be global"sv, x);
 		auto& scope = _scopes.back();
 		scope.vars->insert_or_assign(name, VarType::Global);
+	}
+
+	void markVarGlobalConst(const std::string& name) {
+		auto& scope = _scopes.back();
+		scope.vars->insert_or_assign(name, VarType::GlobalConst);
 	}
 
 	void addToAllowList(const std::string& name) {
@@ -2051,7 +2057,7 @@ private:
 					if (item.targetVar.empty()) {
 						throw CompileError("can only declare variable as const"sv, item.target);
 					}
-					markVarConst(item.targetVar);
+					markVarLocalConst(item.targetVar);
 				}
 			}
 		}
@@ -8064,7 +8070,7 @@ private:
 		pushScope();
 		for (const auto& var : vars) forceAddToScope(var);
 		for (const auto& var : varAfter) addToScope(var);
-		if (!varConstAfter.empty()) markVarConst(varConstAfter);
+		if (!varConstAfter.empty()) markVarLocalConst(varConstAfter);
 		if (!destructPairs.empty()) {
 			temp.clear();
 			for (auto& pair : destructPairs) {
@@ -8149,7 +8155,7 @@ private:
 		_buf << indent() << "for "sv << varName << " = "sv << start << ", "sv << stop << (step.empty() ? Empty : ", "s + step) << " do"sv << nll(var);
 		pushScope();
 		forceAddToScope(varName);
-		markVarConst(varName);
+		markVarLocalConst(varName);
 		out.push_back(clearBuf());
 	}
 
@@ -8923,7 +8929,7 @@ private:
 						auto names = transformAssignDefs(assignment->expList.get(), DefOp::Get);
 						for (const auto& name : names) {
 							forceAddToScope(name.first);
-							markVarConst(name.first);
+							markVarLocalConst(name.first);
 							varDefs.push_back(name.first);
 							classConstVars.push_back(name.first);
 						}
@@ -8937,7 +8943,7 @@ private:
 								for (const auto& item : destruct.items) {
 									if (!item.targetVar.empty()) {
 										forceAddToScope(item.targetVar);
-										markVarConst(item.targetVar);
+										markVarLocalConst(item.targetVar);
 										varDefs.push_back(item.targetVar);
 										classConstVars.push_back(item.targetVar);
 									}
@@ -9511,12 +9517,18 @@ private:
 		switch (item->get_id()) {
 			case id<ClassDecl_t>(): {
 				auto classDecl = static_cast<ClassDecl_t*>(item);
+				std::string varName;
 				if (classDecl->name) {
 					if (auto var = classDecl->name->item.as<Variable_t>()) {
-						addGlobalVar(variableToString(var), classDecl->name->item);
+						varName = variableToString(var);
+						addGlobalVar(varName, var);
 					}
 				}
+				if (varName.empty()) {
+					throw CompileError("missing name for class", classDecl);
+				}
 				transformClassDecl(classDecl, out, ExpUsage::Common);
+				markVarGlobalConst(varName);
 				break;
 			}
 			case id<GlobalOp_t>():
@@ -9530,9 +9542,11 @@ private:
 				auto values = global->item.to<GlobalValues_t>();
 				if (values->valueList) {
 					auto expList = x->new_ptr<ExpList_t>();
+					str_list varNames;
 					for (auto name : values->nameList->names.objects()) {
 						auto var = static_cast<Variable_t*>(name);
-						addGlobalVar(variableToString(var), var);
+						varNames.emplace_back(variableToString(var));
+						addGlobalVar(varNames.back(), var);
 						auto callable = x->new_ptr<Callable_t>();
 						callable->item.set(name);
 						auto chainValue = x->new_ptr<ChainValue_t>();
@@ -9551,7 +9565,13 @@ private:
 					}
 					assignment->action.set(assign);
 					transformAssignment(assignment, out);
+					for (const auto& name : varNames) {
+						markVarGlobalConst(name);
+					}
 				} else {
+					if (global->constAttrib) {
+						throw CompileError("missing initial value for global const", global->constAttrib);
+					}
 					for (auto name : values->nameList->names.objects()) {
 						auto var = static_cast<Variable_t*>(name);
 						addGlobalVar(variableToString(var), var);
@@ -10216,7 +10236,7 @@ private:
 		out.push_back(join(temp));
 		auto vars = getAssignVars(assignment);
 		for (const auto& var : vars) {
-			markVarConst(var);
+			markVarLocalConst(var);
 		}
 	}
 
@@ -10444,7 +10464,7 @@ private:
 		transformAssignment(assignment, out);
 		if (auto var = ast_cast<Variable_t>(target)) {
 			auto moduleName = variableToString(var);
-			markVarConst(moduleName);
+			markVarLocalConst(moduleName);
 		} else {
 			markDestructureConst(assignment);
 		}
@@ -11028,7 +11048,7 @@ private:
 			}
 			transformAssignment(assignment, temp);
 			for (const auto& name : vars) {
-				markVarConst(name);
+				markVarLocalConst(name);
 			}
 			if (localAttrib->attrib.is<CloseAttrib_t>()) {
 				str_list leftVars, rightVars;
@@ -11100,7 +11120,7 @@ private:
 				temp.push_back(indent() + "local "s + join(leftVars, ", "sv) + " = "s + join(items, ", "sv) + nll(x));
 			}
 			for (const auto& var : vars) {
-				markVarConst(var);
+				markVarLocalConst(var);
 			}
 		}
 		if (!listB->exprs.empty()) {
@@ -11125,7 +11145,7 @@ private:
 			temp.push_back(indent() + "local "s + join(vars, ", "sv) + nll(x));
 			transformAssignment(assignment, temp);
 			for (const auto& name : vars) {
-				markVarConst(name);
+				markVarLocalConst(name);
 			}
 		}
 		out.push_back(join(temp));

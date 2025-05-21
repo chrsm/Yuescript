@@ -82,3 +82,8 @@ do
 	FooBar = "pascal case"
 	FOOBAR = "all uppercase"
 
+do
+	global const class A
+	global const Flag = 1
+	global const const, x, y = "const", 1, 2
+

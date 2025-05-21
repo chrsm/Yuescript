@@ -727,8 +727,9 @@ AST_LEAF(GlobalOp)
 AST_END(GlobalOp)
 
 AST_NODE(Global)
+	ast_ptr<false, ConstAttrib_t> constAttrib;
 	ast_sel<true, ClassDecl_t, GlobalOp_t, GlobalValues_t> item;
-	AST_MEMBER(Global, &item)
+	AST_MEMBER(Global, &constAttrib, &item)
 AST_END(Global)
 
 AST_LEAF(ExportDefault)

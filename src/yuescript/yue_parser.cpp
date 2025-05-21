@@ -761,7 +761,7 @@ YueParser::YueParser() {
 
 	GlobalValues = NameList >> -(space >> '=' >> space >> (TableBlock | ExpListLow));
 	GlobalOp = expr('*') | '^';
-	Global = key("global") >> space >> (ClassDecl | GlobalOp | GlobalValues);
+	Global = key("global") >> space >> (-(ConstAttrib >> space) >> ClassDecl | GlobalOp | -(ConstAttrib >> space) >> GlobalValues);
 
 	ExportDefault = key("default");
 

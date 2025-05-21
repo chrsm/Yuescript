@@ -1513,6 +1513,17 @@ const {:a, :b, c, d} = tb
 </pre>
 </YueDisplay>
 
+You can also declare a global variable to be `const`.
+
+```moonscript
+global const Constant = 123
+```
+<YueDisplay>
+<pre>
+global const Constant = 123
+</pre>
+</YueDisplay>
+
 ## Literals
 
 All of the primitive literals in Lua can be used. This applies to numbers, strings, booleans, and **nil**.

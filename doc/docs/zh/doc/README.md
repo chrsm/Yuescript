@@ -1512,6 +1512,17 @@ const {:a, :b, c, d} = tb
 </pre>
 </YueDisplay>
 
+你也可以声明全局变量为常量。
+
+```moonscript
+global const Constant = 123
+```
+<YueDisplay>
+<pre>
+global const Constant = 123
+</pre>
+</YueDisplay>
+
 ## 字面量
 
 Lua中的所有基本字面量都可以在月之脚本中使用。包括数字、字符串、布尔值和**nil**。
