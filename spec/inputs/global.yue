@@ -86,4 +86,5 @@ do
 	global const class A
 	global const Flag = 1
 	global const const, x, y = "const", 1, 2
+	global const math, table
 
