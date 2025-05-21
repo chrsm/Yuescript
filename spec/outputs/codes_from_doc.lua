@@ -689,6 +689,7 @@ local _ <close> = setmetatable({ }, {
 local a, b, c, d
 local _obj_0 = tb
 a, b, c, d = _obj_0.a, _obj_0.b, _obj_0[1], _obj_0[2]
+Constant = 123
 local some_string = "Here is a string\n  that has a line break in it."
 print("I am " .. tostring(math.random() * 100) .. "% sure.")
 local integer = 1000000
@@ -2864,6 +2865,7 @@ local _ <close> = setmetatable({ }, {
 local a, b, c, d
 local _obj_0 = tb
 a, b, c, d = _obj_0.a, _obj_0.b, _obj_0[1], _obj_0[2]
+Constant = 123
 local some_string = "Here is a string\n  that has a line break in it."
 print("I am " .. tostring(math.random() * 100) .. "% sure.")
 local integer = 1000000

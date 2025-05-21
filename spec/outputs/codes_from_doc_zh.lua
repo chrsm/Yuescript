@@ -689,6 +689,7 @@ local _ <close> = setmetatable({ }, {
 local a, b, c, d
 local _obj_0 = tb
 a, b, c, d = _obj_0.a, _obj_0.b, _obj_0[1], _obj_0[2]
+Constant = 123
 local some_string = "这是一个字符串\n  并包括一个换行。"
 print("我有" .. tostring(math.random() * 100) .. "%的把握。")
 local integer = 1000000
@@ -2858,6 +2859,7 @@ local _ <close> = setmetatable({ }, {
 local a, b, c, d
 local _obj_0 = tb
 a, b, c, d = _obj_0.a, _obj_0.b, _obj_0[1], _obj_0[2]
+Constant = 123
 local some_string = "这是一个字符串\n  并包括一个换行。"
 print("我有" .. tostring(math.random() * 100) .. "%的把握。")
 local integer = 1000000
