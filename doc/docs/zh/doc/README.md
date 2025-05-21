@@ -1886,22 +1886,22 @@ x * 2
 </pre>
 </YueDisplay>
 
-如果你希望在反向回调处理后继续编写更多其它的代码，你可以使用do语句将不归属反向回调的代码分开。
+如果你希望在反向回调处理后继续编写更多其它的代码，可以使用 do 语句将不属于反向回调的代码分隔开。对于非粗箭头函数的反向回调，回调返回值的括号也是可以省略的。
 
 ```moonscript
 result, msg = do
-  (data) <- readAsync "文件名.txt"
+  data <- readAsync "文件名.txt"
   print data
-  (info) <- processAsync data
+  info <- processAsync data
   check info
 print result, msg
 ```
 <YueDisplay>
 <pre>
 result, msg = do
-  (data) <- readAsync "文件名.txt"
+  data <- readAsync "文件名.txt"
   print data
-  (info) <- processAsync data
+  info <- processAsync data
   check info
 print result, msg
 </pre>

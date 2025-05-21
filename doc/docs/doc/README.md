@@ -1925,22 +1925,22 @@ x * 2
 </pre>
 </YueDisplay>
 
-If you wish to have further code after your backcalls, you can set them aside with a do statement.
+If you wish to have further code after your backcalls, you can set them aside with a do statement. And the parentheses can be omitted with non-fat arrow functions.
 
 ```moonscript
 result, msg = do
-  (data) <- readAsync "filename.txt"
+  data <- readAsync "filename.txt"
   print data
-  (info) <- processAsync data
+  info <- processAsync data
   check info
 print result, msg
 ```
 <YueDisplay>
 <pre>
 result, msg = do
-  (data) <- readAsync "filename.txt"
+  data <- readAsync "filename.txt"
   print data
-  (info) <- processAsync data
+  info <- processAsync data
   check info
 print result, msg
 </pre>
