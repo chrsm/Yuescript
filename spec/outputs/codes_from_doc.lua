@@ -20,6 +20,38 @@ local inventory = {
 		}
 	}
 }
+local map
+map = function(arr, action)
+	local _accum_0 = { }
+	local _len_0 = 1
+	for _index_0 = 1, #arr do
+		local item = arr[_index_0]
+		_accum_0[_len_0] = action(item)
+		_len_0 = _len_0 + 1
+	end
+	return _accum_0
+end
+local filter
+filter = function(arr, cond)
+	local _accum_0 = { }
+	local _len_0 = 1
+	for _index_0 = 1, #arr do
+		local item = arr[_index_0]
+		if cond(item) then
+			_accum_0[_len_0] = item
+			_len_0 = _len_0 + 1
+		end
+	end
+	return _accum_0
+end
+local reduce
+reduce = function(arr, init, action)
+	for _index_0 = 1, #arr do
+		local item = arr[_index_0]
+		init = action(init, item)
+	end
+	return init
+end
 print(reduce(filter(map({
 	1,
 	2,
@@ -1026,12 +1058,24 @@ local _len_0 = 1
 for i = 1, 20 do
 	if i % 2 == 0 then
 		_accum_0[_len_0] = i * 2
+		_len_0 = _len_0 + 1
 	else
 		_accum_0[_len_0] = i
+		_len_0 = _len_0 + 1
 	end
-	_len_0 = _len_0 + 1
 end
 doubled_evens = _accum_0
+local first_large
+local _accum_0
+local _list_0 = numbers
+for _index_0 = 1, #_list_0 do
+	local n = _list_0[_index_0]
+	if n > 10 then
+		_accum_0 = n
+		break
+	end
+end
+first_large = _accum_0
 local func_a
 func_a = function()
 	for i = 1, 10 do
@@ -3189,12 +3233,24 @@ local _len_0 = 1
 for i = 1, 20 do
 	if i % 2 == 0 then
 		_accum_0[_len_0] = i * 2
+		_len_0 = _len_0 + 1
 	else
 		_accum_0[_len_0] = i
+		_len_0 = _len_0 + 1
 	end
-	_len_0 = _len_0 + 1
 end
 doubled_evens = _accum_0
+local first_large
+local _accum_0
+local _list_0 = numbers
+for _index_0 = 1, #_list_0 do
+	local n = _list_0[_index_0]
+	if n > 10 then
+		_accum_0 = n
+		break
+	end
+end
+first_large = _accum_0
 local func_a
 func_a = function()
 	for i = 1, 10 do

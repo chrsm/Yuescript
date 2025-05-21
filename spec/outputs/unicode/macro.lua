@@ -365,10 +365,8 @@ local _1
 _1 = function()
 	_u6253_u5370(1)
 	local _accum_0 = { }
-	local _len_0 = 1
 	while false do
 		break
-		_len_0 = _len_0 + 1
 	end
 	return _accum_0
 end

@@ -29,6 +29,16 @@ inventory =
     * name: "bread"
       count: 3
 
+-- 列表推导
+map = (arr, action) ->
+  [action item for item in *arr]
+
+filter = (arr, cond) ->
+  [item for item in *arr when cond item]
+
+reduce = (arr, init, action): init ->
+  init = action init, item for item in *arr
+
 -- 管道操作符
 [1, 2, 3]
   |> map (x) -> x * 2
@@ -2286,9 +2296,24 @@ doubled_evens = for i = 1, 20
 </pre>
 </YueDisplay>
 
+此外，for循环还支持带返回值的break语句，这样循环本身就可以作为一个表达式，在满足条件时提前退出并返回有意义的结果。
+
+例如，查找第一个大于10的数字：
+
+```moonscript
+first_large = for n in *numbers
+  break n if n > 10
+```
+<YueDisplay>
+<pre>
+first_large = for n in *numbers
+  break n if n > 10
+</pre>
+</YueDisplay>
+
 你还可以结合for循环表达式与continue语句来过滤值。
 
-注意出现在函数体末尾的for循环，不会被当作是一个表达式，并将循环结果累积到一个列表中作为返回值（相反，函数将返回nil）。如果要函数末尾的循环转换为列表表达式，可以使用返回语句加for循环表达式。
+注意出现在函数体末尾的for循环，不会被当作是一个表达式并将循环结果累积到一个列表中作为返回值（相反，函数将返回nil）。如果要函数末尾的循环转换为列表表达式，可以显式地使用返回语句加for循环表达式。
 
 ```moonscript
 func_a = -> for i = 1, 10 do print i

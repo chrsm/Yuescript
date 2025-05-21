@@ -350,7 +350,9 @@ YueParser::YueParser() {
 
 	ShortTabAppending = "[]" >> space >> Assign;
 
-	BreakLoop = (expr("break") | "continue") >> not_alpha_num;
+	Break = key("break");
+	Continue = key("continue");
+	BreakLoop = (Break >> -(space >> Exp) | Continue) >> not_alpha_num;
 
 	Return = key("return") >> -(space >> (TableBlock | ExpListLow));
 

@@ -188,9 +188,17 @@ std::string ConstValue_t::to_string(void* ud) const {
 std::string NotIn_t::to_string(void*) const {
 	return {};
 }
+std::string Break_t::to_string(void*) const {
+	return "break"s;
+}
+std::string Continue_t::to_string(void*) const {
+	return "continue"s;
+}
 std::string BreakLoop_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
-	return info->convert(this);
+	if (value) {
+		return type->to_string(ud) + ' ' + value->to_string(ud);
+	}
+	return type->to_string(ud);
 }
 std::string YueLineComment_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);

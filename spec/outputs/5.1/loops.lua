@@ -60,8 +60,8 @@ do
 		local y = hello[_index_0]
 		if y % 2 == 0 then
 			_accum_0[_len_0] = y
+			_len_0 = _len_0 + 1
 		end
-		_len_0 = _len_0 + 1
 	end
 	x = _accum_0
 end
@@ -132,13 +132,11 @@ do
 end
 do
 	local _accum_0 = { }
-	local _len_0 = 1
 	local _list_2 = 3
 	for _index_0 = 1, #_list_2 do
 		local thing = _list_2[_index_0]
 		y = "hello"
 		break
-		_len_0 = _len_0 + 1
 	end
 	x = _accum_0
 end
@@ -488,4 +486,104 @@ do
 			break
 		end
 	until false
+end
+local _anon_func_0 = function(i, tb)
+	local _accum_0 = { }
+	local _len_0 = 1
+	while tb[i] do
+		i = i + 1
+		_accum_0[_len_0] = i - 1
+		_len_0 = _len_0 + 1
+	end
+	return _accum_0
+end
+do
+	local index
+	do
+		local _accum_0
+		for i = 1, #tb do
+			if tb[i] then
+				_accum_0 = i
+				break
+			end
+		end
+		index = _accum_0
+	end
+	f((function()
+		local _accum_0
+		for i = 1, #tb do
+			if tb[i] then
+				_accum_0 = i
+				break
+			end
+		end
+		return _accum_0
+	end)())
+	f((function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		for i = 1, #tb do
+			if tb[i] then
+				_accum_0[_len_0] = i
+				_len_0 = _len_0 + 1
+			end
+		end
+		return _accum_0
+	end)())
+	i = 1
+	local ids
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		while tb[i] do
+			i = i + 1
+			_accum_0[_len_0] = i - 1
+			_len_0 = _len_0 + 1
+		end
+		ids = _accum_0
+	end
+	i = 1
+	local idx
+	do
+		local _accum_0
+		while tb[i] do
+			i = i + 1
+			_accum_0 = i - 1
+			break
+		end
+		idx = _accum_0
+	end
+	local f1
+	f1 = function()
+		i = 1
+		return f(_anon_func_0(i, tb))
+	end
+	i = 1
+	f((function()
+		local _accum_0
+		while tb[i] do
+			i = i + 1
+			_accum_0 = i - 1
+			break
+		end
+		return _accum_0
+	end)())
+	local _accum_0 = { }
+	local _len_0 = 1
+	local _list_3 = items
+	for _index_0 = 1, #_list_3 do
+		local item = _list_3[_index_0]
+		local _type_0 = type(item)
+		local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+		if _tab_0 then
+			local value = item.value
+			if "A" == item.type and value ~= nil then
+				if value > 5 then
+					_accum_0[_len_0] = item
+					_len_0 = _len_0 + 1
+				end
+			end
+		end
+	end
+	list = _accum_0
 end

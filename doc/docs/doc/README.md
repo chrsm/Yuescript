@@ -29,6 +29,16 @@ inventory =
     * name: "bread"
       count: 3
 
+-- list comprehension
+map = (arr, action) ->
+  [action item for item in *arr]
+
+filter = (arr, cond) ->
+  [item for item in *arr when cond item]
+
+reduce = (arr, init, action): init ->
+  init = action init, item for item in *arr
+
 -- pipe operator
 [1, 2, 3]
   |> map (x) -> x * 2
@@ -2323,6 +2333,23 @@ doubled_evens = for i = 1, 20
     i
 </pre>
 </YueDisplay>
+
+In addition, for loops support break with a return value, allowing the loop itself to be used as an expression that exits early with a meaningful result.
+
+For example, to find the first number greater than 10:
+
+```moonscript
+first_large = for n in *numbers
+  break n if n > 10
+```
+<YueDisplay>
+<pre>
+first_large = for n in *numbers
+  break n if n > 10
+</pre>
+</YueDisplay>
+
+This break-with-value syntax enables concise and expressive search or early-exit patterns directly within loop expressions.
 
 You can also filter values by combining the for loop expression with the continue statement.
 

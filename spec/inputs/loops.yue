@@ -213,3 +213,42 @@ do
 do
 	until x := func 'a', b do
 		print "false expected"
+
+do
+	index = for i = 1, #tb
+		break i if tb[i]
+
+	f for i = 1, #tb
+		break i if tb[i]
+
+	f for i = 1, #tb
+		i if tb[i]
+
+	i = 1
+	ids = while tb[i]
+		i += 1
+		i - 1
+
+	i = 1
+	idx = while tb[i]
+		i += 1
+		break i - 1
+
+	f1 = ->
+		i = 1
+		f while tb[i]
+			i += 1
+			i - 1
+
+	i = 1
+	f while tb[i]
+		i += 1
+		break i - 1
+
+	list = for item in *items
+		switch item
+			when type: "A", :value
+				if value > 5
+					item
+
+	

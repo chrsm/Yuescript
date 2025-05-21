@@ -273,6 +273,8 @@ AST_NODE(ExpList)
 	ast_ptr<true, Seperator_t> sep;
 	ast_list<true, Exp_t> exprs;
 	AST_MEMBER(ExpList, &sep, &exprs)
+	bool followStmtProcessed = false;
+	Statement_t* followStmt = nullptr;
 AST_END(ExpList)
 
 AST_NODE(Return)
@@ -856,7 +858,17 @@ AST_NODE(WhileLine)
 	AST_MEMBER(WhileLine, &type, &condition)
 AST_END(WhileLine)
 
-AST_LEAF(BreakLoop)
+AST_LEAF(Break)
+AST_END(Break)
+
+AST_LEAF(Continue)
+AST_END(Continue)
+
+AST_NODE(BreakLoop)
+	ast_sel<true, Break_t, Continue_t> type;
+	ast_ptr<false, Exp_t> value;
+	AST_MEMBER(BreakLoop, &type, &value)
+	std::string varBWV;
 AST_END(BreakLoop)
 
 AST_NODE(PipeBody)

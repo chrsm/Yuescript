@@ -60,8 +60,8 @@ do
 		local _u53d8_u91cfy = _u4f60_u597d[_index_0]
 		if _u53d8_u91cfy % 2 == 0 then
 			_accum_0[_len_0] = _u53d8_u91cfy
+			_len_0 = _len_0 + 1
 		end
-		_len_0 = _len_0 + 1
 	end
 	_u53d8_u91cfx = _accum_0
 end
@@ -132,13 +132,11 @@ do
 end
 do
 	local _accum_0 = { }
-	local _len_0 = 1
 	local _list_2 = 3
 	for _index_0 = 1, #_list_2 do
 		local _u4e1c_u897f = _list_2[_index_0]
 		_u53d8_u91cfy = "你好"
 		break
-		_len_0 = _len_0 + 1
 	end
 	_u53d8_u91cfx = _accum_0
 end
