@@ -1516,10 +1516,12 @@ const {:a, :b, c, d} = tb
 
 ```moonscript
 global const Constant = 123
+-- Constant = 1
 ```
 <YueDisplay>
 <pre>
 global const Constant = 123
+-- Constant = 1
 </pre>
 </YueDisplay>
 
