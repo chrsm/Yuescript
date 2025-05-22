@@ -1567,6 +1567,7 @@ print "我有#{math.random! * 100}%的把握。"
 ```moonscript
 integer = 1_000_000
 hex = 0xEF_BB_BF
+binary = 0B10011
 ```
 <YueDisplay>
 

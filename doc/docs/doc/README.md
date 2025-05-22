@@ -1568,6 +1568,7 @@ You can use underscores in a number literal to increase readability.
 ```moonscript
 integer = 1_000_000
 hex = 0xEF_BB_BF
+binary = 0B10011
 ```
 <YueDisplay>
 
