@@ -74,6 +74,16 @@ inventory =
     * name: "bread"
       count: 3
 
+-- 列表推导
+map = (arr, action) ->
+  [action item for item in *arr]
+
+filter = (arr, cond) ->
+  [item for item in *arr when cond item]
+
+reduce = (arr, init, action): init ->
+  init = action init, item for item in *arr
+
 -- 管道操作符
 [1, 2, 3]
   |> map (x) -> x * 2
