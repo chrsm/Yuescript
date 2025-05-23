@@ -152,4 +152,13 @@ do
 		return with {}
 			return [123]
 
+do
+	f with item
+		if .id > 0
+			break .content
+
+	a = with tb
+		if .v
+			break .a
+
 nil

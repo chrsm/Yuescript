@@ -187,4 +187,31 @@ do
 		return _with_0[123]
 	end
 end
+do
+	f((function()
+		local _with_0 = item
+		do
+			local _accum_0
+			while true do
+				if _with_0.id > 0 then
+					_accum_0 = _with_0.content
+					break
+				end
+			end
+			_with_0 = _accum_0
+		end
+		return _with_0
+	end)())
+	local a
+	local _with_0 = tb
+	local _accum_0
+	while true do
+		if _with_0.v then
+			_accum_0 = _with_0.a
+			break
+		end
+	end
+	_with_0 = _accum_0
+	a = _with_0
+end
 return nil

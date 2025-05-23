@@ -694,6 +694,7 @@ local some_string = "这是一个字符串\n  并包括一个换行。"
 print("我有" .. tostring(math.random() * 100) .. "%的把握。")
 local integer = 1000000
 local hex = 0xEFBBBF
+local binary = 19
 local my_function
 my_function = function() end
 my_function()
@@ -2222,6 +2223,38 @@ local inventory = {
 		}
 	}
 }
+local map
+map = function(arr, action)
+	local _accum_0 = { }
+	local _len_0 = 1
+	for _index_0 = 1, #arr do
+		local item = arr[_index_0]
+		_accum_0[_len_0] = action(item)
+		_len_0 = _len_0 + 1
+	end
+	return _accum_0
+end
+local filter
+filter = function(arr, cond)
+	local _accum_0 = { }
+	local _len_0 = 1
+	for _index_0 = 1, #arr do
+		local item = arr[_index_0]
+		if cond(item) then
+			_accum_0[_len_0] = item
+			_len_0 = _len_0 + 1
+		end
+	end
+	return _accum_0
+end
+local reduce
+reduce = function(arr, init, action)
+	for _index_0 = 1, #arr do
+		local item = arr[_index_0]
+		init = action(init, item)
+	end
+	return init
+end
 print(reduce(filter(map({
 	1,
 	2,
