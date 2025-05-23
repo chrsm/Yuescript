@@ -339,6 +339,14 @@ func({
 	2,
 	3
 })
+local f
+f = function()
+	return {
+		1,
+		2,
+		3
+	}
+end
 local tb = {
 	name = "abc",
 	values = {
@@ -2542,6 +2550,14 @@ func({
 	2,
 	3
 })
+local f
+f = function()
+	return {
+		1,
+		2,
+		3
+	}
+end
 local tb = {
 	name = "abc",
 	values = {

@@ -203,15 +203,35 @@ do
 		return _with_0
 	end)())
 	local a
-	local _with_0 = tb
+	do
+		local _with_0 = tb
+		do
+			local _accum_0
+			while true do
+				if _with_0.v then
+					_accum_0 = _with_0.a
+					break
+				end
+			end
+			_with_0 = _accum_0
+		end
+		a = _with_0
+	end
 	local _accum_0
 	while true do
-		if _with_0.v then
-			_accum_0 = _with_0.a
+		local _with_0 = tb
+		local _accum_1
+		while true do
+			if _with_0 ~= nil then
+				_accum_1 = 1
+				break
+			end
 			break
 		end
+		_with_0 = _accum_1
+		_accum_0 = _with_0
+		break
 	end
-	_with_0 = _accum_0
-	a = _with_0
+	a = _accum_0
 end
 return nil

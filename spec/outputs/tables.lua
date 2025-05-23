@@ -366,6 +366,28 @@ local menus = {
 		}
 	}
 }
+_ = {
+	boolean = {
+		true,
+		false
+	},
+	float = {
+		3.14,
+		-6.8523015e+5
+	},
+	int = {
+		123,
+		-685230
+	},
+	null = {
+		nodeName = 'node',
+		parent = nil
+	},
+	string = {
+		'Hello world',
+		"newline\nnewline2"
+	}
+}
 local tb
 do
 	local _tab_0 = { }

@@ -161,4 +161,8 @@ do
 		if .v
 			break .a
 
+	a = while true
+		break with? tb
+			break 1
+
 nil

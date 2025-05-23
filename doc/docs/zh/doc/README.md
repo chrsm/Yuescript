@@ -16,17 +16,17 @@ Yue（月）是中文中“月亮”的名称。
 ### 月之脚本概览
 ```moonscript
 -- 导入语法
-import "yue" as :p, :to_lua
+import p, to_lua from "yue"
 
 -- 隐式对象
 inventory =
   equipment:
-    * "sword"
-    * "shield"
+    - "sword"
+    - "shield"
   items:
-    * name: "potion"
+    - name: "potion"
       count: 10
-    * name: "bread"
+    - name: "bread"
       count: 3
 
 -- 列表推导
@@ -61,17 +61,17 @@ export 🌛 = "月之脚本"
 <YueDisplay>
 <pre>
 -- 导入语法
-import "yue" as :p, :to_lua
+import p, to_lua from "yue"
 
 -- 隐式对象
 inventory =
   equipment:
-    * "sword"
-    * "shield"
+    - "sword"
+    - "shield"
   items:
-    * name: "potion"
+    - name: "potion"
       count: 10
-    * name: "bread"
+    - name: "bread"
       count: 3
 
 -- 列表推导
@@ -751,67 +751,87 @@ a ??= false
 
 ### 隐式对象
 
-你可以在表格块内使用符号 **\*** 开始编写一系列隐式结构。如果你正在创建隐式对象，对象的字段必须具有相同的缩进。
+你可以在表格块内使用符号 **\*** 或是 **-** 开始编写一系列隐式结构。如果你正在创建隐式对象，对象的字段必须具有相同的缩进。
+
 ```moonscript
+-- 赋值时使用隐式对象
 list =
   * 1
   * 2
   * 3
 
+-- 函数调用时使用隐式对象
 func
   * 1
   * 2
   * 3
 
+-- 返回时使用隐式对象
+f = ->
+  return
+    * 1
+    * 2
+    * 3
+
+-- 表格时使用隐式对象
 tb =
   name: "abc"
 
   values:
-    * "a"
-    * "b"
-    * "c"
+    - "a"
+    - "b"
+    - "c"
 
   objects:
-    * name: "a"
+    - name: "a"
       value: 1
       func: => @value + 1
       tb:
         fieldA: 1
 
-    * name: "b"
+    - name: "b"
       value: 2
       func: => @value + 2
       tb: { }
-
 ```
 <YueDisplay>
 <pre>
+-- 赋值时使用隐式对象
 list =
   * 1
   * 2
   * 3
 
+-- 函数调用时使用隐式对象
 func
   * 1
   * 2
   * 3
 
+-- 返回时使用隐式对象
+f = ->
+  return
+    * 1
+    * 2
+    * 3
+
+-- 表格时使用隐式对象
 tb =
   name: "abc"
 
   values:
-    * "a"
-    * "b"
-    * "c"
+    - "a"
+    - "b"
+    - "c"
 
   objects:
-    * name: "a"
+    - name: "a"
       value: 1
       func: => @value + 1
       tb:
         fieldA: 1
 
-    * name: "b"
+    - name: "b"
       value: 2
       func: => @value + 2
       tb: { }

@@ -16,17 +16,17 @@ Yue (月) is the name of moon in Chinese and it's pronounced as [jyɛ].
 ### An Overview of YueScript
 ```moonscript
 -- import syntax
-import "yue" as :p, :to_lua
+import p, to_lua from "yue"
 
 -- object literals
 inventory =
   equipment:
-    * "sword"
-    * "shield"
+    - "sword"
+    - "shield"
   items:
-    * name: "potion"
+    - name: "potion"
       count: 10
-    * name: "bread"
+    - name: "bread"
       count: 3
 
 -- list comprehension
@@ -61,17 +61,17 @@ export 🌛 = "月之脚本"
 <YueDisplay>
 <pre>
 -- import syntax
-import "yue" as :p, :to_lua
+import p, to_lua from "yue"
 
 -- object literals
 inventory =
   equipment:
-    * "sword"
-    * "shield"
+    - "sword"
+    - "shield"
   items:
-    * name: "potion"
+    - name: "potion"
       count: 10
-    * name: "bread"
+    - name: "bread"
       count: 3
 
 -- list comprehension
@@ -752,34 +752,45 @@ a ??= false
 
 ### Implicit Object
 
-You can write a list of implicit structures that starts with the symbol **\*** inside a table block. If you are creating implicit object, the fields of the object must be with the same indent.
+You can write a list of implicit structures that starts with the symbol **\*** or **-** inside a table block. If you are creating implicit object, the fields of the object must be with the same indent.
+
 ```moonscript
+-- assignment with implicit object
 list =
   * 1
   * 2
   * 3
 
+-- function call with implicit object
 func
   * 1
   * 2
   * 3
 
+-- return with implicit object
+f = ->
+  return
+    * 1
+    * 2
+    * 3
+
+-- table with implicit object
 tb =
   name: "abc"
 
   values:
-    * "a"
-    * "b"
-    * "c"
+    - "a"
+    - "b"
+    - "c"
 
   objects:
-    * name: "a"
+    - name: "a"
       value: 1
       func: => @value + 1
       tb:
         fieldA: 1
 
-    * name: "b"
+    - name: "b"
       value: 2
       func: => @value + 2
       tb: { }
@@ -787,32 +798,42 @@ tb =
 ```
 <YueDisplay>
 <pre>
+-- assignment with implicit object
 list =
   * 1
   * 2
   * 3
 
+-- function call with implicit object
 func
   * 1
   * 2
   * 3
 
+-- return with implicit object
+f = ->
+  return
+    * 1
+    * 2
+    * 3
+
+-- table with implicit object
 tb =
   name: "abc"
 
   values:
-    * "a"
-    * "b"
-    * "c"
+    - "a"
+    - "b"
+    - "c"
 
   objects:
-    * name: "a"
+    - name: "a"
       value: 1
       func: => @value + 1
       tb:
         fieldA: 1
 
-    * name: "b"
+    - name: "b"
       value: 2
       func: => @value + 2
       tb: { }
