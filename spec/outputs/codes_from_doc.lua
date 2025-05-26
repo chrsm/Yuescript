@@ -2147,6 +2147,10 @@ do
 	_with_1["key-name"] = value
 end
 _with_0[#_with_0 + 1] = "abc"
+local _with_0 = obj
+if _with_0 ~= nil then
+	print(obj.name)
+end
 do
 	local var = "hello"
 	print(var)
@@ -4363,6 +4367,10 @@ do
 	_with_1["key-name"] = value
 end
 _with_0[#_with_0 + 1] = "abc"
+local _with_0 = obj
+if _with_0 ~= nil then
+	print(obj.name)
+end
 do
 	local var = "hello"
 	print(var)

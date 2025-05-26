@@ -234,4 +234,20 @@ do
 	end
 	a = _accum_0
 end
+do
+	local a
+	local _accum_0
+	for i = 1, 100 do
+		local x = tb[i]
+		if x ~= nil then
+			local _des_0 = 1
+			if _des_0 then
+				x.id = _des_0
+				_accum_0 = x
+				break
+			end
+		end
+	end
+	a = _accum_0
+end
 return nil

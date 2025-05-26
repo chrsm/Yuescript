@@ -3538,7 +3538,7 @@ with str := "Hello"
 </pre>
 </YueDisplay>
 
-Accessing special keys with `[]` in a `with` statement.
+You can access special keys with `[]` in a `with` statement.
 
 ```moonscript
 with tb
@@ -3561,6 +3561,18 @@ with tb
 </pre>
 </YueDisplay>
 
+`with?` is an enhanced version of `with` syntax, which introduces an existential check to safely access objects that may be nil without explicit null checks.
+
+```moonscript
+with? obj
+  print obj.name
+```
+<YueDisplay>
+<pre>
+with? obj
+  print obj.name
+</pre>
+</YueDisplay>
 
 ## Do
 

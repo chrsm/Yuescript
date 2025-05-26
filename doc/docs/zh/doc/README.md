@@ -3494,7 +3494,7 @@ with str := "你好"
 </pre>
 </YueDisplay>
 
-在with语句中可以使用`[]`访问特殊键。
+你可以在 `with` 语句中使用 `[]` 访问特殊键。
 
 ```moonscript
 with tb
@@ -3514,6 +3514,19 @@ with tb
     [3] = [2]\func!
     ["key-name"] = value
   [] = "abc" -- 追加到 "tb"
+</pre>
+</YueDisplay>
+
+`with?` 是 `with` 语法的一个增强版本，引入了存在性检查，用于在不显式判空的情况下安全访问可能为 nil 的对象。
+
+```moonscript
+with? obj
+  print obj.name
+```
+<YueDisplay>
+<pre>
+with? obj
+  print obj.name
 </pre>
 </YueDisplay>
 
