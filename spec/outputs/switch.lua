@@ -656,4 +656,75 @@ do
 		end
 	end
 end
+do
+	local v = "hello"
+	if "hello" == v then
+		print("matched hello")
+	else
+		print("not matched")
+	end
+end
+do
+	local f
+	f = function()
+		return "ok"
+	end
+	local val = f()
+	if "ok" == val then
+		print("it's ok")
+	end
+end
+do
+	local g
+	g = function()
+		return 42
+	end
+	local result = g()
+	if 1 == result or 2 == result then
+		print("small")
+	elseif 42 == result then
+		print("life universe everything")
+	else
+		print("other " .. tostring(result))
+	end
+end
+do
+	local check
+	check = function()
+		if true then
+			return "yes"
+		else
+			return "no"
+		end
+	end
+	local x = check()
+	if "yes" == x then
+		print("affirmative")
+	else
+		print("negative")
+	end
+end
+do
+	local t
+	t = function()
+		local tb = {
+			a = 1
+		}
+		tb.a = 2
+		return tb
+	end
+	local data = t()
+	local _type_0 = type(data)
+	local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+	local _match_0 = false
+	if _tab_0 then
+		if 2 == data.a then
+			_match_0 = true
+			print("matched")
+		end
+	end
+	if not _match_0 then
+		print("not matched")
+	end
+end
 return nil

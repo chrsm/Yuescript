@@ -2655,28 +2655,26 @@ reader\parse_line! until reader\eof!
 
 ## switch 语句
 
-switch语句是为了简化检查一系列相同值的if语句而提供的简写语法。要注意用于比较检查的目标值只会计算一次。和if语句一样，switch语句在最后可以接一个else代码块来处理没有匹配的情况。在生成的Lua代码中，进行比较是使用==操作符完成的。
+switch语句是为了简化检查一系列相同值的if语句而提供的简写语法。要注意用于比较检查的目标值只会计算一次。和if语句一样，switch语句在最后可以接一个else代码块来处理没有匹配的情况。在生成的Lua代码中，进行比较是使用==操作符完成的。switch语句中也可以使用赋值表达式来储存临时变量值。
 
 ```moonscript
-name = "Dan"
-switch name
+switch name := "Dan"
   when "Robert"
     print "你是Robert"
   when "Dan", "Daniel"
     print "你的名字是Dan"
   else
-    print "我不知道你的名字"
+    print "我不认识你，你的名字是#{name}"
 ```
 <YueDisplay>
 <pre>
-name = "Dan"
-switch name
+switch name := "Dan"
   when "Robert"
     print "你是Robert"
   when "Dan", "Daniel"
     print "你的名字是Dan"
   else
-    print "我不知道你的名字"
+    print "我不认识你，你的名字是#{name}"
 </pre>
 </YueDisplay>
 
@@ -3484,13 +3482,13 @@ me = create_person "Leaf", [dad, mother, sister]
 如果你想给表达式另外起一个名称的话，with语句中的表达式也可以是一个赋值语句。
 
 ```moonscript
-with str = "你好"
+with str := "你好"
   print "原始:", str
   print "大写:", \upper!
 ```
 <YueDisplay>
 <pre>
-with str = "你好"
+with str := "你好"
   print "原始:", str
   print "大写:", \upper!
 </pre>

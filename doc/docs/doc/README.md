@@ -2696,28 +2696,26 @@ reader\parse_line! until reader\eof!
 
 ## Switch
 
-The switch statement is shorthand for writing a series of if statements that check against the same value. Note that the value is only evaluated once. Like if statements, switches can have an else block to handle no matches. Comparison is done with the == operator.
+The switch statement is shorthand for writing a series of if statements that check against the same value. Note that the value is only evaluated once. Like if statements, switches can have an else block to handle no matches. Comparison is done with the == operator. In switch statement, you can also use assignment expression to store temporary variable value.
 
 ```moonscript
-name = "Dan"
-switch name
+switch name := "Dan"
   when "Robert"
     print "You are Robert"
   when "Dan", "Daniel"
     print "Your name, it's Dan"
   else
-    print "I don't know about your name"
+    print "I don't know about you with name #{name}"
 ```
 <YueDisplay>
 <pre>
-name = "Dan"
-switch name
+switch name := "Dan"
   when "Robert"
     print "You are Robert"
   when "Dan", "Daniel"
     print "Your name, it's Dan"
   else
-    print "I don't know about your name"
+    print "I don't know about you with name #{name}"
 </pre>
 </YueDisplay>
 
@@ -3528,13 +3526,13 @@ In this usage, with can be seen as a special form of the K combinator.
 The expression in the with statement can also be an assignment, if you want to give a name to the expression.
 
 ```moonscript
-with str = "Hello"
+with str := "Hello"
   print "original:", str
   print "upper:", \upper!
 ```
 <YueDisplay>
 <pre>
-with str = "Hello"
+with str := "Hello"
   print "original:", str
   print "upper:", \upper!
 </pre>

@@ -38,8 +38,8 @@ export macro copy = (src, dst, ...)->
 	"
 do
 	local _src_, _dst_
-	with _dst_ = #{dst}
-		with _src_ = #{src}
+	with _dst_ := #{dst}
+		with _src_ := #{src}
 #{table.concat for field in *{...} do "
 			_dst_.#{field} = _src_.#{field}
 "}"

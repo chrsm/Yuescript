@@ -1234,7 +1234,7 @@ if "Robert" == name then
 elseif "Dan" == name or "Daniel" == name then
 	print("Your name, it's Dan")
 else
-	print("I don't know about your name")
+	print("I don't know about you with name " .. tostring(name))
 end
 local b = 1
 local next_number
@@ -3450,7 +3450,7 @@ if "Robert" == name then
 elseif "Dan" == name or "Daniel" == name then
 	print("Your name, it's Dan")
 else
-	print("I don't know about your name")
+	print("I don't know about you with name " .. tostring(name))
 end
 local b = 1
 local next_number

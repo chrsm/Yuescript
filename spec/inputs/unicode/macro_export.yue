@@ -37,8 +37,8 @@ export macro 复制 = (源, 目标, ...)->
 	"
 do
 	local _源_, _目标_
-	with _目标_ = #{目标}
-		with _源_ = #{源}
+	with _目标_ := #{目标}
+		with _源_ := #{源}
 #{table.concat for 字段 in *{...} do "
 			_目标_.#{字段} = _源_.#{字段}
 "}"

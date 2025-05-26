@@ -48,21 +48,21 @@ do
 	with a -- only one value allowed
 		print .world
 
-	mod = with _M = {}
+	mod = with _M := {}
 		.Thing = "hi"
 
 	-- operate on a only
-	with a, b = something, pooh
+	with a, b := something, pooh
 		print .world
 
-	x = with a, b = 1, 2
+	x = with a, b := 1, 2
 		print a + b
 
-	print with a, b = 1, 2
+	print with a, b := 1, 2
 		print a + b
 
 	-- assignment lhs must be evaluated in the order they appear
-	p = with hello!.x, world!.y = 1, 2
+	p = with hello!.x, world!.y := 1, 2
 		print a + b
 
 --
@@ -73,16 +73,16 @@ do
 		x\upper!
 
 do
-	with k = "jo"
+	with k := "jo"
 		print \upper!
 
 do
-	with a,b,c = "", "", ""
+	with a,b,c := "", "", ""
 		print \upper!
 
 do
 	a = "bunk"
-	with a,b,c = "", "", ""
+	with a,b,c := "", "", ""
 		print \upper!
 
 do
@@ -90,7 +90,7 @@ do
 		print \upper!
 
 do
-	with k.j = "jo"
+	with k.j := "jo"
 		print \upper!
 
 do
@@ -103,7 +103,7 @@ do
 do
 	with a
 		-- nested `with`s with assignments should change the scope correctly
-		with .b = 2
+		with .b := 2
 			print .c
 
 do
@@ -138,12 +138,12 @@ do
 
 do
 	global mask
-	with? mask = SolidRect width: w, height: h, color: 0x66000000
+	with? mask := SolidRect width: w, height: h, color: 0x66000000
 		.touchEnabled = true
 		.swallowTouches = true
 
 do
-	with? mask = SolidRect width: w, height: h, color: 0x66000000
+	with? mask := SolidRect width: w, height: h, color: 0x66000000
 		.touchEnabled = true
 		.swallowTouches = true
 
