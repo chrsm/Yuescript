@@ -420,7 +420,7 @@ std::string Switch_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
 	str_list temp{"switch "s + target->to_string(ud)};
 	if (assignment) {
-		temp.back().append(" :"s + assignment->to_string(ud));
+		temp.back().append(assignment->to_string(ud));
 	}
 	info->pushScope();
 	for (auto branch : branches.objects()) {
