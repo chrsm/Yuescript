@@ -468,3 +468,31 @@ do
 	end
 	list = _accum_0
 end
+do
+	repeat
+		print(1)
+	until true
+	do
+		local _accum_0
+		repeat
+			a = func()
+			_accum_0 = a.x
+			break
+		until a.v
+		x = _accum_0
+	end
+	local items
+	local _accum_0 = { }
+	local _len_0 = 1
+	repeat
+		local item = getItem()
+		if not item then
+			break
+		end
+		if item.value > 0 then
+			_accum_0[_len_0] = item
+			_len_0 = _len_0 + 1
+		end
+	until false
+	items = _accum_0
+end

@@ -251,4 +251,17 @@ do
 				if value > 5
 					item
 
-	
+do
+	repeat print 1 until true
+
+	x = repeat
+		a = func!
+		break a.x
+	until a.v
+
+	items = repeat
+		item = getItem!
+		break unless item
+		item if item.value > 0
+	until false
+

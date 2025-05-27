@@ -192,12 +192,12 @@ do
 		local _with_0 = item
 		do
 			local _accum_0
-			while true do
+			repeat
 				if _with_0.id > 0 then
 					_accum_0 = _with_0.content
 					break
 				end
-			end
+			until true
 			_with_0 = _accum_0
 		end
 		return _with_0
@@ -207,12 +207,12 @@ do
 		local _with_0 = tb
 		do
 			local _accum_0
-			while true do
+			repeat
 				if _with_0.v then
 					_accum_0 = _with_0.a
 					break
 				end
-			end
+			until true
 			_with_0 = _accum_0
 		end
 		a = _with_0
@@ -221,13 +221,12 @@ do
 	while true do
 		local _with_0 = tb
 		local _accum_1
-		while true do
+		repeat
 			if _with_0 ~= nil then
 				_accum_1 = 1
 				break
 			end
-			break
-		end
+		until true
 		_with_0 = _accum_1
 		_accum_0 = _with_0
 		break
