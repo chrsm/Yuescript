@@ -1243,7 +1243,7 @@ If the destructuring statement is complicated, feel free to spread it out over a
 </pre>
 </YueDisplay>
 
-It’s common to extract values from at table and assign them the local variables that have the same name as the key. In order to avoid repetition we can use the **:** prefix operator:
+It's common to extract values from at table and assign them the local variables that have the same name as the key. In order to avoid repetition we can use the **:** prefix operator:
 
 ```moonscript
 {:concat, :insert} = table
@@ -1513,6 +1513,47 @@ if success, result := try func 1, 2, 3
 catch err
     print yue.traceback err
   print result
+</pre>
+</YueDisplay>
+
+### Try!
+
+`try!` is a more concise error handling syntax that omit the boolean status from the `try` statement, and it will return the result from the try block when success, otherwise return nil instead of error object.
+
+```moonscript
+a, b, c = try! func!
+
+-- with nil coalescing operator
+a = (try! func!) ?? "default"
+
+-- as function argument
+f try! func!
+
+-- with catch block
+f try!
+  print 123
+  func!
+catch e
+  print e
+  e
+```
+<YueDisplay>
+<pre>
+a, b, c = try! func!
+
+-- with nil coalescing operator
+a = (try! func!) ?? "default"
+
+-- as function argument
+f try! func!
+
+-- with catch block
+f try!
+  print 123
+  func!
+catch e
+  print e
+  e
 </pre>
 </YueDisplay>
 
@@ -2417,7 +2458,7 @@ print func_b! -- prints table object
 </pre>
 </YueDisplay>
 
-This is done to avoid the needless creation of tables for functions that don’t need to return the results of the loop.
+This is done to avoid the needless creation of tables for functions that don't need to return the results of the loop.
 
 ## Repeat Loop
 
@@ -2746,7 +2787,7 @@ next_number = switch b
 </pre>
 </YueDisplay>
 
-We can use the then keyword to write a switch’s when block on a single line. No extra keyword is needed to write the else block on a single line.
+We can use the then keyword to write a switch's when block on a single line. No extra keyword is needed to write the else block on a single line.
 
 ```moonscript
 msg = switch math.random(1, 5)
@@ -2792,7 +2833,7 @@ else
 </pre>
 </YueDisplay>
 
-It is worth noting the order of the case comparison expression. The case’s expression is on the left hand side. This can be useful if the case’s expression wants to overwrite how the comparison is done by defining an eq metamethod.
+It is worth noting the order of the case comparison expression. The case's expression is on the left hand side. This can be useful if the case's expression wants to overwrite how the comparison is done by defining an eq metamethod.
 
 ### Table Matching
 
@@ -3079,7 +3120,7 @@ class BackPack extends Inventory
 
 Here we extend our Inventory class, and limit the amount of items it can carry.
 
-In this example, we don’t define a constructor on the subclass, so the parent class' constructor is called when we make a new instance. If we did define a constructor then we can use the super method to call the parent constructor.
+In this example, we don't define a constructor on the subclass, so the parent class' constructor is called when we make a new instance. If we did define a constructor then we can use the super method to call the parent constructor.
 
 Whenever a class inherits from another, it sends a message to the parent class by calling the method __inherited on the parent class if it exists. The function receives two arguments, the class that is being inherited and the child class.
 
@@ -3166,13 +3207,13 @@ print BackPack.size -- prints 10
 
 The class object is what we create when we use a class statement. The class object is stored in a variable of the same name of the class.
 
-The class object can be called like a function in order to create new instances. That’s how we created instances of classes in the examples above.
+The class object can be called like a function in order to create new instances. That's how we created instances of classes in the examples above.
 
 A class is made up of two tables. The class table itself, and the base table. The base is used as the metatable for all the instances. All properties listed in the class declaration are placed in the base.
 
-The class object’s metatable reads properties from the base if they don’t exist in the class object. This means we can access functions and properties directly from the class.
+The class object's metatable reads properties from the base if they don't exist in the class object. This means we can access functions and properties directly from the class.
 
-It is important to note that assigning to the class object does not assign into the base, so it’s not a valid way to add new methods to instances. Instead the base must explicitly be changed. See the __base field below.
+It is important to note that assigning to the class object does not assign into the base, so it's not a valid way to add new methods to instances. Instead the base must explicitly be changed. See the __base field below.
 
 The class object has a couple special properties:
 
@@ -3245,7 +3286,7 @@ print Counter.count -- prints 2
 </pre>
 </YueDisplay>
 
-The calling semantics of @@ are similar to @. Calling a @@ name will pass the class in as the first argument using Lua’s colon syntax.
+The calling semantics of @@ are similar to @. Calling a @@ name will pass the class in as the first argument using Lua's colon syntax.
 
 ```moonscript
 @@hello 1,2,3,4
@@ -3260,7 +3301,7 @@ The calling semantics of @@ are similar to @. Calling a @@ name will pass the cl
 
 In the body of a class declaration, we can have normal expressions in addition to key/value pairs. In this context, self is equal to the class object.
 
-Here is an alternative way to create a class variable compared to what’s described above:
+Here is an alternative way to create a class variable compared to what's described above:
 
 ```moonscript
 class Things
@@ -3593,7 +3634,7 @@ print var -- nil here
 </pre>
 </YueDisplay>
 
-YueScript’s **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
 
 ```moonscript
 counter = do
@@ -3719,7 +3760,7 @@ print i -- will print 0
 </pre>
 </YueDisplay>
 
-In my_func, we've overwritten the value of i mistakenly. In this example it is quite obvious, but consider a large, or foreign code base where it isn’t clear what names have already been declared.
+In my_func, we've overwritten the value of i mistakenly. In this example it is quite obvious, but consider a large, or foreign code base where it isn't clear what names have already been declared.
 
 It would be helpful to say which variables from the enclosing scope we intend on change, in order to prevent us from changing others by accident.
 

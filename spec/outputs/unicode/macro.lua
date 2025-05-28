@@ -216,17 +216,15 @@ do
 end
 local _ = require('下划线')
 local _anon_func_0 = function(_)
-	do
-		local _call_0 = (_({
-			1,
-			2,
-			3,
-			4,
-			-2,
-			3
-		}))
-		return _call_0["链"](_call_0)
-	end
+	local _call_0 = (_({
+		1,
+		2,
+		3,
+		4,
+		-2,
+		3
+	}))
+	return _call_0["链"](_call_0)
 end
 local _call_0 = ((function()
 	local _call_0 = ((function()
@@ -241,17 +239,15 @@ local _call_0 = ((function()
 end)())
 local _u7ed3_u679ca = _call_0["取值"](_call_0)
 local _anon_func_1 = function(_)
-	do
-		local _call_1 = (_({
-			1,
-			2,
-			3,
-			4,
-			-2,
-			3
-		}))
-		return _call_1["链"](_call_1)
-	end
+	local _call_1 = (_({
+		1,
+		2,
+		3,
+		4,
+		-2,
+		3
+	}))
+	return _call_1["链"](_call_1)
 end
 do
 	local _call_1 = ((function()
@@ -270,10 +266,8 @@ do
 	end)
 end
 local _anon_func_2 = function(_u539f_u70b9)
-	do
-		local _call_1 = _u539f_u70b9["变换"]["根节点"]["游戏对象"]
-		return _call_1["父节点"](_call_1)
-	end
+	local _call_1 = _u539f_u70b9["变换"]["根节点"]["游戏对象"]
+	return _call_1["父节点"](_call_1)
 end
 local _call_1 = ((function()
 	local _call_1 = ((function()

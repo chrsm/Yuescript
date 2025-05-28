@@ -688,6 +688,56 @@ end)
 if success then
 	print(result)
 end
+local a, b, c
+do
+	local _ok_0, _ret_0, _ret_1, _ret_2 = pcall(function()
+		return func()
+	end)
+	if _ok_0 then
+		a, b, c = _ret_0, _ret_1, _ret_2
+	end
+end
+do
+	local _exp_0 = ((function()
+		return (function(_arg_0, ...)
+			local _ok_0 = _arg_0
+			if _ok_0 then
+				return ...
+			end
+		end)(pcall(function()
+			return func()
+		end))
+	end)())
+	if _exp_0 ~= nil then
+		a = _exp_0
+	else
+		a = "default"
+	end
+end
+f((function()
+	return (function(_arg_0, ...)
+		local _ok_0 = _arg_0
+		if _ok_0 then
+			return ...
+		end
+	end)(pcall(function()
+		return func()
+	end))
+end)())
+f((function()
+	return (function(_arg_0, ...)
+		local _ok_0 = _arg_0
+		if _ok_0 then
+			return ...
+		end
+	end)(xpcall(function()
+		print(123)
+		return func()
+	end, function(e)
+		print(e)
+		return e
+	end))
+end)())
 local a <const> = 123
 local _ <close> = setmetatable({ }, {
 	__close = function()
@@ -2909,6 +2959,56 @@ end)
 if success then
 	print(result)
 end
+local a, b, c
+do
+	local _ok_0, _ret_0, _ret_1, _ret_2 = pcall(function()
+		return func()
+	end)
+	if _ok_0 then
+		a, b, c = _ret_0, _ret_1, _ret_2
+	end
+end
+do
+	local _exp_0 = ((function()
+		return (function(_arg_0, ...)
+			local _ok_0 = _arg_0
+			if _ok_0 then
+				return ...
+			end
+		end)(pcall(function()
+			return func()
+		end))
+	end)())
+	if _exp_0 ~= nil then
+		a = _exp_0
+	else
+		a = "default"
+	end
+end
+f((function()
+	return (function(_arg_0, ...)
+		local _ok_0 = _arg_0
+		if _ok_0 then
+			return ...
+		end
+	end)(pcall(function()
+		return func()
+	end))
+end)())
+f((function()
+	return (function(_arg_0, ...)
+		local _ok_0 = _arg_0
+		if _ok_0 then
+			return ...
+		end
+	end)(xpcall(function()
+		print(123)
+		return func()
+	end, function(e)
+		print(e)
+		return e
+	end))
+end)())
 local a <const> = 123
 local _ <close> = setmetatable({ }, {
 	__close = function()

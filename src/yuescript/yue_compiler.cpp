@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.28.5"sv;
+const std::string_view version = "0.28.6"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -165,12 +165,12 @@ public:
 		double compileTime = 0.0;
 		if (config.profiling) {
 			auto start = std::chrono::high_resolution_clock::now();
-			_info = _parser.parse<File_t>(codes);
+			_info = _parser.parse<File_t>(codes, config.lax);
 			auto stop = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> diff = stop - start;
 			parseTime = diff.count();
 		} else {
-			_info = _parser.parse<File_t>(codes);
+			_info = _parser.parse<File_t>(codes, config.lax);
 		}
 		std::unique_ptr<GlobalVars> globals;
 		std::unique_ptr<Options> options;
@@ -1258,7 +1258,7 @@ private:
 
 	template <class T>
 	ast_ptr<false, T> toAst(std::string_view codes, ast_node* parent) {
-		auto res = _parser.parse<T>(std::string(codes));
+		auto res = _parser.parse<T>(std::string(codes), false);
 		if (res.error) {
 			throw CompileError(res.error.value().msg, parent);
 		}
@@ -2329,6 +2329,17 @@ private:
 				transformIf(ifNode, out, ExpUsage::Assignment, assignList);
 				out.back().insert(0, preDefine);
 				return false;
+			}
+			case id<Try_t>(): {
+				auto tryNode = static_cast<Try_t*>(value);
+				if (tryNode->omit) {
+					auto assignList = assignment->expList.get();
+					std::string preDefine = getPreDefineLine(assignment);
+					transformTry(tryNode, out, ExpUsage::Assignment, assignList);
+					out.back().insert(0, preDefine);
+					return false;
+				}
+				break;
 			}
 			case id<Switch_t>(): {
 				auto switchNode = static_cast<Switch_t*>(value);
@@ -4272,12 +4283,22 @@ private:
 
 	std::optional<std::pair<std::string, str_list>> upValueFuncFromExp(Exp_t* exp, str_list* ensureArgListInTheEnd, bool blockRewrite) {
 		if (checkUpValueFuncAvailable(exp)) {
+			auto block = exp->new_ptr<Block_t>();
+			if (auto sVal = simpleSingleValueFrom(exp)) {
+				if (auto doNode = sVal->value.as<Do_t>()) {
+					if (auto blk = doNode->body->content.as<Block_t>()) {
+						block->statements.dup(blk->statements);
+					} else {
+						block->statements.push_back(doNode->body->content.to<Statement_t>());
+					}
+					return getUpValueFuncFromBlock(block, ensureArgListInTheEnd, false, blockRewrite);
+				}
+			}
 			auto returnNode = exp->new_ptr<Return_t>();
 			returnNode->explicitReturn = false;
 			auto returnList = exp->new_ptr<ExpListLow_t>();
 			returnList->exprs.push_back(exp);
 			returnNode->valueList.set(returnList);
-			auto block = exp->new_ptr<Block_t>();
 			auto stmt = exp->new_ptr<Statement_t>();
 			stmt->content.set(returnNode);
 			block->statements.push_back(stmt);
@@ -4799,11 +4820,7 @@ private:
 				auto newBody = x->new_ptr<Body_t>();
 				newBody->content.set(followingBlock);
 				{
-					auto doNode = x->new_ptr<Do_t>();
-					doNode->body.set(newBody);
-					auto simpleValue = x->new_ptr<SimpleValue_t>();
-					simpleValue->value.set(doNode);
-					if (auto result = upValueFuncFromExp(newExp(simpleValue, x), &argNames, true)) {
+					if (auto result = upValueFuncFromBlock(followingBlock.get(), &argNames, false, true)) {
 						auto [funcName, args] = std::move(*result);
 						str_list finalArgs;
 						for (const auto& arg : args) {
@@ -4811,9 +4828,13 @@ private:
 								finalArgs.push_back(arg);
 							}
 						}
-						newBlock->statements.push_back(toAst<Statement_t>(funcName + ' ' + join(finalArgs, ","sv), x));
+						newBlock->statements.push_back(toAst<Statement_t>(funcName + ' ' + (finalArgs.empty() ? "nil"s : join(finalArgs, ","sv)), x));
 						auto sVal = singleValueFrom(static_cast<Statement_t*>(newBlock->statements.back())->content.to<ExpListAssign_t>()->expList);
-						ast_to<InvokeArgs_t>(sVal->item.to<ChainValue_t>()->items.back())->args.dup(newInvoke->args);
+						auto invokArgs = ast_to<InvokeArgs_t>(sVal->item.to<ChainValue_t>()->items.back());
+						if (finalArgs.empty()) {
+							invokArgs->args.clear();
+						}
+						invokArgs->args.dup(newInvoke->args);
 						transformBlock(newBlock, out, usage, assignList, isRoot);
 						return;
 					}
@@ -5093,36 +5114,45 @@ private:
 		if (!nodes.empty()) {
 			str_list temp;
 			for (auto node : nodes) {
-				currentScope().lastStatement = (node == nodes.back()) && currentScope().mode == GlobalMode::None;
-				transformStatement(static_cast<Statement_t*>(node), temp);
-				if (isRoot && !_rootDefs.empty()) {
-					auto last = std::move(temp.back());
-					temp.pop_back();
-					temp.insert(temp.end(), _rootDefs.begin(), _rootDefs.end());
-					_rootDefs.clear();
-					temp.push_back(std::move(last));
-				}
-				if (!temp.empty() && _parser.startWith<StatementSep_t>(temp.back())) {
-					auto rit = ++temp.rbegin();
-					if (rit != temp.rend() && !rit->empty()) {
-						auto index = std::string::npos;
-						if (_config.reserveLineNumber) {
-							index = rit->rfind(" -- "sv);
-						} else {
-							index = rit->find_last_not_of('\n');
-							if (index != std::string::npos) index++;
-						}
-						if (index != std::string::npos) {
-							auto ending = rit->substr(0, index);
-							auto ind = ending.find_last_of(" \t\n"sv);
-							if (ind != std::string::npos) {
-								ending = ending.substr(ind + 1);
+				auto transformNode = [&]() {
+					currentScope().lastStatement = (node == nodes.back()) && currentScope().mode == GlobalMode::None;
+					transformStatement(static_cast<Statement_t*>(node), temp);
+					if (isRoot && !_rootDefs.empty()) {
+						auto last = std::move(temp.back());
+						temp.pop_back();
+						temp.insert(temp.end(), _rootDefs.begin(), _rootDefs.end());
+						_rootDefs.clear();
+						temp.push_back(std::move(last));
+					}
+					if (!temp.empty() && _parser.startWith<StatementSep_t>(temp.back())) {
+						auto rit = ++temp.rbegin();
+						if (rit != temp.rend() && !rit->empty()) {
+							auto index = std::string::npos;
+							if (_config.reserveLineNumber) {
+								index = rit->rfind(" -- "sv);
+							} else {
+								index = rit->find_last_not_of('\n');
+								if (index != std::string::npos) index++;
 							}
-							if (LuaKeywords.find(ending) == LuaKeywords.end()) {
-								rit->insert(index, ";"sv);
+							if (index != std::string::npos) {
+								auto ending = rit->substr(0, index);
+								auto ind = ending.find_last_of(" \t\n"sv);
+								if (ind != std::string::npos) {
+									ending = ending.substr(ind + 1);
+								}
+								if (LuaKeywords.find(ending) == LuaKeywords.end()) {
+									rit->insert(index, ";"sv);
+								}
 							}
 						}
 					}
+				};
+				if (_config.lax) {
+					try {
+						transformNode();
+					} catch (const CompileError&) { }
+				} else {
+					transformNode();
 				}
 			}
 			out.push_back(join(temp));
@@ -6193,7 +6223,7 @@ private:
 			case id<ColonChainItem_t>():
 			case id<Exp_t>():
 				if (_withVars.empty()) {
-					throw CompileError("short dot/colon and indexing syntax must be called within a with block"sv, x);
+					throw CompileError("short dot/colon/indexing syntax must be called within a with block"sv, x);
 				} else {
 					temp.push_back(_withVars.top());
 				}
@@ -6714,14 +6744,14 @@ private:
 		} else {
 			if (!codes.empty()) {
 				if (isBlock) {
-					info = _parser.parse<BlockEnd_t>(codes);
+					info = _parser.parse<BlockEnd_t>(codes, false);
 					if (info.error) {
 						throw CompileError("failed to expand macro as block: "s + info.error.value().msg, x);
 					}
 				} else {
-					info = _parser.parse<Exp_t>(codes);
+					info = _parser.parse<Exp_t>(codes, false);
 					if (!info.node && allowBlockMacroReturn) {
-						info = _parser.parse<BlockEnd_t>(codes);
+						info = _parser.parse<BlockEnd_t>(codes, false);
 						if (info.error) {
 							throw CompileError("failed to expand macro as expr or block: "s + info.error.value().msg, x);
 						}
@@ -10023,8 +10053,47 @@ private:
 		out.push_back(join(temp));
 	}
 
-	void transformTry(Try_t* tryNode, str_list& out, ExpUsage usage) {
+	void transformTry(Try_t* tryNode, str_list& out, ExpUsage usage, ExpList_t* assignList = nullptr) {
 		auto x = tryNode;
+		if (tryNode->omit && usage == ExpUsage::Assignment) {
+			str_list rets;
+			pushScope();
+			auto okVar = getUnusedName("_ok_"sv);
+					for (size_t i = 0; i < assignList->exprs.size(); i++) {
+						auto retVar = getUnusedName("_ret_"sv);
+						rets.emplace_back(retVar);
+						addToScope(retVar);
+					}
+					popScope();
+					auto varList = join(rets, ","sv);
+					auto ifNode = toAst<If_t>("if "s + okVar + ',' + varList + ":=try nil then "s + varList, x);
+					auto exp = ast_to<IfCond_t>(ifNode->nodes.front())->assignment->assign->values.front();
+					auto sVal = simpleSingleValueFrom(exp);
+					auto newTry = sVal->value.to<Try_t>();
+					newTry->func.set(tryNode->func);
+					newTry->catchBlock.set(tryNode->catchBlock);
+					auto assignment = x->new_ptr<ExpListAssign_t>();
+					assignment->expList.set(assignList);
+					auto assign = x->new_ptr<Assign_t>();
+					assign->values.push_back(ifNode);
+					assignment->action.set(assign);
+			transformAssignment(assignment, out);
+			return;
+		}
+		if (tryNode->omit && usage != ExpUsage::Common) {
+			auto okVar = getUnusedName("_ok_"sv);
+			auto code = "do\n\t"s + okVar + ", ... = try nil\n\t... if "s + okVar;
+			auto doNode = toAst<Do_t>(code, x);
+					auto block = doNode->body->content.to<Block_t>();
+					auto asmt = static_cast<Statement_t*>(block->statements.front())->content.to<ExpListAssign_t>();
+					auto assign = asmt->action.to<Assign_t>();
+					auto sVal = simpleSingleValueFrom(assign->values.back());
+					auto newTry = sVal->value.to<Try_t>();
+					newTry->func.set(tryNode->func);
+			newTry->catchBlock.set(tryNode->catchBlock);
+			transformDo(doNode, out, usage);
+			return;
+		}
 		ast_ptr<true, Exp_t> errHandler;
 		if (tryNode->catchBlock) {
 			auto catchBlock = tryNode->catchBlock.get();

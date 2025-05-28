@@ -43,10 +43,8 @@ do
 	end
 end
 local _anon_func_0 = function(_u6253_u5370)
-	do
-		_u6253_u5370(123)
-		return { }
-	end
+	_u6253_u5370(123)
+	return { }
 end
 return __u65e0_u6548_u53d8_u91cf(function()
 	setmetatable(a_u53d8_u91cf, _anon_func_0(_u6253_u5370))

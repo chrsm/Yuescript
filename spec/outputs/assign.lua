@@ -43,10 +43,8 @@ do
 	end
 end
 local _anon_func_0 = function(print)
-	do
-		print(123)
-		return { }
-	end
+	print(123)
+	return { }
 end
 return _(function()
 	setmetatable(a, _anon_func_0(print))

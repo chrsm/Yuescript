@@ -59,10 +59,8 @@ _u51fd_u6570 = function()
 	return _accum_0
 end
 local _anon_func_0 = function(_u53d8_u91cfa)
-	do
-		local _call_1 = _u53d8_u91cfa
-		return (_call_1["变量b"](_call_1, 123))["变量c"]("abc")
-	end
+	local _call_1 = _u53d8_u91cfa
+	return (_call_1["变量b"](_call_1, 123))["变量c"]("abc")
 end
 local _u51fd_u65701
 _u51fd_u65701 = function()

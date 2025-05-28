@@ -1514,6 +1514,47 @@ catch err
 </pre>
 </YueDisplay>
 
+### 错误处理简化
+
+`try!` 是 `try` 的简化语法，它不再返回 `try` 语句的布尔状态，并在成功时直接返回 `try` 代码块的结果，失败时返回 `nil` 值而非错误对象。
+
+```moonscript
+a, b, c = try! func!
+
+-- 与空值合并运算符一起使用
+a = (try! func!) ?? "default"
+
+-- 作为函数参数
+f try! func!
+
+-- 带 catch 块的 try!
+f try!
+  print 123
+  func!
+catch e
+  print e
+  e
+```
+<YueDisplay>
+<pre>
+a, b, c = try! func!
+
+-- 与空值合并运算符一起使用
+a = (try! func!) ?? "default"
+
+-- 作为函数参数
+f try! func!
+
+-- 带 catch 块的 try!
+f try!
+  print 123
+  func!
+catch e
+  print e
+  e
+</pre>
+</YueDisplay>
+
 ## 属性
 
 月之脚本现在提供了Lua 5.4新增的叫做属性的语法支持。在月之脚本编译到的Lua目标版本低于5.4时，你仍然可以同时使用`const`和`close`的属性声明语法，并获得常量检查和作用域回调的功能。

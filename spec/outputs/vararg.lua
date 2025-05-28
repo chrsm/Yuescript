@@ -125,14 +125,10 @@ local _anon_func_11 = function(items, ...)
 	return _tbl_0
 end
 local _anon_func_12 = function(func)
-	do
-		return func()
-	end
+	return func()
 end
 local _anon_func_13 = function(func, ...)
-	do
-		return func(...)
-	end
+	return func(...)
 end
 local _anon_func_14 = function(func)
 	local _accum_0 = { }
@@ -195,15 +191,11 @@ local _anon_func_23 = function(func, ...)
 	return nil
 end
 local _anon_func_24 = function(print, select, ...)
-	do
-		print(select("#", ...))
-		return print(...)
-	end
+	print(select("#", ...))
+	return print(...)
 end
 local _anon_func_25 = function(print, ...)
-	do
-		return print(...)
-	end
+	return print(...)
 end
 local _anon_func_26 = function(tb, tb2, x)
 	if 1 == x then
@@ -214,9 +206,7 @@ local _anon_func_26 = function(tb, tb2, x)
 	end
 end
 local _anon_func_27 = function(print, ...)
-	do
-		return print(...)
-	end
+	return print(...)
 end
 local _anon_func_28 = function(cond)
 	if cond then
@@ -224,10 +214,8 @@ local _anon_func_28 = function(cond)
 	end
 end
 local _anon_func_29 = function(print, _arg_0, ...)
-	do
-		local tb = _arg_0
-		return print(...)
-	end
+	local tb = _arg_0
+	return print(...)
 end
 local join
 join = function(...)

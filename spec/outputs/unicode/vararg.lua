@@ -125,14 +125,10 @@ local _anon_func_11 = function(_u9879_u76ee, ...)
 	return _tbl_0
 end
 local _anon_func_12 = function(_u51fd_u6570)
-	do
-		return _u51fd_u6570()
-	end
+	return _u51fd_u6570()
 end
 local _anon_func_13 = function(_u51fd_u6570, ...)
-	do
-		return _u51fd_u6570(...)
-	end
+	return _u51fd_u6570(...)
 end
 local _anon_func_14 = function(_u51fd_u6570)
 	local _accum_0 = { }
@@ -195,15 +191,11 @@ local _anon_func_23 = function(_u51fd_u6570, ...)
 	return nil
 end
 local _anon_func_24 = function(_u6253_u5370, select, ...)
-	do
-		_u6253_u5370(select("#", ...))
-		return _u6253_u5370(...)
-	end
+	_u6253_u5370(select("#", ...))
+	return _u6253_u5370(...)
 end
 local _anon_func_25 = function(_u6253_u5370, ...)
-	do
-		return _u6253_u5370(...)
-	end
+	return _u6253_u5370(...)
 end
 local _anon_func_26 = function(_u53d8_u91cfx, _u8868, _u88682)
 	if 1 == _u53d8_u91cfx then
@@ -214,9 +206,7 @@ local _anon_func_26 = function(_u53d8_u91cfx, _u8868, _u88682)
 	end
 end
 local _anon_func_27 = function(_u6253_u5370, ...)
-	do
-		return _u6253_u5370(...)
-	end
+	return _u6253_u5370(...)
 end
 local _anon_func_28 = function(_u6761_u4ef6)
 	if _u6761_u4ef6 then
@@ -224,10 +214,8 @@ local _anon_func_28 = function(_u6761_u4ef6)
 	end
 end
 local _anon_func_29 = function(_u6253_u5370, _arg_0, ...)
-	do
-		local _u8868 = _arg_0
-		return _u6253_u5370(...)
-	end
+	local _u8868 = _arg_0
+	return _u6253_u5370(...)
 end
 local _u8fde_u63a5
 _u8fde_u63a5 = function(...)

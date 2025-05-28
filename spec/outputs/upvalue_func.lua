@@ -214,10 +214,8 @@ local _anon_func_1 = function(valueB)
 	end
 end
 local _anon_func_2 = function(print, select, _arg_0, ...)
-	do
-		local ok = _arg_0
-		return print(select(3, ...))
-	end
+	local ok = _arg_0
+	return print(select(3, ...))
 end
 local _anon_func_3 = function(tb)
 	if tb ~= nil then
@@ -242,11 +240,9 @@ local _anon_func_5 = function(getmetatable, tb)
 	return _obj_0[1 + 1](_obj_0, "abc")
 end
 local _anon_func_6 = function(tb)
-	do
-		local _call_0 = tb
-		local _call_1 = _call_0["end"](_call_0)
-		return _call_1["🤣"](_call_1, 123)
-	end
+	local _call_0 = tb
+	local _call_1 = _call_0["end"](_call_0)
+	return _call_1["🤣"](_call_1, 123)
 end
 local _anon_func_7 = function(itemA, listA)
 	for _index_0 = 1, #listA do
@@ -354,17 +350,13 @@ local _anon_func_16 = function(pairs, tb, tostring)
 	return _tbl_0
 end
 local _anon_func_17 = function(print)
-	do
-		print(123)
-		return "abc"
-	end
+	print(123)
+	return "abc"
 end
 local _anon_func_18 = function(print, select, _arg_0, ...)
-	do
-		local success = _arg_0
-		if success then
-			return print(select('#', ...))
-		end
+	local success = _arg_0
+	if success then
+		return print(select('#', ...))
 	end
 end
 local _anon_func_19 = function(cond, i)
@@ -459,11 +451,9 @@ local _anon_func_25 = function(itemA, listA)
 	return false
 end
 local _anon_func_24 = function(itemA, listA, tb)
-	do
-		local _call_0 = tb
-		local _call_1 = _call_0["end"](_call_0)
-		return _call_1["🤣"](_call_1, 123 and (#listA > 0 and _anon_func_25(itemA, listA)))
-	end
+	local _call_0 = tb
+	local _call_1 = _call_0["end"](_call_0)
+	return _call_1["🤣"](_call_1, 123 and (#listA > 0 and _anon_func_25(itemA, listA)))
 end
 GameEngine:onEvent("SomeEvent", function()
 	return func(value + (_anon_func_21(cond)) + (_anon_func_22(valueB)) > _anon_func_23(tb) + _anon_func_24(itemA, listA, tb))
@@ -503,13 +493,11 @@ local _anon_func_27 = function(char)
 	return nil
 end
 local _anon_func_28 = function(os, _arg_0, ...)
-	do
-		local ok = _arg_0
-		if ok then
-			return ...
-		else
-			return os.exit(1)
-		end
+	local ok = _arg_0
+	if ok then
+		return ...
+	else
+		return os.exit(1)
 	end
 end
 local _anon_func_29 = function(debug_env_after, debug_env_before, env, func)
