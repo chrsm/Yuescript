@@ -71,19 +71,19 @@ f = ->
 
 	do
 		local func
-		a, b, c = try! func!
+		a, b, c = try? func!
 	
 	do
-		a, b, c = try! func!
+		a, b, c = try? func!
 
 	do
-		a = (try! func!) ?? "default"
+		a = (try? func!) ?? "default"
 
 	do
-		f try! func!
+		f try? func!
 	
 	do
-		f try!
+		f try?
 			print 123
 			func!
 		catch e
@@ -165,19 +165,19 @@ do
 
 	do
 		local func
-		a, b, c = try! func!
+		a, b, c = try? func!
 	
 	do
-		a, b, c = try! func!
+		a, b, c = try? func!
 
 	do
-		a = (try! func!) ?? "default"
+		a = (try? func!) ?? "default"
 
 	do
-		f try! func!
+		f try? func!
 	
 	do
-		f try!
+		f try?
 			print 123
 			func!
 		catch e

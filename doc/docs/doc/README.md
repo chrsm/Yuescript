@@ -1516,21 +1516,21 @@ catch err
 </pre>
 </YueDisplay>
 
-### Try!
+### Try?
 
-`try!` is a more concise error handling syntax that omit the boolean status from the `try` statement, and it will return the result from the try block when success, otherwise return nil instead of error object.
+`try?` is a simplified use for error handling syntax that omit the boolean status from the `try` statement, and it will return the result from the try block when success, return nil instead of error object otherwise.
 
 ```moonscript
-a, b, c = try! func!
+a, b, c = try? func!
 
 -- with nil coalescing operator
-a = (try! func!) ?? "default"
+a = (try? func!) ?? "default"
 
 -- as function argument
-f try! func!
+f try? func!
 
 -- with catch block
-f try!
+f try?
   print 123
   func!
 catch e
@@ -1539,16 +1539,16 @@ catch e
 ```
 <YueDisplay>
 <pre>
-a, b, c = try! func!
+a, b, c = try? func!
 
 -- with nil coalescing operator
-a = (try! func!) ?? "default"
+a = (try? func!) ?? "default"
 
 -- as function argument
-f try! func!
+f try? func!
 
 -- with catch block
-f try!
+f try?
   print 123
   func!
 catch e

@@ -1516,19 +1516,19 @@ catch err
 
 ### 错误处理简化
 
-`try!` 是 `try` 的简化语法，它不再返回 `try` 语句的布尔状态，并在成功时直接返回 `try` 代码块的结果，失败时返回 `nil` 值而非错误对象。
+`try?` 是 `try` 的功能简化语法，它不再返回 `try` 语句的布尔状态，并在成功时直接返回 `try` 代码块的结果，失败时返回 `nil` 值而非错误对象。
 
 ```moonscript
-a, b, c = try! func!
+a, b, c = try? func!
 
 -- 与空值合并运算符一起使用
-a = (try! func!) ?? "default"
+a = (try? func!) ?? "default"
 
 -- 作为函数参数
-f try! func!
+f try? func!
 
 -- 带 catch 块的 try!
-f try!
+f try?
   print 123
   func!
 catch e
@@ -1537,16 +1537,16 @@ catch e
 ```
 <YueDisplay>
 <pre>
-a, b, c = try! func!
+a, b, c = try? func!
 
 -- 与空值合并运算符一起使用
-a = (try! func!) ?? "default"
+a = (try? func!) ?? "default"
 
 -- 作为函数参数
-f try! func!
+f try? func!
 
 -- 带 catch 块的 try!
-f try!
+f try?
   print 123
   func!
 catch e
