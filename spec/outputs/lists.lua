@@ -230,31 +230,36 @@ x = {
 	6,
 	7
 }
-local _max_0 = -5
-for _index_0 = 2, _max_0 < 0 and #x + _max_0 + 1 or _max_0, 2 do
+local _max_0 = #x + -5 + 1
+for _index_0 = 2, _max_0, 2 do
 	local y = x[_index_0]
 	print(y)
 end
-local _max_1 = 3
-for _index_0 = 1, _max_1 < 0 and #x + _max_1 + 1 or _max_1 do
+for _index_0 = 1, 3 do
 	local y = x[_index_0]
 	print(y)
 end
-for _index_0 = 2, #x do
+local _max_1 = #x
+for _index_0 = 2, _max_1 do
 	local y = x[_index_0]
 	print(y)
 end
-for _index_0 = 1, #x, 2 do
+local _max_2 = #x
+for _index_0 = 1, _max_2, 2 do
 	local y = x[_index_0]
 	print(y)
 end
-for _index_0 = 2, #x, 2 do
+local _max_3 = #x
+for _index_0 = 2, _max_3, 2 do
 	local y = x[_index_0]
 	print(y)
 end
 local a, b, c = 1, 5, 2
-local _max_2 = b
-for _index_0 = a, _max_2 < 0 and #x + _max_2 + 1 or _max_2, c do
+local _min_0 = a
+local _max_4 = b
+_min_0 = _min_0 < 0 and #x + _min_0 + 1 or _min_0
+_max_4 = _max_4 < 0 and #x + _max_4 + 1 or _max_4
+for _index_0 = _min_0, _max_4, c do
 	local y = x[_index_0]
 	print(y)
 end
@@ -287,7 +292,10 @@ do
 		a
 	})
 	local _list_0 = f
-	for _index_0 = a, #_list_0 do
+	local _min_1 = a
+	local _max_5 = #_list_0
+	_min_1 = _min_1 < 0 and #_list_0 + _min_1 + 1 or _min_1
+	for _index_0 = _min_1, _max_5 do
 		local v = _list_0[_index_0]
 		print(v)
 	end
@@ -339,8 +347,8 @@ do
 	do
 		local _accum_0 = { }
 		local _len_0 = 1
-		local _max_3 = -2
-		for _index_0 = 2, _max_3 < 0 and #transactions + _max_3 + 1 or _max_3 do
+		local _max_5 = #transactions + -2 + 1
+		for _index_0 = 2, _max_5 do
 			local _item_0 = transactions[_index_0]
 			_accum_0[_len_0] = _item_0
 			_len_0 = _len_0 + 1
@@ -405,7 +413,8 @@ do
 	cloneList1 = function(list)
 		local _accum_0 = { }
 		local _len_0 = 1
-		for _index_0 = 1, #list do
+		local _max_5 = #list
+		for _index_0 = 1, _max_5 do
 			local _item_0 = list[_index_0]
 			_accum_0[_len_0] = _item_0
 			_len_0 = _len_0 + 1
@@ -471,8 +480,8 @@ local _anon_func_1 = function(a)
 		local _accum_0 = { }
 		local _len_0 = 1
 		local _list_0 = a.b.c
-		local _max_3 = -5
-		for _index_0 = 5, _max_3 < 0 and #_list_0 + _max_3 + 1 or _max_3 do
+		local _max_5 = #_list_0 + -5 + 1
+		for _index_0 = 5, _max_5 do
 			local _item_1 = _list_0[_index_0]
 			_accum_0[_len_0] = _item_1
 			_len_0 = _len_0 + 1
@@ -491,8 +500,8 @@ local _anon_func_2 = function(x)
 				if _obj_2 ~= nil then
 					local _accum_0 = { }
 					local _len_0 = 1
-					local _max_3 = -3
-					for _index_0 = 1, _max_3 < 0 and #_obj_2 + _max_3 + 1 or _max_3 do
+					local _max_5 = #_obj_2 + -3 + 1
+					for _index_0 = 1, _max_5 do
 						local _item_0 = _obj_2[_index_0]
 						_accum_0[_len_0] = _item_0
 						_len_0 = _len_0 + 1

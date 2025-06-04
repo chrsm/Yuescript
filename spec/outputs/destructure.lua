@@ -631,8 +631,8 @@ do
 	local vipStart, regulars, vipEnd = clients[1], (function()
 		local _accum_0 = { }
 		local _len_0 = 1
-		local _max_0 = -2
-		for _index_0 = 2, _max_0 < 0 and #clients + _max_0 + 1 or _max_0 do
+		local _max_0 = #clients + -2 + 1
+		for _index_0 = 2, _max_0 do
 			local _item_0 = clients[_index_0]
 			_accum_0[_len_0] = _item_0
 			_len_0 = _len_0 + 1
@@ -688,8 +688,8 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = tb
-	local _max_0 = -2
-	for _index_0 = 2, _max_0 < 0 and #_list_0 + _max_0 + 1 or _max_0 do
+	local _max_0 = #_list_0 + -2 + 1
+	for _index_0 = 2, _max_0 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
@@ -702,8 +702,8 @@ do
 	a, abc, b, def, sub, d, e = _obj_0[1], _obj_0.abc, _obj_0[2], _obj_0.def, (function()
 		local _accum_0 = { }
 		local _len_0 = 1
-		local _max_0 = -3
-		for _index_0 = 3, _max_0 < 0 and #_obj_0 + _max_0 + 1 or _max_0 do
+		local _max_0 = #_obj_0 + -3 + 1
+		for _index_0 = 3, _max_0 do
 			local _item_0 = _obj_0[_index_0]
 			_accum_0[_len_0] = _item_0
 			_len_0 = _len_0 + 1

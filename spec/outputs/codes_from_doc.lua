@@ -1062,8 +1062,7 @@ local slice
 local _accum_0 = { }
 local _len_0 = 1
 local _list_0 = items
-local _max_0 = 5
-for _index_0 = 1, _max_0 < 0 and #_list_0 + _max_0 + 1 or _max_0 do
+for _index_0 = 1, 5 do
 	local item = _list_0[_index_0]
 	_accum_0[_len_0] = item
 	_len_0 = _len_0 + 1
@@ -1073,7 +1072,8 @@ local slice
 local _accum_0 = { }
 local _len_0 = 1
 local _list_0 = items
-for _index_0 = 2, #_list_0 do
+local _max_0 = #_list_0
+for _index_0 = 2, _max_0 do
 	local item = _list_0[_index_0]
 	_accum_0[_len_0] = item
 	_len_0 = _len_0 + 1
@@ -1083,7 +1083,8 @@ local slice
 local _accum_0 = { }
 local _len_0 = 1
 local _list_0 = items
-for _index_0 = 1, #_list_0, 2 do
+local _max_0 = #_list_0
+for _index_0 = 1, _max_0, 2 do
 	local item = _list_0[_index_0]
 	_accum_0[_len_0] = item
 	_len_0 = _len_0 + 1
@@ -1099,8 +1100,7 @@ for key, value in pairs(object) do
 	print(key, value)
 end
 local _list_0 = items
-local _max_0 = 4
-for _index_0 = 2, _max_0 < 0 and #_list_0 + _max_0 + 1 or _max_0 do
+for _index_0 = 2, 4 do
 	local item = _list_0[_index_0]
 	print(item)
 end
@@ -3332,8 +3332,7 @@ local slice
 local _accum_0 = { }
 local _len_0 = 1
 local _list_0 = items
-local _max_0 = 5
-for _index_0 = 1, _max_0 < 0 and #_list_0 + _max_0 + 1 or _max_0 do
+for _index_0 = 1, 5 do
 	local item = _list_0[_index_0]
 	_accum_0[_len_0] = item
 	_len_0 = _len_0 + 1
@@ -3343,7 +3342,8 @@ local slice
 local _accum_0 = { }
 local _len_0 = 1
 local _list_0 = items
-for _index_0 = 2, #_list_0 do
+local _max_0 = #_list_0
+for _index_0 = 2, _max_0 do
 	local item = _list_0[_index_0]
 	_accum_0[_len_0] = item
 	_len_0 = _len_0 + 1
@@ -3353,7 +3353,8 @@ local slice
 local _accum_0 = { }
 local _len_0 = 1
 local _list_0 = items
-for _index_0 = 1, #_list_0, 2 do
+local _max_0 = #_list_0
+for _index_0 = 1, _max_0, 2 do
 	local item = _list_0[_index_0]
 	_accum_0[_len_0] = item
 	_len_0 = _len_0 + 1
@@ -3369,8 +3370,7 @@ for key, value in pairs(object) do
 	print(key, value)
 end
 local _list_0 = items
-local _max_0 = 4
-for _index_0 = 2, _max_0 < 0 and #_list_0 + _max_0 + 1 or _max_0 do
+for _index_0 = 2, 4 do
 	local item = _list_0[_index_0]
 	print(item)
 end

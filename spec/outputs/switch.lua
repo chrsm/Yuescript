@@ -740,8 +740,8 @@ do
 		do
 			local _accum_0 = { }
 			local _len_0 = 1
-			local _max_0 = -3
-			for _index_0 = 1, _max_0 < 0 and #clientData + _max_0 + 1 or _max_0 do
+			local _max_0 = #clientData + -3 + 1
+			for _index_0 = 1, _max_0 do
 				local _item_0 = clientData[_index_0]
 				_accum_0[_len_0] = _item_0
 				_len_0 = _len_0 + 1
