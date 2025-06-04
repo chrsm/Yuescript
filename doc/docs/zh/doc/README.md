@@ -590,13 +590,13 @@ merge = {...a, ...b}
 你可以使用 **#** 操作符来反向索引表中的元素。
 
 ```moonscript
-print data.items[#] -- 获取表的最后一个元素
-print data.items[#-1] -- 获取表的倒数第二个元素
+last = data.items[#]
+second_last = data.items[#-1]
 ```
 <YueDisplay>
 <pre>
-print data.items[#] -- 获取表的最后一个元素
-print data.items[#-1] -- 获取表的倒数第二个元素
+last = data.items[#]
+second_last = data.items[#-1]
 </pre>
 </YueDisplay>
 

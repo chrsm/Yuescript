@@ -591,13 +591,13 @@ merge = {...a, ...b}
 You can use the **#** operator to get the last elements of a table.
 
 ```moonscript
-print data.items[#] -- get the last element of a table
-print data.items[#-1] -- get the second last element of a table
+last = data.items[#]
+second_last = data.items[#-1]
 ```
 <YueDisplay>
 <pre>
-print data.items[#] -- get the last element of a table
-print data.items[#-1] -- get the second last element of a table
+last = data.items[#]
+second_last = data.items[#-1]
 </pre>
 </YueDisplay>
 
