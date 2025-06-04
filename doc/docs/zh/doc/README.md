@@ -1696,6 +1696,7 @@ binary = 0B10011
 <pre>
 integer = 1_000_000
 hex = 0xEF_BB_BF
+binary = 0B10011
 </pre>
 </YueDisplay>
 
