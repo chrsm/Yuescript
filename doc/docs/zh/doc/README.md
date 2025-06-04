@@ -585,6 +585,21 @@ merge = {...a, ...b}
 </pre>
 </YueDisplay>
 
+### 表反向索引
+
+你可以使用 **#** 操作符来反向索引表中的元素。
+
+```moonscript
+print data.items[#] -- 获取表的最后一个元素
+print data.items[#-1] -- 获取表的倒数第二个元素
+```
+<YueDisplay>
+<pre>
+print data.items[#] -- 获取表的最后一个元素
+print data.items[#-1] -- 获取表的倒数第二个元素
+</pre>
+</YueDisplay>
+
 ### 元表
 
 **<>** 操作符可提供元表操作的快捷方式。
@@ -1285,9 +1300,55 @@ print first, second, color
 </pre>
 </YueDisplay>
 
-### 在其它地方的解构
+### 范围解构
 
-解构也可以出现在其它隐式进行赋值的地方。一个例子是用在for循环：
+你可以使用展开运算符 `...` 在列表解构中来捕获一个范围的值到子列表中。这在当你想要从列表的开头和结尾提取特定元素，同时收集中间的元素时非常有用。
+
+```moonscript
+orders = ["first", "second", "third", "fourth", "last"]
+[first, ...bulk, last] = orders
+print first  -- 打印: first
+print bulk   -- 打印: {"second", "third", "fourth"}
+print last   -- 打印: last
+```
+<YueDisplay>
+<pre>
+orders = ["first", "second", "third", "fourth", "last"]
+[first, ...bulk, last] = orders
+print first  -- 打印: first
+print bulk   -- 打印: {"second", "third", "fourth"}
+print last   -- 打印: last
+</pre>
+</YueDisplay>
+
+展开运算符可以用在不同的位置来捕获不同的范围，并且你可以使用 `_` 作为占位符来表示你想跳过对应范围的捕获：
+
+```moonscript
+-- 捕获第一个元素之后的所有元素
+[first, ...rest] = orders
+
+-- 捕获最后一个元素之前的所有元素
+[...start, last] = orders
+
+-- 跳过中间的元素，只捕获第一个和最后一个元素
+[first, _..., last] = orders
+```
+<YueDisplay>
+<pre>
+-- 捕获第一个元素之后的所有元素
+[first, ...rest] = orders
+
+-- 捕获最后一个元素之前的所有元素
+[...start, last] = orders
+
+-- 跳过中间的元素，只捕获第一个和最后一个元素
+[first, _..., last] = orders
+</pre>
+</YueDisplay>
+
+### 在其它地方的解构赋值
+
+解构赋值也可以出现在其它隐式进行赋值的地方。一个例子是用在for循环中：
 
 ```moonscript
 tuples = [
@@ -2305,6 +2366,45 @@ slice = [item for item in *items[,,2]]
 </pre>
 </YueDisplay>
 
+最小和最大边界都可以是负数，使用负数意味着边界是从表的末尾开始计算的。
+
+```moonscript
+-- 取最后4个元素
+slice = [item for item in *items[-4,-1]]
+```
+<YueDisplay>
+<pre>
+-- 取最后4个元素
+slice = [item for item in *items[-4,-1]]
+</pre>
+</YueDisplay>
+
+切片的步长也可以是负数，这意味着元素会以相反的顺序被取出。
+
+```moonscript
+reverse_slice = [item for item in *items[-1,1,-1]]
+```
+<YueDisplay>
+<pre>
+reverse_slice = [item for item in *items[-1,1,-1]]
+</pre>
+</YueDisplay>
+
+#### 切片表达式
+
+切片也可以作为表达式来使用。可以用于获取一个表包含的子列表。
+
+```moonscript
+-- 取第2和第4个元素作为新的列表
+sub_list = items[2, 4]
+```
+<YueDisplay>
+<pre>
+-- 取第2和第4个元素作为新的列表
+sub_list = items[2, 4]
+</pre>
+</YueDisplay>
+
 ## for 循环
 
 Lua中有两种for循环形式，数字型和通用型：
@@ -2945,6 +3045,27 @@ switch tb
       fourth
     ]
     print "匹配成功", fourth
+</pre>
+</YueDisplay>
+
+匹配一个列表并捕获特定范围内的元素。
+
+```moonscript
+segments = ["admin", "users", "logs", "view"]
+switch segments
+	when [...groups, resource, action]
+		print "Group:", groups -- 打印: {"admin", "users"}
+		print "Resource:", resource -- 打印: "logs"
+		print "Action:", action -- 打印: "view"
+```
+<YueDisplay>
+<pre>
+segments = ["admin", "users", "logs", "view"]
+switch segments
+	when [...groups, resource, action]
+		print "Group:", groups -- 打印: {"admin", "users"}
+		print "Resource:", resource -- 打印: "logs"
+		print "Action:", action -- 打印: "view"
 </pre>
 </YueDisplay>
 

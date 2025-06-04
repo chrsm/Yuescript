@@ -586,6 +586,21 @@ merge = {...a, ...b}
 </pre>
 </YueDisplay>
 
+### Table Reversed Indexing
+
+You can use the **#** operator to get the last elements of a table.
+
+```moonscript
+print data.items[#] -- get the last element of a table
+print data.items[#-1] -- get the second last element of a table
+```
+<YueDisplay>
+<pre>
+print data.items[#] -- get the last element of a table
+print data.items[#-1] -- get the second last element of a table
+</pre>
+</YueDisplay>
+
 ### Metatable
 
 The **<>** operator can be used as a shortcut for metatable manipulation.
@@ -1284,6 +1299,52 @@ You can use `_` as placeholder when doing a list destructuring:
 <YueDisplay>
 <pre>
 [_, two, _, four] = items
+</pre>
+</YueDisplay>
+
+### Range Destructuring
+
+You can use the spread operator `...` in list destructuring to capture a range of values. This is useful when you want to extract specific elements from the beginning and end of a list while collecting the rest in between.
+
+```moonscript
+orders = ["first", "second", "third", "fourth", "last"]
+[first, ...bulk, last] = orders
+print first  -- prints: first
+print bulk   -- prints: {"second", "third", "fourth"}
+print last   -- prints: last
+```
+<YueDisplay>
+<pre>
+orders = ["first", "second", "third", "fourth", "last"]
+[first, ...bulk, last] = orders
+print first  -- prints: first
+print bulk   -- prints: {"second", "third", "fourth"}
+print last   -- prints: last
+</pre>
+</YueDisplay>
+
+The spread operator can be used in different positions to capture different ranges, and you can use `_` as a placeholder for the values you don't want to capture:
+
+```moonscript
+-- Capture everything after first element
+[first, ...rest] = orders
+
+-- Capture everything before last element
+[...start, last] = orders
+
+-- Capture things except the middle elements
+[first, _..., last] = orders
+```
+<YueDisplay>
+<pre>
+-- Capture everything after first element
+[first, ...rest] = orders
+
+-- Capture everything before last element
+[...start, last] = orders
+
+-- Capture things except the middle elements
+[first, _..., last] = orders
 </pre>
 </YueDisplay>
 
@@ -2344,6 +2405,45 @@ slice = [item for item in *items[,,2]]
 </pre>
 </YueDisplay>
 
+Both the minimum and maximum bounds can be negative, which means that the bounds are counted from the end of the table.
+
+```moonscript
+-- take the last 4 items
+slice = [item for item in *items[-4,-1]]
+```
+<YueDisplay>
+<pre>
+-- take the last 4 items
+slice = [item for item in *items[-4,-1]]
+</pre>
+</YueDisplay>
+
+The step size can also be negative, which means that the items are taken in reverse order.
+
+```moonscript
+reverse_slice = [item for item in *items[-1,1,-1]]
+```
+<YueDisplay>
+<pre>
+reverse_slice = [item for item in *items[-1,1,-1]]
+</pre>
+</YueDisplay>
+
+#### Slicing Expression
+
+Slicing can also be used as an expression. This is useful for getting a sub-list of a table.
+
+```moonscript
+-- take the 2nd and 4th items as a new list
+sub_list = items[2, 4]
+```
+<YueDisplay>
+<pre>
+-- take the 2nd and 4th items as a new list
+sub_list = items[2, 4]
+</pre>
+</YueDisplay>
+
 ## For Loop
 
 There are two for loop forms, just like in Lua. A numeric one and a generic one:
@@ -2986,6 +3086,27 @@ switch tb
       fourth
     ]
     print "matched", fourth
+</pre>
+</YueDisplay>
+
+Match against a list and capture a range of elements.
+
+```moonscript
+segments = ["admin", "users", "logs", "view"]
+switch segments
+	when [...groups, resource, action]
+		print "Group:", groups -- prints: {"admin", "users"}
+		print "Resource:", resource -- prints: "logs"
+		print "Action:", action -- prints: "view"
+```
+<YueDisplay>
+<pre>
+segments = ["admin", "users", "logs", "view"]
+switch segments
+	when [...groups, resource, action]
+		print "Group:", groups -- prints: {"admin", "users"}
+		print "Resource:", resource -- prints: "logs"
+		print "Action:", action -- prints: "view"
 </pre>
 </YueDisplay>
 
