@@ -87,4 +87,51 @@ do
 	[a, b] = hello
 	[name = "nameless", job = "jobless"] = person
 
+do
+	transactions = ["T001", "T002", "T003", "T004", "T005"]
+	middleTransactions = transactions[2, -2]
+	print middleTransactions -- => {"T002", "T003", "T004"}
+
+do
+	logs =
+		- start: 0, end: 100
+		- start: 100, end: 200
+		- start: 200, end: 123
+	print logs[#].end -- => 123
+
+do
+	pendingOrders = ["O001", "O002", "O003", "O004"]
+	print pendingOrders[# - 1] -- => "O003"	
+
+do
+	getOrders = ->
+		{
+			{ id: "O1001", status: "pending" }
+			{ id: "O1002", status: "processing" }
+			{ id: "O1003", status: "done" }
+		}
+
+	lastStatus = getOrders()[#].status
+	assert lastStatus == "done"
+
+do
+	cloneList1 = (list) -> list[,]
+	cloneList2 = (list) -> [...list,]
+	cloneTable = (tb) -> {...tb}
+
+do
+	print(
+		globalTB[#]
+		a.b.c[# - 2]
+		x?\y?!.z?[# - 3]
+	)
+
+do
+	f = ->
+		print(
+			globalTB[#]\end 123
+			a.b.c[5,-5][# - 2]
+			x?\y?!.z?[# - 3]?[, -3]
+		)
+
 nil

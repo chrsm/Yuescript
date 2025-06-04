@@ -231,12 +231,12 @@ x = {
 	7
 }
 local _max_0 = -5
-for _index_0 = 2, _max_0 < 0 and #x + _max_0 or _max_0, 2 do
+for _index_0 = 2, _max_0 < 0 and #x + _max_0 + 1 or _max_0, 2 do
 	local y = x[_index_0]
 	print(y)
 end
 local _max_1 = 3
-for _index_0 = 1, _max_1 < 0 and #x + _max_1 or _max_1 do
+for _index_0 = 1, _max_1 < 0 and #x + _max_1 + 1 or _max_1 do
 	local y = x[_index_0]
 	print(y)
 end
@@ -254,7 +254,7 @@ for _index_0 = 2, #x, 2 do
 end
 local a, b, c = 1, 5, 2
 local _max_2 = b
-for _index_0 = a, _max_2 < 0 and #x + _max_2 or _max_2, c do
+for _index_0 = a, _max_2 < 0 and #x + _max_2 + 1 or _max_2, c do
 	local y = x[_index_0]
 	print(y)
 end
@@ -325,6 +325,192 @@ do
 	end
 	if job == nil then
 		job = "jobless"
+	end
+end
+do
+	local transactions = {
+		"T001",
+		"T002",
+		"T003",
+		"T004",
+		"T005"
+	}
+	local middleTransactions
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_3 = -2
+		for _index_0 = 2, _max_3 < 0 and #transactions + _max_3 + 1 or _max_3 do
+			local _item_0 = transactions[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		middleTransactions = _accum_0
+	end
+	print(middleTransactions)
+end
+do
+	local logs = {
+		{
+			start = 0,
+			["end"] = 100
+		},
+		{
+			start = 100,
+			["end"] = 200
+		},
+		{
+			start = 200,
+			["end"] = 123
+		}
+	}
+	print(logs[#logs]["end"])
+end
+do
+	local pendingOrders = {
+		"O001",
+		"O002",
+		"O003",
+		"O004"
+	}
+	print(pendingOrders[#pendingOrders - 1])
+end
+do
+	local getOrders
+	getOrders = function()
+		return {
+			{
+				id = "O1001",
+				status = "pending"
+			},
+			{
+				id = "O1002",
+				status = "processing"
+			},
+			{
+				id = "O1003",
+				status = "done"
+			}
+		}
+	end
+	local lastStatus
+	do
+		local _item_0 = getOrders()
+		lastStatus = _item_0[#_item_0].status
+	end
+	assert(lastStatus == "done")
+end
+do
+	local cloneList1
+	cloneList1 = function(list)
+		local _accum_0 = { }
+		local _len_0 = 1
+		for _index_0 = 1, #list do
+			local _item_0 = list[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end
+	local cloneList2
+	cloneList2 = function(list)
+		local _tab_0 = { }
+		local _idx_0 = #_tab_0 + 1
+		for _index_0 = 1, #list do
+			local _value_0 = list[_index_0]
+			_tab_0[_idx_0] = _value_0
+			_idx_0 = _idx_0 + 1
+		end
+		return _tab_0
+	end
+	local cloneTable
+	cloneTable = function(tb)
+		local _tab_0 = { }
+		local _idx_0 = 1
+		for _key_0, _value_0 in pairs(tb) do
+			if _idx_0 == _key_0 then
+				_tab_0[#_tab_0 + 1] = _value_0
+				_idx_0 = _idx_0 + 1
+			else
+				_tab_0[_key_0] = _value_0
+			end
+		end
+		return _tab_0
+	end
+end
+do
+	print((function()
+		local _item_0 = globalTB
+		return _item_0[#_item_0]
+	end)(), (function()
+		local _item_0 = a.b.c
+		return _item_0[#_item_0 - 2]
+	end)(), (function()
+		if x ~= nil then
+			local _obj_0 = x.y
+			if _obj_0 ~= nil then
+				local _obj_1 = _obj_0(x).z
+				if _obj_1 ~= nil then
+					return _obj_1[#_obj_1 - 3]
+				end
+				return nil
+			end
+			return nil
+		end
+		return nil
+	end)())
+end
+local _anon_func_0 = function(globalTB)
+	local _item_0 = globalTB
+	local _call_0 = _item_0[#_item_0]
+	return _call_0["end"](_call_0, 123)
+end
+local _anon_func_1 = function(a)
+	local _item_0
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _list_0 = a.b.c
+		local _max_3 = -5
+		for _index_0 = 5, _max_3 < 0 and #_list_0 + _max_3 + 1 or _max_3 do
+			local _item_1 = _list_0[_index_0]
+			_accum_0[_len_0] = _item_1
+			_len_0 = _len_0 + 1
+		end
+		_item_0 = _accum_0
+	end
+	return _item_0[#_item_0 - 2]
+end
+local _anon_func_2 = function(x)
+	if x ~= nil then
+		local _obj_0 = x.y
+		if _obj_0 ~= nil then
+			local _obj_1 = _obj_0(x).z
+			if _obj_1 ~= nil then
+				local _obj_2 = _obj_1[#_obj_1 - 3]
+				if _obj_2 ~= nil then
+					local _accum_0 = { }
+					local _len_0 = 1
+					local _max_3 = -3
+					for _index_0 = 1, _max_3 < 0 and #_obj_2 + _max_3 + 1 or _max_3 do
+						local _item_0 = _obj_2[_index_0]
+						_accum_0[_len_0] = _item_0
+						_len_0 = _len_0 + 1
+					end
+					return _accum_0
+				end
+				return nil
+			end
+			return nil
+		end
+		return nil
+	end
+	return nil
+end
+do
+	local f
+	f = function()
+		return print(_anon_func_0(globalTB), _anon_func_1(a), _anon_func_2(x))
 	end
 end
 return nil

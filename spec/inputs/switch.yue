@@ -272,4 +272,21 @@ do
 		else
 			print "not matched"
 
+do
+	clientData = ["Meta", "CUST_1001", "CHK123"]
+	switch clientData
+		when [...metadata, customerId, checksum]
+			print metadata -- {"Meta"}
+			print customerId -- "CUST_1001"
+			print checksum -- "CHK123"
+
+do
+	handlePath = (segments) ->
+		switch segments
+			when [..._, resource, action]
+				print "Resource:", resource
+				print "Action:", action
+
+	handlePath ["admin", "logs", "view"]
+
 nil

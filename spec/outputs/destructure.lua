@@ -621,4 +621,94 @@ do
 		print(meta_field, abc, def)
 	end
 end
+do
+	local clients = {
+		"VIP_Alice",
+		"User_Bob",
+		"User_Clara",
+		"VIP_Eva"
+	}
+	local vipStart, regulars, vipEnd = clients[1], (function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = -2
+		for _index_0 = 2, _max_0 < 0 and #clients + _max_0 + 1 or _max_0 do
+			local _item_0 = clients[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end)(), clients[#clients]
+	print(vipStart)
+	print(regulars)
+	print(vipEnd)
+end
+do
+	local setupMeeting
+	setupMeeting = function(participants)
+		local chair, secretary = participants[1], participants[#participants]
+		return print(chair, secretary)
+	end
+	setupMeeting({
+		"Alice",
+		"Bob",
+		"Charlie",
+		"David"
+	})
+end
+do
+	local getTransactions
+	getTransactions = function()
+		return {
+			{
+				id = "T1",
+				amount = 100
+			},
+			{
+				id = "T2",
+				amount = 200
+			},
+			{
+				id = "T3",
+				amount = 300
+			}
+		}
+	end
+	local id, amount
+	do
+		local _item_0 = getTransactions()
+		local _obj_0 = _item_0[#_item_0]
+		id, amount = _obj_0.id, _obj_0.amount
+	end
+	assert(id == "T3")
+	assert(amount == 300)
+end
+do
+	local middle
+	local _accum_0 = { }
+	local _len_0 = 1
+	local _list_0 = tb
+	local _max_0 = -2
+	for _index_0 = 2, _max_0 < 0 and #_list_0 + _max_0 + 1 or _max_0 do
+		local _item_0 = _list_0[_index_0]
+		_accum_0[_len_0] = _item_0
+		_len_0 = _len_0 + 1
+	end
+	middle = _accum_0
+end
+do
+	local a, abc, b, def, sub, d, e
+	local _obj_0 = tb
+	a, abc, b, def, sub, d, e = _obj_0[1], _obj_0.abc, _obj_0[2], _obj_0.def, (function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = -3
+		for _index_0 = 3, _max_0 < 0 and #_obj_0 + _max_0 + 1 or _max_0 do
+			local _item_0 = _obj_0[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end)(), _obj_0[#_obj_0 - 1], _obj_0[#_obj_0]
+end
 return nil

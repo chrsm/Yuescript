@@ -230,12 +230,12 @@ _u53d8_u91cfx = {
 	7
 }
 local _max_0 = -5
-for _index_0 = 2, _max_0 < 0 and #_u53d8_u91cfx + _max_0 or _max_0, 2 do
+for _index_0 = 2, _max_0 < 0 and #_u53d8_u91cfx + _max_0 + 1 or _max_0, 2 do
 	local _u53d8_u91cfy = _u53d8_u91cfx[_index_0]
 	_u6253_u5370(_u53d8_u91cfy)
 end
 local _max_1 = 3
-for _index_0 = 1, _max_1 < 0 and #_u53d8_u91cfx + _max_1 or _max_1 do
+for _index_0 = 1, _max_1 < 0 and #_u53d8_u91cfx + _max_1 + 1 or _max_1 do
 	local _u53d8_u91cfy = _u53d8_u91cfx[_index_0]
 	_u6253_u5370(_u53d8_u91cfy)
 end
@@ -253,7 +253,7 @@ for _index_0 = 2, #_u53d8_u91cfx, 2 do
 end
 local _u53d8_u91cfa, _u53d8_u91cfb, _u53d8_u91cfc = 1, 5, 2
 local _max_2 = _u53d8_u91cfb
-for _index_0 = _u53d8_u91cfa, _max_2 < 0 and #_u53d8_u91cfx + _max_2 or _max_2, _u53d8_u91cfc do
+for _index_0 = _u53d8_u91cfa, _max_2 < 0 and #_u53d8_u91cfx + _max_2 + 1 or _max_2, _u53d8_u91cfc do
 	local _u53d8_u91cfy = _u53d8_u91cfx[_index_0]
 	_u6253_u5370(_u53d8_u91cfy)
 end

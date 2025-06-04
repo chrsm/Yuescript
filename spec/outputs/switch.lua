@@ -727,4 +727,54 @@ do
 		print("not matched")
 	end
 end
+do
+	local clientData = {
+		"Meta",
+		"CUST_1001",
+		"CHK123"
+	}
+	local _type_0 = type(clientData)
+	local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+	if _tab_0 then
+		local metadata
+		do
+			local _accum_0 = { }
+			local _len_0 = 1
+			local _max_0 = -3
+			for _index_0 = 1, _max_0 < 0 and #clientData + _max_0 + 1 or _max_0 do
+				local _item_0 = clientData[_index_0]
+				_accum_0[_len_0] = _item_0
+				_len_0 = _len_0 + 1
+			end
+			metadata = _accum_0
+		end
+		local customerId = clientData[#clientData - 1]
+		local checksum = clientData[#clientData]
+		if customerId ~= nil and checksum ~= nil then
+			print(metadata)
+			print(customerId)
+			print(checksum)
+		end
+	end
+end
+do
+	local handlePath
+	handlePath = function(segments)
+		local _type_0 = type(segments)
+		local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+		if _tab_0 then
+			local resource = segments[#segments - 1]
+			local action = segments[#segments]
+			if resource ~= nil and action ~= nil then
+				print("Resource:", resource)
+				return print("Action:", action)
+			end
+		end
+	end
+	handlePath({
+		"admin",
+		"logs",
+		"view"
+	})
+end
 return nil

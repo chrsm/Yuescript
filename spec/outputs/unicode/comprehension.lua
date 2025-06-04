@@ -244,7 +244,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _max_0 = 3 + 4
-	for _index_0 = 1 + 2, _max_0 < 0 and #_u5217_u8868 + _max_0 or _max_0 do
+	for _index_0 = 1 + 2, _max_0 < 0 and #_u5217_u8868 + _max_0 + 1 or _max_0 do
 		local _u9879_u76ee = _u5217_u8868[_index_0]
 		_accum_0[_len_0] = _u9879_u76ee
 		_len_0 = _len_0 + 1
@@ -255,7 +255,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _max_0 = 2 - _u4e1c_u897f[4]
-	for _index_0 = _u4f60_u597d() * 4, _max_0 < 0 and #_u5217_u8868 + _max_0 or _max_0 do
+	for _index_0 = _u4f60_u597d() * 4, _max_0 < 0 and #_u5217_u8868 + _max_0 + 1 or _max_0 do
 		local _u9879_u76ee = _u5217_u8868[_index_0]
 		_accum_0[_len_0] = _u9879_u76ee
 		_len_0 = _len_0 + 1

@@ -244,7 +244,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _max_0 = 3 + 4
-	for _index_0 = 1 + 2, _max_0 < 0 and #items + _max_0 or _max_0 do
+	for _index_0 = 1 + 2, _max_0 < 0 and #items + _max_0 + 1 or _max_0 do
 		local item = items[_index_0]
 		_accum_0[_len_0] = item
 		_len_0 = _len_0 + 1
@@ -255,7 +255,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _max_0 = 2 - thing[4]
-	for _index_0 = hello() * 4, _max_0 < 0 and #items + _max_0 or _max_0 do
+	for _index_0 = hello() * 4, _max_0 < 0 and #items + _max_0 + 1 or _max_0 do
 		local item = items[_index_0]
 		_accum_0[_len_0] = item
 		_len_0 = _len_0 + 1
