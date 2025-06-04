@@ -1331,7 +1331,7 @@ print last   -- 打印: last
 [...start, last] = orders
 
 -- 跳过中间的元素，只捕获第一个和最后一个元素
-[first, _..., last] = orders
+[first, ..._, last] = orders
 ```
 <YueDisplay>
 <pre>
@@ -1342,7 +1342,7 @@ print last   -- 打印: last
 [...start, last] = orders
 
 -- 跳过中间的元素，只捕获第一个和最后一个元素
-[first, _..., last] = orders
+[first, ..._, last] = orders
 </pre>
 </YueDisplay>
 

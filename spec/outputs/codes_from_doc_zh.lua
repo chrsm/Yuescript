@@ -209,6 +209,14 @@ for _key_0, _value_0 in pairs(b) do
 	end
 end
 merge = _tab_0
+print((function()
+	local _item_0 = data.items
+	return _item_0[#_item_0]
+end)())
+print((function()
+	local _item_0 = data.items
+	return _item_0[#_item_0 - 1]
+end)())
 local mt = { }
 local add
 add = function(self, right)
@@ -587,6 +595,59 @@ end
 local two, four
 local _obj_0 = items
 two, four = _obj_0[2], _obj_0[4]
+local orders = {
+	"first",
+	"second",
+	"third",
+	"fourth",
+	"last"
+}
+local first, bulk, last = orders[1], (function()
+	local _accum_0 = { }
+	local _len_0 = 1
+	local _max_0 = #orders + -2 + 1
+	for _index_0 = 2, _max_0 do
+		local _item_0 = orders[_index_0]
+		_accum_0[_len_0] = _item_0
+		_len_0 = _len_0 + 1
+	end
+	return _accum_0
+end)(), orders[#orders]
+print(first)
+print(bulk)
+print(last)
+local first, rest
+do
+	local _obj_0 = orders
+	first, rest = _obj_0[1], (function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = #_obj_0
+		for _index_0 = 2, _max_0 do
+			local _item_0 = _obj_0[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end)()
+end
+local start, last
+do
+	local _obj_0 = orders
+	start, last = (function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = #_obj_0 + -2 + 1
+		for _index_0 = 1, _max_0 do
+			local _item_0 = _obj_0[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end)(), _obj_0[#_obj_0]
+end
+local _obj_0 = orders
+first, last = _obj_0[1], _obj_0[#_obj_0]
 local tuples = {
 	{
 		"hello",
@@ -1084,6 +1145,39 @@ for _index_0 = 1, _max_0, 2 do
 	_len_0 = _len_0 + 1
 end
 slice = _accum_0
+local slice
+local _accum_0 = { }
+local _len_0 = 1
+local _list_0 = items
+local _min_0 = #_list_0 + -4 + 1
+local _max_0 = #_list_0 + -1 + 1
+for _index_0 = _min_0, _max_0 do
+	local item = _list_0[_index_0]
+	_accum_0[_len_0] = item
+	_len_0 = _len_0 + 1
+end
+slice = _accum_0
+local reverse_slice
+local _accum_0 = { }
+local _len_0 = 1
+local _list_0 = items
+local _min_0 = #_list_0 + -1 + 1
+for _index_0 = _min_0, 1, -1 do
+	local item = _list_0[_index_0]
+	_accum_0[_len_0] = item
+	_len_0 = _len_0 + 1
+end
+reverse_slice = _accum_0
+local sub_list
+local _accum_0 = { }
+local _len_0 = 1
+local _list_0 = items
+for _index_0 = 2, 4 do
+	local _item_0 = _list_0[_index_0]
+	_accum_0[_len_0] = _item_0
+	_len_0 = _len_0 + 1
+end
+sub_list = _accum_0
 for i = 10, 20 do
 	print(i)
 end
@@ -1533,6 +1627,35 @@ if _tab_0 then
 	end
 	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
 		print("匹配成功", fourth)
+	end
+end
+local segments = {
+	"admin",
+	"users",
+	"logs",
+	"view"
+}
+local _type_0 = type(segments)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+if _tab_0 then
+	local groups
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = #segments + -3 + 1
+		for _index_0 = 1, _max_0 do
+			local _item_0 = segments[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		groups = _accum_0
+	end
+	local resource = segments[#segments - 1]
+	local action = segments[#segments]
+	if resource ~= nil and action ~= nil then
+		print("Group:", groups)
+		print("Resource:", resource)
+		print("Action:", action)
 	end
 end
 local Inventory
@@ -2474,6 +2597,14 @@ for _key_0, _value_0 in pairs(b) do
 	end
 end
 merge = _tab_0
+print((function()
+	local _item_0 = data.items
+	return _item_0[#_item_0]
+end)())
+print((function()
+	local _item_0 = data.items
+	return _item_0[#_item_0 - 1]
+end)())
 local mt = { }
 local add
 add = function(self, right)
@@ -2852,6 +2983,59 @@ end
 local two, four
 local _obj_0 = items
 two, four = _obj_0[2], _obj_0[4]
+local orders = {
+	"first",
+	"second",
+	"third",
+	"fourth",
+	"last"
+}
+local first, bulk, last = orders[1], (function()
+	local _accum_0 = { }
+	local _len_0 = 1
+	local _max_0 = #orders + -2 + 1
+	for _index_0 = 2, _max_0 do
+		local _item_0 = orders[_index_0]
+		_accum_0[_len_0] = _item_0
+		_len_0 = _len_0 + 1
+	end
+	return _accum_0
+end)(), orders[#orders]
+print(first)
+print(bulk)
+print(last)
+local first, rest
+do
+	local _obj_0 = orders
+	first, rest = _obj_0[1], (function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = #_obj_0
+		for _index_0 = 2, _max_0 do
+			local _item_0 = _obj_0[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end)()
+end
+local start, last
+do
+	local _obj_0 = orders
+	start, last = (function()
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = #_obj_0 + -2 + 1
+		for _index_0 = 1, _max_0 do
+			local _item_0 = _obj_0[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		return _accum_0
+	end)(), _obj_0[#_obj_0]
+end
+local _obj_0 = orders
+first, last = _obj_0[1], _obj_0[#_obj_0]
 local tuples = {
 	{
 		"hello",
@@ -3348,6 +3532,39 @@ for _index_0 = 1, _max_0, 2 do
 	_len_0 = _len_0 + 1
 end
 slice = _accum_0
+local slice
+local _accum_0 = { }
+local _len_0 = 1
+local _list_0 = items
+local _min_0 = #_list_0 + -4 + 1
+local _max_0 = #_list_0 + -1 + 1
+for _index_0 = _min_0, _max_0 do
+	local item = _list_0[_index_0]
+	_accum_0[_len_0] = item
+	_len_0 = _len_0 + 1
+end
+slice = _accum_0
+local reverse_slice
+local _accum_0 = { }
+local _len_0 = 1
+local _list_0 = items
+local _min_0 = #_list_0 + -1 + 1
+for _index_0 = _min_0, 1, -1 do
+	local item = _list_0[_index_0]
+	_accum_0[_len_0] = item
+	_len_0 = _len_0 + 1
+end
+reverse_slice = _accum_0
+local sub_list
+local _accum_0 = { }
+local _len_0 = 1
+local _list_0 = items
+for _index_0 = 2, 4 do
+	local _item_0 = _list_0[_index_0]
+	_accum_0[_len_0] = _item_0
+	_len_0 = _len_0 + 1
+end
+sub_list = _accum_0
 for i = 10, 20 do
 	print(i)
 end
@@ -3797,6 +4014,35 @@ if _tab_0 then
 	end
 	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
 		print("匹配成功", fourth)
+	end
+end
+local segments = {
+	"admin",
+	"users",
+	"logs",
+	"view"
+}
+local _type_0 = type(segments)
+local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+if _tab_0 then
+	local groups
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		local _max_0 = #segments + -3 + 1
+		for _index_0 = 1, _max_0 do
+			local _item_0 = segments[_index_0]
+			_accum_0[_len_0] = _item_0
+			_len_0 = _len_0 + 1
+		end
+		groups = _accum_0
+	end
+	local resource = segments[#segments - 1]
+	local action = segments[#segments]
+	if resource ~= nil and action ~= nil then
+		print("Group:", groups)
+		print("Resource:", resource)
+		print("Action:", action)
 	end
 end
 local Inventory

@@ -1333,7 +1333,7 @@ The spread operator can be used in different positions to capture different rang
 [...start, last] = orders
 
 -- Capture things except the middle elements
-[first, _..., last] = orders
+[first, ..._, last] = orders
 ```
 <YueDisplay>
 <pre>
@@ -1344,7 +1344,7 @@ The spread operator can be used in different positions to capture different rang
 [...start, last] = orders
 
 -- Capture things except the middle elements
-[first, _..., last] = orders
+[first, ..._, last] = orders
 </pre>
 </YueDisplay>
 
