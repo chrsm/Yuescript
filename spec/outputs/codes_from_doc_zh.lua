@@ -209,14 +209,16 @@ for _key_0, _value_0 in pairs(b) do
 	end
 end
 merge = _tab_0
-print((function()
+local last
+do
 	local _item_0 = data.items
-	return _item_0[#_item_0]
-end)())
-print((function()
+	last = _item_0[#_item_0]
+end
+local second_last
+do
 	local _item_0 = data.items
-	return _item_0[#_item_0 - 1]
-end)())
+	second_last = _item_0[#_item_0 - 1]
+end
 local mt = { }
 local add
 add = function(self, right)
@@ -2597,14 +2599,16 @@ for _key_0, _value_0 in pairs(b) do
 	end
 end
 merge = _tab_0
-print((function()
+local last
+do
 	local _item_0 = data.items
-	return _item_0[#_item_0]
-end)())
-print((function()
+	last = _item_0[#_item_0]
+end
+local second_last
+do
 	local _item_0 = data.items
-	return _item_0[#_item_0 - 1]
-end)())
+	second_last = _item_0[#_item_0 - 1]
+end
 local mt = { }
 local add
 add = function(self, right)
@@ -3201,6 +3205,7 @@ local some_string = "这是一个字符串\n  并包括一个换行。"
 print("我有" .. tostring(math.random() * 100) .. "%的把握。")
 local integer = 1000000
 local hex = 0xEFBBBF
+local binary = 19
 local my_function
 my_function = function() end
 my_function()
