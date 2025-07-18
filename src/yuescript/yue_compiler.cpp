@@ -6777,7 +6777,7 @@ private:
 				}
 			}
 		}
-		int len = lua_objlen(L, -1);
+		int len = static_cast<int>(lua_objlen(L, -1));
 		lua_pushnil(L); // cur nil
 		for (int i = len; i >= 1; i--) {
 			lua_pop(L, 1); // cur
@@ -6792,7 +6792,7 @@ private:
 		str_list checks;
 		if (lua_istable(L, -1)) {
 			lua_rawgeti(L, -1, 1); // cur macrotab checks
-			int len = lua_objlen(L, -1);
+			int len = static_cast<int>(lua_objlen(L, -1));
 			for (int i = 1; i <= len; i++) {
 				lua_rawgeti(L, -1, i);
 				if (lua_toboolean(L, -1) == 0) {
@@ -6852,7 +6852,7 @@ private:
 		} // cur macroFunc
 		pushYue("pcall"sv); // cur macroFunc pcall
 		lua_insert(L, -2); // cur pcall macroFunc
-		if (!lua_checkstack(L, argStrs.size())) {
+		if (!lua_checkstack(L, static_cast<int>(argStrs.size()))) {
 			throw CompileError("too much macro params"s, x);
 		}
 		auto checkIt = checks.begin();
