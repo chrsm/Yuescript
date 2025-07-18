@@ -5440,7 +5440,7 @@ private:
 					if (def->defaultValue) {
 						defVal = _parser.toString(def->defaultValue);
 						Utils::trim(defVal);
-						defVal = '=' + Utils::toLuaString(defVal);
+						defVal = '=' + Utils::toLuaDoubleString(defVal);
 					}
 					newArgs.emplace_back(_parser.toString(def->name) + defVal);
 				}
@@ -9185,15 +9185,34 @@ private:
 			auto line = static_cast<YAMLLine_t*>(line_);
 			if (!line->segments.empty()) {
 				str_list segs;
+				bool firstSeg = true;
 				for (auto seg_ : line->segments.objects()) {
 					auto content = static_cast<YAMLLineContent_t*>(seg_)->content.get();
 					switch (content->get_id()) {
 						case id<YAMLLineInner_t>(): {
-							auto str = _parser.toString(content);
-							Utils::replace(str, "\r\n"sv, "\n"sv);
-							Utils::replace(str, "\n"sv, "\\n"sv);
-							Utils::replace(str, "\\#"sv, "#"sv);
-							segs.push_back('\"' + str + '\"');
+							auto seg = _parser.toString(content);
+							if (!indent) {
+								auto pos = seg.find_first_not_of("\t "sv);
+								if (pos == std::string::npos) {
+									indent = seg;
+									firstSeg = false;
+									continue;
+								} else {
+									indent = std::string{seg.c_str(), pos};
+								}
+							}
+							if (firstSeg) {
+								firstSeg = false;
+								if (std::string_view{seg}.substr(0, indent.value().size()) != indent.value()) {
+									throw CompileError("inconsistent indent"sv, line);
+								}
+								auto seqStr = seg.substr(indent.value().size());
+								if (!seqStr.empty()) {
+									segs.push_back(Utils::toLuaDoubleString(seqStr));
+								}
+							} else {
+								segs.push_back(Utils::toLuaDoubleString(seg));
+							}
 							break;
 						}
 						case id<Exp_t>(): {
@@ -9204,20 +9223,7 @@ private:
 						default: YUEE("AST node mismatch", content); break;
 					}
 				}
-				auto lineStr = join(segs, " .. "sv);
-				if (!indent) {
-					auto pos = lineStr.find_first_not_of("\t "sv, 1);
-					if (pos == std::string::npos) {
-						throw CompileError("expecting first line indent"sv, line);
-					}
-					indent = std::string{lineStr.c_str(), pos};
-				} else {
-					if (std::string_view{lineStr}.substr(0, indent.value().size()) != indent.value()) {
-						throw CompileError("inconsistent indent"sv, line);
-					}
-				}
-				lineStr = '"' + lineStr.substr(indent.value().size());
-				temp.push_back(lineStr);
+				temp.push_back(join(segs, " .. "sv));
 			}
 		}
 		auto str = join(temp, " .. '\\n' .. "sv);

@@ -60,6 +60,11 @@ macro NumAndStr = (num, str) ->
 
 print $NumAndStr 123, 'xyz'
 
+macro NumAndStr2 = (num`Num, str`SingleString) -> |
+	[#{num}, #{str}]
+
+print $NumAndStr2 456, 'abc'
+
 $asserts item == nil
 
 $myconfig false
@@ -100,13 +105,14 @@ macro filter = (items, action)->
 	$showMacro "filter", "[_ for _ in *#{items} when #{action}]"
 
 macro reduce = (items, def, action)->
-	$showMacro "reduce", "if ##{items} == 0
-	#{def}
-else
-	_1 = #{def}
-	for _2 in *#{items}
-		_1 = #{action}
-	_1"
+	$showMacro "reduce", |
+		if ##{items} == 0
+			#{def}
+		else
+			_1 = #{def}
+			for _2 in *#{items}
+				_1 = #{action}
+			_1
 
 macro foreach = (items, action)->
 	$showMacro "foreach", "for _ in *#{items}
@@ -154,13 +160,15 @@ macro curry = (...)->
 f = $curry x,y,z,do
 	print x,y,z
 
-macro get_inner = (var)-> "do
-	a = 1
-	a + 1"
+macro get_inner = (var)-> |
+	do
+		a = 1
+		a + 1
 
-macro get_inner_hygienic = (var)-> "(->
-	local a = 1
-	a + 1)!"
+macro get_inner_hygienic = (var)-> |
+	(->
+		local a = 1
+		a + 1)!
 
 do
 	a = 8
@@ -195,6 +203,18 @@ end
 ]]
 
 print x
+
+import "yue"
+macro lua = (code`YAMLMultiline) -> {
+	code: yue.loadstring(code)!
+	type: "lua"
+}
+
+$lua |
+	local function f2(a)
+		return a + 1
+	end
+	x = x + f2(3)
 
 macro def = (fname, ...)->
 	args = {...}
@@ -317,7 +337,13 @@ $chainC(
 	Destroy!
 )
 
-macro tb = -> "{'abc', a:123, <call>:=> 998}"
+macro tb = -> |
+	{
+		'abc'
+		a: 123
+		<call>: => 998
+	}
+
 print $tb[1], $tb.a, ($tb)!, $tb!
 
 print "current line: #{ $LINE }"

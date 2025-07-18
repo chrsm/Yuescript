@@ -5,9 +5,6 @@ export macro todoInner = (module, line, msg)->
 		type: "lua"
 	}
 
-export macro todo = (msg)->
-	if msg
-		"$todoInner $FILE, $LINE, #{msg}"
-	else
-		"$todoInner $FILE, $LINE"
+export macro todo = (msg)-> |
+	$todoInner $FILE, $LINE#{msg and ", #{msg}" or ""}
 

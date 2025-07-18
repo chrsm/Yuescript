@@ -457,7 +457,7 @@ private:
 namespace Utils {
 void replace(std::string& str, std::string_view from, std::string_view to);
 void trim(std::string& str);
-std::string toLuaString(const std::string& input);
+std::string toLuaDoubleString(const std::string& input);
 } // namespace Utils
 
 } // namespace yue

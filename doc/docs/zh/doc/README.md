@@ -442,6 +442,54 @@ print "有效的枚举类型:", $BodyType Static
 </pre>
 </YueDisplay>
 
+### 宏参数检查
+
+可以直接在参数列表中声明期望的 AST 节点类型，并在编译时检查传入的宏参数是否符合预期。
+
+```moonscript
+macro printNumAndStr = (num `Num, str `String) -> |
+  print(
+    #{num}
+    #{str}
+  )
+
+$printNumAndStr 123, "hello"
+```
+<YueDisplay>
+<pre>
+macro printNumAndStr = (num `Num, str `String) -> |
+  print(
+    #{num}
+    #{str}
+  )
+
+$printNumAndStr 123, "hello"
+</pre>
+</YueDisplay>
+
+如果需要做更加灵活的参数检查操作，可以使用内置的 `$is_ast` 宏函数在合适的位置进行手动检查。
+
+```moonscript
+macro printNumAndStr = (num, str) ->
+  error "expected Num as first argument" unless $is_ast Num, num
+  error "expected String as second argument" unless $is_ast String, str
+  "print(#{num}, #{str})"
+
+$printNumAndStr 123, "hello"
+```
+<YueDisplay>
+<pre>
+macro printNumAndStr = (num, str) ->
+  error "expected Num as first argument" unless $is_ast Num, num
+  error "expected String as second argument" unless $is_ast String, str
+  "print(#{num}, #{str})"
+
+$printNumAndStr 123, "hello"
+</pre>
+</YueDisplay>
+
+更多关于可用 AST 节点的详细信息，请参考 [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp) 中大写的规则定义。
+
 ## 操作符
 
 Lua的所有二元和一元操作符在月之脚本中都是可用的。此外，**!=** 符号是 **~=** 的别名，而 **\\** 或 **::** 均可用于编写链式函数调用，如写作 `tb\func!` 或 `tb::func!`。此外月之脚本还提供了一些其他特殊的操作符，以编写更具表达力的代码。
@@ -1697,6 +1745,65 @@ binary = 0B10011
 integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
+</pre>
+</YueDisplay>
+
+### YAML 风格字符串
+
+使用 `|` 前缀标记一个多行 YAML 风格字符串：
+
+```moonscript
+str = |
+  key: value
+  list:
+    - item1
+    - #{expr}
+```
+<YueDisplay>
+<pre>
+str = |
+  key: value
+  list:
+    - item1
+    - #{expr}
+</pre>
+</YueDisplay>
+
+其效果类似于原生 Lua 的多行拼接，所有文本（含换行）将被保留下来，并支持 `#{...}` 语法，通过 `tostring(expr)` 插入表达式结果。
+
+YAML 风格的多行字符串会自动检测首行后最小的公共缩进，并从所有行中删除该前缀空白字符。这让你可以在代码中对齐文本，但输出字符串不会带多余缩进。
+
+```moonscript
+fn = ->
+  str = |
+    foo:
+      bar: baz
+  return str
+```
+<YueDisplay>
+<pre>
+fn = ->
+  str = |
+    foo:
+      bar: baz
+  return str
+</pre>
+</YueDisplay>
+
+输出字符串中的 foo: 对齐到行首，不会带有函数缩进空格。保留内部缩进的相对结构，适合书写结构化嵌套样式的内容。
+
+支持自动处理字符中的引号、反斜杠等特殊符号，无需手动转义：
+
+```moonscript
+str = |
+  path: "C:\Program Files\App"
+  note: 'He said: "#{Hello}!"'
+```
+<YueDisplay>
+<pre>
+str = |
+  path: "C:\Program Files\App"
+  note: 'He said: "#{Hello}!"'
 </pre>
 </YueDisplay>
 

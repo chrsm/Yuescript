@@ -4,11 +4,16 @@ $ ->
 		options.target_extension = "tl"
 	package.path ..= ";./spec/lib/?.lua"
 
-macro to_lua = (code)->
-	"require('yue').to_lua(#{code}, reserve_line_number:false, same_module:true)"
+macro to_lua = (code)-> |
+	require('yue').to_lua #{code},
+		reserve_line_number: false
+		same_module: true
 
-macro trim = (name)->
-	"if result := #{name}\\match '[\\'\"](.*)[\\'\"]' then result else #{name}"
+macro trim = (name)-> |
+	if result := #{name}\match '[\'"](.*)[\'"]'
+		result
+	else
+		#{name}
 
 export macro local = (decl, value = nil)->
 	import "yue" as {options:{:tl_enabled}}

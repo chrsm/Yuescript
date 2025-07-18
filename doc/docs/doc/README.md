@@ -444,6 +444,54 @@ print "Valid enum type:", $BodyType Static
 </pre>
 </YueDisplay>
 
+### Argument Validation
+
+You can declare the expected AST node types in the argument list, and check whether the incoming macro arguments meet the expectations at compile time.
+
+```moonscript
+macro printNumAndStr = (num `Num, str `String) -> |
+  print(
+    #{num}
+    #{str}
+  )
+
+$printNumAndStr 123, "hello"
+```
+<YueDisplay>
+<pre>
+macro printNumAndStr = (num `Num, str `String) -> |
+  print(
+    #{num}
+    #{str}
+  )
+
+$printNumAndStr 123, "hello"
+</pre>
+</YueDisplay>
+
+If you need more flexible argument checking, you can use the built-in `$is_ast` macro function to manually check at the appropriate place.
+
+```moonscript
+macro printNumAndStr = (num, str) ->
+  error "expected Num as first argument" unless $is_ast Num, num
+  error "expected String as second argument" unless $is_ast String, str
+  "print(#{num}, #{str})"
+
+$printNumAndStr 123, "hello"
+```
+<YueDisplay>
+<pre>
+macro printNumAndStr = (num, str) ->
+  error "expected Num as first argument" unless $is_ast Num, num
+  error "expected String as second argument" unless $is_ast String, str
+  "print(#{num}, #{str})"
+
+$printNumAndStr 123, "hello"
+</pre>
+</YueDisplay>
+
+For more details about available AST nodes, please refer to the uppercased definitions in [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
+
 ## Operator
 
 All of Lua's binary and unary operators are available. Additionally **!=** is as an alias for **~=**, and either **\\** or **::** can be used to write a chaining function call like `tb\func!` or `tb::func!`. And Yuescipt offers some other special operators to write more expressive codes.
@@ -1699,6 +1747,65 @@ binary = 0B10011
 integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
+</pre>
+</YueDisplay>
+
+### YAML Multiline String
+
+The `|` prefix introduces a YAML-style multiline string literal:
+
+```moonscript
+str = |
+  key: value
+  list:
+    - item1
+    - #{expr}
+```
+<YueDisplay>
+<pre>
+str = |
+  key: value
+  list:
+    - item1
+    - #{expr}
+</pre>
+</YueDisplay>
+
+This allows writing structured multiline text conveniently. All line breaks and indentation are preserved relative to the first non-empty line, and expressions inside `#{...}` are interpolated automatically as `tostring(expr)`.
+
+YAML Multiline String automatically detects the common leading whitespace prefix (minimum indentation across all non-empty lines) and removes it from all lines. This makes it easy to indent your code visually without affecting the resulting string content.
+
+```moonscript
+fn = ->
+  str = |
+    foo:
+      bar: baz
+  return str
+```
+<YueDisplay>
+<pre>
+fn = ->
+  str = |
+    foo:
+      bar: baz
+  return str
+</pre>
+</YueDisplay>
+
+Internal indentation is preserved relative to the removed common prefix, allowing clean nested structures.
+
+All special characters like quotes (`"`) and backslashes (`\`) in the YAMLMultiline block are automatically escaped so that the generated Lua string is syntactically valid and behaves as expected.
+
+```moonscript
+str = |
+  path: "C:\Program Files\App"
+  note: 'He said: "#{Hello}!"'
+```
+<YueDisplay>
+<pre>
+str = |
+  path: "C:\Program Files\App"
+  note: 'He said: "#{Hello}!"'
 </pre>
 </YueDisplay>
 

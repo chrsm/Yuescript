@@ -8,13 +8,12 @@ export macro config = (debugging = true)->
 	""
 
 export macro showMacro = (name, res)->
-	if debugMacro then "
-do
-	txt = #{res}
-	print '[macro ' .. #{name} .. ']'
-	print txt
-	txt
-"
+	if debugMacro then |
+		do
+			txt = #{res}
+			print '[macro #{name}]'
+			print txt
+			txt
 	else
 		res
 
@@ -35,14 +34,16 @@ export macro copy = (src, dst, ...)->
 		src != "_src_" and src != "_dst_" and dst != "_src_" and dst != "_dst_"
 		"copy targets can not be _src_ or _dst_"
 	)
-	"
-do
-	local _src_, _dst_
-	with _dst_ := #{dst}
-		with _src_ := #{src}
-#{table.concat for field in *{...} do "
-			_dst_.#{field} = _src_.#{field}
-"}"
+	copyFields = table.concat(
+		["_dst_.#{field} = _src_.#{field}" for field in *{...}]
+		"\n\t\t\t"
+	)
+	|
+		do
+			local _src_, _dst_
+			with _dst_ := #{dst}
+				with _src_ := #{src}
+					#{copyFields}
 
 export macro enum = (...) ->
 	items = {...}

@@ -26,6 +26,10 @@ print({
 	123,
 	'xyz'
 })
+print({
+	456,
+	'abc'
+})
 do
 	assert(item == nil)
 end
@@ -213,6 +217,13 @@ function tb:func()
 end
 end
 print(x)
+local yue = require("yue")
+do
+local function f2(a)
+	return a + 1
+end
+x = x + f2(3)
+end
 local sel
 sel = function(a, b, c)
 	if a then
@@ -317,7 +328,7 @@ print((setmetatable({
 		return 998
 	end
 }))
-print("current line: " .. tostring(323))
+print("current line: " .. tostring(349))
 do
 	do
 -- TODO

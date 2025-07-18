@@ -74,3 +74,76 @@ _ = "hello"
 something"hello"\world!
 something "hello"\world!
 
+do
+	str = |
+		key: value
+	str = |
+		config:
+			enabled: true
+			level: 5
+	str = |
+		header: start
+
+		footer: end
+	str = |
+		name: #{username}
+	str = |
+		count: #{total} items
+	str = |
+		user: #{name}
+		id: #{id}
+	str = |
+		path: "C:\\Program Files\\App"
+		desc: 'single "quote" test'
+	str = |
+		key: value   
+		next: 123   
+	str = |
+		list:
+		  - "one"
+		  - "two"
+	str = |
+		-- comment
+		content text
+		-- comment
+	str = |
+		#{1 + 2}
+		#{2 + 3}
+		#{"a" .. "b"}
+	obj =
+		settings: |
+			mode: #{mode}
+			flags:
+				- #{flag1}
+				- default
+	fn = -> |
+		Hello
+		name: #{userName}
+	str = |
+		result:
+			status: #{if ok then "pass" else "fail"}
+			code: #{code}
+	summary = |
+		date: #{os.date()}
+		values:
+			-
+				a: #{aVal}
+				b: #{bVal or defaultB}
+	msg = send |
+		Hello, #{user}!
+		Today is #{os.date("%A")}.
+	desc = do
+		prefix = "Result"
+		|
+			#{prefix}:
+			value: #{compute!}
+	(|
+		1
+		2
+		3
+	) |> print
+
+export yaml = |
+	version: #{ver}
+	ok: true
+
