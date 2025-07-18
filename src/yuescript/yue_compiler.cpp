@@ -9183,48 +9183,44 @@ private:
 		str_list temp;
 		for (auto line_ : multiline->lines.objects()) {
 			auto line = static_cast<YAMLLine_t*>(line_);
-			if (!line->segments.empty()) {
-				str_list segs;
-				bool firstSeg = true;
-				for (auto seg_ : line->segments.objects()) {
-					auto content = static_cast<YAMLLineContent_t*>(seg_)->content.get();
-					switch (content->get_id()) {
-						case id<YAMLLineInner_t>(): {
-							auto seg = _parser.toString(content);
-							if (!indent) {
-								auto pos = seg.find_first_not_of("\t "sv);
-								if (pos == std::string::npos) {
-									indent = seg;
-									firstSeg = false;
-									continue;
-								} else {
-									indent = std::string{seg.c_str(), pos};
-								}
-							}
-							if (firstSeg) {
-								firstSeg = false;
-								if (std::string_view{seg}.substr(0, indent.value().size()) != indent.value()) {
-									throw CompileError("inconsistent indent"sv, line);
-								}
-								auto seqStr = seg.substr(indent.value().size());
-								if (!seqStr.empty()) {
-									segs.push_back(Utils::toLuaDoubleString(seqStr));
-								}
-							} else {
-								segs.push_back(Utils::toLuaDoubleString(seg));
-							}
-							break;
-						}
-						case id<Exp_t>(): {
-							transformExp(static_cast<Exp_t*>(content), segs, ExpUsage::Closure);
-							segs.back() = globalVar("tostring"sv, content, AccessType::Read) + '(' + segs.back() + ')';
-							break;
-						}
-						default: YUEE("AST node mismatch", content); break;
-					}
-				}
-				temp.push_back(join(segs, " .. "sv));
+			auto indentStr = _parser.toString(line->indent);
+			if (!indent) {
+				indent = indentStr;
 			}
+			if (std::string_view{indentStr.c_str(), indent.value().size()} != indent.value()) {
+				throw CompileError("inconsistent indent"sv, line);
+			}
+			indentStr = indentStr.substr(indent.value().size());
+			str_list segs;
+			bool firstSeg = true;
+			for (auto seg_ : line->segments.objects()) {
+				auto content = static_cast<YAMLLineContent_t*>(seg_)->content.get();
+				switch (content->get_id()) {
+					case id<YAMLLineInner_t>(): {
+						auto seqStr = _parser.toString(content);
+						Utils::replace(seqStr, "\\#"sv, "#"sv);
+						if (firstSeg) {
+							firstSeg = false;
+							seqStr.insert(0, indentStr);
+						}
+						segs.push_back(Utils::toLuaDoubleString(seqStr));
+						break;
+					}
+					case id<Exp_t>(): {
+						if (firstSeg) {
+							firstSeg = false;
+							if (!indentStr.empty()) {
+								segs.push_back(Utils::toLuaDoubleString(indentStr));
+							}
+						}
+						transformExp(static_cast<Exp_t*>(content), segs, ExpUsage::Closure);
+						segs.back() = globalVar("tostring"sv, content, AccessType::Read) + '(' + segs.back() + ')';
+						break;
+					}
+					default: YUEE("AST node mismatch", content); break;
+				}
+			}
+			temp.push_back(join(segs, " .. "sv));
 		}
 		auto str = join(temp, " .. '\\n' .. "sv);
 		Utils::replace(str, "\" .. '\\n' .. \""sv, "\\n"sv);

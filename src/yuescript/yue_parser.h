@@ -378,6 +378,7 @@ private:
 	AST_RULE(DoubleStringInner);
 	AST_RULE(DoubleStringContent);
 	AST_RULE(DoubleString);
+	AST_RULE(YAMLIndent);
 	AST_RULE(YAMLLineInner);
 	AST_RULE(YAMLLineContent);
 	AST_RULE(YAMLLine);

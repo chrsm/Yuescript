@@ -109,6 +109,12 @@ end
 print("yuescript")
 print(3)
 print("有效的枚举类型:", "Static")
+do
+	print(123, "hello")
+end
+do
+	print(123, "hello")
+end
 if tb ~= nil then
 	tb:func()
 end
@@ -816,6 +822,13 @@ print("我有" .. tostring(math.random() * 100) .. "%的把握。")
 local integer = 1000000
 local hex = 0xEFBBBF
 local binary = 19
+local str = "key: value\nlist:\n  - item1\n  - " .. tostring(expr)
+local fn
+fn = function()
+	local str = "foo:\n  bar: baz"
+	return str
+end
+local str = "path: \"C:\\Program Files\\App\"\nnote: 'He said: \"" .. tostring(Hello) .. "!\"'"
 local my_function
 my_function = function() end
 my_function()
@@ -2499,6 +2512,12 @@ end
 print("yuescript")
 print(3)
 print("有效的枚举类型:", "Static")
+do
+	print(123, "hello")
+end
+do
+	print(123, "hello")
+end
 if tb ~= nil then
 	tb:func()
 end
@@ -3206,6 +3225,13 @@ print("我有" .. tostring(math.random() * 100) .. "%的把握。")
 local integer = 1000000
 local hex = 0xEFBBBF
 local binary = 19
+local str = "key: value\nlist:\n  - item1\n  - " .. tostring(expr)
+local fn
+fn = function()
+	local str = "foo:\n  bar: baz"
+	return str
+end
+local str = "path: \"C:\\Program Files\\App\"\nnote: 'He said: \"" .. tostring(Hello) .. "!\"'"
 local my_function
 my_function = function() end
 my_function()
