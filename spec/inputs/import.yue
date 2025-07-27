@@ -139,3 +139,13 @@ do
 	import "m" as {c: d}
 	import "m" as {g, {<close>: i}}
 
+do
+	import require
+	import string as stringlib
+	import string.format
+	import io.read as io_read
+
+	type = ->
+	import type as tp
+	import 月 as yue
+

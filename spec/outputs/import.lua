@@ -166,3 +166,13 @@ do
 	local _obj_1 = require("m")
 	g, i = _obj_1[1], getmetatable(_obj_1[2]).__close
 end
+do
+	local require <const> = require
+	local stringlib <const> = string
+	local format <const> = string.format
+	local io_read <const> = io.read
+	local type
+	type = function() end
+	local tp <const> = _G.type
+	local yue <const> = _G["月"]
+end
