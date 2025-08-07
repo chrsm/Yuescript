@@ -372,11 +372,15 @@ static int yuetoast(lua_State* L) {
 							lua_rawseti(L, -2, 2);
 							lua_pushinteger(L, node->m_begin.m_col);
 							lua_rawseti(L, -2, 3);
+							lua_pushinteger(L, node->m_end.m_line);
+							lua_rawseti(L, -2, 4);
+							lua_pushinteger(L, node->m_end.m_col);
+							lua_rawseti(L, -2, 5);
 							formatter.indent = 0;
 							auto str = node->to_string(&formatter);
 							yue::Utils::trim(str);
 							lua_pushlstring(L, str.c_str(), str.length());
-							lua_rawseti(L, -2, 4);
+							lua_rawseti(L, -2, 6);
 							lua_rawseti(L, tableIndex, static_cast<int>(lua_objlen(L, tableIndex)) + 1);
 							break;
 						}
@@ -403,7 +407,11 @@ static int yuetoast(lua_State* L) {
 							lua_rawseti(L, -2, 2);
 							lua_pushinteger(L, node->m_begin.m_col);
 							lua_rawseti(L, -2, 3);
-							for (int i = count, j = 4; i >= 1; i--, j++) {
+							lua_pushinteger(L, node->m_end.m_line);
+							lua_rawseti(L, -2, 4);
+							lua_pushinteger(L, node->m_end.m_col);
+							lua_rawseti(L, -2, 5);
+							for (int i = count, j = 6; i >= 1; i--, j++) {
 								lua_rawgeti(L, tableIndex, len - i + 1);
 								lua_rawseti(L, -2, j);
 							}
