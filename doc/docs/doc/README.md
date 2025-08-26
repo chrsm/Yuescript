@@ -2126,6 +2126,42 @@ if func 1, 2, 3,
 </pre>
 </YueDisplay>
 
+### Parameter Destructuring
+
+YueScript now supports destructuring function parameters when the argument is an object. Two forms of destructuring table literals are available:
+
+* **Curly-brace wrapped literals/object parameters**, allowing optional default values when fields are missing (e.g., `{:a, :b}`, `{a: a1 = 123}`).
+
+* **Unwrapped simple table syntax**, starting with a sequence of key-value or shorthand bindings and continuing until another expression terminates it (e.g., `:a, b: b1, :c`). This form extracts multiple fields from the same object.
+
+```moonscript
+f1 = (:a, :b, :c) ->
+  print a, b, c
+
+f1 a: 1, b: "2", c: {}
+
+f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
+  print a, b, c
+
+arg1 = {a: 0}
+f2 arg1, arg2
+```
+<YueDisplay>
+<pre>
+f1 = (:a, :b, :c) ->
+  print a, b, c
+
+f1 a: 1, b: "2", c: {}
+
+f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
+print a, b, c
+
+arg1 = {a: 0}
+f2 arg1, arg2
+</pre>
+</YueDisplay>
+
+
 ## Backcalls
 
 Backcalls are used for unnesting callbacks. They are defined using arrows pointed to the left as the last parameter by default filling in a function call. All the syntax is mostly the same as regular arrow functions except that it is just pointing the other way and the function body does not require indent.
