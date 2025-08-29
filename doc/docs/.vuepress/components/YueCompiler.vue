@@ -1,21 +1,21 @@
 <template>
 		<div style="width: 100%; height: auto;">
 			<div class="parent" style="background-color: #f5f7ff;">
-				<div class="childL" style="height: 2.5em;">
+				<div class="editor-section">
 					<div class="childTitle">YueScript {{ info }}</div>
+					<div class="editor-container" ref='yueEditor'>
+						<ClientOnly>
+							<prism-editor class="my-editor" v-model="code" :highlight="highlighterYue" @input="codeChanged($event)" line-numbers :readonly="readonly"></prism-editor>
+						</ClientOnly>
+					</div>
 				</div>
-				<div class="childR" style="height: 2.5em;">
+				<div class="editor-section">
 					<div class="childTitle">Lua</div>
-				</div>
-				<div class="childL" ref='yueEditor' style="height: 30em;">
-					<ClientOnly>
-						<prism-editor class="my-editor" v-model="code" :highlight="highlighterYue" @input="codeChanged($event)" line-numbers :readonly="readonly"></prism-editor>
-					</ClientOnly>
-				</div>
-				<div class="childR" style="height: 30em;">
-					<ClientOnly>
-						<prism-editor class="my-editor" v-model="compiled" :highlight="highlighterLua" @input="codeChanged($event)" readonly></prism-editor>
-					</ClientOnly>
+					<div class="editor-container">
+						<ClientOnly>
+							<prism-editor class="my-editor" v-model="compiled" :highlight="highlighterLua" @input="codeChanged($event)" :line-numbers="isMobileLayout" readonly></prism-editor>
+						</ClientOnly>
+					</div>
 				</div>
 			</div>
 			<div v-if="!compileronly">
@@ -57,9 +57,18 @@
 				code: '',
 				compiled: '',
 				result: '',
+				windowWidth: 0,
 			};
 		},
+		computed: {
+			isMobileLayout() {
+				return this.windowWidth <= 768;
+			},
+		},
 		mounted () {
+			this.windowWidth = window.innerWidth;
+			window.addEventListener('resize', this.handleResize);
+
 			if (this.text !== '') {
 				this.$data.code = this.text;
 				this.codeChanged(this.text);
@@ -86,7 +95,13 @@
 			})(this);
 			check();
 		},
+		beforeDestroy() {
+			window.removeEventListener('resize', this.handleResize);
+		},
 		methods: {
+			handleResize() {
+				this.windowWidth = window.innerWidth;
+			},
 			runCode() {
 				if (window.yue && this.$data.compiled !== '') {
 					let res = '';
@@ -136,27 +151,35 @@
 		resize: none;
 		margin-top: 5px;
 	}
-	.childL {
-		float: left;
+
+	.parent {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+
+	.editor-section {
 		width: 50%;
 		box-sizing: border-box;
-		background-clip: content-box;
 		background: #f5f7ff;
 	}
-	.childR {
-		float: left;
-		width: 50%;
-		box-sizing: border-box;
-		background-clip: content-box;
-		background: #f5f7ff;
+
+	.editor-container {
+		height: 55vh;
 	}
+
 	.childTitle {
 		width: 100%;
 		font-size: 1.2em;
 		color: #b7ae8f;
 		text-align: center;
 		padding: 0.2em;
+		height: 2.5em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
+
 	.button {
 		float: right;
 		border: none;
@@ -173,9 +196,11 @@
 		margin-top: 10px;
 		margin-right: 5px;
 	}
+
 	.button:hover {
 		background-color: #beb69a;
 	}
+
 	.button:focus,
 	.button:active:focus,
 	.button.active:focus,
@@ -207,5 +232,19 @@
 	.my-editor >>> .prism-editor__textarea:focus {
 		outline: none;
 	}
-</style>
 
+	/* 移动端响应式布局 */
+	@media screen and (max-width: 768px) {
+		.parent {
+			flex-direction: column;
+		}
+
+		.editor-section {
+			width: 100%;
+		}
+
+		.editor-container {
+			height: 30vh;
+		}
+	}
+</style>

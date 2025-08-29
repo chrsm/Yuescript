@@ -2121,6 +2121,54 @@ f2 arg1, arg2
 </pre>
 </YueDisplay>
 
+### 前置返回表达式
+
+在深度嵌套的函数体中，为了提升返回值的可读性及编写便利性，我们新增了 “前置返回表达式” 语法。其形式如下：
+
+```moon
+findFirstEven = (list): nil ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+```
+<YueDisplay>
+<pre>
+findFirstEven = (list): nil ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+</pre>
+</YueDisplay>
+
+这个写法等价于：
+
+```moon
+findFirstEven = (list) ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+  nil
+```
+<YueDisplay>
+<pre>
+findFirstEven = (list) ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+  nil
+</pre>
+</YueDisplay>
+
+唯一的区别在于：你可以将函数的返回值表达式提前写在 `->` 或 `=>` 前，用以指示该函数应隐式返回该表达式的值。这样即使在多层循环或条件判断的场景下，也无需编写尾行悬挂的返回表达式，逻辑结构会更加直观清晰。
+
 ## 反向回调
 
 反向回调用于减少函数回调的嵌套。它们使用指向左侧的箭头，并且默认会被定义为传入后续函数调用的最后一个参数。它的语法大部分与常规箭头函数相同，只是它指向另一方向，并且后续的函数体不需要进行缩进。

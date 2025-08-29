@@ -2161,6 +2161,53 @@ f2 arg1, arg2
 </pre>
 </YueDisplay>
 
+### Prefixed Return Expression
+
+When working with deeply nested function bodies, it can be tedious to maintain readability and consistency of the return value. To address this, YueScript introduces the **Prefixed Return Expression** syntax. Its form is as follows:
+
+```moon
+findFirstEven = (list): nil ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+```
+<YueDisplay>
+<pre>
+findFirstEven = (list): nil ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+</pre>
+</YueDisplay>
+
+This is equivalent to:
+
+```moon
+findFirstEven = (list) ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+  nil
+```
+<YueDisplay>
+<pre>
+findFirstEven = (list) ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+  nil
+</pre>
+</YueDisplay>
+
+The only difference is that you can move the final return expression before the `->` or `=>` token to indicate the function’s implicit return value as the last statement. This way, even in functions with multiple nested loops or conditional branches, you no longer need to write a trailing return expression at the end of the function body, making the logic structure more straightforward and easier to follow.
 
 ## Backcalls
 
