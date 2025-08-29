@@ -917,6 +917,36 @@ if func(1, 2, 3, "你好", "世界") then
 	print("hello")
 	print("我在if内部")
 end
+local f1
+f1 = function(_arg_0)
+	local a, b, c
+	a, b, c = _arg_0.a, _arg_0.b, _arg_0.c
+	return print(a, b, c)
+end
+f1({
+	a = 1,
+	b = "2",
+	c = { }
+})
+local f2
+f2 = function(_arg_0, c)
+	local a1, b
+	a1, b = _arg_0.a, _arg_0.b
+	if a1 == nil then
+		a1 = 123
+	end
+	if b == nil then
+		b = 'abc'
+	end
+	if c == nil then
+		c = { }
+	end
+	return print(a1, b, c)
+end
+local arg1 = {
+	a = 0
+}
+f2(arg1, arg2)
 f(function()
 	return print("hello")
 end)
@@ -3319,6 +3349,66 @@ end
 if func(1, 2, 3, "你好", "世界") then
 	print("你好")
 	print("我在if内部")
+end
+local f1
+f1 = function(_arg_0)
+	local a, b, c
+	a, b, c = _arg_0.a, _arg_0.b, _arg_0.c
+	return print(a, b, c)
+end
+f1({
+	a = 1,
+	b = "2",
+	c = { }
+})
+local f2
+f2 = function(_arg_0, c)
+	local a1, b
+	a1, b = _arg_0.a, _arg_0.b
+	if a1 == nil then
+		a1 = 123
+	end
+	if b == nil then
+		b = 'abc'
+	end
+	if c == nil then
+		c = { }
+	end
+	return print(a1, b, c)
+end
+local arg1 = {
+	a = 0
+}
+f2(arg1, arg2)
+local findFirstEven
+findFirstEven = function(list)
+	for _index_0 = 1, #list do
+		local item = list[_index_0]
+		if type(item) == "table" then
+			for _index_1 = 1, #item do
+				local sub = item[_index_1]
+				if sub % 2 == 0 then
+					return sub
+				end
+			end
+		end
+	end
+	return nil
+end
+local findFirstEven
+findFirstEven = function(list)
+	for _index_0 = 1, #list do
+		local item = list[_index_0]
+		if type(item) == "table" then
+			for _index_1 = 1, #item do
+				local sub = item[_index_1]
+				if sub % 2 == 0 then
+					return sub
+				end
+			end
+		end
+	end
+	return nil
 end
 f(function()
 	return print("hello")
