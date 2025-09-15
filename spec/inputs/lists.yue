@@ -134,4 +134,137 @@ do
 			x?\y?!.z?[# - 3]?[, -3]
 		)
 
+do
+	tb = [1, 2, 3]
+	tb[#] = 40
+	tb[# - 1] = 20
+
+do
+	a = b = c = "x"
+	lst = []
+	lst[#] = a
+	lst[# - 1] = b
+
+do
+	x, y, z = 1, 2, 3
+	arr = []
+	arr[#], head = x, y
+	arr[#] = z
+
+do
+	triple = ["keep", "skip", "tail"]
+	[head, _, tailv] = triple
+	buf = []
+	buf[#] = head
+	buf[#] = tailv
+
+do
+	src = ["a", "", "c", nil, "d"]
+	collected = []
+	for item in *src
+		if item and #item > 0
+			collected[#] = item
+
+do
+	nums = [1, 2, 3, 4, 5]
+	last_two = [v for v in *nums when v > 3]
+	nums[#] = last_two[1]
+	nums[#] = last_two[2]
+
+do
+	store = []
+	store[#] = { meta: { id: 1, ok: true }, payload: [10, 20] }
+	store[#] = { meta: { id: 1, ok: false }, payload: [10, 20, 30] }
+
+do
+	f = ->
+		q = []
+		tb.tmp = [n for n = 1, 4]
+		if #tb.tmp >= 3
+			q[#] = {head: tb.tmp[1], tail: tb.tmp[#]}
+
+do
+	make_pair = (a, b) -> [a, b]
+	pairs = []
+	p1 = make_pair 7, 8
+	pairs[#] = p1
+	k, v = "key", 42
+	pairs[#] = {k: k, v: v}
+
+do
+	cfg = {mode: "safe", tags: []}
+	if cfg.mode == "safe"
+		cfg.mode = "fast"
+		cfg.tags[#] = "newbie"
+
+do
+	mat = [ [1,2], [3,4], [5,6]]
+	last_row = mat[#]
+	rows = []
+	rows[#] = last_row[1]
+
+do
+	kv = []
+	kv[#] = {k: "a", v: 1}
+	kv[#] = {k: "b", v: 2}
+	pair_last = kv[#]
+	dict = {}
+	dict[pair_last.k] = pair_last.v
+	dict[pair_last.k] = 3
+
+do
+	base = [ i for i = 1, 4 ]
+	pack = []
+	pack[#] = [ base[1], base[#] ]
+	pack[#] = { first: base[1], last: base[#] }
+
+do
+	opts = {limit: 10}
+	{:limit, :offset = 0} = opts
+	pages = []
+	pages[#] = {limit: limit, offset: offset}
+
+do
+	chain = { a: { b: { c: 0 } }, list: [ {x:0}, {x:0} ] }
+	chain.a.b.c = 1
+	chain.list[1].x = 10
+	chain.list[#].x = 20
+	chain.list[# - 1] = { x: 30 }
+
+do
+	node = {left: {v:0}, right: {v:0}}
+	bag = []
+	{ :left, :right } = node
+	bag[#], left.v, right.v = "k", 1, 2
+
+do
+	a1, a2, a3 = 100, 200, 300
+	mix = []
+	mix[#], mix[#], meta = a1, a2, {tag: "ok"}
+
+do
+	cfg2 = {limit: 5, opts: {flag: false}}
+	{limit: lim, opts: opt2} = cfg2
+	bucket = {xs: []}
+	bucket.xs[#], bucket.flag, opt2.flags[] = lim, true, 123
+
+do
+	ret2 = ()-> 7, 8
+	box = []
+	box[#], x1 = ret2!
+
+do
+	q = [1, 2]
+	lastq = q[#]
+	q[# - 1] = lastq * 10
+
+do
+	mat2 = [[9,8], [7,6]]
+	t = { hold: nil }
+	t.hold = mat2[#][1]
+
+do
+	f = -> globalTB[#][#] = 1
+	f1 = -> globalTB[#][# - 1]
+
 nil

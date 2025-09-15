@@ -470,8 +470,11 @@ do
 	end)())
 end
 local _anon_func_0 = function(globalTB)
-	local _item_0 = globalTB
-	local _call_0 = _item_0[#_item_0]
+	local _call_0
+	do
+		local _item_0 = globalTB
+		_call_0 = _item_0[#_item_0]
+	end
 	return _call_0["end"](_call_0, 123)
 end
 local _anon_func_1 = function(a)
@@ -520,6 +523,338 @@ do
 	local f
 	f = function()
 		return print(_anon_func_0(globalTB), _anon_func_1(a), _anon_func_2(x))
+	end
+end
+do
+	local tb = {
+		1,
+		2,
+		3
+	}
+	tb[#tb] = 40
+	tb[#tb - 1] = 20
+end
+do
+	a = "x"
+	b = a
+	c = a
+	local lst = { }
+	lst[#lst] = a
+	lst[#lst - 1] = b
+end
+do
+	local y, z
+	x, y, z = 1, 2, 3
+	local arr = { }
+	local head
+	arr[#arr], head = x, y
+	arr[#arr] = z
+end
+do
+	local triple = {
+		"keep",
+		"skip",
+		"tail"
+	}
+	local head, tailv = triple[1], triple[3]
+	local buf = { }
+	buf[#buf] = head
+	buf[#buf] = tailv
+end
+do
+	local src = {
+		"a",
+		"",
+		"c",
+		nil,
+		"d"
+	}
+	local collected = { }
+	for _index_0 = 1, #src do
+		local item = src[_index_0]
+		if item and #item > 0 then
+			collected[#collected] = item
+		end
+	end
+end
+do
+	local nums = {
+		1,
+		2,
+		3,
+		4,
+		5
+	}
+	local last_two
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		for _index_0 = 1, #nums do
+			local v = nums[_index_0]
+			if v > 3 then
+				_accum_0[_len_0] = v
+				_len_0 = _len_0 + 1
+			end
+		end
+		last_two = _accum_0
+	end
+	nums[#nums] = last_two[1]
+	nums[#nums] = last_two[2]
+end
+do
+	local store = { }
+	store[#store] = {
+		meta = {
+			id = 1,
+			ok = true
+		},
+		payload = {
+			10,
+			20
+		}
+	}
+	store[#store] = {
+		meta = {
+			id = 1,
+			ok = false
+		},
+		payload = {
+			10,
+			20,
+			30
+		}
+	}
+end
+local _anon_func_3 = function(tb)
+	local _item_0 = tb.tmp
+	return _item_0[#_item_0]
+end
+do
+	local f
+	f = function()
+		local q = { }
+		do
+			local _accum_0 = { }
+			local _len_0 = 1
+			for n = 1, 4 do
+				_accum_0[_len_0] = n
+				_len_0 = _len_0 + 1
+			end
+			tb.tmp = _accum_0
+		end
+		if #tb.tmp >= 3 then
+			q[#q] = {
+				head = tb.tmp[1],
+				tail = _anon_func_3(tb)
+			}
+		end
+	end
+end
+do
+	local make_pair
+	make_pair = function(a, b)
+		return {
+			a,
+			b
+		}
+	end
+	local pairs = { }
+	local p1 = make_pair(7, 8)
+	pairs[#pairs] = p1
+	local k, v = "key", 42
+	pairs[#pairs] = {
+		k = k,
+		v = v
+	}
+end
+do
+	local cfg = {
+		mode = "safe",
+		tags = { }
+	}
+	if cfg.mode == "safe" then
+		cfg.mode = "fast"
+		local _obj_0 = cfg.tags
+		_obj_0[#_obj_0] = "newbie"
+	end
+end
+do
+	local mat = {
+		{
+			1,
+			2
+		},
+		{
+			3,
+			4
+		},
+		{
+			5,
+			6
+		}
+	}
+	local last_row = mat[#mat]
+	local rows = { }
+	rows[#rows] = last_row[1]
+end
+do
+	local kv = { }
+	kv[#kv] = {
+		k = "a",
+		v = 1
+	}
+	kv[#kv] = {
+		k = "b",
+		v = 2
+	}
+	local pair_last = kv[#kv]
+	local dict = { }
+	dict[pair_last.k] = pair_last.v
+	dict[pair_last.k] = 3
+end
+do
+	local base
+	do
+		local _accum_0 = { }
+		local _len_0 = 1
+		for i = 1, 4 do
+			_accum_0[_len_0] = i
+			_len_0 = _len_0 + 1
+		end
+		base = _accum_0
+	end
+	local pack = { }
+	pack[#pack] = {
+		base[1],
+		base[#base]
+	}
+	pack[#pack] = {
+		first = base[1],
+		last = base[#base]
+	}
+end
+do
+	local opts = {
+		limit = 10
+	}
+	local limit, offset = opts.limit, opts.offset
+	if offset == nil then
+		offset = 0
+	end
+	local pages = { }
+	pages[#pages] = {
+		limit = limit,
+		offset = offset
+	}
+end
+do
+	local chain = {
+		a = {
+			b = {
+				c = 0
+			}
+		},
+		list = {
+			{
+				x = 0
+			},
+			{
+				x = 0
+			}
+		}
+	}
+	chain.a.b.c = 1
+	chain.list[1].x = 10;
+	((function()
+		local _item_0 = chain.list
+		return _item_0[#_item_0]
+	end)()).x = 20
+	local _obj_0 = chain.list
+	_obj_0[#_obj_0 - 1] = {
+		x = 30
+	}
+end
+do
+	local node = {
+		left = {
+			v = 0
+		},
+		right = {
+			v = 0
+		}
+	}
+	local bag = { }
+	local left, right = node.left, node.right
+	bag[#bag], left.v, right.v = "k", 1, 2
+end
+do
+	local a1, a2, a3 = 100, 200, 300
+	local mix = { }
+	local meta
+	mix[#mix], mix[#mix], meta = a1, a2, {
+		tag = "ok"
+	}
+end
+do
+	local cfg2 = {
+		limit = 5,
+		opts = {
+			flag = false
+		}
+	}
+	local lim, opt2 = cfg2.limit, cfg2.opts
+	local bucket = {
+		xs = { }
+	}
+	local _obj_0 = bucket.xs
+	_obj_0[#_obj_0] = lim
+	bucket.flag = true
+	local _obj_1 = opt2.flags
+	_obj_1[#_obj_1 + 1] = 123
+end
+do
+	local ret2
+	ret2 = function()
+		return 7, 8
+	end
+	local box = { }
+	local x1
+	box[#box], x1 = ret2()
+end
+do
+	local q = {
+		1,
+		2
+	}
+	local lastq = q[#q]
+	q[#q - 1] = lastq * 10
+end
+do
+	local mat2 = [[9,8], [7,6]]
+	local t = {
+		hold = nil
+	}
+	t.hold = mat2[#mat2][1]
+end
+do
+	local f
+	f = function()
+		local _obj_0
+		do
+			local _item_0 = globalTB
+			_obj_0 = _item_0[#_item_0]
+		end
+		_obj_0[#_obj_0] = 1
+	end
+	local f1
+	f1 = function()
+		do
+			local _item_0 = globalTB
+			do
+				local _item_1 = _item_0[#_item_0]
+				return _item_1[#_item_1 - 1]
+			end
+		end
 	end
 end
 return nil

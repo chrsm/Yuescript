@@ -225,6 +225,8 @@ do
 	local _item_0 = data.items
 	second_last = _item_0[#_item_0 - 1]
 end
+local _obj_0 = data.items
+_obj_0[#_obj_0] = 1
 local mt = { }
 local add
 add = function(self, right)
@@ -2658,6 +2660,8 @@ do
 	local _item_0 = data.items
 	second_last = _item_0[#_item_0 - 1]
 end
+local _obj_0 = data.items
+_obj_0[#_obj_0] = 1
 local mt = { }
 local add
 add = function(self, right)

@@ -641,11 +641,13 @@ You can use the **#** operator to get the last elements of a table.
 ```moonscript
 last = data.items[#]
 second_last = data.items[#-1]
+data.items[#] = 1
 ```
 <YueDisplay>
 <pre>
 last = data.items[#]
 second_last = data.items[#-1]
+data.items[#] = 1
 </pre>
 </YueDisplay>
 
