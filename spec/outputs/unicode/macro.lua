@@ -273,22 +273,19 @@ local _call_1 = ((function()
 	local _call_1 = ((function()
 		local _call_1 = ((function()
 			local _call_1 = ((function()
-				local _call_1 = ((function()
-					local _call_1 = (_anon_func_2(_u539f_u70b9))
-					return _call_1["后代"](_call_1)
-				end)())
-				return _call_1["选择启用"](_call_1)
+				local _call_1 = (_anon_func_2(_u539f_u70b9))
+				return _call_1["后代"](_call_1)
 			end)())
-			return _call_1["选择可见"](_call_1)
+			return _call_1["选择启用"](_call_1)
 		end)())
-		return _call_1["标签等于"](_call_1, "fx")
+		return _call_1["选择可见"](_call_1)
 	end)())
-	return _call_1["其中"](_call_1, function(x)
-		local _call_2 = x["名称"]
-		return _call_2["结尾为"](_call_2, "(克隆)")
-	end)
+	return _call_1["标签等于"](_call_1, "fx")
 end)())
-_u7ed3_u679c = _call_1["摧毁"](_call_1)
+_u7ed3_u679c = _call_1["其中"](_call_1, function(x)
+	local _call_2 = x["名称"]
+	return _call_2["结尾为"](_call_2, "(克隆)")
+end)
 do
 	do
 		local _1
@@ -346,7 +343,7 @@ _u6253_u5370((setmetatable({
 		return 998
 	end
 }))
-_u6253_u5370("当前代码行数: " .. tostring(268))
+_u6253_u5370("当前代码行数: " .. tostring(267))
 do
 	do
 -- 待实现
