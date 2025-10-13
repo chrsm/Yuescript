@@ -222,12 +222,12 @@ f!
    不添加任何选项执行命令可以进入REPL模式，
    在单行输入符号 '$' 并换行后，可以开始或是停止多行输入模式
 ```
-&emsp;&emsp;使用案例：
-&emsp;&emsp;递归编译当前路径下扩展名为 **.yue** 的每个月之脚本文件： **yue .**
-&emsp;&emsp;编译并将结果保存到目标路径： **yue -t /target/path/ .**
-&emsp;&emsp;编译并保留调试信息： **yue -l .**
-&emsp;&emsp;编译并生成压缩代码： **yue -m .**
-&emsp;&emsp;直接执行代码： **yue -e 'print 123'**
+&emsp;&emsp;使用案例：  
+&emsp;&emsp;递归编译当前路径下扩展名为 **.yue** 的每个月之脚本文件： **yue .**  
+&emsp;&emsp;编译并将结果保存到目标路径： **yue -t /target/path/ .**  
+&emsp;&emsp;编译并保留调试信息： **yue -l .**  
+&emsp;&emsp;编译并生成压缩代码： **yue -m .**  
+&emsp;&emsp;直接执行代码： **yue -e 'print 123'**  
 &emsp;&emsp;执行一个月之脚本文件： **yue -e main.yue**
 
 ## 宏

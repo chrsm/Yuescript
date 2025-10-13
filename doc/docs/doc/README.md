@@ -223,12 +223,12 @@ Usage: yue [options|files|directories] ...
    Execute without options to enter REPL, type symbol '$'
    in a single line to start/stop multi-line mode
 ```
-&emsp;&emsp;Use cases:
-&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
-&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**
-&emsp;&emsp;Compile and reserve debug info:  **yue -l .**
-&emsp;&emsp;Compile and generate minified codes:  **yue -m .**
-&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**
+&emsp;&emsp;Use cases:  
+&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**  
+&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**  
+&emsp;&emsp;Compile and reserve debug info:  **yue -l .**  
+&emsp;&emsp;Compile and generate minified codes:  **yue -m .**  
+&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**  
 &emsp;&emsp;Execute a YueScript file:  **yue -e main.yue**
 
 ## Macro
