@@ -17,6 +17,9 @@
     <Filter Include="src\efsw\win">
       <UniqueIdentifier>{4b765224-203c-4df9-ba95-c975f75c4cf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\colib">
+      <UniqueIdentifier>{0f5875b7-722d-4903-8299-eeb462a34086}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3rdParty\lua\lapi.c">
@@ -204,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\yuescript\yue_ast.cpp">
       <Filter>src\yuescript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rdParty\colib\ljson.c">
+      <Filter>src\colib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

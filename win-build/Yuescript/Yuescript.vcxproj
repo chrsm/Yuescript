@@ -313,6 +313,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\3rdParty\colib\ljson.c" />
     <ClCompile Include="..\..\src\3rdParty\lua\lapi.c" />
     <ClCompile Include="..\..\src\3rdParty\lua\lauxlib.c" />
     <ClCompile Include="..\..\src\3rdParty\lua\lbaselib.c" />
