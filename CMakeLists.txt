@@ -103,72 +103,77 @@ add_executable(yue
 	src/yue.cpp
 )
 
-target_sources(yue PRIVATE
-	src/3rdParty/efsw/Debug.cpp
-	src/3rdParty/efsw/DirectorySnapshot.cpp
-	src/3rdParty/efsw/DirectorySnapshotDiff.cpp
-	src/3rdParty/efsw/DirWatcherGeneric.cpp
-	src/3rdParty/efsw/FileInfo.cpp
-	src/3rdParty/efsw/FileSystem.cpp
-	src/3rdParty/efsw/FileWatcher.cpp
-	src/3rdParty/efsw/FileWatcherCWrapper.cpp
-	src/3rdParty/efsw/FileWatcherGeneric.cpp
-	src/3rdParty/efsw/FileWatcherImpl.cpp
-	src/3rdParty/efsw/Log.cpp
-	src/3rdParty/efsw/Mutex.cpp
-	src/3rdParty/efsw/String.cpp
-	src/3rdParty/efsw/System.cpp
-	src/3rdParty/efsw/Thread.cpp
-	src/3rdParty/efsw/Watcher.cpp
-	src/3rdParty/efsw/WatcherGeneric.cpp
-)
-
-if (WIN32)
+# Add efsw sources only if not in Termux environment
+if (NOT IS_TERMUX)
 	target_sources(yue PRIVATE
-		src/3rdParty/efsw/platform/win/FileSystemImpl.cpp
-		src/3rdParty/efsw/platform/win/MutexImpl.cpp
-		src/3rdParty/efsw/platform/win/SystemImpl.cpp
-		src/3rdParty/efsw/platform/win/ThreadImpl.cpp
-	)
-else ()
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/platform/posix/FileSystemImpl.cpp
-		src/3rdParty/efsw/platform/posix/MutexImpl.cpp
-		src/3rdParty/efsw/platform/posix/SystemImpl.cpp
-		src/3rdParty/efsw/platform/posix/ThreadImpl.cpp
-	)
-endif()
-
-if (APPLE)
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherFSEvents.cpp
-		src/3rdParty/efsw/FileWatcherKqueue.cpp
-		src/3rdParty/efsw/WatcherFSEvents.cpp
-		src/3rdParty/efsw/WatcherKqueue.cpp
+		src/3rdParty/efsw/Debug.cpp
+		src/3rdParty/efsw/DirectorySnapshot.cpp
+		src/3rdParty/efsw/DirectorySnapshotDiff.cpp
+		src/3rdParty/efsw/DirWatcherGeneric.cpp
+		src/3rdParty/efsw/FileInfo.cpp
+		src/3rdParty/efsw/FileSystem.cpp
+		src/3rdParty/efsw/FileWatcher.cpp
+		src/3rdParty/efsw/FileWatcherCWrapper.cpp
+		src/3rdParty/efsw/FileWatcherGeneric.cpp
+		src/3rdParty/efsw/FileWatcherImpl.cpp
+		src/3rdParty/efsw/Log.cpp
+		src/3rdParty/efsw/Mutex.cpp
+		src/3rdParty/efsw/String.cpp
+		src/3rdParty/efsw/System.cpp
+		src/3rdParty/efsw/Thread.cpp
+		src/3rdParty/efsw/Watcher.cpp
+		src/3rdParty/efsw/WatcherGeneric.cpp
 	)
 
-	if (NOT CMAKE_SYSTEM_VERSION GREATER 9)
-		target_compile_definitions(yue PRIVATE EFSW_FSEVENTS_NOT_SUPPORTED)
+	if (WIN32)
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/platform/win/FileSystemImpl.cpp
+			src/3rdParty/efsw/platform/win/MutexImpl.cpp
+			src/3rdParty/efsw/platform/win/SystemImpl.cpp
+			src/3rdParty/efsw/platform/win/ThreadImpl.cpp
+		)
+	else ()
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/platform/posix/FileSystemImpl.cpp
+			src/3rdParty/efsw/platform/posix/MutexImpl.cpp
+			src/3rdParty/efsw/platform/posix/SystemImpl.cpp
+			src/3rdParty/efsw/platform/posix/ThreadImpl.cpp
+		)
 	endif()
-elseif (WIN32)
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherWin32.cpp
-		src/3rdParty/efsw/WatcherWin32.cpp
-	)
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherInotify.cpp
-		src/3rdParty/efsw/WatcherInotify.cpp
-	)
 
-	if (NOT EXISTS "/usr/include/sys/inotify.h" AND NOT EXISTS "/usr/local/include/sys/inotify.h")
-		target_compile_definitions(yue PRIVATE EFSW_INOTIFY_NOSYS)
+	if (APPLE)
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherFSEvents.cpp
+			src/3rdParty/efsw/FileWatcherKqueue.cpp
+			src/3rdParty/efsw/WatcherFSEvents.cpp
+			src/3rdParty/efsw/WatcherKqueue.cpp
+		)
+
+		if (NOT CMAKE_SYSTEM_VERSION GREATER 9)
+			target_compile_definitions(yue PRIVATE EFSW_FSEVENTS_NOT_SUPPORTED)
+		endif()
+	elseif (WIN32)
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherWin32.cpp
+			src/3rdParty/efsw/WatcherWin32.cpp
+		)
+	elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherInotify.cpp
+			src/3rdParty/efsw/WatcherInotify.cpp
+		)
+
+		if (NOT EXISTS "/usr/include/sys/inotify.h" AND NOT EXISTS "/usr/local/include/sys/inotify.h")
+			target_compile_definitions(yue PRIVATE EFSW_INOTIFY_NOSYS)
+		endif()
+	elseif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherKqueue.cpp
+			src/3rdParty/efsw/WatcherKqueue.cpp
+		)
 	endif()
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherKqueue.cpp
-		src/3rdParty/efsw/WatcherKqueue.cpp
-	)
+else()
+	message(STATUS "Termux environment detected: excluding efsw file watcher sources")
 endif()
 
 if (MSVC)
@@ -203,4 +208,3 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 install(CODE "")
-
