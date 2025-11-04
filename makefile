@@ -54,13 +54,42 @@ endif
 	INCLUDES += -I $(SRC_PATH)/3rdParty/lua
 	LINK_FLAGS += -L $(SRC_PATH)/3rdParty/lua -llua -ldl
 endif
+
+# Detect Android Termux environment
+# Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory
+IS_TERMUX := false
+ANDROID_ROOT_VAR := $(shell echo $$ANDROID_ROOT)
+PREFIX_VAR := $(shell echo $$PREFIX)
+ifneq ($(ANDROID_ROOT_VAR),)
+	# Check if PREFIX environment variable points to Termux directory
+	ifneq ($(PREFIX_VAR),)
+		ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
+			IS_TERMUX := true
+		endif
+	endif
+	# Alternative check: verify if Termux installation path exists
+	ifeq ($(IS_TERMUX),false)
+		ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
+			IS_TERMUX := true
+		endif
+	endif
+endif
+
+# Auto-set NO_WATCHER for Termux environment if not explicitly set
+ifeq ($(IS_TERMUX),true)
+	ifeq ($(NO_WATCHER),)
+		NO_WATCHER := true
+		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+	endif
+endif
+
 ifeq ($(NO_WATCHER),true)
 	COMPILE_FLAGS += -DYUE_NO_WATCHER
 endif
 
 # Add platform related linker flag
 ifneq ($(UNAME_S),Darwin)
-	LINK_FLAGS += -lstdc++fs -Wl,-E
+	LINK_FLAGS += -Wl,-E
 	PLAT = linux
 else
 	LINK_FLAGS += -framework CoreFoundation -framework CoreServices

@@ -44,7 +44,7 @@ if (LUA_LIBRARIES MATCHES "LUA_LIBRARIES-NOTFOUND")
 	endif()
 else ()
 	message(STATUS "Lua: using information from luarocks")
-endif()	
+endif()
 
 message(STATUS "Lua: " ${LUA})
 message(STATUS "Lua include: " ${LUA_INCLUDE_DIR})
@@ -53,6 +53,24 @@ message(STATUS "Lua library: ${LUA_LIBRARIES}")
 enable_language(CXX)
 include_directories(src src/3rdParty ${LUA_INCLUDE_DIR})
 add_definitions(-std=c++17 -O3 -fPIC)
+
+# Detect Android Termux environment
+# Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory
+set(IS_TERMUX FALSE)
+if (DEFINED ENV{ANDROID_ROOT})
+	# Check if PREFIX environment variable points to Termux directory
+	if (DEFINED ENV{PREFIX})
+		if ("$ENV{PREFIX}" MATCHES "com.termux")
+			set(IS_TERMUX TRUE)
+			message(STATUS "Detected Android Termux environment (via PREFIX: $ENV{PREFIX})")
+		endif()
+	endif()
+	# Alternative check: verify if Termux installation path exists
+	if (NOT IS_TERMUX AND EXISTS "/data/data/com.termux/files/usr")
+		set(IS_TERMUX TRUE)
+		message(STATUS "Detected Android Termux environment (via filesystem check)")
+	endif()
+endif()
 
 if (APPLE)
 	add_compile_options(-Wno-deprecated-declarations)
@@ -69,6 +87,11 @@ add_library(libyue MODULE
 set_target_properties(libyue PROPERTIES PREFIX "")
 set_target_properties(libyue PROPERTIES OUTPUT_NAME "yue")
 target_link_libraries(libyue ${LUA_LIBRARIES})
+
+# Add YUE_NO_WATCHER macro for Termux environment
+if (IS_TERMUX)
+	target_compile_definitions(libyue PRIVATE YUE_NO_WATCHER)
+endif()
 
 add_executable(yue
 	src/yuescript/ast.cpp
@@ -154,6 +177,11 @@ else ()
 	target_compile_options(yue PRIVATE -Wall -Wno-long-long -fPIC)
 endif()
 
+# Add YUE_NO_WATCHER macro for Termux environment
+if (IS_TERMUX)
+	target_compile_definitions(yue PRIVATE YUE_NO_WATCHER)
+endif()
+
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
 	target_compile_definitions(yue PRIVATE DEBUG)
 elseif (${CMAKE_BUILD_TYPE} MATCHES "Release")
@@ -169,9 +197,9 @@ elseif (NOT (${CMAKE_SYSTEM_NAME} MATCHES "Haiku") AND NOT WIN32)
 else ()
 	target_link_libraries(yue PRIVATE ${LUA_LIBRARIES})
 endif()
-	
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	target_link_options(yue PRIVATE -lstdc++fs -ldl)
+	target_link_options(yue PRIVATE -ldl)
 endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 install(CODE "")
