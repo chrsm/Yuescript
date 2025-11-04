@@ -50,7 +50,7 @@ message(STATUS "Lua: " ${LUA})
 message(STATUS "Lua include: " ${LUA_INCLUDE_DIR})
 message(STATUS "Lua library: ${LUA_LIBRARIES}")
 
-enable_language(CXX)
+enable_language(C CXX)
 include_directories(src src/3rdParty ${LUA_INCLUDE_DIR})
 add_definitions(-std=c++17 -O3 -fPIC)
 
@@ -101,6 +101,7 @@ add_executable(yue
 	src/yuescript/yue_compiler.cpp
 	src/yuescript/yuescript.cpp
 	src/yue.cpp
+	src/3rdParty/colib/ljson.c
 )
 
 # Add efsw sources only if not in Termux environment
@@ -180,6 +181,7 @@ if (MSVC)
 	target_compile_definitions(yue PRIVATE _SCL_SECURE_NO_WARNINGS)
 else ()
 	target_compile_options(yue PRIVATE -Wall -Wno-long-long -fPIC)
+	set_source_files_properties(src/3rdParty/colib/ljson.c PROPERTIES COMPILE_FLAGS "-std=c99")
 endif()
 
 # Add YUE_NO_WATCHER macro for Termux environment

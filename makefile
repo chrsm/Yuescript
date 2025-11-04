@@ -3,6 +3,7 @@
 BIN_NAME := yue
 # Compiler used
 CXX ?= g++
+CC ?= gcc
 # Extension of source files used in the project
 SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
@@ -125,10 +126,13 @@ endif
 
 # Combine compiler and linker flags
 release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
+release: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(RCOMPILE_FLAGS)
 release: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DCOMPILE_FLAGS)
+debug: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(DCOMPILE_FLAGS)
 debug: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(DLINK_FLAGS)
 shared: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS) $(TARGET_FLAGS)
+shared: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(RCOMPILE_FLAGS) $(TARGET_FLAGS)
 
 # Build and output paths
 release: export BUILD_PATH := build/release
@@ -163,9 +167,15 @@ ifeq ($(NO_LUA),true)
 	SOURCES := $(filter-out $(SRC_PATH)/yuescript/yuescript.cpp, $(SOURCES))
 endif
 
+# Add colib ljson.c source file
+SOURCES += $(SRC_PATH)/3rdParty/colib/ljson.c
+
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
-OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+CPP_SOURCES = $(filter %.cpp,$(SOURCES))
+C_SOURCES = $(filter %.c,$(SOURCES))
+OBJECTS = $(CPP_SOURCES:$(SRC_PATH)/%.cpp=$(BUILD_PATH)/%.o)
+OBJECTS += $(C_SOURCES:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
 # Set the dependency files that will be used to add header dependencies
 DEPS = $(OBJECTS:.o=.d)
 
@@ -467,5 +477,13 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
 	@echo "Compiling: $< -> $@"
 	@$(START_TIME)
 	$(CMD_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	@echo -en "\t Compile time: "
+	@$(END_TIME)
+
+# C source file rules
+$(BUILD_PATH)/%.o: $(SRC_PATH)/%.c
+	@echo "Compiling: $< -> $@"
+	@$(START_TIME)
+	$(CMD_PREFIX)$(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 	@echo -en "\t Compile time: "
 	@$(END_TIME)
