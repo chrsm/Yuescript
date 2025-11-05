@@ -52,7 +52,7 @@ message(STATUS "Lua library: ${LUA_LIBRARIES}")
 
 enable_language(C CXX)
 include_directories(src src/3rdParty ${LUA_INCLUDE_DIR})
-add_definitions(-std=c++17 -O3 -fPIC)
+add_definitions(-std=c++17 -O3 -fPIC -DYUE_UTF8_IMPL)
 
 # Detect Android Termux environment
 # Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory

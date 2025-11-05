@@ -11,7 +11,7 @@ SRC_PATH = ./src
 # Space-separated pkg-config libraries used by this project
 LIBS =
 # General compiler flags
-COMPILE_FLAGS = -std=c++17 -Wall -Wextra -Wno-deprecated-declarations
+COMPILE_FLAGS = -std=c++17 -Wall -Wextra -Wno-deprecated-declarations -DYUE_UTF8_IMPL
 # Additional release-specific flags
 RCOMPILE_FLAGS = -D NDEBUG -O3
 # Additional debug-specific flags
