@@ -915,7 +915,7 @@ LUALIB_API int luaopen_colibc_json(lua_State* L) {
 	lua_getfield(L, -1, "loaded"); // package loaded
 	lua_createtable(L, 0, 0); // package loaded json
 	lua_pushvalue(L, -1); // package loaded json json
-	lua_setfield(L, -3, "json"); // loaded["json"] = json, package loaded json
+	lua_setfield(L, -3, "cojson"); // loaded["cojson"] = json, package loaded json
 	luaL_register(L, NULL, lib); // package loaded json
 #endif
 	// json.null

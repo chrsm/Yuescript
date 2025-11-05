@@ -82,7 +82,7 @@ static void openlibs(void* state) {
 	luaL_openlibs(L);
 #if LUA_VERSION_NUM > 501
 	luaL_requiref(L, "yue", luaopen_yue, 0);
-	luaL_requiref(L, "json", luaopen_colibc_json, 0);
+	luaL_requiref(L, "cojson", luaopen_colibc_json, 0);
 #else
 	lua_pushcfunction(L, luaopen_yue);
 	lua_call(L, 0, 0);
