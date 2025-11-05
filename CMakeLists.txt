@@ -72,10 +72,6 @@ if (DEFINED ENV{ANDROID_ROOT})
 	endif()
 endif()
 
-if (APPLE)
-	add_compile_options(-Wno-deprecated-declarations)
-endif ()
-
 add_library(libyue MODULE
 	src/yuescript/ast.cpp
 	src/yuescript/parser.cpp

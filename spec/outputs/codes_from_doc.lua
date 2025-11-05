@@ -73,8 +73,8 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _ud83c_udf1b = "月之脚本"
-_module_0["🌛"] = _ud83c_udf1b
+local _u1f31b = "月之脚本"
+_module_0["🌛"] = _u1f31b
 return _module_0
 local area = 6.2831853071796 * 5
 print('hello world')
@@ -2514,8 +2514,8 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _ud83c_udf1b = "月之脚本"
-_module_0["🌛"] = _ud83c_udf1b
+local _u1f31b = "月之脚本"
+_module_0["🌛"] = _u1f31b
 return _module_0
 local area = 6.2831853071796 * 5
 print('hello world')

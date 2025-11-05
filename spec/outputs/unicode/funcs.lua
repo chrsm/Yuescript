@@ -24,7 +24,7 @@ _u5f00(function()
 end)
 local _u53d8_u91cfh
 _u53d8_u91cfh = function()
-	return _ud83d_udc4b
+	return _u1f44b
 end
 _u5403(function() end, _u4e16_u754c);
 (function() end)()
