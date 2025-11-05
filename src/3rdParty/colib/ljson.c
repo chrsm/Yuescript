@@ -17,6 +17,14 @@
 #include "lua.h"
 #include "lauxlib.h"
 
+#if LUA_VERSION_NUM > 501
+#ifndef LUA_COMPAT_5_1
+#ifndef lua_objlen
+#define lua_objlen lua_rawlen
+#endif // lua_objlen
+#endif // LUA_COMPAT_5_1
+#endif // LUA_VERSION_NUM
+
 // 内存分配函数，方便替换
 #define co_malloc malloc
 #define co_free free
@@ -109,11 +117,13 @@ static inline void membuffer_putc_unsafe(membuffer_t *buff, char c) {
 	buff->b[buff->sz++] = c;
 }
 
+#if LUA_VERSION_NUM > 501
 // 写入一段内存：不检查空间(不安全版本)
 static inline void membuffer_putb_unsafe(membuffer_t *buff, const void *b, size_t sz) {
 	memcpy(buff->b + buff->sz, b, sz);
 	buff->sz += sz;
 }
+#endif
 
 // 取当前的指针
 static inline char* membuffer_getp(membuffer_t *buff) {
@@ -632,6 +642,7 @@ static void dumpper_throw_error(json_dumpper_t *d, lua_State *L, const char *fmt
 	luaL_error(L, d->errmsg);
 }
 
+#if LUA_VERSION_NUM > 501
 static void dumpper_process_integer(json_dumpper_t *d, lua_State *L, int idx) {
 	char nbuff[INTEGER_BUFF_SZ];
 	int i = INTEGER_BUFF_SZ;
@@ -647,6 +658,7 @@ static void dumpper_process_integer(json_dumpper_t *d, lua_State *L, int idx) {
 	} while (ux /= 10);
 	membuffer_putb_unsafe(&d->buff, nbuff+i, INTEGER_BUFF_SZ-i);
 }
+#endif
 
 static void dumpper_process_number(json_dumpper_t *d, lua_State *L, int idx) {
 	lua_Number num = lua_tonumber(L, idx);
@@ -706,7 +718,7 @@ static void dumpper_process_string(json_dumpper_t *d, lua_State *L, int idx) {
 static void dumpper_process_value(json_dumpper_t *d, lua_State *L, int depth);
 
 static int dumpper_check_array(json_dumpper_t *d, lua_State *L, int *len) {
-	int asize = lua_rawlen(L, -1);
+	int asize = lua_objlen(L, -1);
 	if (asize > 0) {
 		lua_pushinteger(L, asize);
 		if (lua_next(L, -2) == 0) {
@@ -782,9 +794,11 @@ static void dumpper_process_object(json_dumpper_t *d, lua_State *L, int depth) {
 		} else if (ktp == LUA_TNUMBER && d->num_as_str) {
 			if (unlikely(d->format)) dumpper_add_indent(d, depth);
 			membuffer_putc(buff, '\"');
+#if LUA_VERSION_NUM > 501
 			if (lua_isinteger(L, -2))
 				dumpper_process_integer(d, L, -2);
 			else
+#endif
 				dumpper_process_number(d, L, -2);
 			if (likely(!d->format))
 				membuffer_putb(buff, "\":", 2);
@@ -824,9 +838,11 @@ static void dumpper_process_value(json_dumpper_t *d, lua_State *L, int depth) {
 			dumpper_process_string(d, L, -1);
 			break;
 		case LUA_TNUMBER:
+#if LUA_VERSION_NUM > 501
 			if (lua_isinteger(L, -1))
 				dumpper_process_integer(d, L, -1);
 			else
+#endif
 				dumpper_process_number(d, L, -1);
 			break;
 		case LUA_TBOOLEAN:
@@ -891,8 +907,17 @@ static const luaL_Reg lib[] = {
 	{NULL, NULL},
 };
 
-LUAMOD_API int luaopen_colibc_json(lua_State *L) {
-	luaL_newlib(L, lib);
+LUALIB_API int luaopen_colibc_json(lua_State* L) {
+#if LUA_VERSION_NUM > 501
+	luaL_newlib(L, lib); // json
+#else
+	lua_getglobal(L, "package"); // package
+	lua_getfield(L, -1, "loaded"); // package loaded
+	lua_createtable(L, 0, 0); // package loaded json
+	lua_pushvalue(L, -1); // package loaded json json
+	lua_setfield(L, -3, "json"); // loaded["json"] = json, package loaded json
+	luaL_register(L, NULL, lib); // package loaded json
+#endif
 	// json.null
 	lua_pushlightuserdata(L, NULL);
 	lua_setfield(L, -2, "null");

@@ -77,21 +77,18 @@ int luaopen_colibc_json(lua_State* L);
 
 static void openlibs(void* state) {
 	lua_State* L = static_cast<lua_State*>(state);
-	luaL_openlibs(L);
 	int top = lua_gettop(L);
+	DEFER(lua_settop(L, top));
+	luaL_openlibs(L);
 #if LUA_VERSION_NUM > 501
 	luaL_requiref(L, "yue", luaopen_yue, 0);
 	luaL_requiref(L, "json", luaopen_colibc_json, 0);
 #else
 	lua_pushcfunction(L, luaopen_yue);
 	lua_call(L, 0, 0);
-	lua_getglobal(L, "package"); // package
-	lua_getfield(L, -1, "loaded"); // package loaded
 	lua_pushcfunction(L, luaopen_colibc_json);
-	lua_call(L, 0, 1); // package loaded json
-	lua_setfield(L, -2, "json"); // loaded["json"] = json, package loaded
+	lua_call(L, 0, 0);
 #endif
-	lua_settop(L, top);
 }
 
 void pushYue(lua_State* L, std::string_view name) {
