@@ -264,6 +264,7 @@ wasm-node: clean
 		-O2 \
 		-o wasm/dist/esm/yuescript.mjs \
 		-I $(SRC_PATH) \
+		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
 		-DYUE_UTF8_IMPL \
@@ -305,6 +306,7 @@ wasm-node: clean
 		-o wasm/dist/cjs/yuescript.cjs \
 		--emit-tsd="yuescript.d.ts" \
 		-I $(SRC_PATH) \
+		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
 		-DYUE_UTF8_IMPL \
@@ -350,6 +352,7 @@ wasm: clean
 		-O2 \
 		-o doc/docs/.vuepress/public/js/yuescript.js \
 		-I $(SRC_PATH) \
+		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
 		-DYUE_UTF8_IMPL \
