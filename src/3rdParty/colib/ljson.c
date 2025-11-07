@@ -200,11 +200,11 @@ typedef struct {
 	int curdepth;	// 当前层次
 	int maxdepth;	// 最大层次
 	int allowcomment; // 是否允许注释
-	char errmsg[ERRMSG_SIZE];	// 保存错误消息 
+	char errmsg[ERRMSG_SIZE];	// 保存错误消息
 	//>>>jmp_buf jb;			// 用于实现从解析中出错直接跳出
 } json_parser_t;
 
-static inline void parser_init(json_parser_t *parser, const char *str, size_t size, void *ud,  
+static inline void parser_init(json_parser_t *parser, const char *str, size_t size, void *ud,
 	int maxdepth, int allowcomment) {
 	membuffer_init(&parser->buff);
 	membuffer_ensure_space(&parser->buff, size);
@@ -254,7 +254,7 @@ static const char* parser_error_content(json_parser_t *p) {
 static inline void parser_add_depth(json_parser_t *p) {
 	p->curdepth++;
 	if (p->curdepth >= p->maxdepth)
-		parser_throw_error(p, "Too many nested data, max depth is %d, at: %s[:%lu]", p->maxdepth, 
+		parser_throw_error(p, "Too many nested data, max depth is %d, at: %s[:%lu]", p->maxdepth,
 			parser_error_content(p), currpos(p));
 }
 
@@ -402,7 +402,7 @@ static inline void parser_process_string(json_parser_t *p) {
 			} else {
 				parser_throw_error(p, "Invalid escape sequence, at: %s[:%lu]", parser_error_content(p), currpos(p));
 			}
-		} else if (ch == '"') { 
+		} else if (ch == '"') {
 			break;
 		} else if ((unsigned char)ch < 0x20) {
 			parser_throw_error(p, "Invalid string, at: %s[:%lu]", parser_error_content(p), currpos(p));
@@ -490,7 +490,7 @@ static inline void parser_process_number(json_parser_t *p, char ch) {
 
 	if (isdouble) {
 		int n = exponent < 0 ? -exponent : exponent;
-		if (unlikely(n>511)) 
+		if (unlikely(n>511))
 			n = 511;	// inf
 		double p10 = 1.0;
 		double *d;
@@ -576,13 +576,13 @@ static void parser_process_value(json_parser_t *p) {
 	parser_skip_whitespaces(p);
 	char ch = get_and_next(p);
 	switch (ch) {
-		case 'f': 
+		case 'f':
 			parser_process_false(p);
 			break;
 		case 't':
 			parser_process_true(p);
 			break;
-		case 'n': 
+		case 'n':
 			parser_process_null(p);
 			break;
 		case '"':
@@ -609,7 +609,7 @@ static void parser_do_parse(const char *str, size_t size, void *ud, int maxdepth
 		parser_process_value(&p);
 		parser_skip_whitespaces(&p);
 		if (peekchar(&p) != '\0') {
-			parser_throw_error(&p, "Expect '<eof>' but got '%c', at: %s[:%lu]", peekchar(&p), 
+			parser_throw_error(&p, "Expect '<eof>' but got '%c', at: %s[:%lu]", peekchar(&p),
 				parser_error_content(&p), currpos(&p));
 		}
 		parser_free(&p);
@@ -625,7 +625,7 @@ typedef struct {
 	int format;			// 是否格式化
 	int empty_as_array; // 空表是否当成数组
 	int num_as_str;		// 数字Key转为字符串
-	char errmsg[ERRMSG_SIZE];	// 保存错误消息 
+	char errmsg[ERRMSG_SIZE];	// 保存错误消息
 } json_dumpper_t;
 
 // 足够转换数字的缓存大小
@@ -699,7 +699,7 @@ static void dumpper_process_string(json_dumpper_t *d, lua_State *L, int idx) {
 	for (i = 0; i < len; ++i) {
 		ch = (unsigned char)str[i];
 		esc = char2escape[ch];
-		if (likely(!esc)) 
+		if (likely(!esc))
 			membuffer_putc_unsafe(buff, (char)ch);
 		else {
 			membuffer_putc_unsafe(buff, '\\');
@@ -781,7 +781,7 @@ static void dumpper_process_object(json_dumpper_t *d, lua_State *L, int depth) {
 		} else {
 			comma = 1;
 			if (unlikely(d->format)) membuffer_putc(buff, '\n');
-		} 
+		}
 		// key
 		ktp = lua_type(L, -2);
 		if (ktp == LUA_TSTRING) {
@@ -814,7 +814,7 @@ static void dumpper_process_object(json_dumpper_t *d, lua_State *L, int depth) {
 	if (unlikely(d->format && comma)) {
 		membuffer_putc(buff, '\n');
 		dumpper_add_indent(d, depth-1);
-	} 
+	}
 	membuffer_putc(buff, '}');
 }
 
@@ -873,9 +873,9 @@ static void dumpper_process_value(json_dumpper_t *d, lua_State *L, int depth) {
 // 接口
 #define DEF_MAX_DEPTH 128
 
-// 从字符串加载：json.load(str, maxdepth) -> obj
+// 从字符串加载：json.decode(str, maxdepth) -> obj
 // 要求字符串必须以0结尾
-int colibc_json_load(lua_State *L) {
+int colibc_json_decode(lua_State *L) {
 	size_t size;
 	const char *str = luaL_checklstring(L, 1, &size);
 	int maxdepth = (int)luaL_optinteger(L, 2, DEF_MAX_DEPTH);
@@ -884,8 +884,8 @@ int colibc_json_load(lua_State *L) {
 	return 1;
 }
 
-// 保存到字符串: json.dump(obj) -> str
-int colibc_json_dump(lua_State *L) {
+// 保存到字符串: json.encode(obj) -> str
+int colibc_json_encode(lua_State *L) {
 	luaL_checkany(L, 1);
 	json_dumpper_t dumpper;
 	membuffer_init(&dumpper.buff);
@@ -902,8 +902,8 @@ int colibc_json_dump(lua_State *L) {
 }
 
 static const luaL_Reg lib[] = {
-	{"load", colibc_json_load},
-	{"dump", colibc_json_dump},
+	{"decode", colibc_json_decode},
+	{"encode", colibc_json_encode},
 	{NULL, NULL},
 };
 
