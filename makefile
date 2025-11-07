@@ -266,6 +266,7 @@ wasm-node: clean
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
+		-DYUE_UTF8_IMPL \
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations \
@@ -306,6 +307,7 @@ wasm-node: clean
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
+		-DYUE_UTF8_IMPL \
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations \
@@ -350,6 +352,7 @@ wasm: clean
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
+		-DYUE_UTF8_IMPL \
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations
