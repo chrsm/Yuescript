@@ -8317,9 +8317,12 @@ private:
 		auto compInner = static_cast<CompInner_t*>(comp->items.back());
 		str_list temp;
 		std::string accumVar = getUnusedName("_accum_"sv);
-		std::string lenVar = getUnusedName("_len_"sv);
 		addToScope(accumVar);
-		addToScope(lenVar);
+		std::string lenVar;
+		if (!isSpread) {
+			lenVar = getUnusedName("_len_"sv);
+			addToScope(lenVar);
+		}
 		for (auto item : compInner->items.objects()) {
 			switch (item->get_id()) {
 				case id<CompForEach_t>():
@@ -8337,7 +8340,7 @@ private:
 			}
 		}
 		{
-			auto assignLeft = toAst<ExpList_t>(accumVar + '[' + lenVar + (isSpread ? "][]"s : "]"s), x);
+			auto assignLeft = toAst<ExpList_t>(accumVar + '[' + (isSpread ? "]"s : lenVar + ']'), x);
 			auto assign = x->new_ptr<Assign_t>();
 			assign->values.push_back(value);
 			auto assignment = x->new_ptr<ExpListAssign_t>();
@@ -8351,10 +8354,15 @@ private:
 			popScope();
 		}
 		_buf << indent() << "local "sv << accumVar << " = { }"sv << nll(comp);
-		_buf << indent() << "local "sv << lenVar << " = 1"sv << nll(comp);
-		_buf << join(temp);
-		_buf << assignStr;
-		_buf << indent(int(temp.size())) << lenVar << " = "sv << lenVar << " + 1"sv << nll(comp);
+		if (isSpread) {
+			_buf << join(temp);
+			_buf << assignStr;
+		} else {
+			_buf << indent() << "local "sv << lenVar << " = 1"sv << nll(comp);
+			_buf << join(temp);
+			_buf << assignStr;
+			_buf << indent(int(temp.size())) << lenVar << " = "sv << lenVar << " + 1"sv << nll(comp);
+		}
 		for (int ind = int(temp.size()) - 1; ind > -1; --ind) {
 			_buf << indent(ind) << "end"sv << nll(comp);
 		}

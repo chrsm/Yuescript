@@ -1109,17 +1109,12 @@ local data = {
 }
 local flat
 local _accum_0 = { }
-local _len_0 = 1
 for k, v in pairs(data) do
-	do
-		local _obj_0 = _accum_0[_len_0]
-		local _len_1 = #_obj_0 + 1
-		for _index_0 = 1, #v do
-			local _elm_0 = v[_index_0]
-			_obj_0[_len_1], _len_1 = _elm_0, _len_1 + 1
-		end
+	local _len_0 = #_accum_0 + 1
+	for _index_0 = 1, #v do
+		local _elm_0 = v[_index_0]
+		_accum_0[_len_0], _len_0 = _elm_0, _len_0 + 1
 	end
-	_len_0 = _len_0 + 1
 end
 flat = _accum_0
 local x_coords = {
@@ -3622,17 +3617,12 @@ local data = {
 }
 local flat
 local _accum_0 = { }
-local _len_0 = 1
 for k, v in pairs(data) do
-	do
-		local _obj_0 = _accum_0[_len_0]
-		local _len_1 = #_obj_0 + 1
-		for _index_0 = 1, #v do
-			local _elm_0 = v[_index_0]
-			_obj_0[_len_1], _len_1 = _elm_0, _len_1 + 1
-		end
+	local _len_0 = #_accum_0 + 1
+	for _index_0 = 1, #v do
+		local _elm_0 = v[_index_0]
+		_accum_0[_len_0], _len_0 = _elm_0, _len_0 + 1
 	end
-	_len_0 = _len_0 + 1
 end
 flat = _accum_0
 local x_coords = {
