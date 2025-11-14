@@ -595,6 +595,23 @@ tab[] = "Value"
 </pre>
 </YueDisplay>
 
+You can also use the spread operator `...` to append all elements from one list to another:
+
+```moonscript
+tbA = [1, 2, 3]
+tbB = [4, 5, 6]
+tbA[] = ...tbB
+-- tbA is now [1, 2, 3, 4, 5, 6]
+```
+<YueDisplay>
+<pre>
+tbA = [1, 2, 3]
+tbB = [4, 5, 6]
+tbA[] = ...tbB
+-- tbA is now [1, 2, 3, 4, 5, 6]
+</pre>
+</YueDisplay>
+
 ### Table Spreading
 
 You can concatenate array tables or hash tables using spread operator `...` before expressions in table literals.
@@ -2462,6 +2479,27 @@ doubled = [item * 2 for item in *items]
 <YueDisplay>
 <pre>
 doubled = [item * 2 for item in *items]
+</pre>
+</YueDisplay>
+
+In list comprehensions, you can also use the spread operator `...` to flatten nested lists, achieving a flat map effect:
+
+```moonscript
+data =
+  a: {1,2,3}
+  b: {4,5,6}
+
+flat = [...v for k,v in pairs data]
+-- flat is now [1, 2, 3, 4, 5, 6]
+```
+<YueDisplay>
+<pre>
+data =
+  a: {1,2,3}
+  b: {4,5,6}
+
+flat = [...v for k,v in pairs data]
+-- flat is now [1, 2, 3, 4, 5, 6]
 </pre>
 </YueDisplay>
 

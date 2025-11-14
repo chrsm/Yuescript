@@ -267,4 +267,14 @@ do
 	f = -> globalTB[#][#] = 1
 	f1 = -> globalTB[#][# - 1]
 
+do
+	tbA[] = ...tbB
+	a, tb[], b[], c = 1, ...x, 3, 4
+
+	data =
+		a: {1,2,3}
+		b: {4,5,6}
+
+	flat = [...v for k,v in pairs data]
+
 nil

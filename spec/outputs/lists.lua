@@ -857,4 +857,53 @@ do
 		end
 	end
 end
+do
+	do
+		local _obj_0 = tbA
+		local _len_0 = #_obj_0 + 1
+		local _list_0 = tbB
+		for _index_0 = 1, #_list_0 do
+			local _elm_0 = _list_0[_index_0]
+			_obj_0[_len_0], _len_0 = _elm_0, _len_0 + 1
+		end
+	end
+	a = 1
+	do
+		local _obj_0 = tb
+		local _len_0 = #_obj_0 + 1
+		for _index_0 = 1, #x do
+			local _elm_0 = x[_index_0]
+			_obj_0[_len_0], _len_0 = _elm_0, _len_0 + 1
+		end
+	end
+	b[#b + 1] = 3
+	c = 4
+	local data = {
+		a = {
+			1,
+			2,
+			3
+		},
+		b = {
+			4,
+			5,
+			6
+		}
+	}
+	local flat
+	local _accum_0 = { }
+	local _len_0 = 1
+	for k, v in pairs(data) do
+		do
+			local _obj_0 = _accum_0[_len_0]
+			local _len_1 = #_obj_0 + 1
+			for _index_0 = 1, #v do
+				local _elm_0 = v[_index_0]
+				_obj_0[_len_1], _len_1 = _elm_0, _len_1 + 1
+			end
+		end
+		_len_0 = _len_0 + 1
+	end
+	flat = _accum_0
+end
 return nil

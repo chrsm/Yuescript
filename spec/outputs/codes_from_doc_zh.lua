@@ -147,6 +147,21 @@ print((function()
 end)())
 local tab = { }
 tab[#tab + 1] = "Value"
+local tbA = {
+	1,
+	2,
+	3
+}
+local tbB = {
+	4,
+	5,
+	6
+}
+local _len_0 = #tbA + 1
+for _index_0 = 1, #tbB do
+	local _elm_0 = tbB[_index_0]
+	tbA[_len_0], _len_0 = _elm_0, _len_0 + 1
+end
 local parts = {
 	"shoulders",
 	"knees"
@@ -1074,6 +1089,33 @@ for _index_0 = 1, #_list_0 do
 	_len_0 = _len_0 + 1
 end
 doubled = _accum_0
+local data = {
+	a = {
+		1,
+		2,
+		3
+	},
+	b = {
+		4,
+		5,
+		6
+	}
+}
+local flat
+local _accum_0 = { }
+local _len_0 = 1
+for k, v in pairs(data) do
+	do
+		local _obj_0 = _accum_0[_len_0]
+		local _len_1 = #_obj_0 + 1
+		for _index_0 = 1, #v do
+			local _elm_0 = v[_index_0]
+			_obj_0[_len_1], _len_1 = _elm_0, _len_1 + 1
+		end
+	end
+	_len_0 = _len_0 + 1
+end
+flat = _accum_0
 local x_coords = {
 	4,
 	5,
@@ -2582,6 +2624,21 @@ print((function()
 end)())
 local tab = { }
 tab[#tab + 1] = "Value"
+local tbA = {
+	1,
+	2,
+	3
+}
+local tbB = {
+	4,
+	5,
+	6
+}
+local _len_0 = #tbA + 1
+for _index_0 = 1, #tbB do
+	local _elm_0 = tbB[_index_0]
+	tbA[_len_0], _len_0 = _elm_0, _len_0 + 1
+end
 local parts = {
 	"shoulders",
 	"knees"
@@ -3539,6 +3596,33 @@ for _index_0 = 1, #_list_0 do
 	_len_0 = _len_0 + 1
 end
 doubled = _accum_0
+local data = {
+	a = {
+		1,
+		2,
+		3
+	},
+	b = {
+		4,
+		5,
+		6
+	}
+}
+local flat
+local _accum_0 = { }
+local _len_0 = 1
+for k, v in pairs(data) do
+	do
+		local _obj_0 = _accum_0[_len_0]
+		local _len_1 = #_obj_0 + 1
+		for _index_0 = 1, #v do
+			local _elm_0 = v[_index_0]
+			_obj_0[_len_1], _len_1 = _elm_0, _len_1 + 1
+		end
+	end
+	_len_0 = _len_0 + 1
+end
+flat = _accum_0
 local x_coords = {
 	4,
 	5,

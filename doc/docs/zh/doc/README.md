@@ -594,6 +594,23 @@ tab[] = "Value"
 </pre>
 </YueDisplay>
 
+你还可以使用展开操作符 `...` 来将一个列表中的所有元素追加到另一个列表中：
+
+```moonscript
+tbA = [1, 2, 3]
+tbB = [4, 5, 6]
+tbA[] = ...tbB
+-- tbA 现在为 [1, 2, 3, 4, 5, 6]
+```
+<YueDisplay>
+<pre>
+tbA = [1, 2, 3]
+tbB = [4, 5, 6]
+tbA[] = ...tbB
+-- tbA 现在为 [1, 2, 3, 4, 5, 6]
+</pre>
+</YueDisplay>
+
 ### 表扩展
 
 你可以使用前置 `...` 操作符在Lua表中插入数组表或哈希表。
@@ -2422,6 +2439,27 @@ doubled = [item * 2 for item in *items]
 <YueDisplay>
 <pre>
 doubled = [item * 2 for item in *items]
+</pre>
+</YueDisplay>
+
+在列表推导式中，你还可以使用展开操作符 `...` 来实现对列表嵌套层级进行扁平化的处理：
+
+```moonscript
+data =
+  a: {1,2,3}
+  b: {4,5,6}
+
+flat = [...v for k,v in pairs data]
+-- flat 现在为 [1, 2, 3, 4, 5, 6]
+```
+<YueDisplay>
+<pre>
+data =
+  a: {1,2,3}
+  b: {4,5,6}
+
+flat = [...v for k,v in pairs data]
+-- flat 现在为 [1, 2, 3, 4, 5, 6]
 </pre>
 </YueDisplay>
 
