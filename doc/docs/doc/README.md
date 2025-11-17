@@ -2486,8 +2486,8 @@ In list comprehensions, you can also use the spread operator `...` to flatten ne
 
 ```moonscript
 data =
-  a: {1,2,3}
-  b: {4,5,6}
+  a: [1, 2, 3]
+  b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
 -- flat is now [1, 2, 3, 4, 5, 6]
@@ -2495,8 +2495,8 @@ flat = [...v for k,v in pairs data]
 <YueDisplay>
 <pre>
 data =
-  a: {1,2,3}
-  b: {4,5,6}
+  a: [1, 2, 3]
+  b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
 -- flat is now [1, 2, 3, 4, 5, 6]

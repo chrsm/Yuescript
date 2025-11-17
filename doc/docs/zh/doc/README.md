@@ -2446,8 +2446,8 @@ doubled = [item * 2 for item in *items]
 
 ```moonscript
 data =
-  a: {1,2,3}
-  b: {4,5,6}
+  a: [1, 2, 3]
+  b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
 -- flat 现在为 [1, 2, 3, 4, 5, 6]
@@ -2455,8 +2455,8 @@ flat = [...v for k,v in pairs data]
 <YueDisplay>
 <pre>
 data =
-  a: {1,2,3}
-  b: {4,5,6}
+  a: [1, 2, 3]
+  b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
 -- flat 现在为 [1, 2, 3, 4, 5, 6]
