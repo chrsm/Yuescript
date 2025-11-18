@@ -30,6 +30,38 @@ using namespace std::chrono_literals;
 #include "ghc/fs_std.hpp"
 #include "linenoise.hpp"
 
+#if __has_include(<pthread.h>)
+#include <pthread.h>
+template<class R>
+std::future<R> async(const std::function<R()>& f) {
+	using Fn = std::packaged_task<R()>;
+	auto task = new Fn(f);
+	std::future<R> fut = task->get_future();
+
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	pthread_attr_setstacksize(&attr, 8 * 1024 * 1024);
+
+	pthread_t th;
+	pthread_create(&th, &attr,
+		[](void* p)->void* {
+			std::unique_ptr<Fn> fn(static_cast<Fn*>(p));
+			(*fn)();
+			return nullptr;
+		},
+	task);
+	pthread_attr_destroy(&attr);
+	pthread_detach(th);
+	return fut;
+}
+#else
+template<class R>
+std::future<R> async(const std::function<R()>& f) {
+    // fallback: ignore stack size
+    return std::async(std::launch::async, f);
+}
+#endif
+
 #if not(defined YUE_NO_MACRO && defined YUE_COMPILER_ONLY)
 #define _DEFER(code, line) std::shared_ptr<void> _defer_##line(nullptr, [&](auto) { \
 	code; \
@@ -40,18 +72,23 @@ extern "C" {
 #include "lua.h"
 #include "lualib.h"
 int luaopen_yue(lua_State* L);
+int luaopen_colibc_json(lua_State* L);
 } // extern "C"
 
 static void openlibs(void* state) {
 	lua_State* L = static_cast<lua_State*>(state);
+	int top = lua_gettop(L);
+	DEFER(lua_settop(L, top));
 	luaL_openlibs(L);
 #if LUA_VERSION_NUM > 501
 	luaL_requiref(L, "yue", luaopen_yue, 0);
+	luaL_requiref(L, "cojson", luaopen_colibc_json, 0);
 #else
 	lua_pushcfunction(L, luaopen_yue);
 	lua_call(L, 0, 0);
+	lua_pushcfunction(L, luaopen_colibc_json);
+	lua_call(L, 0, 0);
 #endif
-	lua_pop(L, 1);
 }
 
 void pushYue(lua_State* L, std::string_view name) {
@@ -699,7 +736,7 @@ int main(int narg, const char** args) {
 		}
 		std::list<std::future<std::string>> results;
 		for (const auto& file : files) {
-			auto task = std::async(std::launch::async, [=]() {
+			auto task = async<std::string>([=]() {
 #ifndef YUE_COMPILER_ONLY
 				return compileFile(fs::absolute(file.first), config, fullWorkPath, fullTargetPath, minify, rewrite);
 #else
@@ -737,7 +774,7 @@ int main(int narg, const char** args) {
 #endif // YUE_NO_WATCHER
 	std::list<std::future<std::tuple<int, std::string, std::string>>> results;
 	for (const auto& file : files) {
-		auto task = std::async(std::launch::async, [=]() {
+		auto task = async<std::tuple<int, std::string, std::string>>([=]() {
 			std::ifstream input(file.first, std::ios::in);
 			if (input) {
 				std::string s(

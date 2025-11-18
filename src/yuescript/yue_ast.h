@@ -443,7 +443,7 @@ AST_END(CompInner)
 
 AST_NODE(Assign)
 	ast_ptr<true, Seperator_t> sep;
-	ast_sel_list<true, With_t, If_t, Switch_t, TableBlock_t, Exp_t> values;
+	ast_sel_list<true, With_t, If_t, Switch_t, TableBlock_t, Exp_t, SpreadListExp_t> values;
 	AST_MEMBER(Assign, &sep, &values)
 AST_END(Assign)
 
@@ -780,7 +780,7 @@ AST_NODE(Export)
 AST_END(Export)
 
 AST_NODE(FnArgDef)
-	ast_sel<true, Variable_t, SelfItem_t> name;
+	ast_sel<true, Variable_t, SelfItem_t, SimpleTable_t, TableLit_t> name;
 	ast_ptr<false, ExistentialOp_t> op;
 	ast_ptr<false, Name_t> label;
 	ast_ptr<false, Exp_t> defaultValue;
@@ -991,7 +991,6 @@ struct YueFormat {
 	int tabSpaces = 4;
 	std::string toString(ast_node* node);
 
-	Converter converter{};
 	void pushScope();
 	void popScope();
 	std::string convert(const ast_node* node);

@@ -223,12 +223,12 @@ Usage: yue [options|files|directories] ...
    Execute without options to enter REPL, type symbol '$'
    in a single line to start/stop multi-line mode
 ```
-&emsp;&emsp;Use cases:
-&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
-&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**
-&emsp;&emsp;Compile and reserve debug info:  **yue -l .**
-&emsp;&emsp;Compile and generate minified codes:  **yue -m .**
-&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**
+&emsp;&emsp;Use cases:  
+&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**  
+&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**  
+&emsp;&emsp;Compile and reserve debug info:  **yue -l .**  
+&emsp;&emsp;Compile and generate minified codes:  **yue -m .**  
+&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**  
 &emsp;&emsp;Execute a YueScript file:  **yue -e main.yue**
 
 ## Macro
@@ -595,6 +595,23 @@ tab[] = "Value"
 </pre>
 </YueDisplay>
 
+You can also use the spread operator `...` to append all elements from one list to another:
+
+```moonscript
+tbA = [1, 2, 3]
+tbB = [4, 5, 6]
+tbA[] = ...tbB
+-- tbA is now [1, 2, 3, 4, 5, 6]
+```
+<YueDisplay>
+<pre>
+tbA = [1, 2, 3]
+tbB = [4, 5, 6]
+tbA[] = ...tbB
+-- tbA is now [1, 2, 3, 4, 5, 6]
+</pre>
+</YueDisplay>
+
 ### Table Spreading
 
 You can concatenate array tables or hash tables using spread operator `...` before expressions in table literals.
@@ -641,11 +658,13 @@ You can use the **#** operator to get the last elements of a table.
 ```moonscript
 last = data.items[#]
 second_last = data.items[#-1]
+data.items[#] = 1
 ```
 <YueDisplay>
 <pre>
 last = data.items[#]
 second_last = data.items[#-1]
+data.items[#] = 1
 </pre>
 </YueDisplay>
 
@@ -2126,6 +2145,89 @@ if func 1, 2, 3,
 </pre>
 </YueDisplay>
 
+### Parameter Destructuring
+
+YueScript now supports destructuring function parameters when the argument is an object. Two forms of destructuring table literals are available:
+
+* **Curly-brace wrapped literals/object parameters**, allowing optional default values when fields are missing (e.g., `{:a, :b}`, `{a: a1 = 123}`).
+
+* **Unwrapped simple table syntax**, starting with a sequence of key-value or shorthand bindings and continuing until another expression terminates it (e.g., `:a, b: b1, :c`). This form extracts multiple fields from the same object.
+
+```moonscript
+f1 = (:a, :b, :c) ->
+  print a, b, c
+
+f1 a: 1, b: "2", c: {}
+
+f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
+  print a1, b, c
+
+arg1 = {a: 0}
+f2 arg1, arg2
+```
+<YueDisplay>
+<pre>
+f1 = (:a, :b, :c) ->
+  print a, b, c
+
+f1 a: 1, b: "2", c: {}
+
+f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
+print a1, b, c
+
+arg1 = {a: 0}
+f2 arg1, arg2
+</pre>
+</YueDisplay>
+
+### Prefixed Return Expression
+
+When working with deeply nested function bodies, it can be tedious to maintain readability and consistency of the return value. To address this, YueScript introduces the **Prefixed Return Expression** syntax. Its form is as follows:
+
+```moon
+findFirstEven = (list): nil ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+```
+<YueDisplay>
+<pre>
+findFirstEven = (list): nil ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+</pre>
+</YueDisplay>
+
+This is equivalent to:
+
+```moon
+findFirstEven = (list) ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+  nil
+```
+<YueDisplay>
+<pre>
+findFirstEven = (list) ->
+  for item in *list
+    if type(item) == "table"
+      for sub in *item
+        if sub % 2 == 0
+          return sub
+  nil
+</pre>
+</YueDisplay>
+
+The only difference is that you can move the final return expression before the `->` or `=>` token to indicate the function’s implicit return value as the last statement. This way, even in functions with multiple nested loops or conditional branches, you no longer need to write a trailing return expression at the end of the function body, making the logic structure more straightforward and easier to follow.
+
 ## Backcalls
 
 Backcalls are used for unnesting callbacks. They are defined using arrows pointed to the left as the last parameter by default filling in a function call. All the syntax is mostly the same as regular arrow functions except that it is just pointing the other way and the function body does not require indent.
@@ -2377,6 +2479,27 @@ doubled = [item * 2 for item in *items]
 <YueDisplay>
 <pre>
 doubled = [item * 2 for item in *items]
+</pre>
+</YueDisplay>
+
+In list comprehensions, you can also use the spread operator `...` to flatten nested lists, achieving a flat map effect:
+
+```moonscript
+data =
+  a: [1, 2, 3]
+  b: [4, 5, 6]
+
+flat = [...v for k,v in pairs data]
+-- flat is now [1, 2, 3, 4, 5, 6]
+```
+<YueDisplay>
+<pre>
+data =
+  a: [1, 2, 3]
+  b: [4, 5, 6]
+
+flat = [...v for k,v in pairs data]
+-- flat is now [1, 2, 3, 4, 5, 6]
 </pre>
 </YueDisplay>
 

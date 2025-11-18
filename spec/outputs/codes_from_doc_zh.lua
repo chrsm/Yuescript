@@ -73,8 +73,8 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _ud83c_udf1b = "月之脚本"
-_module_0["🌛"] = _ud83c_udf1b
+local _u1f31b = "月之脚本"
+_module_0["🌛"] = _u1f31b
 return _module_0
 local area = 6.2831853071796 * 5
 print('你好 世界')
@@ -147,6 +147,21 @@ print((function()
 end)())
 local tab = { }
 tab[#tab + 1] = "Value"
+local tbA = {
+	1,
+	2,
+	3
+}
+local tbB = {
+	4,
+	5,
+	6
+}
+local _len_0 = #tbA + 1
+for _index_0 = 1, #tbB do
+	local _elm_0 = tbB[_index_0]
+	tbA[_len_0], _len_0 = _elm_0, _len_0 + 1
+end
 local parts = {
 	"shoulders",
 	"knees"
@@ -225,6 +240,8 @@ do
 	local _item_0 = data.items
 	second_last = _item_0[#_item_0 - 1]
 end
+local _obj_0 = data.items
+_obj_0[#_obj_0] = 1
 local mt = { }
 local add
 add = function(self, right)
@@ -917,6 +934,36 @@ if func(1, 2, 3, "你好", "世界") then
 	print("hello")
 	print("我在if内部")
 end
+local f1
+f1 = function(_arg_0)
+	local a, b, c
+	a, b, c = _arg_0.a, _arg_0.b, _arg_0.c
+	return print(a, b, c)
+end
+f1({
+	a = 1,
+	b = "2",
+	c = { }
+})
+local f2
+f2 = function(_arg_0, c)
+	local a1, b
+	a1, b = _arg_0.a, _arg_0.b
+	if a1 == nil then
+		a1 = 123
+	end
+	if b == nil then
+		b = 'abc'
+	end
+	if c == nil then
+		c = { }
+	end
+	return print(a1, b, c)
+end
+local arg1 = {
+	a = 0
+}
+f2(arg1, arg2)
 f(function()
 	return print("hello")
 end)
@@ -1042,6 +1089,28 @@ for _index_0 = 1, #_list_0 do
 	_len_0 = _len_0 + 1
 end
 doubled = _accum_0
+local data = {
+	a = {
+		1,
+		2,
+		3
+	},
+	b = {
+		4,
+		5,
+		6
+	}
+}
+local flat
+local _accum_0 = { }
+for k, v in pairs(data) do
+	local _len_0 = #_accum_0 + 1
+	for _index_0 = 1, #v do
+		local _elm_0 = v[_index_0]
+		_accum_0[_len_0], _len_0 = _elm_0, _len_0 + 1
+	end
+end
+flat = _accum_0
 local x_coords = {
 	4,
 	5,
@@ -2476,8 +2545,8 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _ud83c_udf1b = "月之脚本"
-_module_0["🌛"] = _ud83c_udf1b
+local _u1f31b = "月之脚本"
+_module_0["🌛"] = _u1f31b
 return _module_0
 local area = 6.2831853071796 * 5
 print('你好 世界')
@@ -2550,6 +2619,21 @@ print((function()
 end)())
 local tab = { }
 tab[#tab + 1] = "Value"
+local tbA = {
+	1,
+	2,
+	3
+}
+local tbB = {
+	4,
+	5,
+	6
+}
+local _len_0 = #tbA + 1
+for _index_0 = 1, #tbB do
+	local _elm_0 = tbB[_index_0]
+	tbA[_len_0], _len_0 = _elm_0, _len_0 + 1
+end
 local parts = {
 	"shoulders",
 	"knees"
@@ -2628,6 +2712,8 @@ do
 	local _item_0 = data.items
 	second_last = _item_0[#_item_0 - 1]
 end
+local _obj_0 = data.items
+_obj_0[#_obj_0] = 1
 local mt = { }
 local add
 add = function(self, right)
@@ -3320,6 +3406,66 @@ if func(1, 2, 3, "你好", "世界") then
 	print("你好")
 	print("我在if内部")
 end
+local f1
+f1 = function(_arg_0)
+	local a, b, c
+	a, b, c = _arg_0.a, _arg_0.b, _arg_0.c
+	return print(a, b, c)
+end
+f1({
+	a = 1,
+	b = "2",
+	c = { }
+})
+local f2
+f2 = function(_arg_0, c)
+	local a1, b
+	a1, b = _arg_0.a, _arg_0.b
+	if a1 == nil then
+		a1 = 123
+	end
+	if b == nil then
+		b = 'abc'
+	end
+	if c == nil then
+		c = { }
+	end
+	return print(a1, b, c)
+end
+local arg1 = {
+	a = 0
+}
+f2(arg1, arg2)
+local findFirstEven
+findFirstEven = function(list)
+	for _index_0 = 1, #list do
+		local item = list[_index_0]
+		if type(item) == "table" then
+			for _index_1 = 1, #item do
+				local sub = item[_index_1]
+				if sub % 2 == 0 then
+					return sub
+				end
+			end
+		end
+	end
+	return nil
+end
+local findFirstEven
+findFirstEven = function(list)
+	for _index_0 = 1, #list do
+		local item = list[_index_0]
+		if type(item) == "table" then
+			for _index_1 = 1, #item do
+				local sub = item[_index_1]
+				if sub % 2 == 0 then
+					return sub
+				end
+			end
+		end
+	end
+	return nil
+end
 f(function()
 	return print("hello")
 end)
@@ -3445,6 +3591,28 @@ for _index_0 = 1, #_list_0 do
 	_len_0 = _len_0 + 1
 end
 doubled = _accum_0
+local data = {
+	a = {
+		1,
+		2,
+		3
+	},
+	b = {
+		4,
+		5,
+		6
+	}
+}
+local flat
+local _accum_0 = { }
+for k, v in pairs(data) do
+	local _len_0 = #_accum_0 + 1
+	for _index_0 = 1, #v do
+		local _elm_0 = v[_index_0]
+		_accum_0[_len_0], _len_0 = _elm_0, _len_0 + 1
+	end
+end
+flat = _accum_0
 local x_coords = {
 	4,
 	5,

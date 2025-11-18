@@ -193,4 +193,35 @@ do
 	func = (): -> check 123
 	print func! -- get nil
 
+do
+	f = ({:a, :b, :c}) -> print a, b, c
+	f = (:a, :b, :c) -> print a, b, c
+	g = (x, :y) -> print x, y
+	i = ({a: ax = 0, b: by = 0}) -> print ax, by
+	j = (name, {id: uid = "n/a", :role = "guest"}) -> print name, uid, role
+	m = ({user: {:name, :age}, meta: {:ver = 1}}) -> print name, age, ver
+	m1 = ({user: {:name, :age}, :meta = {}}) -> print name, age, meta and meta.ver or "nil"
+	new = ({:name = "anon", :age = 0}) =>
+		@name = name
+		@age  = age
+	set = ({:name = @name, :age = @age}) =>
+		@name = name
+		@age = age
+	logKV = ({:k, :v}, ...) ->
+		print "kv:", k, v
+		print "rest count:", select "#", ...
+	macro gen = (fname) -> |
+	  #{fname} = ({:a, :b = 0}) -> print a, b
+	$gen foo
+	t1 = (:a, x) -> print a, x
+	t2 = (:a) -> print a
+	w = (
+		id
+		{:x = 0, :y = 0}
+		:flag
+	) ->
+		print id, x, y, flag
+	g1 = ({:a, a: ax}) -> print a, ax
+	g4 = ({:a, :b, ...rest}) -> print a, b
+
 nil

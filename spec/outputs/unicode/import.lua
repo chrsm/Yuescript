@@ -11,10 +11,10 @@ local _u5b57_u6bb5x, _u5b57_u6bb5y, _u5b57_u6bb5z = _u9053_u5177_u7ec4["字段x"
 		return _fn_0(_base_0, ...)
 	end
 end)(), _u9053_u5177_u7ec4["字段z"]
-local _u9886_u4e3b, _ud83d_udc7b
+local _u9886_u4e3b, _u1f47b
 do
 	local _obj_1 = _u627e_u5230("我的表")
-	_u9886_u4e3b, _ud83d_udc7b = _obj_1["领主"], (function()
+	_u9886_u4e3b, _u1f47b = _obj_1["领主"], (function()
 		local _base_0 = _obj_1
 		local _fn_0 = _base_0["👻"]
 		return _fn_0 and function(...)

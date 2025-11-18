@@ -283,4 +283,157 @@ do
 	end
 	print(func())
 end
+local _anon_func_0 = function(_arg_0)
+	local _accum_0 = { }
+	local _len_0 = 1
+	local _max_0 = #_arg_0
+	for _index_0 = 1, _max_0 do
+		local _item_0 = _arg_0[_index_0]
+		_accum_0[_len_0] = _item_0
+		_len_0 = _len_0 + 1
+	end
+	return _accum_0
+end
+do
+	local f
+	f = function(_arg_0)
+		local a, b, c
+		a, b, c = _arg_0.a, _arg_0.b, _arg_0.c
+		return print(a, b, c)
+	end
+	f = function(_arg_0)
+		local a, b, c
+		a, b, c = _arg_0.a, _arg_0.b, _arg_0.c
+		return print(a, b, c)
+	end
+	local g
+	g = function(x, _arg_0)
+		local y
+		y = _arg_0.y
+		return print(x, y)
+	end
+	local i
+	i = function(_arg_0)
+		local ax, by
+		ax, by = _arg_0.a, _arg_0.b
+		if ax == nil then
+			ax = 0
+		end
+		if by == nil then
+			by = 0
+		end
+		return print(ax, by)
+	end
+	j = function(name, _arg_0)
+		local uid, role
+		uid, role = _arg_0.id, _arg_0.role
+		if uid == nil then
+			uid = "n/a"
+		end
+		if role == nil then
+			role = "guest"
+		end
+		return print(name, uid, role)
+	end
+	local m
+	m = function(_arg_0)
+		local name, age, ver
+		name, age, ver = _arg_0.user.name, _arg_0.user.age, _arg_0.meta.ver
+		if ver == nil then
+			ver = 1
+		end
+		return print(name, age, ver)
+	end
+	local m1
+	m1 = function(_arg_0)
+		local name, age, meta
+		name, age, meta = _arg_0.user.name, _arg_0.user.age, _arg_0.meta
+		if meta == nil then
+			meta = { }
+		end
+		return print(name, age, meta and meta.ver or "nil")
+	end
+	local new
+	new = function(self, _arg_0)
+		local name, age
+		name, age = _arg_0.name, _arg_0.age
+		if name == nil then
+			name = "anon"
+		end
+		if age == nil then
+			age = 0
+		end
+		self.name = name
+		self.age = age
+	end
+	local set
+	set = function(self, _arg_0)
+		local name, age
+		name, age = _arg_0.name, _arg_0.age
+		if name == nil then
+			name = self.name
+		end
+		if age == nil then
+			age = self.age
+		end
+		self.name = name
+		self.age = age
+	end
+	local logKV
+	logKV = function(_arg_0, ...)
+		local k, v
+		k, v = _arg_0.k, _arg_0.v
+		print("kv:", k, v)
+		return print("rest count:", select("#", ...))
+	end
+	do
+		local foo
+		foo = function(_arg_0)
+			local a, b
+			a, b = _arg_0.a, _arg_0.b
+			if b == nil then
+				b = 0
+			end
+			return print(a, b)
+		end
+	end
+	local t1
+	t1 = function(_arg_0, x)
+		local a
+		a = _arg_0.a
+		return print(a, x)
+	end
+	local t2
+	t2 = function(_arg_0)
+		local a
+		a = _arg_0.a
+		return print(a)
+	end
+	local w
+	w = function(id, _arg_0, _arg_1)
+		local x, y
+		x, y = _arg_0.x, _arg_0.y
+		if x == nil then
+			x = 0
+		end
+		if y == nil then
+			y = 0
+		end
+		local flag
+		flag = _arg_1.flag
+		return print(id, x, y, flag)
+	end
+	local g1
+	g1 = function(_arg_0)
+		local a, ax
+		a, ax = _arg_0.a, _arg_0.a
+		return print(a, ax)
+	end
+	local g4
+	g4 = function(_arg_0)
+		local a, b, rest
+		a, b, rest = _arg_0.a, _arg_0.b, _anon_func_0(_arg_0)
+		return print(a, b)
+	end
+end
 return nil

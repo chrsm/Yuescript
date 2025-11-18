@@ -3,6 +3,7 @@
 BIN_NAME := yue
 # Compiler used
 CXX ?= g++
+CC ?= gcc
 # Extension of source files used in the project
 SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
@@ -10,7 +11,7 @@ SRC_PATH = ./src
 # Space-separated pkg-config libraries used by this project
 LIBS =
 # General compiler flags
-COMPILE_FLAGS = -std=c++17 -Wall -Wextra -Wno-deprecated-declarations
+COMPILE_FLAGS = -std=c++17 -Wall -Wextra -DYUE_UTF8_IMPL
 # Additional release-specific flags
 RCOMPILE_FLAGS = -D NDEBUG -O3
 # Additional debug-specific flags
@@ -54,13 +55,42 @@ endif
 	INCLUDES += -I $(SRC_PATH)/3rdParty/lua
 	LINK_FLAGS += -L $(SRC_PATH)/3rdParty/lua -llua -ldl
 endif
+
+# Detect Android Termux environment
+# Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory
+IS_TERMUX := false
+ANDROID_ROOT_VAR := $(shell echo $$ANDROID_ROOT)
+PREFIX_VAR := $(shell echo $$PREFIX)
+ifneq ($(ANDROID_ROOT_VAR),)
+	# Check if PREFIX environment variable points to Termux directory
+	ifneq ($(PREFIX_VAR),)
+		ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
+			IS_TERMUX := true
+		endif
+	endif
+	# Alternative check: verify if Termux installation path exists
+	ifeq ($(IS_TERMUX),false)
+		ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
+			IS_TERMUX := true
+		endif
+	endif
+endif
+
+# Auto-set NO_WATCHER for Termux environment if not explicitly set
+ifeq ($(IS_TERMUX),true)
+	ifeq ($(NO_WATCHER),)
+		NO_WATCHER := true
+		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+	endif
+endif
+
 ifeq ($(NO_WATCHER),true)
 	COMPILE_FLAGS += -DYUE_NO_WATCHER
 endif
 
 # Add platform related linker flag
 ifneq ($(UNAME_S),Darwin)
-	LINK_FLAGS += -lstdc++fs -Wl,-E
+	LINK_FLAGS += -Wl,-E
 	PLAT = linux
 else
 	LINK_FLAGS += -framework CoreFoundation -framework CoreServices
@@ -96,10 +126,13 @@ endif
 
 # Combine compiler and linker flags
 release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
+release: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(RCOMPILE_FLAGS)
 release: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DCOMPILE_FLAGS)
+debug: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(DCOMPILE_FLAGS)
 debug: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(DLINK_FLAGS)
 shared: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS) $(TARGET_FLAGS)
+shared: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(RCOMPILE_FLAGS) $(TARGET_FLAGS)
 
 # Build and output paths
 release: export BUILD_PATH := build/release
@@ -134,9 +167,15 @@ ifeq ($(NO_LUA),true)
 	SOURCES := $(filter-out $(SRC_PATH)/yuescript/yuescript.cpp, $(SOURCES))
 endif
 
+# Add colib ljson.c source file
+SOURCES += $(SRC_PATH)/3rdParty/colib/ljson.c
+
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
-OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+CPP_SOURCES = $(filter %.cpp,$(SOURCES))
+C_SOURCES = $(filter %.c,$(SOURCES))
+OBJECTS = $(CPP_SOURCES:$(SRC_PATH)/%.cpp=$(BUILD_PATH)/%.o)
+OBJECTS += $(C_SOURCES:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
 # Set the dependency files that will be used to add header dependencies
 DEPS = $(OBJECTS:.o=.d)
 
@@ -225,8 +264,10 @@ wasm-node: clean
 		-O2 \
 		-o wasm/dist/esm/yuescript.mjs \
 		-I $(SRC_PATH) \
+		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
+		-DYUE_UTF8_IMPL \
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations \
@@ -265,8 +306,10 @@ wasm-node: clean
 		-o wasm/dist/cjs/yuescript.cjs \
 		--emit-tsd="yuescript.d.ts" \
 		-I $(SRC_PATH) \
+		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
+		-DYUE_UTF8_IMPL \
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations \
@@ -309,8 +352,10 @@ wasm: clean
 		-O2 \
 		-o doc/docs/.vuepress/public/js/yuescript.js \
 		-I $(SRC_PATH) \
+		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
+		-DYUE_UTF8_IMPL \
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations
@@ -438,5 +483,13 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
 	@echo "Compiling: $< -> $@"
 	@$(START_TIME)
 	$(CMD_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	@echo -en "\t Compile time: "
+	@$(END_TIME)
+
+# C source file rules
+$(BUILD_PATH)/%.o: $(SRC_PATH)/%.c
+	@echo "Compiling: $< -> $@"
+	@$(START_TIME)
+	$(CMD_PREFIX)$(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 	@echo -en "\t Compile time: "
 	@$(END_TIME)

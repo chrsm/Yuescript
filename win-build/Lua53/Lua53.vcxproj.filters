@@ -7,183 +7,183 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lapi.c">
+    <ClCompile Include="lapi.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lauxlib.c">
+    <ClCompile Include="lauxlib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lbaselib.c">
+    <ClCompile Include="lbaselib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lbitlib.c">
+    <ClCompile Include="lbitlib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lcode.c">
+    <ClCompile Include="lcode.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lcorolib.c">
+    <ClCompile Include="lcorolib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lctype.c">
+    <ClCompile Include="lctype.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ldblib.c">
+    <ClCompile Include="ldblib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ldebug.c">
+    <ClCompile Include="ldebug.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ldo.c">
+    <ClCompile Include="ldo.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ldump.c">
+    <ClCompile Include="ldump.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lfunc.c">
+    <ClCompile Include="lfunc.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lgc.c">
+    <ClCompile Include="lgc.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\linit.c">
+    <ClCompile Include="linit.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\liolib.c">
+    <ClCompile Include="liolib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\llex.c">
+    <ClCompile Include="llex.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lmathlib.c">
+    <ClCompile Include="lmathlib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lmem.c">
+    <ClCompile Include="lmem.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\loadlib.c">
+    <ClCompile Include="loadlib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lobject.c">
+    <ClCompile Include="lobject.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lopcodes.c">
+    <ClCompile Include="lopcodes.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\loslib.c">
+    <ClCompile Include="loslib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lparser.c">
+    <ClCompile Include="lparser.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lstate.c">
+    <ClCompile Include="lstate.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lstring.c">
+    <ClCompile Include="lstring.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lstrlib.c">
+    <ClCompile Include="lstrlib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ltable.c">
+    <ClCompile Include="ltable.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ltablib.c">
+    <ClCompile Include="ltablib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ltm.c">
+    <ClCompile Include="ltm.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lundump.c">
+    <ClCompile Include="lundump.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lutf8lib.c">
+    <ClCompile Include="lutf8lib.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lvm.c">
+    <ClCompile Include="lvm.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lzio.c">
+    <ClCompile Include="lzio.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lapi.h">
+    <ClInclude Include="lapi.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lauxlib.h">
+    <ClInclude Include="lauxlib.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lcode.h">
+    <ClInclude Include="lcode.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lctype.h">
+    <ClInclude Include="lctype.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ldebug.h">
+    <ClInclude Include="ldebug.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ldo.h">
+    <ClInclude Include="ldo.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lfunc.h">
+    <ClInclude Include="lfunc.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lgc.h">
+    <ClInclude Include="lgc.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\llex.h">
+    <ClInclude Include="llex.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\llimits.h">
+    <ClInclude Include="llimits.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lmem.h">
+    <ClInclude Include="lmem.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lobject.h">
+    <ClInclude Include="lobject.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lopcodes.h">
+    <ClInclude Include="lopcodes.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lparser.h">
+    <ClInclude Include="lparser.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lprefix.h">
+    <ClInclude Include="lprefix.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lstate.h">
+    <ClInclude Include="lstate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lstring.h">
+    <ClInclude Include="lstring.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ltable.h">
+    <ClInclude Include="ltable.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\ltm.h">
+    <ClInclude Include="ltm.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lua.h">
+    <ClInclude Include="lua.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lua.hpp">
+    <ClInclude Include="lua.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\luaconf.h">
+    <ClInclude Include="luaconf.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lualib.h">
+    <ClInclude Include="lualib.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lundump.h">
+    <ClInclude Include="lundump.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lvm.h">
+    <ClInclude Include="lvm.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="\\Mac\Home\Workspace\Yuescript\win-build\Lua53\lzio.h">
+    <ClInclude Include="lzio.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

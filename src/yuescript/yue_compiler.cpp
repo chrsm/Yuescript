@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.29.3"sv;
+const std::string_view version = "0.29.8"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -258,8 +258,8 @@ public:
 				if (config.lintGlobalVariable) {
 					globals = std::make_unique<GlobalVars>();
 					for (const auto& var : _globals) {
-						auto [name, line, col, accessType] = var.second;
-						globals->push_back({name, line + _config.lineOffset, col, accessType});
+						auto [name, line, col, accessType, defined] = var.second;
+						globals->push_back({name, line + _config.lineOffset, col, accessType, defined});
 					}
 					std::sort(globals->begin(), globals->end(), [](const GlobalVar& varA, const GlobalVar& varB) {
 						if (varA.line < varB.line) {
@@ -396,7 +396,7 @@ private:
 	};
 	std::stack<ContinueVar> _continueVars;
 	std::list<std::unique_ptr<input>> _codeCache;
-	std::unordered_map<std::string, std::tuple<std::string, int, int, AccessType>> _globals;
+	std::unordered_map<std::string, std::tuple<std::string, int, int, AccessType, bool>> _globals;
 	std::ostringstream _buf;
 	std::ostringstream _joinBuf;
 	const std::string _newLine = "\n";
@@ -1360,10 +1360,10 @@ private:
 		std::ostringstream buf;
 		for (auto it = uname->m_begin.m_it; it != uname->m_end.m_it; ++it) {
 			auto ch = *it;
-			if (ch > 255) {
-				buf << "_u"sv << std::hex << static_cast<int>(ch);
-			} else {
+			if (ch <= 0x7F && ((ch == '_') || ((ch | 0x20) >= 'a' && (ch | 0x20) <= 'z') || (ch >= '0' && ch <= '9'))) {
 				buf << static_cast<char>(ch);
+			} else {
+				buf << "_u"sv << std::hex << static_cast<uint32_t>(ch);
 			}
 		}
 		return buf.str();
@@ -1445,6 +1445,7 @@ private:
 				case id<DotChainItem_t>():
 				case id<Exp_t>():
 				case id<TableAppendingOp_t>():
+				case id<ReversedIndex_t>():
 					return true;
 			}
 		}
@@ -1603,7 +1604,7 @@ private:
 					if (accessType == AccessType::Read && _funcLevel > 1) {
 						accessType = AccessType::Capture;
 					}
-					_globals[key] = {str, x->m_begin.m_line, x->m_begin.m_col, accessType};
+					_globals[key] = {str, x->m_begin.m_line, x->m_begin.m_col, accessType, isSolidDefined(str)};
 				}
 			}
 		}
@@ -1982,7 +1983,7 @@ private:
 		return indent() + "local "s + join(defs, ", "sv);
 	}
 
-	std::string getDestrucureDefine(ExpListAssign_t* assignment) {
+	std::string getDestructureDefine(ExpListAssign_t* assignment) {
 		auto info = extractDestructureInfo(assignment, true, false);
 		if (!info.destructures.empty()) {
 			str_list defs;
@@ -2013,8 +2014,31 @@ private:
 		return clearBuf();
 	}
 
+	str_list getArgDestructureList(ExpListAssign_t* assignment) {
+		str_list defs;
+		auto info = extractDestructureInfo(assignment, true, false);
+		if (!info.destructures.empty()) {
+			for (const auto& des : info.destructures) {
+				if (std::holds_alternative<Destructure>(des)) {
+					const auto& destruct = std::get<Destructure>(des);
+					for (const auto& item : destruct.items) {
+						if (item.targetVar.empty()) {
+							throw CompileError("can only destruct argument to variable"sv, item.target);
+						} else {
+							defs.push_back(item.targetVar);
+						}
+					}
+				} else {
+					const auto& assignment = std::get<AssignmentPtr>(des);
+					YUEE("AST node mismatch", assignment.ptr);
+				}
+			}
+		}
+		return defs;
+	}
+
 	std::string getPreDefine(ExpListAssign_t* assignment) {
-		auto preDefine = getDestrucureDefine(assignment);
+		auto preDefine = getDestructureDefine(assignment);
 		if (preDefine.empty()) {
 			preDefine = toLocalDecl(transformAssignDefs(assignment->expList, DefOp::Mark));
 		}
@@ -2231,7 +2255,8 @@ private:
 				BREAK_IF(!value);
 				auto chainValue = value->item.as<ChainValue_t>();
 				BREAK_IF(!chainValue);
-				if (auto dot = ast_cast<DotChainItem_t>(chainValue->items.back())) {
+				auto last = chainValue->items.back();
+				if (auto dot = ast_cast<DotChainItem_t>(last)) {
 					BREAK_IF(!dot->name.is<Metatable_t>());
 					str_list temp;
 					auto [beforeAssignment, afterAssignment] = splitAssignment();
@@ -2262,7 +2287,7 @@ private:
 					}
 					out.push_back(join(temp));
 					return false;
-				} else if (ast_is<TableAppendingOp_t>(chainValue->items.back())) {
+				} else if (ast_is<TableAppendingOp_t>(last)) {
 					str_list temp;
 					auto [beforeAssignment, afterAssignment] = splitAssignment();
 					if (!beforeAssignment->expList->exprs.empty()) {
@@ -2296,19 +2321,69 @@ private:
 						transformAssignment(newAssignment, temp);
 						varName = objVar;
 					}
-					auto newAssignment = x->new_ptr<ExpListAssign_t>();
-					newAssignment->expList.set(toAst<ExpList_t>(varName + "[#"s + varName + "+1]"s, x));
-					auto assign = x->new_ptr<Assign_t>();
-					if (vit == values.end()) {
-						throw CompileError("right value missing"sv, values.front());
+					if (auto spread = ast_cast<SpreadListExp_t>(*vit)) {
+						auto lenVar = getUnusedName("_len_"sv);
+						forceAddToScope(lenVar);
+						temp.push_back(indent() + "local "s + lenVar + " = #"s + varName + " + 1"s + nll(spread));
+						auto elmVar = getUnusedName("_elm_"sv);
+						_buf << varName << '[' << lenVar << "],"s << lenVar << "="s << elmVar << ',' << lenVar << "+1 for "s << elmVar << " in *nil"s;
+						auto stmt = toAst<Statement_t>(clearBuf(), spread);
+						auto comp = stmt->appendix->item.to<CompInner_t>();
+						ast_to<CompForEach_t>(comp->items.front())->loopValue.to<StarExp_t>()->value.set(spread->exp);
+						transformStatement(stmt, temp);
+					} else {
+						auto newAssignment = x->new_ptr<ExpListAssign_t>();
+						newAssignment->expList.set(toAst<ExpList_t>(varName + "[#"s + varName + "+1]"s, x));
+						auto assign = x->new_ptr<Assign_t>();
+						if (vit == values.end()) {
+							throw CompileError("right value missing"sv, values.front());
+						}
+						assign->values.push_back(*vit);
+						newAssignment->action.set(assign);
+						transformAssignment(newAssignment, temp);
 					}
-					assign->values.push_back(*vit);
-					newAssignment->action.set(assign);
-					transformAssignment(newAssignment, temp);
 					if (extraScoped) {
 						popScope();
 						temp.push_back(indent() + "end"s + nlr(x));
 					}
+					if (!afterAssignment->expList->exprs.empty()) {
+						transformAssignment(afterAssignment, temp);
+					}
+					out.push_back(join(temp));
+					return false;
+				} else if (ast_is<ReversedIndex_t>(last)) {
+					if (chainValue->items.size() == 1) {
+						if (_withVars.empty()) {
+							throw CompileError("short dot/colon syntax must be called within a with block"sv, x);
+						} else {
+							break;
+						}
+					}
+					auto tmpChain = chainValue->new_ptr<ChainValue_t>();
+					tmpChain->items.dup(chainValue->items);
+					tmpChain->items.pop_back();
+					auto tmpLeft = newExp(tmpChain, tmpChain);
+					auto leftVar = singleVariableFrom(tmpLeft, AccessType::Read);
+					if (!leftVar.empty() && isLocal(leftVar)) {
+						break;
+					}
+					leftVar = getUnusedName("_obj_"sv);
+					auto tmpAsmt = assignmentFrom(toAst<Exp_t>(leftVar, tmpLeft), tmpLeft, tmpLeft);
+					str_list temp;
+					transformAssignment(tmpAsmt, temp);
+					auto [beforeAssignment, afterAssignment] = splitAssignment();
+					if (!beforeAssignment->expList->exprs.empty()) {
+						transformAssignment(beforeAssignment, temp);
+					}
+					if (vit == values.end()) {
+						throw CompileError("right value missing"sv, values.front());
+					}
+					auto newChain = chainValue->new_ptr<ChainValue_t>();
+					newChain->items.push_back(toAst<Callable_t>(leftVar, newChain));
+					newChain->items.push_back(chainValue->items.back());
+					auto newLeft = newExp(newChain, newChain);
+					auto newAsmt = assignmentFrom(newLeft, *vit, newLeft);
+					transformAssignment(newAsmt, temp);
 					if (!afterAssignment->expList->exprs.empty()) {
 						transformAssignment(afterAssignment, temp);
 					}
@@ -2785,6 +2860,7 @@ private:
 			case id<Switch_t>(): transformSwitch(static_cast<Switch_t*>(value), out, ExpUsage::Closure); break;
 			case id<TableBlock_t>(): transformTableBlock(static_cast<TableBlock_t*>(value), out); break;
 			case id<Exp_t>(): transformExp(static_cast<Exp_t*>(value), out, ExpUsage::Closure); break;
+			case id<SpreadListExp_t>(): throw CompileError("can only be used for ranged table append assignments"sv, value); break;
 			default: YUEE("AST node mismatch", value); break;
 		}
 	}
@@ -4525,7 +4601,7 @@ private:
 						if (accessType == AccessType::Read && _funcLevel > 1) {
 							accessType = AccessType::Capture;
 						}
-						_globals[key] = {out.back(), item->m_begin.m_line, item->m_begin.m_col, accessType};
+						_globals[key] = {out.back(), item->m_begin.m_line, item->m_begin.m_col, accessType, isSolidDefined(out.back())};
 					}
 				}
 				break;
@@ -5652,6 +5728,7 @@ private:
 			bool checkExistence = false;
 			std::string name;
 			std::string assignSelf;
+			ast_ptr<false, ExpListAssign_t> assignment;
 		};
 		std::list<ArgItem> argItems;
 		str_list temp;
@@ -5706,6 +5783,22 @@ private:
 					}
 					break;
 				}
+				case id<TableLit_t>(): {
+					arg.name = getUnusedName("_arg_"sv);
+					auto simpleValue = def->new_ptr<SimpleValue_t>();
+					simpleValue->value.set(def->name);
+					auto asmt = assignmentFrom(newExp(simpleValue, def), toAst<Exp_t>(arg.name, def), def);
+					arg.assignment = asmt;
+					break;
+				}
+				case id<SimpleTable_t>(): {
+					arg.name = getUnusedName("_arg_"sv);
+					auto value = def->new_ptr<Value_t>();
+					value->item.set(def->name);
+					auto asmt = assignmentFrom(newExp(value, def), toAst<Exp_t>(arg.name, def), def);
+					arg.assignment = asmt;
+					break;
+				}
 				default: YUEE("AST node mismatch", def->name.get()); break;
 			}
 			forceAddToScope(arg.name);
@@ -5723,6 +5816,14 @@ private:
 				_buf << temp.back();
 				_buf << indent() << "end"sv << nll(def);
 				temp.back() = clearBuf();
+			}
+			if (arg.assignment) {
+				auto names = getArgDestructureList(arg.assignment);
+				for (const auto& name : names) {
+					forceAddToScope(name);
+				}
+				temp.emplace_back(indent() + "local "s + join(names, ", "sv) + nll(def));
+				transformAssignment(arg.assignment, temp);
 			}
 			if (varNames.empty())
 				varNames = arg.name;
@@ -6560,11 +6661,6 @@ private:
 							indexNode->nilCoalesed.set(rIndex->modifier->nilCoalesed);
 						}
 						newChain->items.push_back(indexNode);
-						auto next = current;
-						++next;
-						for (auto i = next; i != chainList.end(); ++i) {
-							newChain->items.push_back(*i);
-						}
 						auto expList = x->new_ptr<ExpList_t>();
 						expList->exprs.push_back(newExp(newChain, x));
 						auto expListAssign = x->new_ptr<ExpListAssign_t>();
@@ -6579,6 +6675,11 @@ private:
 						auto doNode = x->new_ptr<Do_t>();
 						doNode->body.set(body);
 						if (usage == ExpUsage::Assignment) {
+							auto next = current;
+							++next;
+							for (auto i = next; i != chainList.end(); ++i) {
+								newChain->items.push_back(*i);
+							}
 							auto assignment = x->new_ptr<ExpListAssign_t>();
 							assignment->expList.set(assignList);
 							auto assign = x->new_ptr<Assign_t>();
@@ -6588,6 +6689,33 @@ private:
 							assignment->action.set(assign);
 							transformAssignment(assignment, out);
 							return;
+						}
+						if (usage == ExpUsage::Closure) {
+							auto next = current;
+							++next;
+							if (next != chainList.end()) {
+								doNode->new_ptr<ChainValue_t>();
+								auto dVal = doNode->new_ptr<SimpleValue_t>();
+								dVal->value.set(doNode);
+								auto dExp = newExp(dVal, dVal);
+								auto dParen = dExp->new_ptr<Parens_t>();
+								dParen->extra = true;
+								dParen->expr.set(dExp);
+								auto dCallable = dExp->new_ptr<Callable_t>();
+								dCallable->item.set(dParen);
+								auto dChain = doNode->new_ptr<ChainValue_t>();
+								dChain->items.push_back(dCallable);
+								for (auto i = next; i != chainList.end(); ++i) {
+									dChain->items.push_back(*i);
+								}
+								transformExp(newExp(dChain, dExp), out, usage);
+								return;
+							}
+						}
+						auto next = current;
+						++next;
+						for (auto i = next; i != chainList.end(); ++i) {
+							newChain->items.push_back(*i);
 						}
 						transformDo(doNode, out, usage);
 						return;
@@ -8153,9 +8281,16 @@ private:
 			}
 			return;
 		}
-		auto def = ast_cast<NormalDef_t>(comp->items.front());
-		if (!def || def->defVal) {
-			throw CompileError("invalid comprehension expression", comp->items.front());
+		ast_node* value = nullptr;
+		bool isSpread = ast_is<SpreadListExp_t>(comp->items.front());
+		if (isSpread) {
+			value = comp->items.front();
+		} else {
+			auto def = ast_cast<NormalDef_t>(comp->items.front());
+			if (!def || def->defVal) {
+				throw CompileError("invalid comprehension expression", comp->items.front());
+			}
+			value = def->item.get();
 		}
 		bool extraScope = false;
 		switch (usage) {
@@ -8179,13 +8314,15 @@ private:
 			default:
 				break;
 		}
-		auto value = def->item.get();
 		auto compInner = static_cast<CompInner_t*>(comp->items.back());
 		str_list temp;
 		std::string accumVar = getUnusedName("_accum_"sv);
-		std::string lenVar = getUnusedName("_len_"sv);
 		addToScope(accumVar);
-		addToScope(lenVar);
+		std::string lenVar;
+		if (!isSpread) {
+			lenVar = getUnusedName("_len_"sv);
+			addToScope(lenVar);
+		}
 		for (auto item : compInner->items.objects()) {
 			switch (item->get_id()) {
 				case id<CompForEach_t>():
@@ -8203,7 +8340,7 @@ private:
 			}
 		}
 		{
-			auto assignLeft = toAst<ExpList_t>(accumVar + '[' + lenVar + ']', x);
+			auto assignLeft = toAst<ExpList_t>(accumVar + '[' + (isSpread ? "]"s : lenVar + ']'), x);
 			auto assign = x->new_ptr<Assign_t>();
 			assign->values.push_back(value);
 			auto assignment = x->new_ptr<ExpListAssign_t>();
@@ -8217,10 +8354,15 @@ private:
 			popScope();
 		}
 		_buf << indent() << "local "sv << accumVar << " = { }"sv << nll(comp);
-		_buf << indent() << "local "sv << lenVar << " = 1"sv << nll(comp);
-		_buf << join(temp);
-		_buf << assignStr;
-		_buf << indent(int(temp.size())) << lenVar << " = "sv << lenVar << " + 1"sv << nll(comp);
+		if (isSpread) {
+			_buf << join(temp);
+			_buf << assignStr;
+		} else {
+			_buf << indent() << "local "sv << lenVar << " = 1"sv << nll(comp);
+			_buf << join(temp);
+			_buf << assignStr;
+			_buf << indent(int(temp.size())) << lenVar << " = "sv << lenVar << " + 1"sv << nll(comp);
+		}
 		for (int ind = int(temp.size()) - 1; ind > -1; --ind) {
 			_buf << indent(ind) << "end"sv << nll(comp);
 		}
@@ -9064,7 +9206,7 @@ private:
 		if (_config.lintGlobalVariable && !isLocal(name)) {
 			auto key = name + ':' + std::to_string(pair->name->m_begin.m_line) + ':' + std::to_string(pair->name->m_begin.m_col);
 			if (_globals.find(key) != _globals.end()) {
-				_globals[key] = {name, pair->name->m_begin.m_line, pair->name->m_begin.m_col, _funcLevel > 1 ? AccessType::Capture : AccessType::Read};
+				_globals[key] = {name, pair->name->m_begin.m_line, pair->name->m_begin.m_col, _funcLevel > 1 ? AccessType::Capture : AccessType::Read, isSolidDefined(name)};
 			}
 		}
 	}
@@ -10714,7 +10856,7 @@ private:
 
 	void transformImportFrom(ImportFrom_t* importNode, str_list& out) {
 		str_list temp;
-		auto x = importNode;
+		auto x = importNode->item.get();
 		auto objVar = singleVariableFrom(importNode->item, AccessType::Read);
 		ast_ptr<false, ExpListAssign_t> objAssign;
 		if (objVar.empty()) {

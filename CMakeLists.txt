@@ -44,19 +44,33 @@ if (LUA_LIBRARIES MATCHES "LUA_LIBRARIES-NOTFOUND")
 	endif()
 else ()
 	message(STATUS "Lua: using information from luarocks")
-endif()	
+endif()
 
 message(STATUS "Lua: " ${LUA})
 message(STATUS "Lua include: " ${LUA_INCLUDE_DIR})
 message(STATUS "Lua library: ${LUA_LIBRARIES}")
 
-enable_language(CXX)
+enable_language(C CXX)
 include_directories(src src/3rdParty ${LUA_INCLUDE_DIR})
-add_definitions(-std=c++17 -O3 -fPIC)
+add_definitions(-std=c++17 -O3 -fPIC -DYUE_UTF8_IMPL)
 
-if (APPLE)
-	add_compile_options(-Wno-deprecated-declarations)
-endif ()
+# Detect Android Termux environment
+# Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory
+set(IS_TERMUX FALSE)
+if (DEFINED ENV{ANDROID_ROOT})
+	# Check if PREFIX environment variable points to Termux directory
+	if (DEFINED ENV{PREFIX})
+		if ("$ENV{PREFIX}" MATCHES "com.termux")
+			set(IS_TERMUX TRUE)
+			message(STATUS "Detected Android Termux environment (via PREFIX: $ENV{PREFIX})")
+		endif()
+	endif()
+	# Alternative check: verify if Termux installation path exists
+	if (NOT IS_TERMUX AND EXISTS "/data/data/com.termux/files/usr")
+		set(IS_TERMUX TRUE)
+		message(STATUS "Detected Android Termux environment (via filesystem check)")
+	endif()
+endif()
 
 add_library(libyue MODULE
 	src/yuescript/ast.cpp
@@ -70,6 +84,11 @@ set_target_properties(libyue PROPERTIES PREFIX "")
 set_target_properties(libyue PROPERTIES OUTPUT_NAME "yue")
 target_link_libraries(libyue ${LUA_LIBRARIES})
 
+# Add YUE_NO_WATCHER macro for Termux environment
+if (IS_TERMUX)
+	target_compile_definitions(libyue PRIVATE YUE_NO_WATCHER)
+endif()
+
 add_executable(yue
 	src/yuescript/ast.cpp
 	src/yuescript/parser.cpp
@@ -78,80 +97,92 @@ add_executable(yue
 	src/yuescript/yue_compiler.cpp
 	src/yuescript/yuescript.cpp
 	src/yue.cpp
+	src/3rdParty/colib/ljson.c
 )
 
-target_sources(yue PRIVATE
-	src/3rdParty/efsw/Debug.cpp
-	src/3rdParty/efsw/DirectorySnapshot.cpp
-	src/3rdParty/efsw/DirectorySnapshotDiff.cpp
-	src/3rdParty/efsw/DirWatcherGeneric.cpp
-	src/3rdParty/efsw/FileInfo.cpp
-	src/3rdParty/efsw/FileSystem.cpp
-	src/3rdParty/efsw/FileWatcher.cpp
-	src/3rdParty/efsw/FileWatcherCWrapper.cpp
-	src/3rdParty/efsw/FileWatcherGeneric.cpp
-	src/3rdParty/efsw/FileWatcherImpl.cpp
-	src/3rdParty/efsw/Log.cpp
-	src/3rdParty/efsw/Mutex.cpp
-	src/3rdParty/efsw/String.cpp
-	src/3rdParty/efsw/System.cpp
-	src/3rdParty/efsw/Thread.cpp
-	src/3rdParty/efsw/Watcher.cpp
-	src/3rdParty/efsw/WatcherGeneric.cpp
-)
-
-if (WIN32)
+# Add efsw sources only if not in Termux environment
+if (NOT IS_TERMUX)
 	target_sources(yue PRIVATE
-		src/3rdParty/efsw/platform/win/FileSystemImpl.cpp
-		src/3rdParty/efsw/platform/win/MutexImpl.cpp
-		src/3rdParty/efsw/platform/win/SystemImpl.cpp
-		src/3rdParty/efsw/platform/win/ThreadImpl.cpp
-	)
-else ()
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/platform/posix/FileSystemImpl.cpp
-		src/3rdParty/efsw/platform/posix/MutexImpl.cpp
-		src/3rdParty/efsw/platform/posix/SystemImpl.cpp
-		src/3rdParty/efsw/platform/posix/ThreadImpl.cpp
-	)
-endif()
-
-if (APPLE)
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherFSEvents.cpp
-		src/3rdParty/efsw/FileWatcherKqueue.cpp
-		src/3rdParty/efsw/WatcherFSEvents.cpp
-		src/3rdParty/efsw/WatcherKqueue.cpp
+		src/3rdParty/efsw/Debug.cpp
+		src/3rdParty/efsw/DirectorySnapshot.cpp
+		src/3rdParty/efsw/DirectorySnapshotDiff.cpp
+		src/3rdParty/efsw/DirWatcherGeneric.cpp
+		src/3rdParty/efsw/FileInfo.cpp
+		src/3rdParty/efsw/FileSystem.cpp
+		src/3rdParty/efsw/FileWatcher.cpp
+		src/3rdParty/efsw/FileWatcherCWrapper.cpp
+		src/3rdParty/efsw/FileWatcherGeneric.cpp
+		src/3rdParty/efsw/FileWatcherImpl.cpp
+		src/3rdParty/efsw/Log.cpp
+		src/3rdParty/efsw/Mutex.cpp
+		src/3rdParty/efsw/String.cpp
+		src/3rdParty/efsw/System.cpp
+		src/3rdParty/efsw/Thread.cpp
+		src/3rdParty/efsw/Watcher.cpp
+		src/3rdParty/efsw/WatcherGeneric.cpp
 	)
 
-	if (NOT CMAKE_SYSTEM_VERSION GREATER 9)
-		target_compile_definitions(yue PRIVATE EFSW_FSEVENTS_NOT_SUPPORTED)
+	if (WIN32)
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/platform/win/FileSystemImpl.cpp
+			src/3rdParty/efsw/platform/win/MutexImpl.cpp
+			src/3rdParty/efsw/platform/win/SystemImpl.cpp
+			src/3rdParty/efsw/platform/win/ThreadImpl.cpp
+		)
+	else ()
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/platform/posix/FileSystemImpl.cpp
+			src/3rdParty/efsw/platform/posix/MutexImpl.cpp
+			src/3rdParty/efsw/platform/posix/SystemImpl.cpp
+			src/3rdParty/efsw/platform/posix/ThreadImpl.cpp
+		)
 	endif()
-elseif (WIN32)
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherWin32.cpp
-		src/3rdParty/efsw/WatcherWin32.cpp
-	)
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherInotify.cpp
-		src/3rdParty/efsw/WatcherInotify.cpp
-	)
 
-	if (NOT EXISTS "/usr/include/sys/inotify.h" AND NOT EXISTS "/usr/local/include/sys/inotify.h")
-		target_compile_definitions(yue PRIVATE EFSW_INOTIFY_NOSYS)
+	if (APPLE)
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherFSEvents.cpp
+			src/3rdParty/efsw/FileWatcherKqueue.cpp
+			src/3rdParty/efsw/WatcherFSEvents.cpp
+			src/3rdParty/efsw/WatcherKqueue.cpp
+		)
+
+		if (NOT CMAKE_SYSTEM_VERSION GREATER 9)
+			target_compile_definitions(yue PRIVATE EFSW_FSEVENTS_NOT_SUPPORTED)
+		endif()
+	elseif (WIN32)
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherWin32.cpp
+			src/3rdParty/efsw/WatcherWin32.cpp
+		)
+	elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherInotify.cpp
+			src/3rdParty/efsw/WatcherInotify.cpp
+		)
+
+		if (NOT EXISTS "/usr/include/sys/inotify.h" AND NOT EXISTS "/usr/local/include/sys/inotify.h")
+			target_compile_definitions(yue PRIVATE EFSW_INOTIFY_NOSYS)
+		endif()
+	elseif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+		target_sources(yue PRIVATE
+			src/3rdParty/efsw/FileWatcherKqueue.cpp
+			src/3rdParty/efsw/WatcherKqueue.cpp
+		)
 	endif()
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-	target_sources(yue PRIVATE
-		src/3rdParty/efsw/FileWatcherKqueue.cpp
-		src/3rdParty/efsw/WatcherKqueue.cpp
-	)
+else()
+	message(STATUS "Termux environment detected: excluding efsw file watcher sources")
 endif()
 
 if (MSVC)
 	target_compile_definitions(yue PRIVATE _SCL_SECURE_NO_WARNINGS)
 else ()
 	target_compile_options(yue PRIVATE -Wall -Wno-long-long -fPIC)
+	set_source_files_properties(src/3rdParty/colib/ljson.c PROPERTIES COMPILE_FLAGS "-std=c99")
+endif()
+
+# Add YUE_NO_WATCHER macro for Termux environment
+if (IS_TERMUX)
+	target_compile_definitions(yue PRIVATE YUE_NO_WATCHER)
 endif()
 
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
@@ -169,10 +200,9 @@ elseif (NOT (${CMAKE_SYSTEM_NAME} MATCHES "Haiku") AND NOT WIN32)
 else ()
 	target_link_libraries(yue PRIVATE ${LUA_LIBRARIES})
 endif()
-	
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	target_link_options(yue PRIVATE -lstdc++fs -ldl)
+	target_link_options(yue PRIVATE -ldl)
 endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 install(CODE "")
-
