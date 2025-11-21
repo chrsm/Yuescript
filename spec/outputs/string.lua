@@ -52,7 +52,7 @@ do
 	str = "user: " .. tostring(name) .. "\nid: " .. tostring(id)
 	str = "path: \"C:\\\\Program Files\\\\App\"\ndesc: 'single \"quote\" test'"
 	str = "key: value   \nnext: 123   "
-	str = "list:\n  - \"one\"\n  - \"two\""
+	str = "list:\n\t- \"one\"\n\t- \"two\""
 	str = "-- comment\ncontent text\n-- comment"
 	str = tostring(1 + 2) .. '\n' .. tostring(2 + 3) .. '\n' .. tostring("a" .. "b")
 	local obj = {

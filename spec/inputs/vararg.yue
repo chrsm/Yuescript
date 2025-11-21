@@ -55,12 +55,12 @@ join = (...) ->
 	_ = ->
 		list = {1, 2, 3, 4, 5}
 		fn = (ok) ->
-		  ok, table.unpack list
+			ok, table.unpack list
 		ok, ... = fn true
 		print ok, ...
 
 		fn_many_args = ->
-		  10, nil, 20, nil, 30
+			10, nil, 20, nil, 30
 
 		... = fn_many_args!
 		print select "#", ...

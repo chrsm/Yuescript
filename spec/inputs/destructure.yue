@@ -278,5 +278,15 @@ do
 do
 	{a, :abc, b, :def, ...sub, d, e} = tb
 
+do
+	for {:a, :b} in *items
+		print a, b
+	
+	for :a, :b in *items
+		print a, b
+	
+	for :body in pairs data
+		print body if body
+
 nil
 
