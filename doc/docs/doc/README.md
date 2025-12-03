@@ -4729,7 +4729,7 @@ Converts the code to the AST.
 
 **Signature:**
 ```lua
-to_ast: function(code: string, flattenLevel?: number, astName?: string):
+to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
 		--[[AST]] AST | nil,
 		--[[error]] nil | string
 ```
@@ -4741,6 +4741,7 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 | code | string | The code. |
 | flattenLevel | integer | [Optional] The flatten level. Higher level means more flattening. Default is 0. Maximum is 2. |
 | astName | string | [Optional] The AST name. Default is "File". |
+| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is false. |
 
 **Returns:**
 
@@ -4748,6 +4749,33 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 | --- | --- |
 | AST \| nil | The AST, or nil if the conversion failed. |
 | string \| nil | The error message, or nil if the conversion succeeded. |
+
+#### format
+
+**Type:** Function.
+
+**Description:**
+
+Formats the YueScript code.
+
+**Signature:**
+```lua
+format: function(code: string, tabSize?: number, reserveComment?: boolean): string
+```
+
+**Parameters:**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| code | string | The code. |
+| tabSize | integer | [Optional] The tab size. Default is 4. |
+| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is true. |
+
+**Returns:**
+
+| Return Type | Description |
+| --- | --- |
+| string | The formatted code. |
 
 #### __call
 
@@ -4818,6 +4846,19 @@ Whether the compiler should reserve the original line number in the compiled cod
 **Signature:**
 ```lua
 reserve_line_number: boolean
+```
+
+#### reserve_comment
+
+**Type:** Field.
+
+**Description:**
+
+Whether the compiler should reserve the original comments in the compiled code.
+
+**Signature:**
+```lua
+reserve_comment: boolean
 ```
 
 #### space_over_tab

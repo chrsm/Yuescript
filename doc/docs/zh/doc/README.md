@@ -4686,7 +4686,7 @@ type AST = {string, integer, integer, any}
 
 **签名：**
 ```lua
-to_ast: function(code: string, flattenLevel?: number, astName?: string):
+to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
 		--[[AST]] AST | nil,
 		--[[error]] nil | string
 ```
@@ -4697,6 +4697,42 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 | --- | --- | --- |
 | code | string | 代码。 |
 | flattenLevel | integer | [可选] 扁平化级别。级别越高，会消除更多的 AST 结构的嵌套。默认为 0。最大为 2。 |
+| astName | string | [可选] AST 名称。默认为 "File"。 |
+| reserveComment | boolean | [可选] 是否保留原始注释。默认为 false。 |
+
+**返回值：**
+
+| 返回类型 | 描述 |
+| --- | --- |
+| AST \| nil | AST，如果转换失败则为 nil。 |
+| string \| nil | 错误消息，如果转换成功则为 nil。 |
+
+#### format
+
+**类型：** 函数。
+
+**描述：**
+
+格式化 YueScript 代码。
+
+**签名：**
+```lua
+format: function(code: string, tabSize?: number, reserveComment?: boolean): string
+```
+
+**参数：**
+
+| 参数名 | 类型 | 描述 |
+| --- | --- | --- |
+| code | string | 代码。 |
+| tabSize | integer | [可选] 制表符大小。默认为 4。 |
+| reserveComment | boolean | [可选] 是否保留原始注释。默认为 true。 |
+
+**返回值：**
+
+| 返回类型 | 描述 |
+| --- | --- |
+| string | 格式化后的代码。 |
 
 #### __call
 
@@ -4767,6 +4803,19 @@ implicit_return_root: boolean
 **签名：**
 ```lua
 reserve_line_number: boolean
+```
+
+#### reserve_comment
+
+**类型：** 成员变量。
+
+**描述：**
+
+编译器是否应该在编译后的代码中保留原始注释。
+
+**签名：**
+```lua
+reserve_comment: boolean
 ```
 
 #### space_over_tab
