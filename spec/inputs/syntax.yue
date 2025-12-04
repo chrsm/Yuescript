@@ -478,5 +478,13 @@ do
 	f2 = ->
 		--
 
+do
+	return res if res ~= ""
+		
+
+do
+	return res if res ~= ""
+		--
+
 nil
 
