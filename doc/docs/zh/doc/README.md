@@ -407,16 +407,16 @@ print $LINE -- 获取当前代码行数：2
 
 ```moonscript
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "有效的枚举类型:", $BodyType Static
@@ -425,16 +425,16 @@ print "有效的枚举类型:", $BodyType Static
 <YueDisplay>
 <pre>
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "有效的枚举类型:", $BodyType Static
@@ -532,47 +532,47 @@ print 1 <= a <= 10
 
 ```moonscript
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	3
-	true
+  输出：
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	false
+  输出：
+  2
+  1
+  false
 ]]
 ```
 <YueDisplay>
 <pre>
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	3
-	true
+  输出：
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	false
+  输出：
+  2
+  1
+  false
 ]]
 </pre>
 </YueDisplay>
@@ -617,13 +617,13 @@ tbA[] = ...tbB
 
 ```moonscript
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -634,13 +634,13 @@ merge = {...a, ...b}
 <YueDisplay>
 <pre>
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -3285,19 +3285,19 @@ switch tb
 ```moonscript
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- 打印: {"admin", "users"}
-		print "Resource:", resource -- 打印: "logs"
-		print "Action:", action -- 打印: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- 打印: {"admin", "users"}
+    print "Resource:", resource -- 打印: "logs"
+    print "Action:", action -- 打印: "view"
 ```
 <YueDisplay>
 <pre>
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- 打印: {"admin", "users"}
-		print "Resource:", resource -- 打印: "logs"
-		print "Action:", action -- 打印: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- 打印: {"admin", "users"}
+    print "Resource:", resource -- 打印: "logs"
+    print "Action:", action -- 打印: "view"
 </pre>
 </YueDisplay>
 
@@ -4185,9 +4185,9 @@ yue_compiled: {string: string}
 **签名：**
 ```lua
 to_lua: function(code: string, config?: Config):
-		--[[codes]] string | nil,
-		--[[error]] string | nil,
-		--[[globals]] {{string, integer, integer}} | nil
+    --[[codes]] string | nil,
+    --[[error]] string | nil,
+    --[[globals]] {{string, integer, integer}} | nil
 ```
 
 **参数：**
@@ -4310,8 +4310,8 @@ remove_loader: function(): boolean
 **签名：**
 ```lua
 loadstring: function(input: string, chunkname: string, env: table, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **参数：**
@@ -4341,8 +4341,8 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
 **签名：**
 ```lua
 loadstring: function(input: string, chunkname: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **参数：**
@@ -4371,8 +4371,8 @@ loadstring: function(input: string, chunkname: string, config?: Config):
 **签名：**
 ```lua
 loadstring: function(input: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **参数：**
@@ -4400,8 +4400,8 @@ loadstring: function(input: string, config?: Config):
 **签名：**
 ```lua
 loadfile: function(filename: string, env: table, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **参数：**
@@ -4430,8 +4430,8 @@ loadfile: function(filename: string, env: table, config?: Config):
 **签名：**
 ```lua
 loadfile: function(filename: string, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **参数：**
@@ -4687,8 +4687,8 @@ type AST = {string, integer, integer, any}
 **签名：**
 ```lua
 to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
-		--[[AST]] AST | nil,
-		--[[error]] nil | string
+    --[[AST]] AST | nil,
+    --[[error]] nil | string
 ```
 
 **参数：**
@@ -4868,11 +4868,11 @@ line_offset: integer
 **签名：**
 ```lua
 enum LuaTarget
-	"5.1"
-	"5.2"
-	"5.3"
-	"5.4"
-	"5.5"
+  "5.1"
+  "5.2"
+  "5.3"
+  "5.4"
+  "5.5"
 end
 ```
 

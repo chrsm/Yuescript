@@ -408,16 +408,16 @@ In YueScript, macro functions allow you to generate code at compile time. By nes
 
 ```moonscript
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "Valid enum type:", $BodyType Static
@@ -427,16 +427,16 @@ print "Valid enum type:", $BodyType Static
 <YueDisplay>
 <pre>
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "Valid enum type:", $BodyType Static
@@ -534,47 +534,47 @@ Note the evaluation behavior of chained comparisons:
 
 ```moonscript
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	3
-	true
+  output:
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	false
+  output:
+  2
+  1
+  false
 ]]
 ```
 <YueDisplay>
 <pre>
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	3
-	true
+  output:
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	false
+  output:
+  2
+  1
+  false
 ]]
 </pre>
 </YueDisplay>
@@ -618,13 +618,13 @@ You can concatenate array tables or hash tables using spread operator `...` befo
 
 ```moonscript
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -635,13 +635,13 @@ merge = {...a, ...b}
 <YueDisplay>
 <pre>
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -3325,19 +3325,19 @@ Match against a list and capture a range of elements.
 ```moonscript
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- prints: {"admin", "users"}
-		print "Resource:", resource -- prints: "logs"
-		print "Action:", action -- prints: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- prints: {"admin", "users"}
+    print "Resource:", resource -- prints: "logs"
+    print "Action:", action -- prints: "view"
 ```
 <YueDisplay>
 <pre>
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- prints: {"admin", "users"}
-		print "Resource:", resource -- prints: "logs"
-		print "Action:", action -- prints: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- prints: {"admin", "users"}
+    print "Resource:", resource -- prints: "logs"
+    print "Action:", action -- prints: "view"
 </pre>
 </YueDisplay>
 
@@ -4228,9 +4228,9 @@ The YueScript compiling function. It compiles the YueScript code to Lua code.
 **Signature:**
 ```lua
 to_lua: function(code: string, config?: Config):
-		--[[codes]] string | nil,
-		--[[error]] string | nil,
-		--[[globals]] {{string, integer, integer}} | nil
+    --[[codes]] string | nil,
+    --[[error]] string | nil,
+    --[[globals]] {{string, integer, integer}} | nil
 ```
 
 **Parameters:**
@@ -4353,8 +4353,8 @@ Loads YueScript code from a string into a function.
 **Signature:**
 ```lua
 loadstring: function(input: string, chunkname: string, env: table, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **Parameters:**
@@ -4384,8 +4384,8 @@ Loads YueScript code from a string into a function.
 **Signature:**
 ```lua
 loadstring: function(input: string, chunkname: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **Parameters:**
@@ -4414,8 +4414,8 @@ Loads YueScript code from a string into a function.
 **Signature:**
 ```lua
 loadstring: function(input: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **Parameters:**
@@ -4443,8 +4443,8 @@ Loads YueScript code from a file into a function.
 **Signature:**
 ```lua
 loadfile: function(filename: string, env: table, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **Parameters:**
@@ -4473,8 +4473,8 @@ Loads YueScript code from a file into a function.
 **Signature:**
 ```lua
 loadfile: function(filename: string, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **Parameters:**
@@ -4730,8 +4730,8 @@ Converts the code to the AST.
 **Signature:**
 ```lua
 to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
-		--[[AST]] AST | nil,
-		--[[error]] nil | string
+    --[[AST]] AST | nil,
+    --[[error]] nil | string
 ```
 
 **Parameters:**
@@ -4911,11 +4911,11 @@ The target Lua version enumeration.
 **Signature:**
 ```lua
 enum LuaTarget
-	"5.1"
-	"5.2"
-	"5.3"
-	"5.4"
-	"5.5"
+  "5.1"
+  "5.2"
+  "5.3"
+  "5.4"
+  "5.5"
 end
 ```
 
