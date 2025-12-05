@@ -23,7 +23,7 @@ do
 		b, c from z
 
 do
-	import a
+	import a,
 		b
 		c from z
 

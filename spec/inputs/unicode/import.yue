@@ -23,7 +23,7 @@ do
 		字段b, 字段c from 对象z
 
 do
-	import 字段a
+	import 字段a,
 		字段b
 		字段c from 对象z
 
