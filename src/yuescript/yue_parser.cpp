@@ -50,6 +50,15 @@ public:
 		} \
 	} while (false)
 
+#define RaiseErrorI(msg, item) \
+	do { \
+		if (reinterpret_cast<State*>(item.user_data)->lax) { \
+			return -1; \
+		} else { \
+			throw ParserError(msg, item.begin); \
+		} \
+	} while (false)
+
 // clang-format off
 YueParser::YueParser() {
 	plain_space = *set(" \t");
@@ -316,14 +325,14 @@ YueParser::YueParser() {
 			for (input_it i = item.begin->m_it; i != item.end->m_it; ++i) {
 				switch (*i) {
 					case '\t': indent += 4; break;
-					default: RaiseError("can not mix the use of tabs and spaces as indents"sv, item); break;
+					default: RaiseErrorI("can not mix the use of tabs and spaces as indents"sv, item); break;
 				}
 			}
 		} else {
 			for (input_it i = item.begin->m_it; i != item.end->m_it; ++i) {
 				switch (*i) {
 					case ' ': indent++; break;
-					default: RaiseError("can not mix the use of tabs and spaces as indents"sv, item); break;
+					default: RaiseErrorI("can not mix the use of tabs and spaces as indents"sv, item); break;
 				}
 			}
 		}
@@ -357,6 +366,12 @@ YueParser::YueParser() {
 			}
 		}
 		State* st = reinterpret_cast<State*>(item.user_data);
+		if (st->indents.empty()) {
+			RaiseError("unknown indent level"sv, item);
+		}
+		if (st->indents.top() > indent) {
+			RaiseError("unexpected dedent"sv, item);
+		}
 		st->indents.push(indent);
 		return true;
 	});
@@ -1014,16 +1029,24 @@ YueParser::YueParser() {
 
 	FnArgDef = (Variable | SelfItem >> -ExistentialOp) >> -(space >> '`' >> space >> Name) >> -(space >> '=' >> space >> Exp) | TableLit | SimpleTable;
 
-	check_vararg_position = and_(white >> ')') | white >> -(',' >> white) >> vararg_position_error;
+	check_vararg_position = and_(white >> (')' | key("using"))) | white >> -(',' >> white) >> vararg_position_error;
 
-	FnArgDefList = Seperator >> (
-		fn_arg_def_lit_lines >> -(-(space >> ',') >> white >> VarArg >> -(space >> '`' >> space >> Name) >> check_vararg_position) |
-		white >> VarArg >> -(space >> '`' >> space >> Name) >> check_vararg_position
-	);
+	var_arg_def = (
+		VarArg |
+		+space_break >> push_indent_match >> ensure(space >> VarArg >> -(space >> '`' >> space >> Name), pop_indent)
+	) >> check_vararg_position;
+
+	FnArgDefList = Seperator >>
+		-fn_arg_def_list >>
+		-(-(space >> ',') >> +space_break >> fn_arg_def_lit_lines) >>
+		-(-(space >> ',') >> space >> var_arg_def);
 
 	OuterVarShadow = key("using") >> space >> (key("nil") | NameList);
 
-	FnArgsDef = '(' >> *space_break >> -FnArgDefList >> -(white >> OuterVarShadow) >> white >> -(and_(',') >> unexpected_comma_error) >> ')';
+	outer_var_shadow_def = OuterVarShadow |
+		+space_break >> push_indent_match >> ensure(space >> OuterVarShadow, pop_indent);
+
+	FnArgsDef = '(' >> space >> -FnArgDefList >> -(space >> outer_var_shadow_def) >> white >> -(and_(',') >> unexpected_comma_error) >> ')';
 	FnArrow = expr("->") | "=>";
 	FunLit = pl::user(true_(), [](const item_t& item) {
 		State* st = reinterpret_cast<State*>(item.user_data);
@@ -1035,11 +1058,11 @@ YueParser::YueParser() {
 	) >> space >> FnArrow >> -(space >> Body);
 
 	MacroName = '$' >> UnicodeName;
-	macro_args_def = '(' >> white >> -FnArgDefList >> white >> -(and_(',') >> unexpected_comma_error) >> ')';
+	macro_args_def = '(' >> space >> -FnArgDefList >> white >> -(and_(',') >> unexpected_comma_error) >> ')';
 	MacroLit = -(macro_args_def >> space) >> "->" >> space >> Body;
 	MacroFunc = MacroName >> (Invoke | InvokeArgs);
 	Macro = key("macro") >> space >> (
-		UnicodeName >> space >> '=' >> space >> (MacroLit | MacroFunc | expected_expression_error) |
+		UnicodeName >> space >> '=' >> space >> (MacroLit | MacroFunc | invalid_macro_definition_error) |
 		invalid_macro_definition_error
 	);
 	MacroInPlace = '$' >> space >> "->" >> space >> Body;

@@ -876,6 +876,10 @@ private:
 		return false;
 	}
 
+	bool isListComp(Comprehension_t* comp) const {
+		return comp->items.size() == 2 && ast_is<CompFor_t>(comp->items.back());
+	}
+
 	void markVarLocalConst(const std::string& name) {
 		auto& scope = _scopes.back();
 		scope.vars->insert_or_assign(name, VarType::LocalConst);
@@ -1474,7 +1478,7 @@ private:
 					if (simpleValue->value.is<TableLit_t>()) {
 						return true;
 					} else if (auto comp = simpleValue->value.as<Comprehension_t>()) {
-						if (comp->items.size() != 2 || !ast_is<CompFor_t>(comp->items.back())) {
+						if (!isListComp(comp)) {
 							return true;
 						}
 					}
@@ -1877,7 +1881,7 @@ private:
 								case id<Try_t>(): transformTry(static_cast<Try_t*>(value), out, ExpUsage::Common); break;
 								case id<Comprehension_t>(): {
 									auto comp = static_cast<Comprehension_t*>(value);
-									if (comp->items.size() == 2 && ast_is<CompFor_t>(comp->items.back())) {
+									if (isListComp(comp)) {
 										transformCompCommon(comp, out);
 									} else {
 										specialSingleValue = false;
@@ -2468,7 +2472,7 @@ private:
 			case id<Comprehension_t>(): {
 				auto comp = static_cast<Comprehension_t*>(value);
 				auto expList = assignment->expList.get();
-				if (comp->items.size() == 2 && ast_is<CompFor_t>(comp->items.back())) {
+				if (isListComp(comp)) {
 					std::string preDefine = getPreDefineLine(assignment);
 					transformComprehension(comp, out, ExpUsage::Assignment, expList);
 					out.back().insert(0, preDefine);
@@ -2893,7 +2897,7 @@ private:
 				if (auto tbA = item->get_by_path<TableLit_t>()) {
 					tableItems = &tbA->values.objects();
 				} else if (auto tbB = item->get_by_path<Comprehension_t>()) {
-					if (tbB->items.size() == 2 && ast_is<CompFor_t>(tbB->items.back())) {
+					if (isListComp(tbB)) {
 						throw CompileError("invalid destructure value"sv, tbB);
 					}
 					tableItems = &tbB->items.objects();
@@ -2924,7 +2928,7 @@ private:
 			}
 			case id<Comprehension_t>(): {
 				auto table = static_cast<Comprehension_t*>(node);
-				if (table->items.size() == 2 && ast_is<CompFor_t>(table->items.back())) {
+				if (isListComp(table)) {
 					throw CompileError("invalid destructure value"sv, table);
 				}
 				tableItems = &table->items.objects();
@@ -3295,7 +3299,7 @@ private:
 					if (auto tab = sVal->value.as<TableLit_t>()) {
 						destructNode = tab;
 					} else if (auto comp = sVal->value.as<Comprehension_t>()) {
-						if (comp->items.size() != 2 || !ast_is<CompFor_t>(comp->items.back())) {
+						if (!isListComp(comp)) {
 							destructNode = comp;
 						}
 					}
@@ -7422,7 +7426,7 @@ private:
 					}
 				}
 			} else if (auto comp = sval->value.as<Comprehension_t>()) {
-				if (comp->items.size() != 2 || !ast_is<CompFor_t>(comp->items.back())) {
+				if (!isListComp(comp)) {
 					discrete = inExp->new_ptr<ExpList_t>();
 					for (ast_node* val : comp->items.objects()) {
 						if (auto def = ast_cast<NormalDef_t>(val)) {
@@ -8285,7 +8289,7 @@ private:
 
 	void transformComprehension(Comprehension_t* comp, str_list& out, ExpUsage usage, ExpList_t* assignList = nullptr) {
 		auto x = comp;
-		if (comp->items.size() != 2 || !ast_is<CompFor_t>(comp->items.back())) {
+		if (!isListComp(comp)) {
 			switch (usage) {
 				case ExpUsage::Assignment: {
 					auto tableLit = x->new_ptr<TableLit_t>();

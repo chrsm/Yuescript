@@ -280,6 +280,8 @@ private:
 	NONE_AST_RULE(fn_arg_def_lit_lines);
 	NONE_AST_RULE(destruct_def);
 	NONE_AST_RULE(macro_args_def);
+	NONE_AST_RULE(var_arg_def);
+	NONE_AST_RULE(outer_var_shadow_def);
 	NONE_AST_RULE(chain_call);
 	NONE_AST_RULE(chain_call_list);
 	NONE_AST_RULE(chain_index_chain);
