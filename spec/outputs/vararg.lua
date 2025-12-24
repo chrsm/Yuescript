@@ -294,3 +294,75 @@ join = function(...)
 	end
 	return nil
 end
+do
+	local f1
+	f1 = function(...)
+		local t = {
+			n = select("#", ...),
+			...
+		}
+		print(t.n)
+		print(#t)
+		for i = 1, t.n do
+			print(t[i])
+		end
+	end
+	f1(1, 2, 3)
+	f1("a", "b", "c", "d")
+	f1()
+	local f2
+	f2 = function(...)
+		local args = {
+			n = select("#", ...),
+			...
+		}
+		print("args count:", args.n)
+		print("args length:", #args)
+		for i = 1, args.n do
+			if args[i] == nil then
+				print("position", i, "is nil")
+			else
+				print("position", i, ":", args[i])
+			end
+		end
+	end
+	f2(1, nil, 3, nil, 5)
+	local f3
+	f3 = function(prefix, ...)
+		local items = {
+			n = select("#", ...),
+			...
+		}
+		local result = { }
+		for i = 1, items.n do
+			result[i] = prefix .. tostring(items[i])
+		end
+		return result
+	end
+	f3("item_", 1, 2, 3)
+	local f4
+	f4 = function(...)
+		local empty = {
+			n = select("#", ...),
+			...
+		}
+		print("empty count:", empty.n)
+		return print("empty length:", #empty)
+	end
+	f4()
+	local process
+	process = function(...)
+		local data = {
+			n = select("#", ...),
+			...
+		}
+		local sum = 0
+		for i = 1, data.n do
+			if type(data[i]) == "number" then
+				sum = sum + data[i]
+			end
+		end
+		return sum
+	end
+	return process(1, 2, 3, "skip", 5)
+end

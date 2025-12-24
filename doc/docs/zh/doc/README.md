@@ -1526,6 +1526,55 @@ print ok, count, first
 </pre>
 </YueDisplay>
 
+### 命名变长参数
+
+你可以使用 `(...t) ->` 语法来将变长参数自动存储到一个命名表中。这个表会包含所有传入的参数（包括 `nil` 值），并且会在表的 `n` 字段中存储实际传入的参数个数（包括 `nil` 值在内的个数）。
+
+```moonscript
+f = (...t) ->
+  print "参数个数:", t.n
+  print "表长度:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- 处理包含 nil 的情况
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+```
+<YueDisplay>
+<pre>
+f = (...t) ->
+  print "参数个数:", t.n
+  print "表长度:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- 处理包含 nil 的情况
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+</pre>
+</YueDisplay>
+
 ## 空白
 
 月之脚本是一个对空白敏感的语言。你必须在相同的缩进中使用空格 **' '** 或制表符 **'\t'** 来编写一些代码块，如函数体、值列表和一些控制块。包含不同空白的表达式可能意味着不同的事情。制表符被视为4个空格，但最好不要混合使用空格和制表符。

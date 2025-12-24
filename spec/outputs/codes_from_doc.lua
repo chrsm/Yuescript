@@ -737,6 +737,36 @@ end
 	local first = select(1, ...)
 	return print(ok, count, first)
 end)(fn(true))
+local f
+f = function(...)
+	local t = {
+		n = select("#", ...),
+		...
+	}
+	print("argument count:", t.n)
+	print("table length:", #t)
+	for i = 1, t.n do
+		print(t[i])
+	end
+end
+f(1, 2, 3)
+f("a", "b", "c", "d")
+f()
+local process
+process = function(...)
+	local args = {
+		n = select("#", ...),
+		...
+	}
+	local sum = 0
+	for i = 1, args.n do
+		if args[i] ~= nil and type(args[i]) == "number" then
+			sum = sum + args[i]
+		end
+	end
+	return sum
+end
+process(1, nil, 3, nil, 5)
 Rx.Observable.fromRange(1, 8):filter(function(x)
 	return x % 2 == 0
 end):concat(Rx.Observable.of('who do we appreciate')):map(function(value)
@@ -3215,6 +3245,36 @@ end
 	local first = select(1, ...)
 	return print(ok, count, first)
 end)(fn(true))
+local f
+f = function(...)
+	local t = {
+		n = select("#", ...),
+		...
+	}
+	print("argument count:", t.n)
+	print("table length:", #t)
+	for i = 1, t.n do
+		print(t[i])
+	end
+end
+f(1, 2, 3)
+f("a", "b", "c", "d")
+f()
+local process
+process = function(...)
+	local args = {
+		n = select("#", ...),
+		...
+	}
+	local sum = 0
+	for i = 1, args.n do
+		if args[i] ~= nil and type(args[i]) == "number" then
+			sum = sum + args[i]
+		end
+	end
+	return sum
+end
+process(1, nil, 3, nil, 5)
 Rx.Observable.fromRange(1, 8):filter(function(x)
 	return x % 2 == 0
 end):concat(Rx.Observable.of('who do we appreciate')):map(function(value)

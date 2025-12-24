@@ -86,3 +86,47 @@ join = (...) ->
 		print ...
 	nil
 
+do
+	f1 = (...t) ->
+		print t.n
+		print #t
+		for i = 1, t.n
+			print t[i]
+
+	f1 1, 2, 3
+	f1 "a", "b", "c", "d"
+	f1!
+
+	f2 = (...args) ->
+		print "args count:", args.n
+		print "args length:", #args
+		for i = 1, args.n
+			if args[i] == nil
+				print "position", i, "is nil"
+			else
+				print "position", i, ":", args[i]
+
+	f2 1, nil, 3, nil, 5
+
+	f3 = (prefix, ...items) ->
+		result = {}
+		for i = 1, items.n
+			result[i] = prefix .. tostring items[i]
+		result
+
+	f3 "item_", 1, 2, 3
+
+	f4 = (...empty) ->
+		print "empty count:", empty.n
+		print "empty length:", #empty
+
+	f4!
+
+	process = (...data) ->
+		sum = 0
+		for i = 1, data.n
+			if type(data[i]) == "number"
+				sum += data[i]
+		sum
+
+	process 1, 2, 3, "skip", 5
