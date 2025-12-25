@@ -1528,55 +1528,6 @@ print ok, count, first
 </pre>
 </YueDisplay>
 
-### Named Varargs
-
-You can use the `(...t) ->` syntax to automatically store varargs into a named table. This table will contain all passed arguments (including `nil` values), and the `n` field of the table will store the actual number of arguments passed (including `nil` values).
-
-```moonscript
-f = (...t) ->
-  print "argument count:", t.n
-  print "table length:", #t
-  for i = 1, t.n
-    print t[i]
-
-f 1, 2, 3
-f "a", "b", "c", "d"
-f!
-
--- Handling cases with nil values
-process = (...args) ->
-  sum = 0
-  for i = 1, args.n
-    if args[i] != nil and type(args[i]) == "number"
-      sum += args[i]
-  sum
-
-process 1, nil, 3, nil, 5
-```
-<YueDisplay>
-<pre>
-f = (...t) ->
-  print "argument count:", t.n
-  print "table length:", #t
-  for i = 1, t.n
-    print t[i]
-
-f 1, 2, 3
-f "a", "b", "c", "d"
-f!
-
--- Handling cases with nil values
-process = (...args) ->
-  sum = 0
-  for i = 1, args.n
-    if args[i] != nil and type(args[i]) == "number"
-      sum += args[i]
-  sum
-
-process 1, nil, 3, nil, 5
-</pre>
-</YueDisplay>
-
 ## Whitespace
 
 YueScript is a whitespace significant language. You have to write some code block in the same indent with space **' '** or tab **'\t'** like function body, value list and some control blocks. And expressions containing different whitespaces might mean different things. Tab is treated like 4 space, but it's better not mix the use of spaces and tabs.
@@ -2276,6 +2227,55 @@ findFirstEven = (list) ->
 </YueDisplay>
 
 The only difference is that you can move the final return expression before the `->` or `=>` token to indicate the function’s implicit return value as the last statement. This way, even in functions with multiple nested loops or conditional branches, you no longer need to write a trailing return expression at the end of the function body, making the logic structure more straightforward and easier to follow.
+
+### Named Varargs
+
+You can use the `(...t) ->` syntax to automatically store varargs into a named table. This table will contain all passed arguments (including `nil` values), and the `n` field of the table will store the actual number of arguments passed (including `nil` values).
+
+```moonscript
+f = (...t) ->
+  print "argument count:", t.n
+  print "table length:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- Handling cases with nil values
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+```
+<YueDisplay>
+<pre>
+f = (...t) ->
+  print "argument count:", t.n
+  print "table length:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- Handling cases with nil values
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+</pre>
+</YueDisplay>
 
 ## Backcalls
 
