@@ -1128,7 +1128,7 @@ YueParser::YueParser() {
 	Statement =
 		(
 			Import | Export | Global | Macro | MacroInPlace | Label
-		) | (
+		) >> space | (
 			Local | While | Repeat | For | Return |
 			BreakLoop | Goto | ShortTabAppending |
 			LocalAttrib | Backcall | PipeBody | ExpListAssign | ChainAssign |

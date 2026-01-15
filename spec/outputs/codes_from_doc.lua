@@ -409,8 +409,8 @@ local tb = {
 	}
 }
 do
-	local math = math
 	local print = print
+	local math = math
 	print("hello")
 	math.random(3)
 end
@@ -2928,8 +2928,8 @@ local tb = {
 	}
 }
 do
-	local math = math
 	local print = print
+	local math = math
 	print("hello")
 	math.random(3)
 end

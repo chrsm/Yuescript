@@ -440,7 +440,8 @@ private:
 		Scope* importingScope = nullptr;
 		std::string indent;
 		std::string nl;
-		std::unordered_set<std::string> globals;
+		std::unordered_set<std::string_view> globals;
+		str_list globalList;
 	};
 	struct Scope {
 		GlobalMode mode = GlobalMode::None;
@@ -1620,13 +1621,18 @@ private:
 		return !_varArgs.empty() && _varArgs.top().usedVar ? "end)(...)"s : "end)()"s;
 	}
 
+	void markGlobalImported(const std::string& name) {
+		if (_importedGlobal->globals.find(name) == _importedGlobal->globals.end() && !isSolidDefined(name)) {
+			const auto& global = _importedGlobal->globalList.emplace_back(name);
+			_importedGlobal->globals.insert(global);
+			_importedGlobal->importingScope->vars->insert_or_assign(name, VarType::LocalConst);
+		}
+	}
+
 	std::string globalVar(std::string_view var, ast_node* x, AccessType accessType) {
 		std::string str(var);
 		if (_importedGlobal) {
-			if (_importedGlobal->globals.find(str) == _importedGlobal->globals.end() && !isSolidDefined(str)) {
-				_importedGlobal->globals.insert(str);
-				_importedGlobal->importingScope->vars->insert_or_assign(str, VarType::LocalConst);
-			}
+			markGlobalImported(str);
 		} else if (_config.lintGlobalVariable) {
 			if (!isLocal(str)) {
 				auto key = str + ':' + std::to_string(x->m_begin.m_line) + ':' + std::to_string(x->m_begin.m_col);
@@ -4634,11 +4640,7 @@ private:
 				transformVariable(static_cast<Variable_t*>(item), out);
 				if (accessType != AccessType::None) {
 					if (_importedGlobal) {
-						const auto& str = out.back();
-						if (_importedGlobal->globals.find(str) == _importedGlobal->globals.end() && !isSolidDefined(str)) {
-							_importedGlobal->globals.insert(str);
-							_importedGlobal->importingScope->vars->insert_or_assign(str, VarType::LocalConst);
-						}
+						markGlobalImported(out.back());
 					} else if (_config.lintGlobalVariable && !isLocal(out.back())) {
 						auto key = out.back() + ':' + std::to_string(item->m_begin.m_line) + ':' + std::to_string(item->m_begin.m_col);
 						if (_globals.find(key) == _globals.end()) {
@@ -5379,7 +5381,7 @@ private:
 			}
 			if (auto importedGlobal = currentScope().importedGlobal.get()) {
 				str_list globalCodes;
-				for (const auto& global : importedGlobal->globals) {
+				for (const auto& global : importedGlobal->globalList) {
 					globalCodes.emplace_back(importedGlobal->indent + "local "s + global + " = "s + global + importedGlobal->nl);
 				}
 				*importedGlobal->globalCodeLine = join(globalCodes);
@@ -9361,10 +9363,7 @@ private:
 			out.push_back(name + " = "s + name);
 		}
 		if (_importedGlobal) {
-			if (_importedGlobal->globals.find(name) == _importedGlobal->globals.end() && !isSolidDefined(name)) {
-				_importedGlobal->globals.insert(name);
-				_importedGlobal->importingScope->vars->insert_or_assign(name, VarType::LocalConst);
-			}
+			markGlobalImported(name);
 		} else if (_config.lintGlobalVariable && !isLocal(name)) {
 			auto key = name + ':' + std::to_string(pair->name->m_begin.m_line) + ':' + std::to_string(pair->name->m_begin.m_col);
 			if (_globals.find(key) == _globals.end()) {

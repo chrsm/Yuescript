@@ -1,6 +1,6 @@
 do
-	local math = math
 	local print = print
+	local math = math
 	print("hello")
 	math.random(10)
 end
@@ -33,19 +33,19 @@ end
 do
 	local func
 	func = function(x, y)
+		local type = type
 		local tostring = tostring
 		local print = print
-		local type = type
 		return type(x, tostring(y, print))
 	end
 	func(1, 2)
 end
 do
-	local print = print
-	local tostring = tostring
+	local xpcall = xpcall
 	local func = func
 	local world = world
-	local xpcall = xpcall
+	local tostring = tostring
+	local print = print
 	xpcall(function()
 		return func("hello " .. tostring(world))
 	end, function(err)
@@ -77,16 +77,16 @@ do
 	end
 end
 do
+	local lowercase = lowercase
 	local tostring = tostring
 	local Uppercase = Uppercase
-	local lowercase = lowercase
 	local foobar = "all " .. tostring(lowercase)
 	FooBar = "pascal case"
 	FOOBAR = "all " .. tostring(Uppercase)
 end
 do
-	local print = print
 	local setmetatable = setmetatable
+	local print = print
 	do
 		local _class_0
 		local _base_0 = { }
