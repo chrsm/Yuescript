@@ -926,9 +926,79 @@ tb =
 
 导入语句是一个语法糖，用于需要引入一个模块或者从已导入的模块中提取子项目。从模块导入的变量默认为不可修改的常量。
 
-#### 导入全局变量
+```moonscript
+-- 用作表解构
+do
+  import insert, concat from table
+  -- 当给 insert, concat 变量赋值时，编译器会报告错误
+  import C, Ct, Cmt from require "lpeg"
+  -- 快捷写法引入模块的子项
+  import x, y, z from 'mymodule'
+  -- 使用Python风格的导入
+  from 'module' import a, b, c
 
-在代码块顶部写 `import global`，会将当前作用域中尚未显式声明或赋值过的变量名，自动导入为本地常量，并在该语句的位置绑定到同名的全局变量。
+-- 快捷地导入一个模块
+do
+  import 'module'
+  import 'module_x'
+  import "d-a-s-h-e-s"
+  import "module.part"
+
+-- 导入模块后起一个别名使用，或是进行导入模块表的解构
+do
+  import "player" as PlayerModule
+  import "lpeg" as :C, :Ct, :Cmt
+  import "export" as {one, two, Something:{umm:{ch}}}
+```
+<YueDisplay>
+<pre>
+-- 用作表解构
+do
+  import insert, concat from table
+  -- 当给 insert, concat 变量赋值时，编译器会报告错误
+  import C, Ct, Cmt from require "lpeg"
+  -- 快捷写法引入模块的子项
+  import x, y, z from 'mymodule'
+  -- 使用Python风格的导入
+  from 'module' import a, b, c
+
+-- 快捷地导入一个模块
+do
+  import 'module'
+  import 'module_x'
+  import "d-a-s-h-e-s"
+  import "module.part"
+
+-- 导入模块后起一个别名使用，或是进行导入模块表的解构
+do
+  import "player" as PlayerModule
+  import "lpeg" as :C, :Ct, :Cmt
+  import "export" as {one, two, Something:{umm:{ch}}}
+</pre>
+</YueDisplay>
+
+### 导入全局变量
+
+你可以使用 `import` 将指定的全局变量导入到本地变量中。当导入一系列对全局变量的链式访问时，最后一个访问的字段将被赋值给本地变量。
+
+```moonscript
+do
+  import tostring
+  import table.concat
+  print concat ["a", tostring 1]
+```
+<YueDisplay>
+<pre>
+do
+  import tostring
+  import table.concat
+  print concat ["a", tostring 1]
+</pre>
+</YueDisplay>
+
+#### 自动导入
+
+在一个代码块的顶部写 `import global`，会将当前作用域中尚未显式声明或赋值过的变量名，自动导入为本地常量，并在该语句的位置绑定到同名的全局变量。
 
 但是在同一作用域中被显式声明为全局的变量不会被自动导入，因此可以继续进行赋值操作。
 
@@ -960,57 +1030,6 @@ do
   global FLAG
   print FLAG
   FLAG = 123
-</pre>
-</YueDisplay>
-
-```moonscript
--- 用作表解构
-do
-  import insert, concat from table
-  -- 当给 insert, concat 变量赋值时，编译器会报告错误
-  import C, Ct, Cmt from require "lpeg"
-  -- 快捷写法引入模块的子项
-  import x, y, z from 'mymodule'
-  -- 使用Python风格的导入
-  from 'module' import a, b, c
-
--- 快捷地导入一个模块
-do
-  import 'module'
-  import 'module_x'
-  import "d-a-s-h-e-s"
-  import "module.part"
-
--- 导入模块后起一个别名使用，或是进行导入模块表的解构
-do
-  import "player" as PlayerModule
-  import "lpeg" as :C, :Ct, :Cmt
-  import "export" as {one, two, Something:{umm:{ch}}}
-```
-<YueDisplay>
-<pre>
--- 用作表解构
-do
-  import insert, concat from table
-  -- 当给 insert, concat 变量赋值时，编译器会报告错误
-  import C, Ct, Cmt from require "lpeg"
-  -- 快捷写法引入模块的子项
-  import x, y, z from 'mymodule'
-  -- 使用Python风格的导入
-  from 'module' import a, b, c
-
--- 快捷地导入一个模块
-do
-  import 'module'
-  import 'module_x'
-  import "d-a-s-h-e-s"
-  import "module.part"
-
--- 导入模块后起一个别名使用，或是进行导入模块表的解构
-do
-  import "player" as PlayerModule
-  import "lpeg" as :C, :Ct, :Cmt
-  import "export" as {one, two, Something:{umm:{ch}}}
 </pre>
 </YueDisplay>
 
