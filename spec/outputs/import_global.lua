@@ -116,5 +116,16 @@ do
 	local X <const> = X
 	X:func(1, 2, 3)
 	X.tag = "abc"
-	return X
+end
+local _anon_func_0 = function(func)
+	return func
+end
+do
+	local func <const> = func
+	local pcall <const> = pcall
+	local f
+	f = function()
+		func()
+		return pcall(_anon_func_0, func)
+	end
 end

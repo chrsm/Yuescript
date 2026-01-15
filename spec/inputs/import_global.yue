@@ -84,3 +84,10 @@ do
 		\func 1, 2, 3
 		.tag = "abc"
 
+do
+	import global
+
+	f = ->
+		func!
+		try func
+
