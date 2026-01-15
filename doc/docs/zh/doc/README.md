@@ -926,6 +926,43 @@ tb =
 
 导入语句是一个语法糖，用于需要引入一个模块或者从已导入的模块中提取子项目。从模块导入的变量默认为不可修改的常量。
 
+#### 导入全局变量
+
+在代码块顶部写 `import global`，会将当前作用域中尚未显式声明或赋值过的变量名，自动导入为本地常量，并在该语句的位置绑定到同名的全局变量。
+
+但是在同一作用域中被显式声明为全局的变量不会被自动导入，因此可以继续进行赋值操作。
+
+```moonscript
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- 报错：自动导入的全局变量为常量
+
+do
+  -- 被显式声明为全局的变量不会被自动导入
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
+```
+<YueDisplay>
+<pre>
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- 报错：自动导入的全局变量是常量
+
+do
+  -- 被显式声明为全局的变量不会被自动导入
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
+</pre>
+</YueDisplay>
+
 ```moonscript
 -- 用作表解构
 do

@@ -1,0 +1,86 @@
+
+do
+	import global
+	print "hello"
+	math.random 10
+
+do
+	import global
+	value = 1
+	value += 2
+	print value
+
+do
+	local print = (msg) ->
+		return msg
+	do
+		import global
+		print "local"
+		math.random 1
+
+do
+	import global
+	local tostring = (v) -> "local"
+	tostring "value"
+	print tostring 123
+
+do
+	func = (x, y) ->
+		import global
+		return type x, tostring y, print
+	func 1, 2
+
+do
+	import global
+	try
+		func "hello #{world}"
+	catch err
+		print err
+
+do
+	import global
+	global FLAG
+	print FLAG
+	FLAG = 123
+
+do
+	import global
+	global Foo = 10
+	print Foo
+	Foo += 2
+
+do
+	import global
+	global Bar, Baz
+	Bar = 1
+	Baz = 2
+	print Bar, Baz
+
+do
+	import global
+	global *
+	x = 3434
+	if y then
+		x = 10
+
+do
+	import global
+	global ^
+	foobar = "all #{lowercase}"
+	FooBar = "pascal case"
+	FOOBAR = "all #{Uppercase}"
+
+do
+	import global
+	global const class A
+	global const Flag = 1
+	global const const, x, y = "const", 1, 2
+	global const math, table
+	print math, table
+
+do
+	import global
+	with X
+		\func 1, 2, 3
+		.tag = "abc"
+

@@ -928,6 +928,43 @@ tb =
 
 The import statement is a syntax sugar for requiring a module or help extracting items from an imported module. The imported items are const by default.
 
+#### Import Global
+
+You can place `import global` at the top of a block to automatically import all names that have not been explicitly declared or assigned in the current scope as globals. These implicit imports are treated as local consts that reference the corresponding globals at the position of the statement.
+
+Names that are explicitly declared as globals in the same scope will not be imported, so you can safely assign to them.
+
+```moonscript
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- error: imported globals are const
+
+do
+  -- explicit global variable will not be imported
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
+```
+<YueDisplay>
+<pre>
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- error: imported globals are const
+
+do
+  -- explicit global variable will not be imported
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
+</pre>
+</YueDisplay>
+
 ```moonscript
 -- used as table destructuring
 do
