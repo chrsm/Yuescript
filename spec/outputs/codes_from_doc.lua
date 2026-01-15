@@ -409,17 +409,6 @@ local tb = {
 	}
 }
 do
-	local print = print
-	local math = math
-	print("hello")
-	math.random(3)
-end
-do
-	local print = print
-	print(FLAG)
-	FLAG = 123
-end
-do
 	local insert, concat = table.insert, table.concat
 	local C, Ct, Cmt
 	do
@@ -451,6 +440,25 @@ do
 	local one, two, ch
 	local _obj_0 = require("export")
 	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
+end
+do
+	local tostring <const> = tostring
+	local concat <const> = table.concat
+	print(concat({
+		"a",
+		tostring(1)
+	}))
+end
+do
+	local print <const> = print
+	local math <const> = math
+	print("hello")
+	math.random(3)
+end
+do
+	local print <const> = print
+	print(FLAG)
+	FLAG = 123
 end
 local _module_0 = { }
 local a, b, c = 1, 2, 3
@@ -2928,17 +2936,6 @@ local tb = {
 	}
 }
 do
-	local print = print
-	local math = math
-	print("hello")
-	math.random(3)
-end
-do
-	local print = print
-	print(FLAG)
-	FLAG = 123
-end
-do
 	local insert, concat = table.insert, table.concat
 	local C, Ct, Cmt
 	do
@@ -2970,6 +2967,25 @@ do
 	local one, two, ch
 	local _obj_0 = require("export")
 	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
+end
+do
+	local tostring <const> = tostring
+	local concat <const> = table.concat
+	print(concat({
+		"a",
+		tostring(1)
+	}))
+end
+do
+	local print <const> = print
+	local math <const> = math
+	print("hello")
+	math.random(3)
+end
+do
+	local print <const> = print
+	print(FLAG)
+	FLAG = 123
 end
 local _module_0 = { }
 local a, b, c = 1, 2, 3

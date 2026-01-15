@@ -1,11 +1,11 @@
 do
-	local print <const> = print
-	local math <const> = math
+	local print = print
+	local math = math
 	print("hello")
 	math.random(10)
 end
 do
-	local print <const> = print
+	local print = print
 	local value = 1
 	value = value + 2
 	print(value)
@@ -16,13 +16,13 @@ do
 		return msg
 	end
 	do
-		local math <const> = math
+		local math = math
 		print("local")
 		math.random(1)
 	end
 end
 do
-	local print <const> = print
+	local print = print
 	local tostring
 	tostring = function(v)
 		return "local"
@@ -33,19 +33,19 @@ end
 do
 	local func
 	func = function(x, y)
-		local type <const> = type
-		local tostring <const> = tostring
-		local print <const> = print
+		local type = type
+		local tostring = tostring
+		local print = print
 		return type(x, tostring(y, print))
 	end
 	func(1, 2)
 end
 do
-	local xpcall <const> = xpcall
-	local func <const> = func
-	local world <const> = world
-	local tostring <const> = tostring
-	local print <const> = print
+	local xpcall = xpcall
+	local func = func
+	local world = world
+	local tostring = tostring
+	local print = print
 	xpcall(function()
 		return func("hello " .. tostring(world))
 	end, function(err)
@@ -53,40 +53,40 @@ do
 	end)
 end
 do
-	local print <const> = print
+	local print = print
 	print(FLAG)
 	FLAG = 123
 end
 do
-	local print <const> = print
+	local print = print
 	Foo = 10
 	print(Foo)
 	Foo = Foo + 2
 end
 do
-	local print <const> = print
+	local print = print
 	Bar = 1
 	Baz = 2
 	print(Bar, Baz)
 end
 do
-	local y <const> = y
+	local y = y
 	x = 3434
 	if y then
 		x = 10
 	end
 end
 do
-	local lowercase <const> = lowercase
-	local tostring <const> = tostring
-	local Uppercase <const> = Uppercase
+	local lowercase = lowercase
+	local tostring = tostring
+	local Uppercase = Uppercase
 	local foobar = "all " .. tostring(lowercase)
 	FooBar = "pascal case"
 	FOOBAR = "all " .. tostring(Uppercase)
 end
 do
-	local setmetatable <const> = setmetatable
-	local print <const> = print
+	local setmetatable = setmetatable
+	local print = print
 	do
 		local _class_0
 		local _base_0 = { }
@@ -113,7 +113,7 @@ do
 	print(math, table)
 end
 do
-	local X <const> = X
+	local X = X
 	X:func(1, 2, 3)
 	X.tag = "abc"
 	return X
