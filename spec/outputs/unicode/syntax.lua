@@ -5,9 +5,9 @@ _u51fd_u6570(_u53c2_u65701, _u53c2_u65702, _u53e6_u5916, _u53c2_u65703)
 local _u6211_u4eec
 _u8fd9_u91cc, _u6211_u4eec = function() end, _u662f_u7684
 local _u8fd9_u4e2a, _u4e0d_u540c
-_u8fd9_u4e2a, _u4e0d_u540c = function()
+_u8fd9_u4e2a, _u4e0d_u540c = (function()
 	return _u65b9_u6cd5
-end, _u662f_u7684
+end), _u662f_u7684
 _u7238_u7238()
 _u7238_u7238(_u4e3b)
 _u4f60_u597d(_u4e00, _u4e8c)();

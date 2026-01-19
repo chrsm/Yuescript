@@ -94,12 +94,12 @@ v = function()
 	return a, b, c
 end
 local v1, v2, v3
-v1, v2, v3 = function()
+v1, v2, v3 = (function()
 	return a
-end, b, c
-local a, b, c, d, e, f = 1, f2({
+end), b, c
+local a, b, c, d, e, f = 1, (f2({
 	abc = abc
-}), 3, 4, f5(abc), 6
+})), 3, 4, f5(abc), 6
 for a, b, c in pairs(tb) do
 	print(a, b, c)
 end

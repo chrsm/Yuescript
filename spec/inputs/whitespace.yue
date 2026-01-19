@@ -128,19 +128,19 @@ v = ->
 			c -- v3
 
 v1, v2, \
-	v3 = ->
-	a; \-- end of function for v1
+	v3 = (->
+	a), \-- end of function for v1
 		b, \-- v2
 			c -- v3
 
 a, b, \
 	c, d, \
 e, f = 1, \
-	f2
-		:abc; \-- arg2
+	(f2
+		:abc), \-- arg2
 		3, \
 			4, \
-				f5 abc; \-- arg5
+				f5(abc), \-- arg5
 					6
 
 for a, \-- destruct 1

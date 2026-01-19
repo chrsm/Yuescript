@@ -7,7 +7,7 @@ a, bunch, go, here = another, world, nil, nil
 func arg1, arg2, another, arg3
 
 here, we = () ->, yeah
-the, different = () -> approach; yeah
+the, different = (() -> approach), yeah
 
 dad()
 dad(lord)
@@ -321,7 +321,7 @@ ajax url,
 	(error) ->
 		print error
 
--- 
+--
 a += 3 - 5
 a *= 3 + 5
 a *= 3
@@ -480,11 +480,54 @@ do
 
 do
 	return res if res ~= ""
-		
+
 
 do
 	return res if res ~= ""
 		--
+
+do
+	a = 1; b = 2; c = a + b
+	print a; print b; print c
+
+	f = ->
+		a = 1; b = 2; a + b
+
+	a = 1;
+	b = 2;
+
+	success, result = try func!; print result if success
+
+	value = "foo"; print value; value = value .. "bar"; print value
+
+	do
+		if ok then print "ok!"; return 42
+
+	for i=1,3
+		print i; continue
+
+	n = 0
+	while n < 2
+		print "n=", n; n += 1
+
+	obj = {}
+	obj\set 10; obj\get!; print "done"
+
+	with tbl
+		\push 1; print "push"
+
+	a = 5
+	if a > 3
+		print "big"; b = a * 2; print b
+	else
+		print "small"; b = a
+
+	try
+		x = 1; y = 2; print x + y
+	catch err
+		print "error:", err
+
+	q = 1;; w = 2;;; e = 3; print q, w, e;
 
 nil
 

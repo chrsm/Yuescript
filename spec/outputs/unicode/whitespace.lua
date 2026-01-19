@@ -82,12 +82,12 @@ v = function()
 	return _u53d8_u91cfa, _u53d8_u91cfb, _u53d8_u91cfc
 end
 local v1, v2, v3
-v1, v2, v3 = function()
+v1, v2, v3 = (function()
 	return _u53d8_u91cfa
-end, _u53d8_u91cfb, _u53d8_u91cfc
-local _u53d8_u91cfa, _u53d8_u91cfb, _u53d8_u91cfc, _u53d8_u91cfd, _u53d8_u91cfe, _u53d8_u91cff = 1, f2({
+end), _u53d8_u91cfb, _u53d8_u91cfc
+local _u53d8_u91cfa, _u53d8_u91cfb, _u53d8_u91cfc, _u53d8_u91cfd, _u53d8_u91cfe, _u53d8_u91cff = 1, (f2({
 	abc = abc
-}), 3, 4, _u51fd_u65705(abc), 6
+})), 3, 4, _u51fd_u65705(abc), 6
 for _u53d8_u91cfa, _u53d8_u91cfb, _u53d8_u91cfc in pairs(_u5bf9_u8c61tb) do
 	_u6253_u5370(_u53d8_u91cfa, _u53d8_u91cfb, _u53d8_u91cfc)
 end

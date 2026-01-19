@@ -5,9 +5,9 @@ func(arg1, arg2, another, arg3)
 local we
 here, we = function() end, yeah
 local the, different
-the, different = function()
+the, different = (function()
 	return approach
-end, yeah
+end), yeah
 dad()
 dad(lord)
 hello(one, two)();
@@ -440,5 +440,75 @@ do
 		if res ~= "" then
 		end
 	end)())
+end
+do
+	a = 1
+	local b = 2
+	local c = a + b
+	print(a)
+	print(b)
+	print(c)
+	f = function()
+		a = 1
+		b = 2
+		return a + b
+	end
+	a = 1
+	b = 2
+	local success, result = pcall(function()
+		return func()
+	end)
+	if success then
+		print(result)
+	end
+	local value = "foo"
+	print(value)
+	value = value .. "bar"
+	print(value)
+	do
+		if ok then
+			print("ok!")
+		end
+		return 42
+	end
+	for i = 1, 3 do
+		print(i)
+		goto _continue_0
+		::_continue_0::
+	end
+	local n = 0
+	while n < 2 do
+		print("n=", n)
+		n = n + 1
+	end
+	local obj = { }
+	obj:set(10)
+	obj:get()
+	print("done")
+	do
+		local _with_0 = tbl
+		_with_0:push(1)
+		print("push")
+	end
+	a = 5
+	if a > 3 then
+		print("big")
+		b = a * 2
+		print(b)
+	else
+		print("small")
+		b = a
+	end
+	xpcall(function()
+		x = 1
+		y = 2
+		return print(x + y)
+	end, function(err)
+		return print("error:", err)
+	end)
+	local q = 1
+	local w = 2
+	local e = 3
+	print(q, w, e)
 end
 return nil

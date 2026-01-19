@@ -756,6 +756,9 @@ end
 	local first = select(1, ...)
 	return print(ok, count, first)
 end)(fn(true))
+local a = 1
+local b = 2
+print(a + b)
 Rx.Observable.fromRange(1, 8):filter(function(x)
 	return x % 2 == 0
 end):concat(Rx.Observable.of('who do we appreciate')):map(function(value)
@@ -3283,6 +3286,9 @@ end
 	local first = select(1, ...)
 	return print(ok, count, first)
 end)(fn(true))
+local a = 1
+local b = 2
+print(a + b)
 Rx.Observable.fromRange(1, 8):filter(function(x)
 	return x % 2 == 0
 end):concat(Rx.Observable.of('who do we appreciate')):map(function(value)
