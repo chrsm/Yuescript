@@ -487,6 +487,15 @@ do
 		--
 
 do
+	-- Simple one-liners
+	x = 1; y = 2
+
+	-- Short related statements
+	i += 1; j += 1
+
+	if condition
+		setup!; run!; cleanup!
+
 	a = 1; b = 2; c = a + b
 	print a; print b; print c
 

@@ -442,6 +442,15 @@ do
 	end)())
 end
 do
+	x = 1
+	y = 2
+	i = i + 1
+	j = j + 1
+	if condition then
+		setup()
+		run()
+		cleanup()
+	end
 	a = 1
 	local b = 2
 	local c = a + b
