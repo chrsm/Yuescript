@@ -430,4 +430,15 @@ do
 	local f2
 	f2 = function() end
 end
+do
+	if res ~= "" then
+		return res
+	end
+end
+do
+	return res((function()
+		if res ~= "" then
+		end
+	end)())
+end
 return nil

@@ -167,7 +167,7 @@ do
 
 do
 	a = for i = 1, 100
-	  with? x := tb[i]
-		 break x if .id := 1
+		with? x := tb[i]
+			break x if .id := 1
 
 nil

@@ -223,12 +223,12 @@ Usage: yue [options|files|directories] ...
    Execute without options to enter REPL, type symbol '$'
    in a single line to start/stop multi-line mode
 ```
-&emsp;&emsp;Use cases:  
-&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**  
-&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**  
-&emsp;&emsp;Compile and reserve debug info:  **yue -l .**  
-&emsp;&emsp;Compile and generate minified codes:  **yue -m .**  
-&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**  
+&emsp;&emsp;Use cases:
+&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
+&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**
+&emsp;&emsp;Compile and reserve debug info:  **yue -l .**
+&emsp;&emsp;Compile and generate minified codes:  **yue -m .**
+&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**
 &emsp;&emsp;Execute a YueScript file:  **yue -e main.yue**
 
 ## Macro
@@ -408,16 +408,16 @@ In YueScript, macro functions allow you to generate code at compile time. By nes
 
 ```moonscript
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "Valid enum type:", $BodyType Static
@@ -427,16 +427,16 @@ print "Valid enum type:", $BodyType Static
 <YueDisplay>
 <pre>
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "Valid enum type:", $BodyType Static
@@ -534,47 +534,47 @@ Note the evaluation behavior of chained comparisons:
 
 ```moonscript
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	3
-	true
+  output:
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	false
+  output:
+  2
+  1
+  false
 ]]
 ```
 <YueDisplay>
 <pre>
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	3
-	true
+  output:
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	output:
-	2
-	1
-	false
+  output:
+  2
+  1
+  false
 ]]
 </pre>
 </YueDisplay>
@@ -618,13 +618,13 @@ You can concatenate array tables or hash tables using spread operator `...` befo
 
 ```moonscript
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -635,13 +635,13 @@ merge = {...a, ...b}
 <YueDisplay>
 <pre>
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -976,6 +976,62 @@ do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
   import "export" as {one, two, Something:{umm:{ch}}}
+</pre>
+</YueDisplay>
+
+### Import Global
+
+You can import specific globals into local variables with `import`. When importing a chain of global variable accessings, the last field will be assigned to the local variable.
+
+```moonscript
+do
+  import tostring
+  import table.concat
+  print concat ["a", tostring 1]
+```
+<YueDisplay>
+<pre>
+do
+  import tostring
+  import table.concat
+  print concat ["a", tostring 1]
+</pre>
+</YueDisplay>
+
+#### Automatic Import
+
+You can place `import global` at the top of a block to automatically import all names that have not been explicitly declared or assigned in the current scope as globals. These implicit imports are treated as local consts that reference the corresponding globals at the position of the statement.
+
+Names that are explicitly declared as globals in the same scope will not be imported, so you can still assign to them.
+
+```moonscript
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- error: imported globals are const
+
+do
+  -- explicit global variable will not be imported
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
+```
+<YueDisplay>
+<pre>
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- error: imported globals are const
+
+do
+  -- explicit global variable will not be imported
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
 </pre>
 </YueDisplay>
 
@@ -2228,6 +2284,55 @@ findFirstEven = (list) ->
 
 The only difference is that you can move the final return expression before the `->` or `=>` token to indicate the function’s implicit return value as the last statement. This way, even in functions with multiple nested loops or conditional branches, you no longer need to write a trailing return expression at the end of the function body, making the logic structure more straightforward and easier to follow.
 
+### Named Varargs
+
+You can use the `(...t) ->` syntax to automatically store varargs into a named table. This table will contain all passed arguments (including `nil` values), and the `n` field of the table will store the actual number of arguments passed (including `nil` values).
+
+```moonscript
+f = (...t) ->
+  print "argument count:", t.n
+  print "table length:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- Handling cases with nil values
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+```
+<YueDisplay>
+<pre>
+f = (...t) ->
+  print "argument count:", t.n
+  print "table length:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- Handling cases with nil values
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+</pre>
+</YueDisplay>
+
 ## Backcalls
 
 Backcalls are used for unnesting callbacks. They are defined using arrows pointed to the left as the last parameter by default filling in a function call. All the syntax is mostly the same as regular arrow functions except that it is just pointing the other way and the function body does not require indent.
@@ -3325,19 +3430,19 @@ Match against a list and capture a range of elements.
 ```moonscript
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- prints: {"admin", "users"}
-		print "Resource:", resource -- prints: "logs"
-		print "Action:", action -- prints: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- prints: {"admin", "users"}
+    print "Resource:", resource -- prints: "logs"
+    print "Action:", action -- prints: "view"
 ```
 <YueDisplay>
 <pre>
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- prints: {"admin", "users"}
-		print "Resource:", resource -- prints: "logs"
-		print "Action:", action -- prints: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- prints: {"admin", "users"}
+    print "Resource:", resource -- prints: "logs"
+    print "Action:", action -- prints: "view"
 </pre>
 </YueDisplay>
 
@@ -4228,9 +4333,9 @@ The YueScript compiling function. It compiles the YueScript code to Lua code.
 **Signature:**
 ```lua
 to_lua: function(code: string, config?: Config):
-		--[[codes]] string | nil,
-		--[[error]] string | nil,
-		--[[globals]] {{string, integer, integer}} | nil
+    --[[codes]] string | nil,
+    --[[error]] string | nil,
+    --[[globals]] {{string, integer, integer}} | nil
 ```
 
 **Parameters:**
@@ -4353,8 +4458,8 @@ Loads YueScript code from a string into a function.
 **Signature:**
 ```lua
 loadstring: function(input: string, chunkname: string, env: table, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **Parameters:**
@@ -4384,8 +4489,8 @@ Loads YueScript code from a string into a function.
 **Signature:**
 ```lua
 loadstring: function(input: string, chunkname: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **Parameters:**
@@ -4414,8 +4519,8 @@ Loads YueScript code from a string into a function.
 **Signature:**
 ```lua
 loadstring: function(input: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **Parameters:**
@@ -4443,8 +4548,8 @@ Loads YueScript code from a file into a function.
 **Signature:**
 ```lua
 loadfile: function(filename: string, env: table, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **Parameters:**
@@ -4473,8 +4578,8 @@ Loads YueScript code from a file into a function.
 **Signature:**
 ```lua
 loadfile: function(filename: string, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **Parameters:**
@@ -4729,9 +4834,9 @@ Converts the code to the AST.
 
 **Signature:**
 ```lua
-to_ast: function(code: string, flattenLevel?: number, astName?: string):
-		--[[AST]] AST | nil,
-		--[[error]] nil | string
+to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
+    --[[AST]] AST | nil,
+    --[[error]] nil | string
 ```
 
 **Parameters:**
@@ -4741,6 +4846,7 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 | code | string | The code. |
 | flattenLevel | integer | [Optional] The flatten level. Higher level means more flattening. Default is 0. Maximum is 2. |
 | astName | string | [Optional] The AST name. Default is "File". |
+| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is false. |
 
 **Returns:**
 
@@ -4748,6 +4854,33 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 | --- | --- |
 | AST \| nil | The AST, or nil if the conversion failed. |
 | string \| nil | The error message, or nil if the conversion succeeded. |
+
+#### format
+
+**Type:** Function.
+
+**Description:**
+
+Formats the YueScript code.
+
+**Signature:**
+```lua
+format: function(code: string, tabSize?: number, reserveComment?: boolean): string
+```
+
+**Parameters:**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| code | string | The code. |
+| tabSize | integer | [Optional] The tab size. Default is 4. |
+| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is true. |
+
+**Returns:**
+
+| Return Type | Description |
+| --- | --- |
+| string | The formatted code. |
 
 #### __call
 
@@ -4820,6 +4953,19 @@ Whether the compiler should reserve the original line number in the compiled cod
 reserve_line_number: boolean
 ```
 
+#### reserve_comment
+
+**Type:** Field.
+
+**Description:**
+
+Whether the compiler should reserve the original comments in the compiled code.
+
+**Signature:**
+```lua
+reserve_comment: boolean
+```
+
 #### space_over_tab
 
 **Type:** Field.
@@ -4870,11 +5016,11 @@ The target Lua version enumeration.
 **Signature:**
 ```lua
 enum LuaTarget
-	"5.1"
-	"5.2"
-	"5.3"
-	"5.4"
-	"5.5"
+  "5.1"
+  "5.2"
+  "5.3"
+  "5.4"
+  "5.5"
 end
 ```
 
@@ -4951,7 +5097,7 @@ simplified: boolean
 
 ## Licence: MIT
 
-Copyright (c) 2017-2025 Li Jin \<dragon-fly@qq.com\>
+Copyright (c) 2017-2026 Li Jin \<dragon-fly@qq.com\>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -100,8 +100,8 @@ do
 		next: 123   
 	str = |
 		list:
-		  - "one"
-		  - "two"
+			- "one"
+			- "two"
 	str = |
 		-- comment
 		content text

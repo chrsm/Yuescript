@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2025 Li Jin <dragon-fly@qq.com>
+/* Copyright (c) 2017-2026 Li Jin <dragon-fly@qq.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -185,6 +185,11 @@ static int yueformat(lua_State* L) {
 	if (!lua_isnoneornil(L, 2)) {
 		tabSize = static_cast<int>(luaL_checkinteger(L, 2));
 	}
+	bool reserveComment = true;
+	if (!lua_isnoneornil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TBOOLEAN);
+		reserveComment = lua_toboolean(L, 3) != 0;
+	}
 	std::string_view codes(input, len);
 	auto info = yue::YueParser::shared().parse<yue::File_t>(codes, false);
 	if (info.error) {
@@ -206,8 +211,11 @@ static int yueformat(lua_State* L) {
 	} else {
 		formatter.spaceOverTab = false;
 	}
+	formatter.reserveComment = reserveComment;
 	auto result = formatter.toString(info.node.get());
-	yue::Utils::replace(result, "\n\n", "\n");
+	if (!formatter.reserveComment) {
+		yue::Utils::replace(result, "\n\n", "\n");
+	}
 	lua_pushlstring(L, result.c_str(), result.size());
 	return 1;
 }
@@ -255,7 +263,7 @@ static int yuecheck(lua_State* L) {
 			lua_rawseti(L, -2, ++i);
 		}
 	}
-	if (result.error) {
+	if (!config.lax && result.error) {
 		lua_pushboolean(L, 0);
 		lua_insert(L, -2);
 		return 2;
@@ -295,6 +303,11 @@ static int yuetoast(lua_State* L) {
 		luaL_checktype(L, 4, LUA_TBOOLEAN);
 		lax = lua_toboolean(L, 4) != 0;
 	}
+	bool reserveComment = false;
+	if (!lua_isnoneornil(L, 5)) {
+		luaL_checktype(L, 5, LUA_TBOOLEAN);
+		reserveComment = lua_toboolean(L, 5) != 0;
+	}
 	auto& yueParser = yue::YueParser::shared();
 	auto info = ruleName.empty() ? yueParser.parse<yue::File_t>({input, size}, lax) : yueParser.parse(ruleName, {input, size}, lax);
 	if (!info.error) {
@@ -322,19 +335,20 @@ static int yuetoast(lua_State* L) {
 		};
 		do_call(info.node);
 		yue::YueFormat formatter{};
+		formatter.reserveComment = reserveComment;
 		while (!stack.empty()) {
 			auto& current = stack.top();
 			int continuation = current.continuation;
 			auto node = current.node;
-			if (auto comment = yue::ast_cast<yue::YueMultilineComment_t>(node)) {
-				node = comment->inner.get();
-			}
 			switch (continuation) {
 				case 0: {
 					if (!current.children) {
 						node->visit_child([&](yue::ast_node* child) {
 							if (yue::ast_is<yue::Seperator_t>(child)) {
 								current.hasSep = true;
+								return false;
+							}
+							if (!reserveComment && yue::ast_is<yue::YueComment_t, yue::EmptyLine_t>(child)) {
 								return false;
 							}
 							if (!current.children) {

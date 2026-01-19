@@ -441,6 +441,25 @@ do
 	local _obj_0 = require("export")
 	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
 end
+do
+	local tostring <const> = tostring
+	local concat <const> = table.concat
+	print(concat({
+		"a",
+		tostring(1)
+	}))
+end
+do
+	local print <const> = print
+	local math <const> = math
+	print("hello")
+	math.random(3)
+end
+do
+	local print <const> = print
+	print(FLAG)
+	FLAG = 123
+end
 local _module_0 = { }
 local a, b, c = 1, 2, 3
 _module_0["a"], _module_0["b"], _module_0["c"] = a, b, c
@@ -970,6 +989,36 @@ local arg1 = {
 	a = 0
 }
 f2(arg1, arg2)
+local f
+f = function(...)
+	local t = {
+		n = select("#", ...),
+		...
+	}
+	print("argument count:", t.n)
+	print("table length:", #t)
+	for i = 1, t.n do
+		print(t[i])
+	end
+end
+f(1, 2, 3)
+f("a", "b", "c", "d")
+f()
+local process
+process = function(...)
+	local args = {
+		n = select("#", ...),
+		...
+	}
+	local sum = 0
+	for i = 1, args.n do
+		if args[i] ~= nil and type(args[i]) == "number" then
+			sum = sum + args[i]
+		end
+	end
+	return sum
+end
+process(1, nil, 3, nil, 5)
 f(function()
 	return print("hello")
 end)
@@ -2919,6 +2968,25 @@ do
 	local _obj_0 = require("export")
 	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
 end
+do
+	local tostring <const> = tostring
+	local concat <const> = table.concat
+	print(concat({
+		"a",
+		tostring(1)
+	}))
+end
+do
+	local print <const> = print
+	local math <const> = math
+	print("hello")
+	math.random(3)
+end
+do
+	local print <const> = print
+	print(FLAG)
+	FLAG = 123
+end
 local _module_0 = { }
 local a, b, c = 1, 2, 3
 _module_0["a"], _module_0["b"], _module_0["c"] = a, b, c
@@ -3478,6 +3546,36 @@ findFirstEven = function(list)
 	end
 	return nil
 end
+local f
+f = function(...)
+	local t = {
+		n = select("#", ...),
+		...
+	}
+	print("argument count:", t.n)
+	print("table length:", #t)
+	for i = 1, t.n do
+		print(t[i])
+	end
+end
+f(1, 2, 3)
+f("a", "b", "c", "d")
+f()
+local process
+process = function(...)
+	local args = {
+		n = select("#", ...),
+		...
+	}
+	local sum = 0
+	for i = 1, args.n do
+		if args[i] ~= nil and type(args[i]) == "number" then
+			sum = sum + args[i]
+		end
+	end
+	return sum
+end
+process(1, nil, 3, nil, 5)
 f(function()
 	return print("hello")
 end)

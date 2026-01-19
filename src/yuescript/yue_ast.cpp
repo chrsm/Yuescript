@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2025 Li Jin <dragon-fly@qq.com>
+/* Copyright (c) 2017-2026 Li Jin <dragon-fly@qq.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -81,6 +81,13 @@ std::string SelfClass_t::to_string(void*) const {
 }
 std::string VarArg_t::to_string(void*) const {
 	return "..."s;
+}
+std::string VarArgDef_t::to_string(void* ud) const {
+	if (name) {
+		return "..."s + name->to_string(ud);
+	} else {
+		return "..."s;
+	}
 }
 std::string Seperator_t::to_string(void*) const {
 	return {};
@@ -203,14 +210,18 @@ std::string YueLineComment_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
 	return "--"s + info->convert(this);
 }
-std::string MultilineCommentInner_t::to_string(void* ud) const {
+std::string YueMultilineComment_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
-	return info->convert(this);
+	return "--[["s + info->convert(this) + "]]"s;
+}
+std::string YueComment_t::to_string(void* ud) const {
+	if (comment) {
+		return comment->to_string(ud);
+	} else {
+		return {};
+	}
 }
 std::string Variable_t::to_string(void* ud) const {
-	return name->to_string(ud);
-}
-std::string LabelName_t::to_string(void* ud) const {
 	return name->to_string(ud);
 }
 std::string LuaKeyword_t::to_string(void* ud) const {
@@ -314,6 +325,9 @@ std::string ImportGlobal_t::to_string(void* ud) const {
 		return item + " as "s + target->to_string(ud);
 	}
 	return item;
+}
+std::string ImportAllGlobal_t::to_string(void*) const {
+	return "global"s;
 }
 std::string Import_t::to_string(void* ud) const {
 	if (ast_is<FromImport_t>(content)) {
@@ -590,7 +604,7 @@ std::string Repeat_t::to_string(void* ud) const {
 std::string ForStepValue_t::to_string(void* ud) const {
 	return value->to_string(ud);
 }
-std::string For_t::to_string(void* ud) const {
+std::string ForNum_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
 	auto line = "for "s + varName->to_string(ud) + " = "s + startValue->to_string(ud) + ", "s + stopValue->to_string(ud);
 	if (stepValue) {
@@ -628,6 +642,9 @@ std::string ForEach_t::to_string(void* ud) const {
 		info->popScope();
 		return line + '\n' + block;
 	}
+}
+std::string For_t::to_string(void* ud) const {
+	return forLoop->to_string(ud);
 }
 std::string Do_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
@@ -780,7 +797,7 @@ static bool isInBlockExp(ast_node* node, bool last = false) {
 	return false;
 }
 std::string Comprehension_t::to_string(void* ud) const {
-	if (items.size() != 2 || !ast_is<CompInner_t>(items.back())) {
+	if (items.size() != 2 || !ast_is<CompFor_t>(items.back())) {
 		if (items.size() == 1) {
 			str_list temp;
 			for (const auto& item : items.objects()) {
@@ -847,14 +864,14 @@ std::string StarExp_t::to_string(void* ud) const {
 std::string CompForEach_t::to_string(void* ud) const {
 	return "for "s + nameList->to_string(ud) + " in "s + loopValue->to_string(ud);
 }
-std::string CompFor_t::to_string(void* ud) const {
+std::string CompForNum_t::to_string(void* ud) const {
 	auto line = "for "s + varName->to_string(ud) + " = "s + startValue->to_string(ud) + ", "s + stopValue->to_string(ud);
 	if (stepValue) {
 		line += stepValue->to_string(ud);
 	}
 	return line;
 }
-std::string CompInner_t::to_string(void* ud) const {
+std::string CompFor_t::to_string(void* ud) const {
 	str_list temp;
 	for (auto item : items.objects()) {
 		if (ast_is<Exp_t>(item)) {
@@ -1599,37 +1616,17 @@ std::string StatementAppendix_t::to_string(void* ud) const {
 	return item->to_string(ud);
 }
 std::string Statement_t::to_string(void* ud) const {
-	std::string line;
-	if (!comments.empty()) {
-		auto info = reinterpret_cast<YueFormat*>(ud);
-		str_list temp;
-		for (ast_node* comment : comments.objects()) {
-			if (comment == comments.front()) {
-				temp.push_back(comment->to_string(ud));
-			} else {
-				temp.push_back(info->ind() + comment->to_string(ud));
-			}
-		}
-		if (appendix) {
-			temp.push_back(info->ind() + content->to_string(ud) + ' ' + appendix->to_string(ud));
-			return join(temp, "\n"sv);
-		} else {
-			temp.push_back(info->ind() + content->to_string(ud));
-			return join(temp, "\n"sv);
-		}
+	if (appendix) {
+		return content->to_string(ud) + ' ' + appendix->to_string(ud);
 	} else {
-		if (appendix) {
-			return content->to_string(ud) + ' ' + appendix->to_string(ud);
-		} else {
-			return content->to_string(ud);
-		}
+		return content->to_string(ud);
 	}
 }
 std::string StatementSep_t::to_string(void*) const {
 	return {};
 }
-std::string YueMultilineComment_t::to_string(void* ud) const {
-	return "--[["s + inner->to_string(ud) + "]]"s;
+std::string EmptyLine_t::to_string(void*) const {
+	return {};
 }
 std::string ChainAssign_t::to_string(void* ud) const {
 	str_list temp;
@@ -1644,14 +1641,22 @@ std::string Body_t::to_string(void* ud) const {
 std::string Block_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
 	str_list temp;
-	for (auto stmt_ : statements.objects()) {
-		auto stmt = static_cast<Statement_t*>(stmt_);
-		if (stmt->content.is<PipeBody_t>()) {
-			info->pushScope();
-			temp.emplace_back(stmt->to_string(ud));
-			info->popScope();
-		} else {
-			temp.emplace_back(info->ind() + stmt->to_string(ud));
+	for (auto stmt_ : statementOrComments.objects()) {
+		if (auto stmt = ast_cast<Statement_t>(stmt_)) {
+			if (stmt->content.is<PipeBody_t>()) {
+				info->pushScope();
+				temp.emplace_back(stmt->to_string(ud));
+				info->popScope();
+			} else {
+				temp.emplace_back(info->ind() + stmt->to_string(ud));
+			}
+		} else if (info->reserveComment) {
+			if (auto comment = ast_cast<YueComment_t>(stmt_)) {
+				temp.emplace_back(info->ind() + comment->to_string(ud));
+			} else {
+				auto empty = ast_to<EmptyLine_t>(stmt_);
+				temp.emplace_back(empty->to_string(ud));
+			}
 		}
 	}
 	return join(temp, "\n"sv);

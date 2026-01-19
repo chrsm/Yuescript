@@ -407,16 +407,16 @@ print $LINE -- 获取当前代码行数：2
 
 ```moonscript
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "有效的枚举类型:", $BodyType Static
@@ -425,16 +425,16 @@ print "有效的枚举类型:", $BodyType Static
 <YueDisplay>
 <pre>
 macro Enum = (...) ->
-	items = {...}
-	itemSet = {item, true for item in *items}
-	(item) ->
-		error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-		"\"#{item}\""
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
 
 macro BodyType = $Enum(
-	Static
-	Dynamic
-	Kinematic
+  Static
+  Dynamic
+  Kinematic
 )
 
 print "有效的枚举类型:", $BodyType Static
@@ -532,47 +532,47 @@ print 1 <= a <= 10
 
 ```moonscript
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	3
-	true
+  输出：
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	false
+  输出：
+  2
+  1
+  false
 ]]
 ```
 <YueDisplay>
 <pre>
 v = (x) ->
-	print x
-	x
+  print x
+  x
 
 print v(1) < v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	3
-	true
+  输出：
+  2
+  1
+  3
+  true
 ]]
 
 print v(1) > v(2) <= v(3)
 --[[
-	输出：
-	2
-	1
-	false
+  输出：
+  2
+  1
+  false
 ]]
 </pre>
 </YueDisplay>
@@ -617,13 +617,13 @@ tbA[] = ...tbB
 
 ```moonscript
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -634,13 +634,13 @@ merge = {...a, ...b}
 <YueDisplay>
 <pre>
 parts =
-	* "shoulders"
-	* "knees"
+  * "shoulders"
+  * "knees"
 lyrics =
-	* "head"
-	* ...parts
-	* "and"
-	* "toes"
+  * "head"
+  * ...parts
+  * "and"
+  * "toes"
 
 copy = {...other}
 
@@ -974,6 +974,62 @@ do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
   import "export" as {one, two, Something:{umm:{ch}}}
+</pre>
+</YueDisplay>
+
+### 导入全局变量
+
+你可以使用 `import` 将指定的全局变量导入到本地变量中。当导入一系列对全局变量的链式访问时，最后一个访问的字段将被赋值给本地变量。
+
+```moonscript
+do
+  import tostring
+  import table.concat
+  print concat ["a", tostring 1]
+```
+<YueDisplay>
+<pre>
+do
+  import tostring
+  import table.concat
+  print concat ["a", tostring 1]
+</pre>
+</YueDisplay>
+
+#### 自动导入
+
+在一个代码块的顶部写 `import global`，会将当前作用域中尚未显式声明或赋值过的变量名，自动导入为本地常量，并在该语句的位置绑定到同名的全局变量。
+
+但是在同一作用域中被显式声明为全局的变量不会被自动导入，因此可以继续进行赋值操作。
+
+```moonscript
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- 报错：自动导入的全局变量为常量
+
+do
+  -- 被显式声明为全局的变量不会被自动导入
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
+```
+<YueDisplay>
+<pre>
+do
+  import global
+  print "hello"
+  math.random 3
+  -- print = nil -- 报错：自动导入的全局变量是常量
+
+do
+  -- 被显式声明为全局的变量不会被自动导入
+  import global
+  global FLAG
+  print FLAG
+  FLAG = 123
 </pre>
 </YueDisplay>
 
@@ -2188,6 +2244,55 @@ findFirstEven = (list) ->
 
 唯一的区别在于：你可以将函数的返回值表达式提前写在 `->` 或 `=>` 前，用以指示该函数应隐式返回该表达式的值。这样即使在多层循环或条件判断的场景下，也无需编写尾行悬挂的返回表达式，逻辑结构会更加直观清晰。
 
+### 命名变长参数
+
+你可以使用 `(...t) ->` 语法来将变长参数自动存储到一个命名表中。这个表会包含所有传入的参数（包括 `nil` 值），并且会在表的 `n` 字段中存储实际传入的参数个数（包括 `nil` 值在内的个数）。
+
+```moonscript
+f = (...t) ->
+  print "参数个数:", t.n
+  print "表长度:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- 处理包含 nil 的情况
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+```
+<YueDisplay>
+<pre>
+f = (...t) ->
+  print "参数个数:", t.n
+  print "表长度:", #t
+  for i = 1, t.n
+    print t[i]
+
+f 1, 2, 3
+f "a", "b", "c", "d"
+f!
+
+-- 处理包含 nil 的情况
+process = (...args) ->
+  sum = 0
+  for i = 1, args.n
+    if args[i] != nil and type(args[i]) == "number"
+      sum += args[i]
+  sum
+
+process 1, nil, 3, nil, 5
+</pre>
+</YueDisplay>
+
 ## 反向回调
 
 反向回调用于减少函数回调的嵌套。它们使用指向左侧的箭头，并且默认会被定义为传入后续函数调用的最后一个参数。它的语法大部分与常规箭头函数相同，只是它指向另一方向，并且后续的函数体不需要进行缩进。
@@ -3285,19 +3390,19 @@ switch tb
 ```moonscript
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- 打印: {"admin", "users"}
-		print "Resource:", resource -- 打印: "logs"
-		print "Action:", action -- 打印: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- 打印: {"admin", "users"}
+    print "Resource:", resource -- 打印: "logs"
+    print "Action:", action -- 打印: "view"
 ```
 <YueDisplay>
 <pre>
 segments = ["admin", "users", "logs", "view"]
 switch segments
-	when [...groups, resource, action]
-		print "Group:", groups -- 打印: {"admin", "users"}
-		print "Resource:", resource -- 打印: "logs"
-		print "Action:", action -- 打印: "view"
+  when [...groups, resource, action]
+    print "Group:", groups -- 打印: {"admin", "users"}
+    print "Resource:", resource -- 打印: "logs"
+    print "Action:", action -- 打印: "view"
 </pre>
 </YueDisplay>
 
@@ -4185,9 +4290,9 @@ yue_compiled: {string: string}
 **签名：**
 ```lua
 to_lua: function(code: string, config?: Config):
-		--[[codes]] string | nil,
-		--[[error]] string | nil,
-		--[[globals]] {{string, integer, integer}} | nil
+    --[[codes]] string | nil,
+    --[[error]] string | nil,
+    --[[globals]] {{string, integer, integer}} | nil
 ```
 
 **参数：**
@@ -4310,8 +4415,8 @@ remove_loader: function(): boolean
 **签名：**
 ```lua
 loadstring: function(input: string, chunkname: string, env: table, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **参数：**
@@ -4341,8 +4446,8 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
 **签名：**
 ```lua
 loadstring: function(input: string, chunkname: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **参数：**
@@ -4371,8 +4476,8 @@ loadstring: function(input: string, chunkname: string, config?: Config):
 **签名：**
 ```lua
 loadstring: function(input: string, config?: Config):
-		--[[loaded function]] nil | function(...: any): (any...),
-		--[[error]] string | nil
+    --[[loaded function]] nil | function(...: any): (any...),
+    --[[error]] string | nil
 ```
 
 **参数：**
@@ -4400,8 +4505,8 @@ loadstring: function(input: string, config?: Config):
 **签名：**
 ```lua
 loadfile: function(filename: string, env: table, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **参数：**
@@ -4430,8 +4535,8 @@ loadfile: function(filename: string, env: table, config?: Config):
 **签名：**
 ```lua
 loadfile: function(filename: string, config?: Config):
-		nil | function(...: any): (any...),
-		string | nil
+    nil | function(...: any): (any...),
+    string | nil
 ```
 
 **参数：**
@@ -4686,9 +4791,9 @@ type AST = {string, integer, integer, any}
 
 **签名：**
 ```lua
-to_ast: function(code: string, flattenLevel?: number, astName?: string):
-		--[[AST]] AST | nil,
-		--[[error]] nil | string
+to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
+    --[[AST]] AST | nil,
+    --[[error]] nil | string
 ```
 
 **参数：**
@@ -4697,6 +4802,42 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 | --- | --- | --- |
 | code | string | 代码。 |
 | flattenLevel | integer | [可选] 扁平化级别。级别越高，会消除更多的 AST 结构的嵌套。默认为 0。最大为 2。 |
+| astName | string | [可选] AST 名称。默认为 "File"。 |
+| reserveComment | boolean | [可选] 是否保留原始注释。默认为 false。 |
+
+**返回值：**
+
+| 返回类型 | 描述 |
+| --- | --- |
+| AST \| nil | AST，如果转换失败则为 nil。 |
+| string \| nil | 错误消息，如果转换成功则为 nil。 |
+
+#### format
+
+**类型：** 函数。
+
+**描述：**
+
+格式化 YueScript 代码。
+
+**签名：**
+```lua
+format: function(code: string, tabSize?: number, reserveComment?: boolean): string
+```
+
+**参数：**
+
+| 参数名 | 类型 | 描述 |
+| --- | --- | --- |
+| code | string | 代码。 |
+| tabSize | integer | [可选] 制表符大小。默认为 4。 |
+| reserveComment | boolean | [可选] 是否保留原始注释。默认为 true。 |
+
+**返回值：**
+
+| 返回类型 | 描述 |
+| --- | --- |
+| string | 格式化后的代码。 |
 
 #### __call
 
@@ -4769,6 +4910,19 @@ implicit_return_root: boolean
 reserve_line_number: boolean
 ```
 
+#### reserve_comment
+
+**类型：** 成员变量。
+
+**描述：**
+
+编译器是否应该在编译后的代码中保留原始注释。
+
+**签名：**
+```lua
+reserve_comment: boolean
+```
+
 #### space_over_tab
 
 **类型：** 成员变量。
@@ -4819,11 +4973,11 @@ line_offset: integer
 **签名：**
 ```lua
 enum LuaTarget
-	"5.1"
-	"5.2"
-	"5.3"
-	"5.4"
-	"5.5"
+  "5.1"
+  "5.2"
+  "5.3"
+  "5.4"
+  "5.5"
 end
 ```
 

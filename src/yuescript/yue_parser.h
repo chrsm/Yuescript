@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2025 Li Jin <dragon-fly@qq.com>
+/* Copyright (c) 2017-2026 Li Jin <dragon-fly@qq.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -119,6 +119,7 @@ protected:
 		int expLevel = 0;
 		size_t stringOpen = 0;
 		std::string buffer;
+		std::optional<bool> useTab;
 		std::stack<int> indents;
 		std::vector<bool> noDoStack;
 		std::vector<bool> noChainBlockStack;
@@ -148,7 +149,6 @@ private:
 	}
 
 	NONE_AST_RULE(empty_block_error);
-	NONE_AST_RULE(leading_spaces_error);
 	NONE_AST_RULE(indentation_error);
 	NONE_AST_RULE(braces_expression_error);
 	NONE_AST_RULE(brackets_expression_error);
@@ -158,11 +158,41 @@ private:
 	NONE_AST_RULE(confusing_unary_not_error);
 	NONE_AST_RULE(table_key_pair_error);
 	NONE_AST_RULE(assignment_expression_syntax_error);
+	NONE_AST_RULE(unclosed_single_string_error);
+	NONE_AST_RULE(unclosed_double_string_error);
+	NONE_AST_RULE(unclosed_lua_string_error);
+	NONE_AST_RULE(unexpected_comma_error);
+	NONE_AST_RULE(parenthesis_error);
+	NONE_AST_RULE(dangling_clause_error);
+	NONE_AST_RULE(keyword_as_label_error);
+	NONE_AST_RULE(check_vararg_position);
+	NONE_AST_RULE(vararg_position_error);
+	NONE_AST_RULE(invalid_import_syntax_error);
+	NONE_AST_RULE(invalid_import_as_syntax_error);
+	NONE_AST_RULE(expected_expression_error);
+	NONE_AST_RULE(invalid_from_import_error);
+	NONE_AST_RULE(invalid_export_syntax_error);
+	NONE_AST_RULE(invalid_macro_definition_error);
+	NONE_AST_RULE(invalid_global_declaration_error);
+	NONE_AST_RULE(invalid_local_declaration_error);
+	NONE_AST_RULE(invalid_with_syntax_error);
+	NONE_AST_RULE(invalid_try_syntax_error);
+	NONE_AST_RULE(keyword_as_identifier_syntax_error);
+	NONE_AST_RULE(invalid_number_literal_error);
+	NONE_AST_RULE(invalid_import_literal_error);
+	NONE_AST_RULE(expected_indentifier_error);
+
+	NONE_AST_RULE(must_exp);
+	NONE_AST_RULE(must_unary_exp);
+	NONE_AST_RULE(must_variable);
+	NONE_AST_RULE(end_braces_expression);
+	NONE_AST_RULE(end_brackets_expression);
 
 	NONE_AST_RULE(inc_exp_level);
 	NONE_AST_RULE(dec_exp_level);
 
 	NONE_AST_RULE(num_char);
+	NONE_AST_RULE(must_num_char);
 	NONE_AST_RULE(num_char_hex);
 	NONE_AST_RULE(num_lit);
 	NONE_AST_RULE(num_bin_lit);
@@ -173,6 +203,7 @@ private:
 	NONE_AST_RULE(line_break);
 	NONE_AST_RULE(any_char);
 	NONE_AST_RULE(white);
+	NONE_AST_RULE(plain_white);
 	NONE_AST_RULE(stop);
 	NONE_AST_RULE(comment);
 	NONE_AST_RULE(multi_line_open);
@@ -249,6 +280,8 @@ private:
 	NONE_AST_RULE(fn_arg_def_lit_lines);
 	NONE_AST_RULE(destruct_def);
 	NONE_AST_RULE(macro_args_def);
+	NONE_AST_RULE(var_arg_def);
+	NONE_AST_RULE(outer_var_shadow_def);
 	NONE_AST_RULE(chain_call);
 	NONE_AST_RULE(chain_call_list);
 	NONE_AST_RULE(chain_index_chain);
@@ -265,7 +298,6 @@ private:
 	NONE_AST_RULE(table_value);
 	NONE_AST_RULE(table_lit_lines);
 	NONE_AST_RULE(table_lit_line);
-	NONE_AST_RULE(table_value_list);
 	NONE_AST_RULE(table_block_inner);
 	NONE_AST_RULE(class_line);
 	NONE_AST_RULE(key_value_line);
@@ -282,9 +314,9 @@ private:
 	NONE_AST_RULE(expo_exp);
 	NONE_AST_RULE(exp_not_tab);
 	NONE_AST_RULE(local_const_item);
-	NONE_AST_RULE(empty_line_break);
-	NONE_AST_RULE(yue_comment);
+	NONE_AST_RULE(comment_line);
 	NONE_AST_RULE(yue_line_comment);
+	NONE_AST_RULE(yue_multiline_comment);
 	NONE_AST_RULE(line);
 	NONE_AST_RULE(shebang);
 	NONE_AST_RULE(lax_line);
@@ -293,7 +325,6 @@ private:
 	AST_RULE(Name);
 	AST_RULE(UnicodeName);
 	AST_RULE(Variable);
-	AST_RULE(LabelName);
 	AST_RULE(LuaKeyword);
 	AST_RULE(Self);
 	AST_RULE(SelfName);
@@ -302,6 +333,7 @@ private:
 	AST_RULE(SelfItem);
 	AST_RULE(KeyName);
 	AST_RULE(VarArg);
+	AST_RULE(VarArgDef);
 	AST_RULE(Seperator);
 	AST_RULE(NameList);
 	AST_RULE(LocalFlag);
@@ -320,6 +352,7 @@ private:
 	AST_RULE(ImportTabLit);
 	AST_RULE(ImportAs);
 	AST_RULE(ImportGlobal);
+	AST_RULE(ImportAllGlobal);
 	AST_RULE(Import);
 	AST_RULE(Label);
 	AST_RULE(Goto);
@@ -344,6 +377,7 @@ private:
 	AST_RULE(Repeat);
 	AST_RULE(ForStepValue);
 	AST_RULE(For);
+	AST_RULE(ForNum);
 	AST_RULE(ForEach);
 	AST_RULE(Do);
 	AST_RULE(CatchBlock);
@@ -353,8 +387,8 @@ private:
 	AST_RULE(TblComprehension);
 	AST_RULE(StarExp);
 	AST_RULE(CompForEach);
+	AST_RULE(CompForNum);
 	AST_RULE(CompFor);
-	AST_RULE(CompInner);
 	AST_RULE(Assign);
 	AST_RULE(UpdateOp);
 	AST_RULE(Update);
@@ -446,8 +480,9 @@ private:
 	AST_RULE(Statement);
 	AST_RULE(StatementSep);
 	AST_RULE(YueLineComment);
-	AST_RULE(MultilineCommentInner);
 	AST_RULE(YueMultilineComment);
+	AST_RULE(YueComment);
+	AST_RULE(EmptyLine);
 	AST_RULE(ChainAssign);
 	AST_RULE(Body);
 	AST_RULE(Block);

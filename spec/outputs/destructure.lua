@@ -711,4 +711,24 @@ do
 		return _accum_0
 	end)(), _obj_0[#_obj_0 - 1], _obj_0[#_obj_0]
 end
+do
+	local _list_0 = items
+	for _index_0 = 1, #_list_0 do
+		local _des_0 = _list_0[_index_0]
+		local a, b = _des_0.a, _des_0.b
+		print(a, b)
+	end
+	local _list_1 = items
+	for _index_0 = 1, #_list_1 do
+		local _des_0 = _list_1[_index_0]
+		local a, b = _des_0.a, _des_0.b
+		print(a, b)
+	end
+	for _des_0 in pairs(data) do
+		local body = _des_0.body
+		if body then
+			print(body)
+		end
+	end
+end
 return nil
