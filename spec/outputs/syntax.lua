@@ -515,9 +515,9 @@ do
 	end, function(err)
 		return print("error:", err)
 	end)
-	local q = 1
-	local w = 2
-	local e = 3
-	print(q, w, e)
 end
+local q = 1
+local w = 2
+local e = 3
+print(q, w, e)
 return nil

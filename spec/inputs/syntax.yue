@@ -536,7 +536,7 @@ do
 	catch err
 		print "error:", err
 
-	q = 1;; w = 2;;; e = 3; print q, w, e;
+q = 1 --[[it's q]]; --[[got w]] w = 2; e = 3; print --[[param q]] q, w, e; --[[here]] -- line ends
 
 nil
 
