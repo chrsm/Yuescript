@@ -196,29 +196,44 @@ f!
 &emsp;Use YueScript tool with:
 ```
 > yue -h
-Usage: yue [options|files|directories] ...
+Usage: yue
+       [options] [<file/directory>] ...
+       yue -e <code_or_file> [args...]
+       yue -w [<directory>] [options]
+       yue -
 
-   -h       Print this message
-   -e str   Execute a file or raw codes
-   -m       Generate minified codes
-   -r       Rewrite output to match original line numbers
-   -t path  Specify where to place compiled files
-   -o file  Write output to file
-   -s       Use spaces in generated codes instead of tabs
-   -p       Write output to standard out
-   -b       Dump compile time (doesn't write output)
-   -g       Dump global variables used in NAME LINE COLUMN
-   -l       Write line numbers from source codes
-   -j       Disable implicit return at end of file
-   -c       Reserve comments before statement from source codes
-   -w path  Watch changes and compile every file under directory
-   -v       Print version
-   --       Read from standard in, print to standard out
-            (Must be first and only argument)
+Notes:
+   - '-' / '--' must be the first and only argument.
+   - '-o/--output' can not be used with multiple input files.
+   - '-w/--watch' can not be used with file input (directory only).
+   - with '-e/--execute', remaining tokens are treated as script args.
 
-   --target=version  Specify the Lua version codes the compiler will generate
-                     (version can only be 5.1, 5.2, 5.3 or 5.4)
-   --path=path_str   Append an extra Lua search path string to package.path
+Options:
+   -h, --help                 Show this help message and exit.
+   -e <str>, --execute <str>  Execute a file or raw codes
+   -m, --minify               Generate minified codes
+   -r, --rewrite              Rewrite output to match original line numbers
+   -t <output_to>, --output-to <output_to>
+                              Specify where to place compiled files
+   -o <file>, --output <file> Write output to file
+   -p, --print                Write output to standard out
+   -b, --benchmark            Dump compile time (doesn't write output)
+   -g, --globals              Dump global variables used in NAME LINE COLUMN
+   -s, --spaces               Use spaces in generated codes instead of tabs
+   -l, --line-numbers         Write line numbers from source codes
+   -j, --no-implicit-return   Disable implicit return at end of file
+   -c, --reserve-comments     Reserve comments before statement from source codes
+   -w [<dir>], --watch [<dir>]
+                              Watch changes and compile every file under directory
+   -v, --version              Print version
+   -                          Read from standard in, print to standard out
+                              (Must be first and only argument)
+   --                         Same as '-' (kept for backward compatibility)
+
+   --target <version>         Specify the Lua version that codes will be generated to
+                              (version can only be 5.1 to 5.5)
+   --path <path_str>          Append an extra Lua search path string to package.path
+   --<key>=<value>            Pass compiler option in key=value form (existing behavior)
 
    Execute without options to enter REPL, type symbol '$'
    in a single line to start/stop multi-line mode

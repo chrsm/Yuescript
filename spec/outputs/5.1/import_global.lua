@@ -41,8 +41,8 @@ do
 	func(1, 2)
 end
 do
-	local xpcall = xpcall
 	local func = func
+	local xpcall = xpcall
 	local world = world
 	local tostring = tostring
 	local print = print
@@ -127,5 +127,45 @@ do
 	f = function()
 		func()
 		return pcall(_anon_func_0, func)
+	end
+end
+do
+	local func = func
+	local pcall = pcall
+	local print = print
+	local Item = Item
+	local f
+	f = function()
+		local result
+		local _ok_0, _ret_0 = pcall(func)
+		if _ok_0 then
+			result = _ret_0
+		end
+		if result then
+			return print(result)
+		end
+	end
+	if 1 == Item then
+		print("one")
+	elseif 2 == Item then
+		print("two")
+	end
+end
+local b = b
+local a = a
+local c = c
+local print = print
+local _anon_func_1 = function()
+	local _cond_0 = b()
+	if not (a() < _cond_0) then
+		return false
+	else
+		return _cond_0 < c()
+	end
+end
+local f
+f = function()
+	if _anon_func_1() then
+		return print("OK")
 	end
 end

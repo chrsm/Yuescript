@@ -131,12 +131,10 @@ void pushOptions(lua_State* L, int lineOffset) {
 #endif // YUE_NO_MACRO
 
 #ifndef YUE_COMPILER_ONLY
-static const char luaminifyCodes[] =
-#include "LuaMinify.h"
-	;
+#include "luaminify_lua.h"
 
 static void pushLuaminify(lua_State* L) {
-	if (luaL_loadbuffer(L, luaminifyCodes, sizeof(luaminifyCodes) / sizeof(luaminifyCodes[0]) - 1, "=(luaminify)") != 0) {
+	if (luaL_loadbuffer(L, luaminify_lua, sizeof(luaminify_lua) / sizeof(luaminify_lua[0]), "=(luaminify)") != 0) {
 		std::string err = "failed to load luaminify module.\n"s + lua_tostring(L, -1);
 		luaL_error(L, err.c_str());
 	} else if (lua_pcall(L, 0, 1, 0) != 0) {
@@ -317,32 +315,56 @@ public:
 
 int main(int narg, const char** args) {
 	const char* help =
-		"Usage: yue [options|files|directories] ...\n\n"
-		"   -h       Print this message\n"
+		"Usage: yue\n"
+		"       [options] [<file/directory>] ...\n"
 #ifndef YUE_COMPILER_ONLY
-		"   -e str   Execute a file or raw codes\n"
-		"   -m       Generate minified codes\n"
-		"   -r       Rewrite output to match original line numbers\n"
+		"       yue -e <code_or_file> [args...]\n"
 #endif // YUE_COMPILER_ONLY
-		"   -t path  Specify where to place compiled files\n"
-		"   -o file  Write output to file\n"
-		"   -s       Use spaces in generated codes instead of tabs\n"
-		"   -p       Write output to standard out\n"
-		"   -b       Dump compile time (doesn't write output)\n"
-		"   -g       Dump global variables used in NAME LINE COLUMN\n"
-		"   -l       Write line numbers from source codes\n"
-		"   -j       Disable implicit return at end of file\n"
-		"   -c       Reserve comments before statement from source codes\n"
 #ifndef YUE_NO_WATCHER
-		"   -w path  Watch changes and compile every file under directory\n"
+		"       yue -w [<directory>] [options]\n"
 #endif // YUE_NO_WATCHER
-		"   -v       Print version\n"
+		"       yue -\n\n"
+		"Notes:\n"
+		"   - '-' / '--' must be the first and only argument.\n"
+		"   - '-o/--output' can not be used with multiple input files.\n"
+#ifndef YUE_NO_WATCHER
+		"   - '-w/--watch' can not be used with file input (directory only).\n"
+#endif // YUE_NO_WATCHER
 #ifndef YUE_COMPILER_ONLY
-		"   --       Read from standard in, print to standard out\n"
-		"            (Must be first and only argument)\n\n"
-		"   --target=version  Specify the Lua version that codes will be generated to\n"
-		"                     (version can only be 5.1 to 5.5)\n"
-		"   --path=path_str   Append an extra Lua search path string to package.path\n\n"
+		"   - with '-e/--execute', remaining tokens are treated as script args.\n\n"
+#else
+		"\n"
+#endif // YUE_COMPILER_ONLY
+		"Options:\n"
+		"   -h, --help                 Show this help message and exit.\n"
+#ifndef YUE_COMPILER_ONLY
+		"   -e <str>, --execute <str>  Execute a file or raw codes\n"
+		"   -m, --minify               Generate minified codes\n"
+		"   -r, --rewrite              Rewrite output to match original line numbers\n"
+#endif // YUE_COMPILER_ONLY
+		"   -t <output_to>, --output-to <output_to>\n"
+		"                              Specify where to place compiled files\n"
+		"   -o <file>, --output <file> Write output to file\n"
+		"   -p, --print                Write output to standard out\n"
+		"   -b, --benchmark            Dump compile time (doesn't write output)\n"
+		"   -g, --globals              Dump global variables used in NAME LINE COLUMN\n"
+		"   -s, --spaces               Use spaces in generated codes instead of tabs\n"
+		"   -l, --line-numbers         Write line numbers from source codes\n"
+		"   -j, --no-implicit-return   Disable implicit return at end of file\n"
+		"   -c, --reserve-comments     Reserve comments before statement from source codes\n"
+#ifndef YUE_NO_WATCHER
+		"   -w [<dir>], --watch [<dir>]\n"
+		"                              Watch changes and compile every file under directory\n"
+#endif // YUE_NO_WATCHER
+		"   -v, --version              Print version\n"
+#ifndef YUE_COMPILER_ONLY
+		"   -                          Read from standard in, print to standard out\n"
+		"                              (Must be first and only argument)\n"
+		"   --                         Same as '-' (kept for backward compatibility)\n\n"
+		"   --target <version>         Specify the Lua version that codes will be generated to\n"
+		"                              (version can only be 5.1 to 5.5)\n"
+		"   --path <path_str>          Append an extra Lua search path string to package.path\n"
+		"   --<key>=<value>            Pass compiler option in key=value form (existing behavior)\n\n"
 		"   Execute without options to enter REPL, type symbol '$'\n"
 		"   in a single line to start/stop multi-line mode\n"
 #endif // YUE_COMPILER_ONLY
@@ -446,11 +468,6 @@ int main(int narg, const char** args) {
 				if (err.substr(0, modName.size()) == modName) {
 					err = err.substr(modName.size());
 				}
-				auto pos = err.find(':');
-				if (pos != std::string::npos) {
-					int lineNum = std::stoi(err.substr(0, pos));
-					err = std::to_string(lineNum - 1) + err.substr(pos);
-				}
 				std::cout << Err << err << Stop;
 				continue;
 			}
@@ -502,10 +519,32 @@ int main(int narg, const char** args) {
 	std::string resultFile;
 	std::string workPath;
 	std::list<std::pair<std::string, std::string>> files;
+
+	auto isOptionToken = [](std::string_view s) {
+		return !s.empty() && (s[0] == '-' || (s.size() >= 2 && s.substr(0, 2) == "--"sv));
+	};
+	auto takeValue = [&](int& i, std::string_view arg, std::string_view optName) -> std::string {
+		// supports: --opt=value, --opt value, -o value, -t value, etc.
+		if (auto eq = arg.find('='); eq != std::string_view::npos) {
+			return std::string(arg.substr(eq + 1));
+		}
+		if (i + 1 < narg) {
+			++i;
+			return std::string(args[i]);
+		}
+		std::cout << help;
+		(void)optName;
+		return std::string();
+	};
+
 	for (int i = 1; i < narg; ++i) {
 		std::string arg = args[i];
-		if (arg == "--"sv) {
+		if (arg == "-"sv || arg == "--"sv) {
 			if (i != 1) {
+				std::cout << help;
+				return 1;
+			}
+			if (narg != 2) {
 				std::cout << help;
 				return 1;
 			}
@@ -529,9 +568,9 @@ int main(int narg, const char** args) {
 				return 1;
 			}
 #ifndef YUE_COMPILER_ONLY
-		} else if (arg == "-e"sv) {
-			++i;
-			if (i < narg) {
+		} else if (arg == "-e"sv || arg == "--execute"sv || arg.rfind("--execute="sv, 0) == 0) {
+			auto evalStr = takeValue(i, arg, "execute"sv);
+			if (!evalStr.empty()) {
 				lua_State* L = luaL_newstate();
 				openlibs(L);
 				DEFER(lua_close(L));
@@ -540,7 +579,6 @@ int main(int narg, const char** args) {
 					std::cout << lua_tostring(L, -1) << '\n';
 					return 1;
 				}
-				std::string evalStr = args[i];
 				lua_newtable(L);
 				i++;
 				for (int j = i, index = 1; j < narg; j++) {
@@ -623,58 +661,100 @@ int main(int narg, const char** args) {
 				}
 				return 0;
 			} else {
-				std::cout << help;
 				return 1;
 			}
-		} else if (arg == "-m"sv) {
+		} else if (arg == "-m"sv || arg == "--minify"sv) {
 			minify = true;
-		} else if (arg == "-r"sv) {
+		} else if (arg == "-r"sv || arg == "--rewrite"sv) {
 			rewrite = true;
 #endif // YUE_COMPILER_ONLY
-		} else if (arg == "-s"sv) {
+		} else if (arg == "-s"sv || arg == "--spaces"sv) {
 			config.useSpaceOverTab = true;
-		} else if (arg == "-l"sv) {
+		} else if (arg == "-l"sv || arg == "--line-numbers"sv) {
 			config.reserveLineNumber = true;
-		} else if (arg == "-c"sv) {
+		} else if (arg == "-c"sv || arg == "--reserve-comments"sv) {
 			config.reserveComment = true;
-		} else if (arg == "-j"sv) {
+		} else if (arg == "-j"sv || arg == "--no-implicit-return"sv) {
 			config.implicitReturnRoot = false;
-		} else if (arg == "-p"sv) {
+		} else if (arg == "-p"sv || arg == "--print"sv) {
 			writeToFile = false;
-		} else if (arg == "-g"sv) {
+		} else if (arg == "-g"sv || arg == "--globals"sv) {
 			writeToFile = false;
 			lintGlobal = true;
-		} else if (arg == "-t"sv) {
-			++i;
-			if (i < narg) {
-				targetPath = args[i];
-			} else {
-				std::cout << help;
-				return 1;
-			}
-		} else if (arg == "-b"sv) {
+		} else if (arg == "-t"sv || arg == "--output-to"sv || arg.rfind("--output-to="sv, 0) == 0) {
+			targetPath = takeValue(i, arg, "output-to"sv);
+			if (targetPath.empty()) return 1;
+		} else if (arg == "-b"sv || arg == "--benchmark"sv) {
 			dumpCompileTime = true;
-		} else if (arg == "-h"sv) {
+		} else if (arg == "-h"sv || arg == "--help"sv) {
 			std::cout << help;
 			return 0;
-		} else if (arg == "-v"sv) {
+		} else if (arg == "-v"sv || arg == "--version"sv) {
 			std::cout << "Yuescript version: "sv << yue::version << '\n';
 			return 0;
-		} else if (arg == "-o"sv) {
-			++i;
-			if (i < narg) {
-				resultFile = args[i];
-			} else {
-				std::cout << help;
-				return 1;
-			}
-		} else if (arg == "-w"sv) {
+		} else if (arg == "-o"sv || arg == "--output"sv || arg.rfind("--output="sv, 0) == 0) {
+			resultFile = takeValue(i, arg, "output"sv);
+			if (resultFile.empty()) return 1;
+		} else if (arg == "-w"sv || arg == "--watch"sv || arg.rfind("--watch="sv, 0) == 0) {
 #ifndef YUE_NO_WATCHER
 			watchFiles = true;
+			// accept optional directory value: -w <dir> / --watch <dir> / --watch=<dir>
+			if (arg != "-w"sv) {
+				auto watchDir = takeValue(i, arg, "watch"sv);
+				if (watchDir.empty()) return 1;
+				arg = watchDir;
+				// fall through to directory/file handling below by re-processing as positional
+				if (fs::is_directory(arg)) {
+					workPath = arg;
+					for (auto item : fs::recursive_directory_iterator(arg)) {
+						if (!item.is_directory()) {
+							auto ext = item.path().extension().string();
+							for (char& ch : ext) ch = std::tolower(ch);
+							if (!ext.empty() && ext.substr(1) == yue::extension) {
+								files.emplace_back(item.path().string(), item.path().lexically_relative(arg).string());
+							}
+						}
+					}
+				} else if (!arg.empty()) {
+					std::cout << help;
+					return 1;
+				}
+				continue;
+			} else if (i + 1 < narg && !isOptionToken(args[i + 1])) {
+				// support -w <dir> while keeping old "-w <dir as positional>" behavior
+				auto watchDir = takeValue(i, arg, "watch"sv);
+				if (!watchDir.empty()) {
+					arg = watchDir;
+					if (fs::is_directory(arg)) {
+						workPath = arg;
+						for (auto item : fs::recursive_directory_iterator(arg)) {
+							if (!item.is_directory()) {
+								auto ext = item.path().extension().string();
+								for (char& ch : ext) ch = std::tolower(ch);
+								if (!ext.empty() && ext.substr(1) == yue::extension) {
+									files.emplace_back(item.path().string(), item.path().lexically_relative(arg).string());
+								}
+							}
+						}
+					} else {
+						std::cout << help;
+						return 1;
+					}
+					continue;
+				}
+			}
 #else
 			std::cout << "Error: -w is not supported\n"sv;
 			return 1;
 #endif // YUE_NO_WATCHER
+		} else if (arg == "--target"sv || arg.rfind("--target="sv, 0) == 0) {
+			auto v = takeValue(i, arg, "target"sv);
+			if (v.empty()) return 1;
+			config.options["target"s] = v;
+		} else if (arg == "--path"sv || arg.rfind("--path="sv, 0) == 0) {
+			auto v = takeValue(i, arg, "path"sv);
+			if (v.empty()) return 1;
+			config.options["path"s] = v;
 		} else if (arg.size() > 2 && arg.substr(0, 2) == "--"sv && arg.substr(2, 1) != "-"sv) {
 			auto argStr = arg.substr(2);
 			yue::Utils::trim(argStr);

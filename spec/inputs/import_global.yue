@@ -91,3 +91,20 @@ do
 		func!
 		try func
 
+do
+	import global
+	f = ->
+		if result := try? func!
+			print result
+
+	switch Item
+		when 1
+			print "one"
+		when 2
+			print "two"
+
+import global
+f = ->
+	if a! < b! < c!
+		print "OK"
+
