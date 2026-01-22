@@ -94,7 +94,19 @@ local files = {
 	"spec/inputs/unicode/metatable.yue",
 	"spec/inputs/unicode/syntax.yue",
 	"spec/inputs/unicode/global.yue",
-	"spec/inputs/unicode/plus.yue"
+	"spec/inputs/unicode/plus.yue",
+	"spec/inputs/pipe_chain_combo.yue",
+	"spec/inputs/destructure_defaults.yue",
+	"spec/inputs/nil_coalesce_precedence.yue",
+	"spec/inputs/comprehension_nested.yue",
+	"spec/inputs/with_scope_shadow.yue",
+	"spec/inputs/export_mixed.yue",
+	"spec/inputs/unicode/pipe_chain_combo.yue",
+	"spec/inputs/test/destructure_spec.yue",
+	"spec/inputs/test/nil_coalescing_spec.yue",
+	"spec/inputs/test/pipe_spec.yue",
+	"spec/inputs/test/try_catch_spec.yue",
+	"spec/inputs/test/comprehension_spec.yue"
 }
 local yue = require("yue")
 local rewriteLineCol

@@ -1,0 +1,7 @@
+describe "nil coalescing", ->
+	it "distinguish nil and false", ->
+		a = nil
+		b = false
+		c = 0
+		assert.same (a ?? b), false
+		assert.same (a ?? c), 0

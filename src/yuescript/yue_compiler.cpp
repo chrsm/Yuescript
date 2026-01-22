@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.32.3"sv;
+const std::string_view version = "0.32.4"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -10872,13 +10872,13 @@ private:
 			}
 			BLOCK_END
 			if (wrapped) {
-				auto expList = x->new_ptr<ExpList_t>();
+				auto expList = tryFunc->new_ptr<ExpList_t>();
 				expList->exprs.push_back(tryFunc);
-				auto expListAssign = x->new_ptr<ExpListAssign_t>();
+				auto expListAssign = tryFunc->new_ptr<ExpListAssign_t>();
 				expListAssign->expList.set(expList);
-				auto stmt = x->new_ptr<Statement_t>();
+				auto stmt = tryFunc->new_ptr<Statement_t>();
 				stmt->content.set(expListAssign);
-				auto block = x->new_ptr<Block_t>();
+				auto block = tryFunc->new_ptr<Block_t>();
 				block->statementOrComments.push_back(stmt);
 				tryFunc.set(block);
 			}

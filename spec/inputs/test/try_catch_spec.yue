@@ -1,0 +1,12 @@
+describe "try/catch", ->
+	it "catch and rethrow", ->
+		ok, success, err = pcall ->
+			try
+				error "boom"
+			catch e
+				_, result = try
+					error "wrap:" .. e\match "^.-:%d+:%s*(.*)$"
+				result
+		assert.same ok, true
+		assert.same success, false
+		assert.is_true err\match("wrap:boom") != nil

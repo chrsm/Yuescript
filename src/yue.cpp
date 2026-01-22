@@ -57,8 +57,8 @@ std::future<R> async(const std::function<R()>& f) {
 #else
 template<class R>
 std::future<R> async(const std::function<R()>& f) {
-    // fallback: ignore stack size
-    return std::async(std::launch::async, f);
+	// fallback: ignore stack size
+	return std::async(std::launch::async, f);
 }
 #endif
 

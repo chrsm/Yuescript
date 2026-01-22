@@ -1,0 +1,8 @@
+f1 = (x)-> x + 2
+f2 = (x)-> x * 3
+
+value = 3
+	|> f1
+	|> f2
+	|> tostring
+	|> print

@@ -1,0 +1,12 @@
+target = {
+	val: 1
+	add: (n)=>
+		@val += n
+		@val
+}
+
+result = with target
+	val = 100
+	add 2
+
+print result, target.val

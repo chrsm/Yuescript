@@ -1,0 +1,9 @@
+t = {
+	a: 1
+	b:
+		c: 3
+	d: nil
+}
+
+{:a, b: {:c, :d = 4}, :e = 5} = t
+print a, c, d, e

@@ -1,0 +1,5 @@
+describe "pipe", ->
+	it "pipes through functions", ->
+		f = (x)-> x + 1
+		g = (x)-> x * 2
+		assert.same (3 |> f |> g), 8

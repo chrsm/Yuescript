@@ -1,0 +1,5 @@
+describe "comprehension", ->
+	it "nested with filter", ->
+		list = {1, 2, 3}
+		out = ["#{i}-#{j}" for i in *list when i % 2 == 1 for j in *list when j > i]
+		assert.same out, {"1-2", "1-3"}

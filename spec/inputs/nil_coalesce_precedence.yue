@@ -1,0 +1,8 @@
+a = nil
+b = false
+c = 0
+
+x = a ?? (b and 1) ?? (c or 2)
+y = (a ?? b) and 1 or 2
+
+print x, y
