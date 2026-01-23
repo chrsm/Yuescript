@@ -520,9 +520,6 @@ int main(int narg, const char** args) {
 	std::string workPath;
 	std::list<std::pair<std::string, std::string>> files;
 
-	auto isOptionToken = [](std::string_view s) {
-		return !s.empty() && (s[0] == '-' || (s.size() >= 2 && s.substr(0, 2) == "--"sv));
-	};
 	auto takeValue = [&](int& i, std::string_view arg, std::string_view optName) -> std::string {
 		// supports: --opt=value, --opt value, -o value, -t value, etc.
 		if (auto eq = arg.find('='); eq != std::string_view::npos) {
@@ -697,6 +694,9 @@ int main(int narg, const char** args) {
 			if (resultFile.empty()) return 1;
 		} else if (arg == "-w"sv || arg == "--watch"sv || arg.rfind("--watch="sv, 0) == 0) {
 #ifndef YUE_NO_WATCHER
+			auto isOptionToken = [](std::string_view s) {
+				return !s.empty() && (s[0] == '-' || (s.size() >= 2 && s.substr(0, 2) == "--"sv));
+			};
 			watchFiles = true;
 			// accept optional directory value: -w <dir> / --watch <dir> / --watch=<dir>
 			if (arg != "-w"sv) {
