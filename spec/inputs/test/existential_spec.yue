@@ -1,0 +1,100 @@
+describe "existential", ->
+	it "should handle ?. with existing object", ->
+		obj = {value: 42}
+		result = obj?.value
+		assert.same result, 42
+
+	it "should handle ?. with nil object", ->
+		obj = nil
+		result = obj?.value
+		assert.same result, nil
+
+	it "should chain ?. calls", ->
+		obj = {nested: {value: 100}}
+		result = obj?.nested?.value
+		assert.same result, 100
+
+	it "should return nil in chain with nil", ->
+		obj = nil
+		result = obj?.nested?.value
+		assert.same result, nil
+
+	it "should handle ?. with method call", ->
+		obj = {func: -> "result"}
+		result = obj?.func!
+		assert.same result, "result"
+
+	it "should handle ? on table index", ->
+		tb = {[1]: "first"}
+		result = tb?[1]
+		assert.same result, "first"
+
+	it "should return nil for missing index", ->
+		tb = {}
+		result = tb?[99]
+		assert.same result, nil
+
+	it "should work with ? in if condition", ->
+		obj = {value: 5}
+		if obj?.value
+			result = "exists"
+		assert.same result, "exists"
+
+	it "should combine ?. with and/or", ->
+		obj = {value: 10}
+		result = obj?.value and 20 or 30
+		assert.same result, 20
+
+	it "should handle with? safely", ->
+		obj = {x: 1, y: 2}
+		sum = obj?.x + obj?.y
+		assert.same sum, 3
+
+	it "should return nil with with? on nil", ->
+		obj = nil
+		result = obj?.x
+		assert.same result, nil
+
+	it "should handle false value correctly", ->
+		-- false is a valid value, not nil
+		obj = {value: false}
+		result = obj?.value
+		assert.same result, false
+
+	it "should handle 0 value correctly", ->
+		-- 0 is a valid value, not nil
+		obj = {value: 0}
+		result = obj?.value
+		assert.same result, 0
+
+	it "should handle empty string correctly", ->
+		-- "" is a valid value, not nil
+		obj = {value: ""}
+		result = obj?.value
+		assert.same result, ""
+
+	it "should handle empty table correctly", ->
+		-- {} is a valid value, not nil
+		obj = {value: {}}
+		result = obj?.value
+		assert.same type(result), "table"
+
+	it "should work with deep chains", ->
+		obj = {a: {b: {c: {d: "deep"}}}}
+		result = obj?.a?.b?.c?.d
+		assert.same result, "deep"
+
+	it "should break chain on first nil", ->
+		obj = {a: nil}
+		result = obj?.a?.b?.c
+		assert.same result, nil
+
+	it "should handle ?. with string methods", ->
+		s = "hello"
+		result = s?\upper!
+		assert.same result, "HELLO"
+
+	it "should handle ?. with nil string", ->
+		s = nil
+		result = s?\upper!
+		assert.same result, nil

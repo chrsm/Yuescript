@@ -1,0 +1,135 @@
+describe "macro", ->
+	it "should define and call basic macro", ->
+		macro double = (x) -> "#{x} * 2"
+		result = $double 5
+		assert.same result, 10
+
+	it "should maintain hygiene in macros", ->
+		macro get_value_hygienic = ->
+			(->
+				local a = 1
+				a + 1)!
+		a = 8
+		result = $get_value_hygienic!
+		assert.same result, 2
+
+	it "should validate AST types", ->
+		macro NumAndStr = (num`Num, str`SingleString) -> "[#{num}, #{str}]"
+		result = $NumAndStr 123, 'xyz'
+		assert.same result, "[123, xyz]"
+
+	it "should support simple code generation", ->
+		macro add_one = (x) -> "#{x} + 1"
+		result = $add_one 10
+		assert.same result, 11
+
+	it "should support nested macro calls", ->
+		macro inc = (x) -> "#{x} + 1"
+		macro double_inc = (x) -> $inc($inc(x))
+		result = $double_inc 5
+		assert.same result, 7
+
+	it "should respect macro scope in do blocks", ->
+		macro outer = -> "outer"
+		do
+			macro inner = -> "inner"
+			result = $inner!
+			assert.same result, "inner"
+		result = $outer!
+		assert.same result, "outer"
+
+	it "should provide $LINE macro", ->
+		line_num = $LINE
+		assert.is_true line_num > 0
+
+	it "should inject Lua code", ->
+		macro lua_code = (code) -> {:code, type: "lua"}
+		x = 0
+		$lua_code [[
+			local function f(a)
+				return a + 1
+			end
+			x = x + f(3)
+		]]
+		assert.same x, 4
+
+	it "should work in conditional compilation", ->
+		macro if_debug = (debug_code) ->
+			if $LINE > 0
+				debug_code
+			else
+				""
+		result = $if_debug "debug mode"
+		assert.same result, "debug mode"
+
+	it "should work with class system", ->
+		class Thing
+			value: 100
+			get_value: => @value
+		instance = Thing!
+		assert.same instance\get_value!, 100
+
+	it "should handle macro in switch expressions", ->
+		macro to_value = (x) -> x
+		result = switch $to_value "test"
+			when "test"
+				"matched"
+			else
+				"no match"
+		assert.same result, "matched"
+
+	it "should support macro in expression context", ->
+		macro triple = (x) -> "#{x} * 3"
+		result = 5 + $triple 2
+		assert.same result, 11
+
+	it "should handle $is_ast for type checking", ->
+		macro check_num = (x) ->
+			unless $is_ast(Num, x)
+				error "expected number"
+			x
+		result = $check_num 42
+		assert.same result, 42
+
+	it "should work with string interpolation", ->
+		macro format_result = (name, value) -> "#{name}: #{value}"
+		result = $format_result "test", 123
+		assert.same result, "test: 123"
+
+	it "should support function call syntax", ->
+		macro my_func = (x, y) -> "#{x} + #{y}"
+		result = $my_func(5, 10)
+		assert.same result, 15
+
+	it "should handle empty macro return", ->
+		macro skip = -> ""
+		a = 1
+		$skip
+		a = 2
+		assert.same a, 2
+
+	it "should work with table literals", ->
+		macro make_point = (x, y) -> "{x: #{x}, y: #{y}}"
+		point = $make_point 10, 20
+		assert.same point.x, 10
+		assert.same point.y, 20
+
+	it "should support conditional expressions in macro", ->
+		macro add_one = (x) -> "#{x} + 1"
+		result = $add_one 5
+		assert.same result, 6
+
+	it "should work with comprehension", ->
+		macro doubled_list = (items) -> "[_ * 2 for _ in *#{items}]"
+		result = $doubled_list {1, 2, 3}
+		assert.same result, {2, 4, 6}
+
+	it "should support complex expression macros", ->
+		macro calc = (a, b, c) -> "#{a} + #{b} * #{c}"
+		result = $calc 1, 2, 3
+		assert.same result, 7
+
+	it "should work with string literals", ->
+		macro greet = (name) -> '"Hello, #{name}"'
+		result = $greet "World"
+		assert.same result, "Hello, World"

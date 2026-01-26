@@ -1,0 +1,86 @@
+describe "metatable", ->
+	it "should get metatable with <> syntax", ->
+		obj = setmetatable {value: 42}, {__index: {extra: "data"}}
+		mt = obj.<>
+		assert.is_true mt ~= nil
+
+	it "should set metatable with <>", ->
+		obj = {}
+		obj.<> = {__index: {value: 100}}
+		assert.same obj.value, 100
+
+	it "should access metatable with <>", ->
+		obj = setmetatable {}, {__index: {value: 50}}
+		result = obj.<>.__index.value
+		assert.same result, 50
+
+	it "should work with <index> metamethod", ->
+		obj = setmetatable {}, {
+			__index: (self, key) ->
+				if key == "computed"
+					return "computed_value"
+		}
+		assert.same obj.computed, "computed_value"
+
+	it "should work with <newindex> metamethod", ->
+		obj = setmetatable {}, {
+			__newindex: (self, key, value) ->
+				rawset self, "stored_" .. key, value
+		}
+		obj.test = 123
+		assert.same obj.stored_test, 123
+
+	it "should work with <add> metamethod", ->
+		obj = setmetatable({value: 10}, {
+			__add: (a, b) -> a.value + b.value
+		})
+		obj2 = setmetatable({value: 20}, {
+			__add: (a, b) -> a.value + b.value
+		})
+		result = obj + obj2
+		assert.same result, 30
+
+	it "should work with <call> metamethod", ->
+		obj = setmetatable {}, {
+			__call: (self, x) -> x * 2
+		}
+		result = obj 5
+		assert.same result, 10
+
+	it "should work with <tostring> metamethod", ->
+		obj = setmetatable {value: 42}, {
+			__tostring: (self) -> "Value: #{self.value}"
+		}
+		result = tostring obj
+		assert.same result, "Value: 42"
+
+	it "should work with <eq> metamethod", ->
+		obj1 = setmetatable({id: 1}, {
+			__eq: (a, b) -> a.id == b.id
+		})
+		obj2 = setmetatable({id: 1}, {
+			__eq: (a, b) -> a.id == b.id
+		})
+		assert.is_true obj1 == obj2
+
+	it "should destructure metatable", ->
+		obj = setmetatable {}, {
+			new: -> "new result"
+			update: -> "update result"
+		}
+		{:new, :update} = obj.<>
+		assert.is_true type(new) == "function"
+		assert.is_true type(update) == "function"
+
+	it "should check if two objects have same metatable", ->
+		mt = {value: 100}
+		obj1 = setmetatable {}, mt
+		obj2 = setmetatable {}, mt
+		assert.is_true obj1.<> == obj2.<>
+
+	it "should work with <concat> metamethod", ->
+		obj = setmetatable {value: "hello"}, {
+			__concat: (a, b) -> a.value .. b
+		}
+		result = obj .. " world"
+		assert.same result, "hello world"

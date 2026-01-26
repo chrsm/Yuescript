@@ -1,0 +1,81 @@
+describe "literals", ->
+	it "should support integer literals", ->
+		assert.same 123, 123
+
+	it "should support float literals", ->
+		assert.same 1.5, 1.5
+
+	it "should support scientific notation", ->
+		assert.same 1.5e2, 150
+
+	it "should support negative numbers", ->
+		assert.same -42, -42
+
+	it "should support hexadecimal literals", ->
+		assert.same 0xff, 255
+
+	it "should support hexadecimal with uppercase", ->
+		assert.same 0XFF, 255
+
+	it "should support binary literals", ->
+		assert.same 0b101, 5
+
+	it "should support binary with uppercase", ->
+		assert.same 0B101, 5
+
+	it "should support number with underscores", ->
+		assert.same 1_000_000, 1000000
+
+	it "should support hex with underscores", ->
+		assert.same 0xDE_AD_BE_EF, 0xDEADBEEF
+
+	it "should support double quote strings", ->
+		assert.same "hello", "hello"
+
+	it "should support single quote strings", ->
+		assert.same 'world', 'world'
+
+	it "should support multi-line strings with [[", ->
+		s = [[
+			hello
+			world
+		]]
+		assert.is_true s\match "hello"
+
+	it "should support multi-line strings with [=[", ->
+		s = [==[
+			test
+		]==]
+		assert.is_true s\match "test"
+
+	it "should support boolean true", ->
+		assert.same true, true
+
+	it "should support boolean false", ->
+		assert.same false, false
+
+	it "should support nil", ->
+		assert.same nil, nil
+
+	it "should support empty table", ->
+		t = {}
+		assert.same #t, 0
+
+	it "should support table with keys", ->
+		t = {a: 1, b: 2}
+		assert.same t.a, 1
+		assert.same t.b, 2
+
+	it "should support array literal", ->
+		t = {1, 2, 3}
+		assert.same t[1], 1
+		assert.same t[2], 2
+		assert.same t[3], 3
+
+	it "should support mixed table", ->
+		t = {
+			1, 2, 3
+			key: "value"
+		}
+		assert.same t[1], 1
+		assert.same t.key, "value"

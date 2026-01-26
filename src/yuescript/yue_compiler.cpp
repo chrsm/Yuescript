@@ -10224,8 +10224,9 @@ private:
 						}
 						BLOCK_END
 					} else if (auto expList = expListFrom(statement)) {
-						auto value = singleValueFrom(expList);
-						clsDecl = value->get_by_path<SimpleValue_t, ClassDecl_t>();
+						if (auto value = singleValueFrom(expList)) {
+							clsDecl = value->get_by_path<SimpleValue_t, ClassDecl_t>();
+							}
 					}
 					if (clsDecl) {
 						auto variable = clsDecl->name.as<Variable_t>();

@@ -1,0 +1,267 @@
+describe "switch", ->
+	it "should match single value", ->
+		value = "cool"
+		result = switch value
+			when "cool"
+				"matched"
+			else
+				"not matched"
+		assert.same result, "matched"
+
+	it "should match multiple values with or", ->
+		hi = "world"
+		matched = false
+		switch hi
+			when "one", "two"
+				matched = true
+		assert.is_false matched
+
+		hi = "one"
+		switch hi
+			when "one", "two"
+				matched = true
+		assert.is_true matched
+
+	it "should execute else branch when no match", ->
+		value = "other"
+		result = switch value
+			when "cool"
+				"matched cool"
+			when "yeah"
+				"matched yeah"
+			else
+				"else branch"
+		assert.same result, "else branch"
+
+	it "should destructure table with single key", ->
+		tb = {x: 100}
+		result = switch tb
+			when :x
+				x
+			else
+				"no match"
+		assert.same result, 100
+
+	it "should destructure table with multiple keys", ->
+		tb = {x: 100, y: 200}
+		result = switch tb
+			when :x, :y
+				x + y
+			else
+				"no match"
+		assert.same result, 300
+
+	it "should destructure table with default values", ->
+		tb = {a: 1}
+		switch tb
+			when {:a = 1, :b = 2}
+				assert.same a, 1
+				assert.same b, 2
+
+	it "should destructure nested tables", ->
+		dict = {
+			{}
+			{1, 2, 3}
+			a: b: c: 1
+			x: y: z: 1
+		}
+		matched = false
+		switch dict
+			when {
+					first
+					{one, two, three}
+					a: b: :c
+					x: y: :z
+				}
+				matched = first == {} and one == 1 and two == 2 and three == 3 and c == 1 and z == 1
+		assert.is_true matched
+
+	it "should destructure arrays with exact match", ->
+		tb = {1, 2, 3}
+		result = switch tb
+			when [1, 2, 3]
+				"exact match"
+			else
+				"no match"
+		assert.same result, "exact match"
+
+	it "should destructure arrays with variables", ->
+		tb = {1, "b", 3}
+		result = switch tb
+			when [1, b, 3]
+				b
+			else
+				"no match"
+		assert.same result, "b"
+
+	it "should destructure arrays with defaults", ->
+		tb = {1, 2}
+		result = switch tb
+			when [1, 2, b = 3]
+				b
+			else
+				"no match"
+		assert.same result, 3
+
+	it "should match pattern with __class", ->
+		class ClassA
+		class ClassB
+		item = ClassA!
+		result = switch item
+			when __class: ClassA
+				"Object A"
+			when __class: ClassB
+				"Object B"
+			else
+				"unknown"
+		assert.same result, "Object A"
+
+	it "should match pattern with metatable", ->
+		tb = setmetatable {}, {__mode: "v"}
+		metatable_matched = false
+		switch tb
+			when <>: mt
+				metatable_matched = mt ~= nil
+		assert.is_true metatable_matched
+
+	it "should use switch as expression in assignment", ->
+		tb = {x: "abc"}
+		matched = switch tb
+			when 1
+				"1"
+			when :x
+				x
+			when false
+				"false"
+			else
+				nil
+		assert.same matched, "abc"
+
+	it "should use switch in return statement", ->
+		fn = (tb) ->
+			switch tb
+				when nil
+					"invalid"
+				when :a, :b
+					"#{a + b}"
+				when 1, 2, 3, 4, 5
+					"number 1 - 5"
+				else
+					"should not reach here"
+		assert.same fn({a: 1, b: 2}), "3"
+		assert.same fn(3), "number 1 - 5"
+		assert.same fn(nil), "invalid"
+
+	it "should support pattern matching assignment with :=", ->
+		v = "hello"
+		matched = false
+		switch v := "hello"
+			when "hello"
+				matched = true
+			else
+				matched = false
+		assert.is_true matched
+		assert.same v, "hello"
+
+	it "should match with computed expressions", ->
+		hi = 4
+		matched = false
+		switch hi
+			when 3+1, (-> 4)!, 5-1
+				matched = true
+		assert.is_true matched
+
+	it "should handle nested array destructuring", ->
+		tb = {
+			{a: 1, b: 2}
+			{a: 3, b: 4}
+			{a: 5, b: 6}
+			"fourth"
+		}
+		result = switch tb
+			when [
+					{a: 1, b: 2}
+					{a: 3, b: 4}
+					{a: 5, b: 6}
+					fourth
+				]
+				fourth
+			else
+				"no match"
+		assert.same result, "fourth"
+
+	it "should match combined patterns", ->
+		tb = {success: true, result: "data"}
+		result = switch tb
+			when success: true, :result
+				{"success", result}
+			when success: false
+				{"failed", result}
+			else
+				{"invalid"}
+		assert.same result, {"success", "data"}
+
+	it "should match type discriminated patterns", ->
+		tb = {type: "success", content: "data"}
+		result = switch tb
+			when {type: "success", :content}
+				{"success", content}
+			when {type: "error", :content}
+				{"error", content}
+			else
+				{"invalid"}
+		assert.same result, {"success", "data"}
+
+	it "should match with wildcard array capture", ->
+		clientData = {"Meta", "CUST_1001", "CHK123"}
+		metadata = nil
+		customerId = nil
+		checksum = nil
+		switch clientData
+			when [...capturedMetadata, customerId, checksum]
+				metadata = capturedMetadata
+		assert.same metadata, {"Meta"}
+		assert.same customerId, "CUST_1001"
+		assert.same checksum, "CHK123"
+
+	it "should work with complex tuple patterns", ->
+		handlePath = (segments) ->
+			switch segments
+				when [..._, resource, action]
+					{"Resource: #{resource}", "Action: #{action}"}
+				else
+					{"no match"}
+		result = handlePath {"admin", "logs", "view"}
+		assert.same result, {"Resource: logs", "Action: view"}
+
+	it "should match boolean false correctly", ->
+		items = {
+			{x: 100, y: 200}
+			{width: 300, height: 400}
+			false
+		}
+		results = {}
+		for item in *items
+			switch item
+				when :x, :y
+					table.insert results, "Vec2"
+				when :width, :height
+					table.insert results, "Size"
+				when false
+					table.insert results, "None"
+		assert.same results, {"Vec2", "Size", "None"}
+
+	it "should handle switch with then syntax", ->
+		value = "cool"
+		result = switch value
+			when "cool" then "matched cool"
+			else "else branch"
+		assert.same result, "matched cool"
+
+	it "should handle switch in function call", ->
+		getValue = ->
+			switch something
+				when 1 then "yes"
+				else "no"
+		something = 1
+		assert.same getValue!, "yes"

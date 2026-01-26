@@ -1,0 +1,137 @@
+describe "operators", ->
+	it "should support addition", ->
+		assert.same 1 + 2, 3
+
+	it "should support subtraction", ->
+		assert.same 5 - 3, 2
+
+	it "should support multiplication", ->
+		assert.same 4 * 3, 12
+
+	it "should support division", ->
+		assert.same 10 / 2, 5
+
+	it "should support modulo", ->
+		assert.same 10 % 3, 1
+
+	it "should support exponentiation", ->
+		assert.same 2 ^ 3, 8
+
+	it "should support unary minus", ->
+		assert.same -5, -5
+
+	it "should support equality comparison", ->
+		assert.is_true 1 == 1
+		assert.is_false 1 == 2
+
+	it "should support inequality comparison", ->
+		assert.is_true 1 ~= 2
+		assert.is_false 1 ~= 1
+
+	it "should support less than", ->
+		assert.is_true 1 < 2
+		assert.is_false 2 < 1
+
+	it "should support greater than", ->
+		assert.is_true 2 > 1
+		assert.is_false 1 > 2
+
+	it "should support less than or equal", ->
+		assert.is_true 1 <= 2
+		assert.is_true 2 <= 2
+		assert.is_false 3 <= 2
+
+	it "should support greater than or equal", ->
+		assert.is_true 2 >= 1
+		assert.is_true 2 >= 2
+		assert.is_false 1 >= 2
+
+	it "should support logical and", ->
+		assert.same true and false, false
+		assert.same true and true, true
+		assert.same false and true, false
+
+	it "should support logical or", ->
+		assert.same true or false, true
+		assert.same false or true, true
+		assert.same false or false, false
+
+	it "should support logical not", ->
+		assert.same not true, false
+		assert.same not false, true
+		assert.same not nil, true
+
+	it "should support bitwise and", ->
+		assert.same 5 & 3, 1  -- 101 & 011 = 001
+
+	it "should support bitwise or", ->
+		assert.same 5 | 3, 7  -- 101 | 011 = 111
+
+	it "should support bitwise xor", ->
+		assert.same 5 ~ 3, 6  -- 101 ~ 011 = 110
+
+	it "should support left shift", ->
+		assert.same 2 << 3, 16
+
+	it "should support right shift", ->
+		assert.same 16 >> 2, 4
+
+	it "should support string concatenation", ->
+		assert.same "hello" .. " world", "hello world"
+
+	it "should support length operator", ->
+		assert.same #"hello", 5
+		assert.same #{1, 2, 3}, 3
+
+	it "should respect operator precedence", ->
+		assert.same 1 + 2 * 3, 7  -- multiplication before addition
+		assert.same (1 + 2) * 3, 9  -- parentheses first
+
+	it "should support compound assignment", ->
+		x = 10
+		x += 5
+		assert.same x, 15
+
+	it "should support compound subtraction", ->
+		x = 10
+		x -= 3
+		assert.same x, 7
+
+	it "should support compound multiplication", ->
+		x = 5
+		x *= 2
+		assert.same x, 10
+
+	it "should support compound division", ->
+		x = 20
+		x /= 4
+		assert.same x, 5
+
+	it "should handle division by zero", ->
+		-- Lua returns inf or nan
+		result = pcall(->
+			x = 10 / 0
+		)
+		assert.is_true result  -- doesn't error in Lua
+
+	it "should handle very large numbers", ->
+		big = 1e100
+		assert.is_true big > 0
+
+	it "should handle very small numbers", ->
+		small = 1e-100
+		assert.is_true small > 0
+
+	it "should support negation", ->
+		assert.same -10, -10
+		assert.same --5, 5
+
+	it "should work with complex expressions", ->
+		result = (1 + 2) * (3 + 4) / 2
+		assert.same result, 10.5
+
+	it "should support power with decimal", ->
+		assert.same 4 ^ 0.5, 2
+
+	it "should handle modulo with negative numbers", ->
+		assert.same -10 % 3, 2  -- Lua's modulo behavior

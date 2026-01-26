@@ -1,0 +1,99 @@
+describe "export", ->
+	it "should export basic variables", ->
+		a = 1
+		b = 2
+		c = 3
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 3
+
+	it "should export multiple variables at once", ->
+		x, y, z = 10, 20, 30
+		assert.same x, 10
+		assert.same y, 20
+		assert.same z, 30
+
+	it "should export class definitions", ->
+		MyClass = class
+			value: 100
+		assert.same MyClass.value, 100
+
+	it "should export function expressions", ->
+		my_func = -> 42
+		assert.same my_func!, 42
+
+	it "should export conditional expressions", ->
+		result = if true
+			"yes"
+		else
+			"no"
+		assert.same result, "yes"
+
+	it "should export switch expressions", ->
+		value = switch 5
+			when 5 then 100
+			else 0
+		assert.same value, 100
+
+	it "should export with do block", ->
+		result = do
+			x = 5
+			x * 2
+		assert.same result, 10
+
+	it "should export comprehension", ->
+		doubled = [i * 2 for i = 1, 5]
+		assert.same doubled, {2, 4, 6, 8, 10}
+
+	it "should export with pipe operator", ->
+		result = {1, 2, 3} |> table.concat
+		assert.same result, "123"
+
+	it "should export nil values", ->
+		empty = nil
+		assert.same empty, nil
+
+	it "should export tables", ->
+		config = {
+			key1: "value1"
+			key2: "value2"
+		}
+		assert.same config.key1, "value1"
+		assert.same config.key2, "value2"
+
+	it "should export string values", ->
+		message = "hello world"
+		assert.same message, "hello world"
+
+	it "should export boolean values", ->
+		flag_true = true
+		flag_false = false
+		assert.is_true flag_true
+		assert.is_false flag_false
+
+	it "should export number values", ->
+		count = 42
+		price = 19.99
+		assert.same count, 42
+		assert.same price, 19.99
+
+	it "should work in nested scope", ->
+		do
+			nested = "value"
+		assert.same nested, "value"
+
+	it "should export function with parameters", ->
+		add = (a, b) -> a + b
+		assert.same add(5, 3), 8
+
+	it "should maintain export order", ->
+		first = 1
+		second = 2
+		third = 3
+		assert.same first, 1
+		assert.same second, 2
+		assert.same third, 3
+
+	it "should work with complex expressions", ->
+		calc = (10 + 20) * 2
+		assert.same calc, 60

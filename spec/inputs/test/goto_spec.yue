@@ -1,0 +1,80 @@
+describe "goto", ->
+	it "should support basic goto and label", ->
+		a = 0
+		::start::
+		a += 1
+		if a < 5
+			goto start
+		assert.same a, 5
+
+	it "should support conditional goto", ->
+		a = 0
+		::loop::
+		a += 1
+		goto done if a == 3
+		goto loop
+		::done::
+		assert.same a, 3
+
+	it "should support goto in nested loops", ->
+		count = 0
+		for x = 1, 3
+			for y = 1, 3
+				count += 1
+				if x == 2 and y == 2
+					goto found
+		::found::
+		assert.same count, 4  -- (1,1), (1,2), (1,3), (2,1), (2,2)
+
+	it "should support multiple labels", ->
+		a = 0
+		::first::
+		a += 1
+		goto second if a == 2
+		goto first
+		::second::
+		assert.same a, 2
+
+	it "should work with for loops", ->
+		sum = 0
+		for i = 1, 10
+			sum += i
+			goto done if i == 5
+		::done::
+		assert.same sum, 15  -- 1+2+3+4+5
+
+	it "should work with while loops", ->
+		count = 0
+		while true
+			count += 1
+			goto endwhile if count == 3
+		::endwhile::
+		assert.same count, 3
+
+	it "should skip rest of loop with goto", ->
+		values = {}
+		for i = 1, 5
+			goto continue if i % 2 == 0
+			table.insert values, i
+			::continue::
+		assert.same values, {1, 3, 5}
+
+	it "should support goto with switch", ->
+		result = "default"
+		value = 2
+		switch value
+			when 1
+				goto case_one
+			when 2
+				goto case_two
+		goto default_label
+		::case_one::
+		result = "one"
+		goto finish
+		::case_two::
+		result = "two"
+		goto finish
+		::default_label::
+		result = "default"
+		::finish::
+		assert.same result, "two"

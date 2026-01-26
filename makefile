@@ -13,9 +13,9 @@ LIBS =
 # General compiler flags
 COMPILE_FLAGS = -std=c++17 -Wall -Wextra -DYUE_UTF8_IMPL
 # Additional release-specific flags
-RCOMPILE_FLAGS = -D NDEBUG -O3
+RCOMPILE_FLAGS = -DNDEBUG -O3
 # Additional debug-specific flags
-DCOMPILE_FLAGS = -D DEBUG
+DCOMPILE_FLAGS = -DDEBUG
 # Add additional include paths
 INCLUDES = -I $(SRC_PATH) -I $(SRC_PATH)/3rdParty
 # General linker settings
@@ -63,25 +63,25 @@ ANDROID_ROOT_VAR := $(shell echo $$ANDROID_ROOT)
 PREFIX_VAR := $(shell echo $$PREFIX)
 ifneq ($(ANDROID_ROOT_VAR),)
 	# Check if PREFIX environment variable points to Termux directory
-	ifneq ($(PREFIX_VAR),)
-		ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
-			IS_TERMUX := true
-		endif
-	endif
+ifneq ($(PREFIX_VAR),)
+ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
+	IS_TERMUX := true
+endif
+endif
 	# Alternative check: verify if Termux installation path exists
-	ifeq ($(IS_TERMUX),false)
-		ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
-			IS_TERMUX := true
-		endif
-	endif
+ifeq ($(IS_TERMUX),false)
+ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
+	IS_TERMUX := true
+endif
+endif
 endif
 
 # Auto-set NO_WATCHER for Termux environment if not explicitly set
 ifeq ($(IS_TERMUX),true)
-	ifeq ($(NO_WATCHER),)
+ifeq ($(NO_WATCHER),)
 		NO_WATCHER := true
-		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
-	endif
+$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+endif
 endif
 
 ifeq ($(NO_WATCHER),true)
@@ -192,9 +192,9 @@ ifeq ($(UNAME_S),Darwin)
 		$(RM) $(TIME_FILE) ; \
 		st=$$((`$(CUR_TIME)` - $$st)) ; \
 		echo $$st
-	ifneq ($(NO_WATCHER),true)
+ifneq ($(NO_WATCHER),true)
 		SOURCES += $(SRC_PATH)/3rdParty/efsw/FileWatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/FileWatcherKqueue.cpp $(SRC_PATH)/3rdParty/efsw/WatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/WatcherKqueue.cpp
-	endif
+endif
 else
 	TIME_FILE = $(dir $@).$(notdir $@)_time
 	START_TIME = date '+%s' > $(TIME_FILE)
@@ -202,9 +202,9 @@ else
 		$(RM) $(TIME_FILE) ; \
 		st=$$((`date '+%s'` - $$st - 86400)) ; \
 		echo `date -u -d @$$st '+%H:%M:%S'`
-	ifneq ($(NO_WATCHER),true)
+ifneq ($(NO_WATCHER),true)
 		SOURCES += $(SRC_PATH)/3rdParty/efsw/FileWatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/FileWatcherKqueue.cpp $(SRC_PATH)/3rdParty/efsw/WatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/WatcherKqueue.cpp $(SRC_PATH)/3rdParty/efsw/FileWatcherInotify.cpp $(SRC_PATH)/3rdParty/efsw/WatcherInotify.cpp
-	endif
+endif
 endif
 
 # Version macros
@@ -335,7 +335,7 @@ wasm-node: clean
 		-s MODULARIZE=1\
 		-s LZ4=1
 
-	@${MAKE} clean
+	@$(MAKE) clean
 
 .PHONY: wasm
 wasm: clean
@@ -359,7 +359,7 @@ wasm: clean
 		--bind \
 		-fexceptions \
 		-Wno-deprecated-declarations
-	@${MAKE} clean
+	@$(MAKE) clean
 
 # Debug build for gdb debugging
 .PHONY: debug

@@ -1,0 +1,69 @@
+describe "vararg", ->
+	it "should pass varargs to function", ->
+		sum = (...) ->
+			total = 0
+			for i = 1, select("#", ...)
+				if type(select(i, ...)) == "number"
+					total += select(i, ...)
+			total
+		result = sum 1, 2, 3, 4, 5
+		assert.same result, 15
+
+	it "should handle empty varargs", ->
+		fn = (...) -> select "#", ...
+		result = fn!
+		assert.same result, 0
+
+	it "should spread varargs in function call", ->
+		receiver = (a, b, c) -> {a, b, c}
+		source = -> 1, 2, 3
+		result = receiver source!
+		assert.same result, {1, 2, 3}
+
+	it "should use varargs in table", ->
+		fn = (...) -> {...}
+		result = fn 1, 2, 3
+		assert.same result, {1, 2, 3}
+
+	it "should forward varargs", ->
+		middle = (fn, ...) -> fn(...)
+		inner = (a, b, c) -> a + b + c
+		result = middle inner, 1, 2, 3
+		assert.same result, 6
+
+	it "should count varargs with select", ->
+		fn = (...) -> select "#", ...
+		assert.same fn(1, 2, 3), 3
+		assert.same fn("a", "b"), 2
+		assert.same fn!, 0
+
+	it "should select from varargs", ->
+		fn = (...) -> select 2, ...
+		result = fn 1, 2, 3
+		assert.same result, 2
+
+	it "should work with named parameters and varargs", ->
+		fn = (first, ...) ->
+			{first, select("#", ...)}
+		result = fn "first", "second", "third"
+		assert.same result, {"first", 2}
+
+	it "should handle nil in varargs", ->
+		fn = (...) ->
+			count = select "#", ...
+			has_nil = false
+			for i = 1, count
+				has_nil = true if select(i, ...) == nil
+			{count, has_nil}
+		result = fn 1, nil, 3
+		assert.same result, {3, true}
+
+	it "should work with table unpack", ->
+		fn = (...) -> {...}
+		result = fn table.unpack {1, 2, 3}
+		assert.same result, {1, 2, 3}
+
+	it "should work with varargs in comprehension", ->
+		fn = (...) -> [x * 2 for x in *{...}]
+		result = fn 1, 2, 3, 4, 5
+		assert.same result, {2, 4, 6, 8, 10}

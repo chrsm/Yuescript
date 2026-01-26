@@ -1,0 +1,143 @@
+describe "string", ->
+	it "should support single quote strings", ->
+		s = 'hello'
+		assert.same s, "hello"
+
+	it "should support double quote strings", ->
+		s = "world"
+		assert.same s, "world"
+
+	it "should support escape sequences", ->
+		s = "hello\nworld"
+		assert.is_true s\match("\n") ~= nil
+
+	it "should support escaped quotes", ->
+		s = "he said \"hello\""
+		assert.same s, 'he said "hello"'
+
+	it "should support backslash escape", ->
+		s = "\\"
+		assert.same s, "\\"
+
+	it "should support multi-line strings with [[ ]]", ->
+		s = [[
+			hello
+			world
+		]]
+		assert.is_true s\match("hello") ~= nil
+		assert.is_true s\match("world") ~= nil
+
+	it "should support multi-line strings with [=[ ]=]", ->
+		s = [==[
+			hello
+			world
+		]==]
+		assert.is_true s\match("hello") ~= nil
+		assert.is_true s\match("world") ~= nil
+
+	it "should support string interpolation with double quotes", ->
+		name = "world"
+		s = "hello #{name}"
+		assert.same s, "hello world"
+
+	it "should support expression interpolation", ->
+		a, b = 1, 2
+		s = "#{a} + #{b} = #{a + b}"
+		assert.same s, "1 + 2 = 3"
+
+	it "should not interpolate in single quotes", ->
+		name = "world"
+		s = 'hello #{name}'
+		assert.same s, "hello #{name}"
+
+	it "should escape interpolation with \\#", ->
+		name = "world"
+		s = "hello \\#{name}"
+		assert.same s, "hello #{name}"
+
+	it "should support method calls on string literals", ->
+		result = "hello"\upper!
+		assert.same result, "HELLO"
+
+	it "should support chained method calls", ->
+		result = "hello world"\upper!\match "HELLO"
+		assert.same result, "HELLO"
+
+	it "should support YAML style strings", ->
+		s = |
+			hello
+			world
+		assert.is_true s\match("hello") ~= nil
+		assert.is_true s\match("world") ~= nil
+
+	it "should support YAML style with interpolation", ->
+		name = "test"
+		s = |
+			hello #{name}
+		assert.same s, "hello test\n"
+
+	it "should support string concatenation", ->
+		s = "hello" .. " " .. "world"
+		assert.same s, "hello world"
+
+	it "should handle empty strings", ->
+		s = ""
+		assert.same s, ""
+
+	it "should support Unicode characters", ->
+		s = "hello 世界"
+		assert.is_true s\match("世界") ~= nil
+
+	it "should support string length", ->
+		s = "hello"
+		assert.same #s, 5
+
+	it "should support multi-line YAML with complex content", ->
+		config = |
+			key1: value1
+			key2: value2
+			key3: value3
+		assert.is_true config\match("key1") ~= nil
+
+	it "should support interpolation in YAML strings", ->
+		x, y = 10, 20
+		s = |
+			point:
+				x: #{x}
+				y: #{y}
+		assert.is_true s\match("x: 10") ~= nil
+		assert.is_true s\match("y: 20") ~= nil
+
+	it "should support function call in interpolation", ->
+		s = "result: #{-> 42}"
+		assert.same s, "result: 42"
+
+	it "should support table indexing in interpolation", ->
+		t = {value: 100}
+		s = "value: #{t.value}"
+		assert.same s, "value: 100"
+
+	it "should handle escaped characters correctly", ->
+		s = "tab:\t, newline:\n, return:\r"
+		assert.is_true s\match("\t") ~= nil
+		assert.is_true s\match("\n") ~= nil
+
+	it "should support string methods with colon syntax", ->
+		s = "hello"
+		assert.same s\sub(1, 2), "he"
+
+	it "should work in expressions", ->
+		result = "hello" .. " world"
+		assert.same result, "hello world"
+
+	it "should support octal escape", ->
+		s = "\65"
+		assert.same s, "A"
+
+	it "should support hex escape", ->
+		s = "\x41"
+		assert.same s, "A"
+
+	it "should support unicode escape", ->
+		s = "\u{4e16}"
+		assert.same s, "世"

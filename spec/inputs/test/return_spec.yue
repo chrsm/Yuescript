@@ -1,0 +1,85 @@
+describe "return", ->
+	it "should return from comprehension", ->
+		fn = ->
+			return [x * 2 for x = 1, 5]
+		result = fn!
+		assert.same result, {2, 4, 6, 8, 10}
+
+	it "should return from table comprehension", ->
+		fn = ->
+			return {k, v for k, v in pairs {a: 1, b: 2}}
+		result = fn!
+		assert.same type(result), "table"
+
+	it "should return from nested if", ->
+		fn = (a, b) ->
+			if a
+				if b
+					return "both"
+				else
+					return "only a"
+			else
+				return "neither"
+		assert.same fn(true, true), "both"
+		assert.same fn(true, false), "only a"
+		assert.same fn(false, false), "neither"
+
+	it "should return from switch", ->
+		fn = (value) ->
+			return switch value
+				when 1 then "one"
+				when 2 then "two"
+				else "other"
+		assert.same fn(1), "one"
+		assert.same fn(2), "two"
+		assert.same fn(3), "other"
+
+	it "should return table literal", ->
+		fn = ->
+			return
+				value: 42
+				name: "test"
+		result = fn!
+		assert.same result.value, 42
+		assert.same result.name, "test"
+
+	it "should return array literal", ->
+		fn = ->
+			return
+				* 1
+				* 2
+				* 3
+		result = fn!
+		assert.same result, {1, 2, 3}
+
+	it "should return from with statement", ->
+		fn = (obj) ->
+			result = obj.value
+			return result
+		assert.same fn({value: 100}), 100
+
+	it "should return nil implicitly", ->
+		fn -> print "no return"
+		assert.same fn!, nil
+
+	it "should return multiple values", ->
+		fn -> 1, 2, 3
+		a, b, c = fn!
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 3
+
+	it "should return from function call", ->
+		fn = ->
+			inner = -> 42
+			return inner!
+		assert.same fn!, 42
+
+	it "should handle return in expression context", ->
+		fn = (cond) ->
+			if cond
+				return "yes"
+			else
+				return "no"
+		assert.same fn(true), "yes"
+		assert.same fn(false), "no"

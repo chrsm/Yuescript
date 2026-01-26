@@ -1,0 +1,29 @@
+describe "backcall", ->
+	it "should support basic backcall with <-", ->
+		results = {}
+		mock_map = (list, fn) ->
+			for item in *list
+				table.insert results, fn(item)
+		(x) <- mock_map {1, 2, 3}
+		x * 2
+		assert.same results, {2, 4, 6}
+
+	it "should support nested backcalls", ->
+		results = {}
+		mock_map = (list, fn) ->
+			for item in *list
+				fn(item)
+		mock_map {1, 2, 3, 4}, (x) ->
+			if x > 2
+				table.insert results, x
+		assert.same results, {3, 4}
+
+	it "should work with method call backcall", ->
+		results = {}
+		obj = {
+			process: (self, fn) ->
+				fn 42
+		}
+		(value) <- obj\process
+		table.insert results, value
+		assert.same results, {42}

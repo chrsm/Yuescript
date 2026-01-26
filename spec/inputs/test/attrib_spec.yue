@@ -1,0 +1,51 @@
+describe "attrib", ->
+	it "should support const attribute", ->
+		do
+			const x = 10
+			assert.same x, 10
+
+	it "should support const with multiple variables", ->
+		do
+			const a, b, c = 1, 2, 3
+			assert.same a, 1
+			assert.same b, 2
+			assert.same c, 3
+
+	it "should support close attribute", ->
+		-- close attribute for to-be-closed variables
+		do
+			close x = 1
+			assert.same x, 1
+
+	it "should work with destructuring", ->
+		do
+			const {a, b} = {a: 1, b: 2}
+			assert.same a, 1
+			assert.same b, 2
+
+	it "should work in conditional", ->
+		do
+			flag = true
+			const x = 5 if flag
+			assert.same x, 5
+
+	it "should work with switch", ->
+		do
+			const y = switch 2
+				when 2 then 100
+				else 0
+			assert.same y, 100
+
+	it "should work with table literals", ->
+		do
+			const [a, b] = [1, 2]
+			assert.same a, 1
+			assert.same b, 2
+
+	it "should support close in expressions", ->
+		do
+			close result = if true
+				42
+			else
+				0
+			assert.same result, 42

@@ -1,0 +1,148 @@
+describe "cond", ->
+	it "should execute if branch when condition is true", ->
+		result = nil
+		if true
+			result = "yes"
+		assert.same result, "yes"
+
+	it "should execute else branch when condition is false", ->
+		result = nil
+		if false
+			result = "yes"
+		else
+			result = "no"
+		assert.same result, "no"
+
+	it "should support elseif chain", ->
+		value = 2
+		result = switch value
+			when 1 then "one"
+			when 2 then "two"
+			else "other"
+		assert.same result, "two"
+
+	it "should handle nested conditions", ->
+		result = nil
+		if true
+			if true
+				result = "nested"
+		assert.same result, "nested"
+
+	it "should work as expression", ->
+		value = if true then "yes" else "no"
+		assert.same value, "yes"
+
+	it "should work in string interpolation", ->
+		flag = true
+		result = "value is #{if flag then 1 else 0}"
+		assert.same result, "value is 1"
+
+	it "should support chained comparisons", ->
+		assert.is_true 1 < 2 <= 2 < 3
+
+	it "should short-circuit and expression", ->
+		count = 0
+		inc = ->
+			count += 1
+			false
+		result = inc! and inc!
+		assert.same count, 1
+
+	it "should short-circuit or expression", ->
+		count = 0
+		inc = ->
+			count += 1
+			true
+		result = inc! or inc!
+		assert.same count, 1
+
+	it "should support unless keyword", ->
+		result = nil
+		unless false
+			result = "executed"
+		assert.same result, "executed"
+
+	it "should support unless with else", ->
+		result = nil
+		unless true
+			result = "no"
+		else
+			result = "yes"
+		assert.same result, "yes"
+
+	it "should handle postfix if", ->
+		result = nil
+		result = "yes" if true
+		assert.same result, "yes"
+
+	it "should handle postfix unless", ->
+		result = nil
+		result = "yes" unless false
+		assert.same result, "yes"
+
+	it "should evaluate truthiness correctly", ->
+		-- nil and false are falsy
+		assert.is_false if nil then true else false
+		assert.is_false if false then true else false
+
+		-- Everything else is truthy
+		assert.is_true if 0 then true else false
+		assert.is_true if "" then true else false
+		assert.is_true if {} then true else false
+		assert.is_true if 1 then true else false
+
+	it "should support and/or operators", ->
+		assert.same true and false, false
+		assert.same false or true, true
+		assert.same nil or "default", "default"
+		assert.same "value" or "default", "value"
+
+	it "should handle complex boolean expressions", ->
+		a, b, c = true, false, true
+		result = a and b or c
+		assert.same result, c
+
+	it "should support not operator", ->
+		assert.is_true not false
+		assert.is_true not nil
+		assert.is_false not true
+		assert.is_false not 1
+
+	it "should work with table as condition", ->
+		result = nil
+		if {}
+			result = "truthy"
+		assert.same result, "truthy"
+
+	it "should work with string as condition", ->
+		result = nil
+		if ""
+			result = "truthy"
+		assert.same result, "truthy"
+
+	it "should work with zero as condition", ->
+		result = nil
+		if 0
+			result = "truthy"
+		assert.same result, "truthy"
+
+	it "should support multiple elseif branches", ->
+		value = 3
+		result = if value == 1
+			"one"
+		elseif value == 2
+			"two"
+		elseif value == 3
+			"three"
+		else
+			"other"
+		assert.same result, "three"
+
+	it "should handle then keyword syntax", ->
+		result = if true then "yes" else "no"
+		assert.same result, "yes"
+
+	it "should work with function call in condition", ->
+		return_true = -> true
+		result = if return_true! then "yes" else "no"
+		assert.same result, "yes"

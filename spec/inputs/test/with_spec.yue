@@ -1,0 +1,104 @@
+describe "with", ->
+	it "should access property with . syntax", ->
+		obj = {value: 42}
+		with obj
+			result = .value
+		assert.same result, 42
+
+	it "should call method with : syntax", ->
+		obj = {func: -> "result"}
+		with obj
+			result = \func!
+		assert.same result, "result"
+
+	it "should work as statement", ->
+		obj = {x: 10, y: 20}
+		with obj
+			.sum = .x + .y
+		assert.same obj.sum, 30
+
+	it "should support nested with", ->
+		outer = {inner: {value: 100}}
+		with outer.inner
+			result = .value
+		assert.same result, 100
+
+	it "should work with? safely", ->
+		obj = {x: 5}
+		with obj
+			result = .x
+		assert.same result, 5
+
+	it "should work with if inside with", ->
+		obj = {x: 10, y: 20}
+		with obj
+			if .x > 5
+				result = .x + .y
+		assert.same result, 30
+
+	it "should work with switch inside with", ->
+		obj = {type: "add", a: 5, b: 3}
+		with obj
+			result = switch .type
+				when "add" then .a + .b
+				else 0
+		assert.same result, 8
+
+	it "should work with loop inside with", ->
+		obj = {items: {1, 2, 3}}
+		sum = 0
+		with obj
+			for item in *.items
+				sum += item
+		assert.same sum, 6
+
+	it "should work with destructure", ->
+		obj = {x: 1, y: 2, z: 3}
+		with obj
+			{x, y, z} = obj
+		assert.same x, 1
+		assert.same y, 2
+		assert.same z, 3
+
+	it "should handle simple with body", ->
+		obj = {value: 42}
+		with obj
+			.value2 = 100
+		assert.same obj.value2, 100
+
+	it "should work with return inside", ->
+		obj = {value: 100}
+		fn = ->
+			with obj
+				return .value
+		assert.same fn!, 100
+
+	it "should work with break inside", ->
+		sum = 0
+		for i = 1, 5
+			obj = {value: i}
+			with obj
+				if .value == 3
+					break
+				sum += .value
+		assert.same sum, 3  -- 1 + 2
+
+	it "should chain property access", ->
+		obj = {a: {b: {c: 42}}}
+		with obj.a.b
+			result = .c
+		assert.same result, 42
+
+	it "should work with multiple statements", ->
+		obj = {x: 1, y: 2}
+		sum = 0
+		with obj
+			sum += .x
+			sum += .y
+		assert.same sum, 3
+
+	it "should preserve object reference", ->
+		obj = {value: 42}
+		with obj
+			.value = 100
+		assert.same obj.value, 100

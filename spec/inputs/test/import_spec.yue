@@ -1,0 +1,115 @@
+describe "import", ->
+	it "should import from table expression", ->
+		source = {hello: "world", foo: "bar"}
+		import hello, foo from source
+		assert.same hello, "world"
+		assert.same foo, "bar"
+
+	it "should import with backslash escaping", ->
+		source = {x: 1, y: 2, z: 3}
+		import x, \y, z from source
+		assert.same x, 1
+		assert.same y, 2
+		assert.same z, 3
+
+	it "should import from string module", ->
+		-- Test with string library
+		import format from "string"
+		assert.is_true type(format) == "function"
+
+	it "should import from table with dot path", ->
+		-- Using string.sub as an example
+		import sub from "string"
+		result = sub "hello", 1, 2
+		assert.same result, "he"
+
+	it "should import multiple values with table destructuring", ->
+		source = {a: 1, b: 2, c: 3}
+		import a, b, c from source
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 3
+
+	it "should import with multi-line format", ->
+		source = {x: 1, y: 2, z: 3}
+		import x, y, z from source
+		assert.same x, 1
+		assert.same y, 2
+		assert.same z, 3
+
+	it "should import using from syntax", ->
+		source = {foo: "bar", baz: "qux"}
+		from source import foo, baz
+		assert.same foo, "bar"
+		assert.same baz, "qux"
+
+	it "should handle import with computed expressions", ->
+		source = {first: 1, second: 2}
+		target = source
+		import first, second from target
+		assert.same first, 1
+		assert.same second, 2
+
+	it "should import from nested table paths", ->
+		deep = {outer: {inner: "value"}}
+		import outer from deep
+		assert.same outer.inner, "value"
+
+	it "should support importing Lua standard library functions", ->
+		import print, type from "_G"
+		assert.is_true type(print) == "function"
+		assert.is_true type(type) == "function"
+
+	it "should handle empty import gracefully", ->
+		-- Empty module shouldn't cause errors
+		source = {}
+		import dummy from source
+		assert.same dummy, nil
+
+	it "should work with table index expressions", ->
+		source = {normal: "ok"}
+		import normal from source
+		assert.same normal, "ok"
+
+	it "should support chaining imports from same source", ->
+		source = {a: 1, b: 2, c: 3}
+		import a, b from source
+		import c from source
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 3
+
+	it "should handle importing from table returned by function", ->
+		get_table = -> {x: 100, y: 200}
+		import x, y from get_table!
+		assert.same x, 100
+		assert.same y, 200
+
+	it "should support from with multi-line import", ->
+		source = {item1: 1, item2: 2, item3: 3}
+		from source import item1, item2, item3
+		assert.same item1, 1
+		assert.same item2, 2
+		assert.same item3, 3
+
+	it "should work with import from string literal", ->
+		import char from "string"
+		assert.same char(65), "A"
+
+	it "should support import with table literal keys", ->
+		source = {normal_key: "value2"}
+		import normal_key from source
+		assert.same normal_key, "value2"
+
+	it "should handle consecutive imports", ->
+		source1 = {a: 1}
+		source2 = {b: 2}
+		import a from source1
+		import b from source2
+		assert.same a, 1
+		assert.same b, 2
+
+	it "should support importing from complex expressions", ->
+		get_source = -> {result: 42}
+		import result from get_source!
+		assert.same result, 42
