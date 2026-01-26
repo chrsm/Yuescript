@@ -3,13 +3,13 @@ describe "with", ->
 		obj = {value: 42}
 		with obj
 			result = .value
-		assert.same result, 42
+			assert.same result, 42
 
 	it "should call method with : syntax", ->
 		obj = {func: -> "result"}
 		with obj
 			result = \func!
-		assert.same result, "result"
+			assert.same result, "result"
 
 	it "should work as statement", ->
 		obj = {x: 10, y: 20}
@@ -21,20 +21,20 @@ describe "with", ->
 		outer = {inner: {value: 100}}
 		with outer.inner
 			result = .value
-		assert.same result, 100
+			assert.same result, 100
 
 	it "should work with? safely", ->
 		obj = {x: 5}
 		with obj
 			result = .x
-		assert.same result, 5
+			assert.same result, 5
 
 	it "should work with if inside with", ->
 		obj = {x: 10, y: 20}
 		with obj
 			if .x > 5
 				result = .x + .y
-		assert.same result, 30
+				assert.same result, 30
 
 	it "should work with switch inside with", ->
 		obj = {type: "add", a: 5, b: 3}
@@ -42,7 +42,7 @@ describe "with", ->
 			result = switch .type
 				when "add" then .a + .b
 				else 0
-		assert.same result, 8
+			assert.same result, 8
 
 	it "should work with loop inside with", ->
 		obj = {items: {1, 2, 3}}
@@ -54,11 +54,10 @@ describe "with", ->
 
 	it "should work with destructure", ->
 		obj = {x: 1, y: 2, z: 3}
-		with obj
-			{x, y, z} = obj
-		assert.same x, 1
-		assert.same y, 2
-		assert.same z, 3
+		with {:x, :y, :z} := obj
+			assert.same x, 1
+			assert.same y, 2
+			assert.same z, 3
 
 	it "should handle simple with body", ->
 		obj = {value: 42}
@@ -87,7 +86,7 @@ describe "with", ->
 		obj = {a: {b: {c: 42}}}
 		with obj.a.b
 			result = .c
-		assert.same result, 42
+			assert.same result, 42
 
 	it "should work with multiple statements", ->
 		obj = {x: 1, y: 2}

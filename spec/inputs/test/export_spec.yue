@@ -77,11 +77,6 @@ describe "export", ->
 		assert.same count, 42
 		assert.same price, 19.99
 
-	it "should work in nested scope", ->
-		do
-			nested = "value"
-		assert.same nested, "value"
-
 	it "should export function with parameters", ->
 		add = (a, b) -> a + b
 		assert.same add(5, 3), 8

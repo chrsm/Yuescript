@@ -14,12 +14,12 @@ describe "attrib", ->
 	it "should support close attribute", ->
 		-- close attribute for to-be-closed variables
 		do
-			close x = 1
-			assert.same x, 1
+			close x = <close>: ->
+			assert.same "table", type x
 
 	it "should work with destructuring", ->
 		do
-			const {a, b} = {a: 1, b: 2}
+			const :a, :b = {a: 1, b: 2}
 			assert.same a, 1
 			assert.same b, 2
 
@@ -45,7 +45,7 @@ describe "attrib", ->
 	it "should support close in expressions", ->
 		do
 			close result = if true
-				42
+				value: 42, <close>: ->
 			else
-				0
-			assert.same result, 42
+				value: 0, <close>: ->
+			assert.same result.value, 42

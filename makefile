@@ -63,25 +63,25 @@ ANDROID_ROOT_VAR := $(shell echo $$ANDROID_ROOT)
 PREFIX_VAR := $(shell echo $$PREFIX)
 ifneq ($(ANDROID_ROOT_VAR),)
 	# Check if PREFIX environment variable points to Termux directory
-ifneq ($(PREFIX_VAR),)
-ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
-	IS_TERMUX := true
-endif
-endif
+	ifneq ($(PREFIX_VAR),)
+		ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
+			IS_TERMUX := true
+		endif
+	endif
 	# Alternative check: verify if Termux installation path exists
-ifeq ($(IS_TERMUX),false)
-ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
-	IS_TERMUX := true
-endif
-endif
+	ifeq ($(IS_TERMUX),false)
+		ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
+			IS_TERMUX := true
+		endif
+	endif
 endif
 
 # Auto-set NO_WATCHER for Termux environment if not explicitly set
 ifeq ($(IS_TERMUX),true)
-ifeq ($(NO_WATCHER),)
+	ifeq ($(NO_WATCHER),)
 		NO_WATCHER := true
-$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
-endif
+		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+	endif
 endif
 
 ifeq ($(NO_WATCHER),true)
@@ -192,9 +192,9 @@ ifeq ($(UNAME_S),Darwin)
 		$(RM) $(TIME_FILE) ; \
 		st=$$((`$(CUR_TIME)` - $$st)) ; \
 		echo $$st
-ifneq ($(NO_WATCHER),true)
+	ifneq ($(NO_WATCHER),true)
 		SOURCES += $(SRC_PATH)/3rdParty/efsw/FileWatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/FileWatcherKqueue.cpp $(SRC_PATH)/3rdParty/efsw/WatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/WatcherKqueue.cpp
-endif
+	endif
 else
 	TIME_FILE = $(dir $@).$(notdir $@)_time
 	START_TIME = date '+%s' > $(TIME_FILE)
@@ -202,9 +202,9 @@ else
 		$(RM) $(TIME_FILE) ; \
 		st=$$((`date '+%s'` - $$st - 86400)) ; \
 		echo `date -u -d @$$st '+%H:%M:%S'`
-ifneq ($(NO_WATCHER),true)
+	ifneq ($(NO_WATCHER),true)
 		SOURCES += $(SRC_PATH)/3rdParty/efsw/FileWatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/FileWatcherKqueue.cpp $(SRC_PATH)/3rdParty/efsw/WatcherFSEvents.cpp $(SRC_PATH)/3rdParty/efsw/WatcherKqueue.cpp $(SRC_PATH)/3rdParty/efsw/FileWatcherInotify.cpp $(SRC_PATH)/3rdParty/efsw/WatcherInotify.cpp
-endif
+	endif
 endif
 
 # Version macros
@@ -437,6 +437,7 @@ test: debug
 	@./$(BIN_NAME) $(TEST_INPUT)/attrib.yue -o $(TEST_OUTPUT)/5.1/attrib.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/import_global.yue -o $(TEST_OUTPUT)/5.1/import_global.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.yue -o $(TEST_OUTPUT)/5.1/test/loops_spec.lua --target 5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/test/try_catch_spec.yue -o $(TEST_OUTPUT)/5.1/test/try_catch_spec.lua --target 5.1
 	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(TEST_OUTPUT)
 	@echo -en "Compile time: "
 	@$(END_TIME)
@@ -457,6 +458,7 @@ gen: release
 	@./$(BIN_NAME) $(TEST_INPUT)/attrib.yue -o $(GEN_OUTPUT)/5.1/attrib.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/import_global.yue -o $(GEN_OUTPUT)/5.1/import_global.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.yue -o $(GEN_OUTPUT)/5.1/test/loops_spec.lua --target 5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/test/try_catch_spec.yue -o $(GEN_OUTPUT)/5.1/test/try_catch_spec.lua --target 5.1
 	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(GEN_OUTPUT)
 	@echo -en "Compile time: "
 	@$(END_TIME)
@@ -495,3 +497,4 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.c
 	$(CMD_PREFIX)$(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 	@echo -en "\t Compile time: "
 	@$(END_TIME)
+

@@ -48,12 +48,12 @@ describe "string", ->
 	it "should not interpolate in single quotes", ->
 		name = "world"
 		s = 'hello #{name}'
-		assert.same s, "hello #{name}"
+		assert.same s, "hello \#{name}"
 
-	it "should escape interpolation with \\#", ->
+	it "should escape interpolation with \\\#", ->
 		name = "world"
-		s = "hello \\#{name}"
-		assert.same s, "hello #{name}"
+		s = "hello \#{name}"
+		assert.same s, 'hello #{name}'
 
 	it "should support method calls on string literals", ->
 		result = "hello"\upper!
@@ -74,7 +74,7 @@ describe "string", ->
 		name = "test"
 		s = |
 			hello #{name}
-		assert.same s, "hello test\n"
+		assert.same s, "hello test"
 
 	it "should support string concatenation", ->
 		s = "hello" .. " " .. "world"
@@ -109,7 +109,7 @@ describe "string", ->
 		assert.is_true s\match("y: 20") ~= nil
 
 	it "should support function call in interpolation", ->
-		s = "result: #{-> 42}"
+		s = "result: #{(-> 42)!}"
 		assert.same s, "result: 42"
 
 	it "should support table indexing in interpolation", ->

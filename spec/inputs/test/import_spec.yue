@@ -6,10 +6,10 @@ describe "import", ->
 		assert.same foo, "bar"
 
 	it "should import with backslash escaping", ->
-		source = {x: 1, y: 2, z: 3}
+		source = {x: 1, y: =>, z: 3}
 		import x, \y, z from source
 		assert.same x, 1
-		assert.same y, 2
+		assert.same "function", type y
 		assert.same z, 3
 
 	it "should import from string module", ->

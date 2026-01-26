@@ -4,8 +4,9 @@ describe "backcall", ->
 		mock_map = (list, fn) ->
 			for item in *list
 				table.insert results, fn(item)
-		(x) <- mock_map {1, 2, 3}
-		x * 2
+		do
+			(x) <- mock_map {1, 2, 3}
+			x * 2
 		assert.same results, {2, 4, 6}
 
 	it "should support nested backcalls", ->

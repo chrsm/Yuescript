@@ -1,5 +1,6 @@
 describe "try/catch", ->
 	it "catch and rethrow", ->
+		import global
 		ok, success, err = pcall ->
 			try
 				error "boom"

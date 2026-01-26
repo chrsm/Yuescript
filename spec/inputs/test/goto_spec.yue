@@ -24,7 +24,7 @@ describe "goto", ->
 				if x == 2 and y == 2
 					goto found
 		::found::
-		assert.same count, 4  -- (1,1), (1,2), (1,3), (2,1), (2,2)
+		assert.same count, 5  -- (1,1), (1,2), (1,3), (2,1), (2,2)
 
 	it "should support multiple labels", ->
 		a = 0

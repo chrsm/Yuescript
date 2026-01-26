@@ -16,7 +16,7 @@ describe "macro", ->
 	it "should validate AST types", ->
 		macro NumAndStr = (num`Num, str`SingleString) -> "[#{num}, #{str}]"
 		result = $NumAndStr 123, 'xyz'
-		assert.same result, "[123, xyz]"
+		assert.same result, [123, 'xyz']
 
 	it "should support simple code generation", ->
 		macro add_one = (x) -> "#{x} + 1"
@@ -30,9 +30,9 @@ describe "macro", ->
 		assert.same result, 7
 
 	it "should respect macro scope in do blocks", ->
-		macro outer = -> "outer"
+		macro outer = -> "'outer'"
 		do
-			macro inner = -> "inner"
+			macro inner = -> "'inner'"
 			result = $inner!
 			assert.same result, "inner"
 		result = $outer!
@@ -94,7 +94,7 @@ describe "macro", ->
 	it "should work with string interpolation", ->
 		macro format_result = (name, value) -> "#{name}: #{value}"
 		result = $format_result "test", 123
-		assert.same result, "test: 123"
+		assert.same result, test: 123
 
 	it "should support function call syntax", ->
 		macro my_func = (x, y) -> "#{x} + #{y}"
@@ -130,6 +130,6 @@ describe "macro", ->
 		assert.same result, 7
 
 	it "should work with string literals", ->
-		macro greet = (name) -> '"Hello, #{name}"'
+		macro greet = (name) -> "'Hello, ' .. #{name}"
 		result = $greet "World"
 		assert.same result, "Hello, World"

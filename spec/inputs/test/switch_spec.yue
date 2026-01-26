@@ -73,7 +73,7 @@ describe "switch", ->
 					a: b: :c
 					x: y: :z
 				}
-				matched = first == {} and one == 1 and two == 2 and three == 3 and c == 1 and z == 1
+				matched = type(first) == 'table' and one == 1 and two == 2 and three == 3 and c == 1 and z == 1
 		assert.is_true matched
 
 	it "should destructure arrays with exact match", ->
@@ -259,9 +259,9 @@ describe "switch", ->
 		assert.same result, "matched cool"
 
 	it "should handle switch in function call", ->
+		something = 1
 		getValue = ->
 			switch something
 				when 1 then "yes"
 				else "no"
-		something = 1
 		assert.same getValue!, "yes"

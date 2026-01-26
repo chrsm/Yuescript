@@ -40,13 +40,13 @@ describe "literals", ->
 			hello
 			world
 		]]
-		assert.is_true s\match "hello"
+		assert.is_true s\match("hello")?
 
 	it "should support multi-line strings with [=[", ->
 		s = [==[
 			test
 		]==]
-		assert.is_true s\match "test"
+		assert.is_true s\match("test")?
 
 	it "should support boolean true", ->
 		assert.same true, true

@@ -36,8 +36,8 @@ describe "existential", ->
 
 	it "should work with ? in if condition", ->
 		obj = {value: 5}
-		if obj?.value
-			result = "exists"
+		result = if obj?.value
+			"exists"
 		assert.same result, "exists"
 
 	it "should combine ?. with and/or", ->

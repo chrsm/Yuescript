@@ -59,11 +59,11 @@ describe "return", ->
 		assert.same fn({value: 100}), 100
 
 	it "should return nil implicitly", ->
-		fn -> print "no return"
+		fn = -> _ = "no return"
 		assert.same fn!, nil
 
 	it "should return multiple values", ->
-		fn -> 1, 2, 3
+		fn = -> 1, 2, 3
 		a, b, c = fn!
 		assert.same a, 1
 		assert.same b, 2

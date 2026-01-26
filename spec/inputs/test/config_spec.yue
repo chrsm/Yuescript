@@ -57,7 +57,7 @@ describe "config", ->
 	it "should handle with statements", ->
 		obj = {x: 10, y: 20}
 		result = with obj
-			.x + .y
+			break .x + .y
 		assert.same result, 30
 
 	it "should handle existential operators", ->

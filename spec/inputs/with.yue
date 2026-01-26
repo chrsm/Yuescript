@@ -170,4 +170,9 @@ do
 		with? x := tb[i]
 			break x if .id := 1
 
+do
+	tb = x: 1, y: 2
+	a = with tb
+		break .x + .y
+
 nil

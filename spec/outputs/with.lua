@@ -190,6 +190,7 @@ end
 do
 	f((function()
 		local _with_0 = item
+		local _val_0
 		do
 			local _accum_0
 			repeat
@@ -198,9 +199,9 @@ do
 					break
 				end
 			until true
-			_with_0 = _accum_0
+			_val_0 = _accum_0
 		end
-		return _with_0
+		return _val_0
 	end)())
 	local a
 	do
@@ -213,9 +214,8 @@ do
 					break
 				end
 			until true
-			_with_0 = _accum_0
+			a = _accum_0
 		end
-		a = _with_0
 	end
 	local _accum_0
 	while true do
@@ -227,8 +227,7 @@ do
 				break
 			end
 		until true
-		_with_0 = _accum_1
-		_accum_0 = _with_0
+		_accum_0 = _accum_1
 		break
 	end
 	a = _accum_0
@@ -247,6 +246,19 @@ do
 			end
 		end
 	end
+	a = _accum_0
+end
+do
+	local tb = {
+		x = 1,
+		y = 2
+	}
+	local a
+	local _accum_0
+	repeat
+		_accum_0 = tb.x + tb.y
+		break
+	until true
 	a = _accum_0
 end
 return nil
