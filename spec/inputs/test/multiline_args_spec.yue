@@ -1,0 +1,125 @@
+describe "multiline arguments", ->
+	it "should split arguments across lines", ->
+		sum = (a, b, c) -> a + b + c
+		result = sum 5, 4, 3,
+			8, 9, 10
+		assert.same result, 39
+
+	it "should handle nested function calls", ->
+		outer = (a, b, c, d, e, f) -> a + b + c + d + e + f
+		result = outer 5, 6, 7,
+			6, 2, 3
+		assert.same result, 29
+
+	it "should work with string arguments", ->
+		fn = (a, b, c, d) -> a .. b .. c .. d
+		result = fn "hello",
+			" ", "world", "!"
+		assert.same result, "hello world!"
+
+	it "should support table arguments", ->
+		fn = (a, b, c) -> {a, b, c}
+		result = fn {1, 2},
+			{3, 4},
+			{5, 6}
+		assert.same result, {{1, 2}, {3, 4}, {5, 6}}
+
+	it "should handle mixed types", ->
+		fn = (a, b, c, d) -> {a, b, c, d}
+		result = fn "text",
+			123,
+			true,
+			nil
+		assert.same result, {"text", 123, true, nil}
+
+	it "should work in table literal", ->
+		fn = (a, b) -> a + b
+		result = [
+			1, 2, 3, 4, fn 4, 5,
+				5, 6,
+			8, 9, 10
+		]
+		assert.same result, {1, 2, 3, 4, 9, 8, 9, 10}
+
+	it "should handle deeply nested indentation", ->
+		y = [ fn 1, 2, 3,
+			4, 5,
+			5, 6, 7
+		]
+
+		-- Create the function first
+		fn = (a, b, c, d, e, f, g) -> a + b + c + d + e + f + g
+
+		result = y[1]
+		assert.same result, 22
+
+	it "should work with conditional statements", ->
+		fn = (a, b, c, d, e) -> a + b + c + d + e
+
+		result = if fn 1, 2, 3,
+			"hello",
+			"world"
+				"yes"
+			else
+				"no"
+		assert.same result, "yes"
+
+	it "should support function expressions", ->
+		double = (x) -> x * 2
+		result = double 5,
+			10
+		assert.same result, 20
+
+	it "should handle chained function calls", ->
+		add = (a, b) -> a + b
+		multiply = (a, b) -> a * b
+
+		result = multiply add 1, 2,
+			add 3, 4
+		assert.same result, 21
+
+	it "should work with method calls", ->
+		obj =
+			value: 10
+			add: (a, b) => @value + a + b
+
+		result = obj\add 5, 10,
+			15
+		assert.same result, 40
+
+	it "should support many arguments", ->
+		sum_many = (...) ->
+			total = 0
+			for i = 1, select '#', ...
+				total += select(i, ...) if type(select(i, ...)) == "number"
+			total
+
+		result = sum_many 1, 2, 3,
+			4, 5, 6,
+			7, 8, 9
+		assert.same result, 45
+
+	it "should work with return statement", ->
+		fn = (a, b) -> a + b
+		get_value = ->
+			return fn 10, 20,
+				30
+
+		result = get_value!
+		assert.same result, 60
+
+	it "should handle default parameters", ->
+		fn = (a = 1, b = 2, c = 3) -> a + b + c
+		result = fn 10,
+			20,
+			30
+		assert.same result, 60
+
+	it "should work with varargs", ->
+		collect = (...) ->
+			{...}
+
+		result = collect 1, 2,
+			3, 4,
+			5, 6
+		assert.same result, {1, 2, 3, 4, 5, 6}

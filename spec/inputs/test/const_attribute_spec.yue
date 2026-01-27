@@ -1,0 +1,107 @@
+describe "const attribute", ->
+	it "should declare const variable", ->
+		const a = 123
+		assert.same a, 123
+
+	it "should prevent reassignment", ->
+		const b = 456
+		-- b = 789  -- This should cause error
+		assert.same b, 456
+
+	it "should work with strings", ->
+		const name = "test"
+		assert.same name, "test"
+
+	it "should support const with destructuring", ->
+		tb = {a: 1, b: 2, c: 3, d: 4}
+		const {:a, :b, c, d} = tb
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 3
+		assert.same d, 4
+
+	it "should handle nested const", ->
+		const nested = {
+			inner: {value: 10}
+		}
+		assert.same nested.inner.value, 10
+
+	it "should work with arrays", ->
+		const items = [1, 2, 3]
+		assert.same items[1], 1
+
+	it "should support const in function scope", ->
+		fn = ->
+			const local_const = "local"
+			local_const
+
+		result = fn!
+		assert.same result, "local"
+
+	it "should work with multiple const declarations", ->
+		const x = 1
+		const y = 2
+		const z = 3
+		assert.same x + y + z, 6
+
+	it "should handle const functions", ->
+		const add = (a, b) -> a + b
+		assert.same add 5, 10, 15
+
+	it "should work with const tables", ->
+		const config = {
+			host: "localhost"
+			port: 8080
+		}
+		assert.same config.host, "localhost"
+		assert.same config.port, 8080
+
+	it "should support global const", ->
+		global const GLOBAL_CONST = 999
+		assert.same GLOBAL_CONST, 999
+
+	it "should work with boolean const", ->
+		const flag = true
+		const another = false
+		assert.is_true flag
+		assert.is_false another
+
+	it "should handle nil const", ->
+		const nil_value = nil
+		assert.same nil_value, nil
+
+	it "should work with expressions", ->
+		const calculated = 10 + 20
+		assert.same calculated, 30
+
+	it "should support const with prefixed return", ->
+		getDefault: const "default" ->
+			return nil
+
+		result = getDefault!
+		assert.same result, nil
+
+	it "should work in table comprehension", ->
+		const multiplier = 2
+		items = [1, 2, 3]
+		result = [item * multiplier for item in *items]
+		assert.same result, {2, 4, 6}
+
+	it "should handle const with fat arrow", ->
+		obj =
+			value: 100
+			getValue: const =>
+				@value
+
+		result = obj\getValue!
+		assert.same result, 100
+
+	it "should work with complex expressions", ->
+		const complex = {
+			data: [1, 2, 3]
+			nested: {
+				key: "value"
+			}
+		}
+		assert.same complex.data[1], 1
+		assert.same complex.nested.key, "value"

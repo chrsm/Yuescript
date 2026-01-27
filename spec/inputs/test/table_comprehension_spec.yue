@@ -1,0 +1,127 @@
+describe "table comprehension", ->
+	it "should create simple table copy", ->
+		thing = {
+			color: "red"
+			name: "fast"
+			width: 123
+		}
+
+		thing_copy = {k, v for k, v in pairs thing}
+		assert.same thing_copy.color, thing.color
+		assert.same thing_copy.name, thing.name
+		assert.same thing_copy.width, thing.width
+
+	it "should filter with when clause", ->
+		thing = {
+			color: "red"
+			name: "fast"
+			width: 123
+		}
+
+		no_color = {k, v for k, v in pairs thing when k != "color"}
+		assert.same no_color.color, nil
+		assert.same no_color.name, "fast"
+		assert.same no_color.width, 123
+
+	it "should transform values", ->
+		numbers = {a: 1, b: 2, c: 3}
+		doubled = {k, v * 2 for k, v in pairs numbers}
+		assert.same doubled.a, 2
+		assert.same doubled.b, 4
+		assert.same doubled.c, 6
+
+	it "should transform keys", ->
+		data = {a: 1, b: 2}
+		upper_keys = {k\upper!, v for k, v in pairs data}
+		assert.same upper_keys.A, 1
+		assert.same upper_keys.B, 2
+
+	it "should work with ipairs", ->
+		items = {"a", "b", "c"}
+		reversed = {i, v for i, v in ipairs items}
+		assert.same reversed[1], "a"
+		assert.same reversed[2], "b"
+		assert.same reversed[3], "c"
+
+	it "should filter array items", ->
+		items = {1, 2, 3, 4, 5}
+		evens = {i, v for i, v in ipairs items when v % 2 == 0}
+		assert.same evens[2], 2
+		assert.same evens[4], 4
+		assert.same evens[1], nil
+
+	it "should work with numeric for loop", ->
+		squares = {i, i * i for i = 1, 5}
+		assert.same squares[1], 1
+		assert.same squares[2], 4
+		assert.same squares[3], 9
+		assert.same squares[4], 16
+		assert.same squares[5], 25
+
+	it "should support nested comprehensions", ->
+		matrix = {{1, 2}, {3, 4}, {5, 6}}
+		flat = {}
+		for row in *matrix
+			for i, v in ipairs row
+				flat[#flat + 1] = v
+
+		assert.same flat, {1, 2, 3, 4, 5, 6}
+
+	it "should combine pairs and when", ->
+		data = {a: 1, b: 2, c: 3, d: 4}
+		greater_than_two = {k, v for k, v in pairs data when v > 2}
+		assert.same greater_than_two.a, nil
+		assert.same greater_than_two.b, nil
+		assert.same greater_than_two.c, 3
+		assert.same greater_than_two.d, 4
+
+	it "should work with string keys", ->
+		obj = {["key-with-dash"]: "value1", ["key_with_underscore"]: "value2"}
+		result = {k, v for k, v in pairs obj}
+		assert.same result["key-with-dash"], "value1"
+		assert.same result["key_with_underscore"], "value2"
+
+	it "should handle empty source", ->
+		empty = {}
+		result = {k, v for k, v in pairs empty}
+		assert.same #result, 0
+
+	it "should work with computed keys", ->
+		base = {a: 1, b: 2}
+		result = {k .. "_suffix", v * 10 for k, v in pairs base}
+		assert.same result.a_suffix, 10
+		assert.same result.b_suffix, 20
+
+	it "should support nested table transformation", ->
+		data = {
+			first: {x: 1, y: 2}
+			second: {x: 3, y: 4}
+		}
+
+		transformed = {k, v.x + v.y for k, v in pairs data}
+		assert.same transformed.first, 3
+		assert.same transformed.second, 7
+
+	it "should filter with multiple conditions", ->
+		numbers = {a: 1, b: 2, c: 3, d: 4, e: 5}
+		result = {k, v for k, v in pairs numbers when v > 1 and v < 5}
+		assert.same result.a, nil
+		assert.same result.b, 2
+		assert.same result.c, 3
+		assert.same result.d, 4
+		assert.same result.e, nil
+
+	it "should work with custom iterator", ->
+		custom_iter = -> ->
+			state = 0
+			->
+				state += 1
+				if state <= 3
+					state, state * 10
+				else
+					nil
+
+		result = {k, v for k, v in custom_iter!}
+		assert.same result[1], 10
+		assert.same result[2], 20
+		assert.same result[3], 30

@@ -1,0 +1,48 @@
+describe "prefixed return", ->
+	it "should return prefixed value with no explicit return", ->
+		findFirstEven = (list): nil ->
+			for item in *list
+				if type(item) == "table"
+					for sub in *item
+						if sub % 2 == 0
+							return sub
+
+		result = findFirstEven {1, 3, {4, 6}, 5}
+		assert.same result, 4
+
+	it "should return prefixed nil when not found", ->
+		findValue = (list): nil ->
+			for item in *list
+				if item == 999
+					return item
+
+		result = findValue {1, 2, 3}
+		assert.same result, nil
+
+	it "should return prefixed string", ->
+		findName = (items): "not found" ->
+			for item in *items
+				if item.name == "target"
+					return item.name
+
+		result = findName [{name: "a"}, {name: "b"}]
+		assert.same result, "not found"
+
+	it "should return prefixed number", ->
+		calculateSum = (): 0 ->
+			-- no explicit return
+			total = 0
+
+		result = calculateSum!
+		assert.same result, 0
+
+	it "should work with nested logic", ->
+		findNested = (data): "missing" ->
+			for category in *data
+				if type(category) == "table"
+					for item in *category
+						if item == "target"
+							return "found"
+
+		result = findNested {{1, 2}, {"target", 3}}
+		assert.same result, "found"

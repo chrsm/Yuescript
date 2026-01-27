@@ -1,0 +1,158 @@
+describe "advanced functions", ->
+	it "should support fat arrow with self", ->
+		obj =
+			value: 10
+			getValue: => @value
+
+		assert.same obj\getValue!, 10
+
+	it "should work with argument defaults", ->
+		fn = (name = "something", height = 100) ->
+			"#{name}, #{height}"
+
+		assert.same fn!, "something, 100"
+		assert.same fn("test"), "test, 100"
+		assert.same fn("test", 50), "test, 50"
+
+	it "should handle defaults with previous arguments", ->
+		fn = (x = 100, y = x + 1000) ->
+			x + y
+
+		assert.same fn!, 1200
+		assert.same fn(50), 1150
+
+	it "should work with multi-line arguments", ->
+		my_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
+		result = my_func 5, 4, 3,
+			8, 9, 10
+		assert.same result, 39
+
+	it "should support nested function calls", ->
+		result = my_func 5, 6, 7,
+			6, another_func 6, 7, 8,
+				9, 1, 2,
+			5, 4
+
+		another_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
+		my_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
+
+		assert.same result, 52
+
+	it "should handle implicit return", ->
+		sum = (x, y) -> x + y
+		assert.same sum 10, 20, 30
+
+	it "should work with explicit return", ->
+		difference = (x, y) -> return x - y
+		assert.same difference 20, 10, 10
+
+	it "should support multiple return values", ->
+		mystery = (x, y) -> x + y, x - y
+		a, b = mystery 10, 20
+		assert.same a, 30
+		assert.same b, -10
+
+	it "should work with function as argument", ->
+		apply = (fn, x, y) -> fn x, y
+		result = apply ((a, b) -> a + b), 5, 10
+		assert.same result, 15
+
+	it "should handle function returning function", ->
+		create_adder = (x) -> (y) -> x + y
+		add_five = create_adder 5
+		assert.same add_five(10), 15
+
+	it "should support immediately invoked function", ->
+		result = ((x) -> x * 2) 5
+		assert.same result, 10
+
+	it "should work with varargs", ->
+		sum_all = (...) ->
+			total = 0
+			for i = 1, select '#', ...
+				total += select(i, ...) if type(select(i, ...)) == "number"
+			total
+
+		assert.same sum_all(1, 2, 3, 4, 5), 15
+
+	it "should handle named varargs", ->
+		fn = (...t) ->
+			count = 0
+			for i = 1, t.n
+				count += 1
+			count
+
+		assert.same fn(1, 2, 3), 3
+
+	it "should support prefixed return", ->
+		findValue: "not found" ->
+			items = [1, 2, 3]
+			for item in *items
+				if item == 5
+					return item
+
+		result = findValue!
+		assert.same result, "not found"
+
+	it "should work with parameter destructuring", ->
+		fn = (:a, :b, :c) ->
+			a + b + c
+
+		assert.same fn(a: 1, b: 2, c: 3), 6
+
+	it "should handle default values in destructuring", ->
+		fn = ({a: a1 = 123, :b = 'abc'}) ->
+			a1 .. " " .. b
+
+		assert.same fn{}, "123 abc"
+		assert.same fn({a: 456}), "456 abc"
+
+	it "should support empty function body", ->
+		empty_fn = ->
+		assert.same empty_fn!, nil
+
+	it "should work with function in table", ->
+		tb =
+			value: 10
+			double: => @value * 2
+
+		assert.same tb\double!, 20
+
+	it "should handle function with no arguments", ->
+		fn = ->
+			"result"
+
+		assert.same fn!, "result"
+		assert.same fn(), "result"
+
+	it "should support calling function with !", ->
+		fn = -> 42
+		assert.same fn!, 42
+
+	it "should work with nested functions", ->
+		outer = (x) ->
+			inner = (y) -> x + y
+			inner
+
+		add_five = outer 5
+		assert.same add_five(10), 15
+
+	it "should handle function in expression", ->
+		result = if ((x) -> x > 10) 15
+			"large"
+		else
+			"small"
+		assert.same result, "large"
+
+	it "should support function as return value", ->
+		get_operation = (op) ->
+			switch op
+				when "add"
+					(a, b) -> a + b
+				when "subtract"
+					(a, b) -> a - b
+				else
+					-> 0
+
+		add = get_operation "add"
+		assert.same add 5, 3, 8

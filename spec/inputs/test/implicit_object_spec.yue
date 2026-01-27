@@ -1,0 +1,164 @@
+describe "implicit object", ->
+	it "should create list with asterisk", ->
+		list =
+			* 1
+			* 2
+			* 3
+		assert.same list, {1, 2, 3}
+
+	it "should create list with dash", ->
+		items =
+			- "a"
+			- "b"
+			- "c"
+		assert.same items, {"a", "b", "c"}
+
+	it "should work with function call", ->
+		results = []
+		fn =
+			* 1
+			* 2
+			* 3
+
+		for item in *fn
+			table.insert results, item
+
+		assert.same results, {1, 2, 3}
+
+	it "should support nested implicit objects", ->
+		tb =
+			name: "test"
+
+			values:
+				- "a"
+				- "b"
+				- "c"
+
+			objects:
+				- name: "first"
+					value: 1
+				- name: "second"
+					value: 2
+
+		assert.same tb.values, {"a", "b", "c"}
+		assert.same tb.objects[1].name, "first"
+		assert.same tb.objects[2].value, 2
+
+	it "should work with return statement", ->
+		fn = ->
+			return
+				* 1
+				* 2
+				* 3
+
+		assert.same fn!, {1, 2, 3}
+
+	it "should handle mixed content", ->
+		tb =
+			key: "value"
+
+			items:
+				- 1
+				- 2
+
+			other: "data"
+
+		assert.same tb.key, "value"
+		assert.same tb.items, {1, 2}
+		assert.same tb.other, "data"
+
+	it "should work in assignment", ->
+		list =
+			* "x"
+			* "y"
+			* "z"
+
+		assert.same list, {"x", "y", "z"}
+
+	it "should support nested structures with asterisk", ->
+		tb =
+			* 1
+			* 2
+			nested:
+				* 3
+				* 4
+
+		assert.same tb[1], 1
+		assert.same tb[2], 2
+		assert.same tb.nested, {3, 4}
+
+	it "should handle implicit object in tables", ->
+		tb = {
+			name: "test"
+
+			list:
+				- 1
+				- 2
+
+			value: 42
+		}
+
+		assert.same tb.list, {1, 2}
+
+	it "should work with expressions", ->
+		x = 10
+		list =
+			* x + 1
+			* x + 2
+			* x + 3
+
+		assert.same list, {11, 12, 13}
+
+	it "should support method calls in implicit object", ->
+		tb =
+			name: "test"
+			items:
+				- name: "item1"
+					getName: => @name
+				- name: "item2"
+					getName: => @name
+
+		assert.same tb.items[1]\getName!, "item1"
+		assert.same tb.items[2]\getName!, "item2"
+
+	it "should work with complex nested structures", ->
+		config =
+			database:
+				host: "localhost"
+				ports:
+					- 8080
+					- 8081
+					- 8082
+
+			servers:
+				- name: "server1"
+					port: 8080
+				- name: "server2"
+					port: 8081
+
+		assert.same config.database.ports, {8080, 8081, 8082}
+		assert.same config.servers[1].name, "server1"
+
+	it "should handle empty implicit object", ->
+		tb =
+			items:
+				-
+
+		assert.same tb.items, {nil}
+
+	it "should work in function arguments", ->
+		fn = (items) -> #items
+		result = fn
+			* 1
+			* 2
+			* 3
+		assert.same result, 3
+
+	it "should support mixed asterisk and dash", ->
+		tb =
+			values:
+				* 1
+				- 2
+				* 3
+
+		assert.same tb.values, {1, 2, 3}

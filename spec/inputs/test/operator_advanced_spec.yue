@@ -1,0 +1,136 @@
+describe "advanced operators", ->
+	it "should support chaining comparisons with functions", ->
+		v = (x) -> x
+		assert.is_true v(1) < v(2) <= v(3)
+
+	it "should handle compound assignment with or", ->
+		x = nil
+		x or= "default"
+		assert.same x, "default"
+
+	it "should not overwrite existing value with or", ->
+		x = "existing"
+		x or= "default"
+		assert.same x, "existing"
+
+	it "should support compound string concatenation", ->
+		s = "hello"
+		s ..= " world"
+		assert.same s, "hello world"
+
+	it "should work with table appending", ->
+		tab = [1, 2]
+		tab[] = 3
+		tab[] = 4
+		assert.same tab, {1, 2, 3, 4}
+
+	it "should handle spread append", ->
+		tbA = [1, 2]
+		tbB = [3, 4]
+		tbA[] = ...tbB
+		assert.same tbA, {1, 2, 3, 4}
+
+	it "should support reverse indexing", ->
+		items = [1, 2, 3, 4, 5]
+		assert.same items[#], 5
+		assert.same items[#-1], 4
+		assert.same items[#-2], 3
+
+	it "should work with nil coalescing assignment", ->
+		x = nil
+		x ??= "default"
+		assert.same x, "default"
+
+	it "should not assign with ??= when value exists", ->
+		x = "existing"
+		x ??= "default"
+		assert.same x, "existing"
+
+	it "should chain nil coalescing", ->
+		a = nil
+		b = nil
+		c = "value"
+		result = a ?? b ?? c
+		assert.same result, "value"
+
+	it "should support compound modulo", ->
+		x = 20
+		x %= 3
+		assert.same x, 2
+
+	it "should handle compound exponentiation", ->
+		x = 2
+		x ^= 3
+		assert.same x, 8
+
+	it "should work with compound bitwise and", ->
+		x = 15  -- 1111 in binary
+		x &= 7   -- 0111 in binary
+		assert.same x, 7
+
+	it "should support compound bitwise or", ->
+		x = 8   -- 1000 in binary
+		x |= 3  -- 0011 in binary
+		assert.same x, 11  -- 1011 in binary
+
+	it "should handle compound bitwise xor", ->
+		x = 12  -- 1100 in binary
+		x ~= 10 -- 1010 in binary
+		assert.same x, 6  -- 0110 in binary
+
+	it "should work with compound left shift", ->
+		x = 2
+		x <<= 3
+		assert.same x, 16
+
+	it "should support compound right shift", ->
+		x = 16
+		x >>= 2
+		assert.same x, 4
+
+	it "should handle negation operator", ->
+		assert.same -10, -10
+		assert.same --5, 5
+
+	it "should work with length operator on tables", ->
+		tab = {1, 2, 3, 4, 5}
+		assert.same #tab, 5
+
+	it "should support length on strings", ->
+		s = "hello"
+		assert.same #s, 5
+
+	it "should handle chaining assignment", ->
+		a = b = c = d = 0
+		assert.same a, 0
+		assert.same b, 0
+		assert.same c, 0
+		assert.same d, 0
+
+	it "should work with chaining assignment with functions", ->
+		f = -> 42
+		x = y = z = f!
+		assert.same x, 42
+		assert.same y, 42
+		assert.same z, 42
+
+	it "should support != as alias for ~=", ->
+		assert.is_true 1 != 2
+		assert.is_false 1 != 1
+
+	it "should work with :: for method chaining", ->
+		obj =
+			value: 10
+			add: (n) => @value += n
+			get: => @value
+
+		result = obj::add 5::get!
+		assert.same result, 15
+
+	it "should handle complex expressions with precedence", ->
+		result = 1 + 2 * 3 - 4 / 2
+		assert.same result, 5
+
+	it "should support mixed operator types", ->
+		result = 10 + 20 * 2 - 5 / 5
+		assert.same result, 49

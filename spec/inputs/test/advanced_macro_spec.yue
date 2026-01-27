@@ -1,0 +1,141 @@
+describe "advanced macro", ->
+	it "should evaluate macro at compile time", ->
+		macro PI2 = -> math.pi * 2
+		area = $PI2 * 5
+		assert.is_true area > 0
+
+	it "should support macro with arguments", ->
+		macro add = (a, b) -> "#{a} + #{b}"
+		result = $add 5, 10
+		assert.same result, 15
+
+	it "should handle string returning macro", ->
+		macro HELLO = -> "'hello world'"
+		result = $HELLO
+		assert.same result, "hello world"
+
+	it "should work with conditional compilation", ->
+		macro config = (debugging) ->
+			global debugMode = debugging == "true"
+			""
+
+		$config true
+		assert.is_true debugMode
+
+		$config false
+		assert.is_false debugMode
+
+	it "should support macro generating conditional code", ->
+		macro asserts = (cond) ->
+			debugMode and "assert #{cond}" or ""
+
+		global debugMode = true
+		x = 10
+		$asserts x == 10  -- should assert
+		assert.same x, 10
+
+	it "should work with lua code insertion", ->
+		macro luaCode = (code) -> {
+			:code
+			type: "lua"
+		}
+
+		$luaCode "local macro_test_var = 42"
+		assert.same macro_test_var, 42
+
+	it "should support multi-line raw lua", ->
+		macro lua = (code) -> {
+			:code
+			type: "lua"
+		}
+
+		$lua[==[
+			local multiline_var = "test"
+		]==]
+		assert.same multiline_var, "test"
+
+	it "should export macro from module", ->
+		-- This test demonstrates macro export syntax
+		-- Actual testing would require separate files
+		macro exported_macro = (x) -> "#{x} * 2"
+		result = $exported_macro 5
+		assert.same result, 10
+
+	it "should work with builtin FILE macro", ->
+		macro file_test = ->
+			"$FILE"
+
+		result = $file_test
+		assert.is_true type(result) == "string"
+
+	it "should work with builtin LINE macro", ->
+		macro line_test = ->
+			"$LINE"
+
+		result = $line_test
+		assert.is_true type(result) == "number"
+
+	it "should support argument validation", ->
+		macro expect_num = (val `Num) ->
+			"#{val}"
+
+		result = $expect_num 123
+		assert.same result, 123
+
+	it "should handle string argument validation", ->
+		macro expect_str = (str `String) ->
+			"#{str}"
+
+		result = $expect_str "hello"
+		assert.same result, "hello"
+
+	it "should work with is_ast check", ->
+		macro safe_add = (a, b) ->
+			error "expected numbers" unless $is_ast Num, a
+			error "expected numbers" unless $is_ast Num, b
+			"#{a} + #{b}"
+
+		result = $safe_add 10, 20
+		assert.same result, 30
+
+	it "should support macro generating macro", ->
+		macro Enum = (...) ->
+			items = {...}
+			itemSet = {item, true for item in *items}
+			(item) ->
+				error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+				"\"#{item}\""
+
+		macro Color = $Enum(
+			Red
+			Green
+			Blue
+		)
+
+		result = $Color Red
+		assert.same result, "Red"
+
+	it "should handle complex macro logic", ->
+		macro smart_print = (items) ->
+			"print(#{table.concat [item for item in *items], ', ')})"
+
+		$smart_print {"hello", "world", 123}
+
+	it "should work with table manipulation", ->
+		macro create_table = (...) ->
+			items = {...}
+			"{#{table.concat items, ', '}}"
+
+		result = $create_table "1", "2", "3"
+		assert.same result, {"1", "2", "3"}
+
+	it "should support string concatenation in macro", ->
+		macro concat = (...) ->
+			args = {...}
+			res = {}
+			for arg in *args
+				table.insert res, tostring arg
+			"'" .. table.concat(res, " .. ") .. "'"
+
+		result = $concat "hello", "world"
+		assert.same result, "helloworld"

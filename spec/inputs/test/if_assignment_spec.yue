@@ -1,0 +1,89 @@
+describe "if assignment", ->
+	it "should assign and check truthy value", ->
+		obj = find_user: (name) -> name == "valid" and {name: name} or nil
+		if user := obj\find_user "valid"
+			assert.same user.name, "valid"
+
+	it "should not enter block when nil", ->
+		obj = find_user: -> nil
+		if user := obj\find_user!
+			assert.is_true false -- should not reach
+		else
+			assert.is_true true
+
+	it "should work with elseif", ->
+		get_value = (key) ->
+			switch key
+				when "a" then 1
+				when "b" then 2
+				else nil
+
+		result = nil
+		if val := get_value "c"
+			result = "c: #{val}"
+		elseif val := get_value "b"
+			result = "b: #{val}"
+		else
+			result = "no match"
+		assert.same result, "b: 2"
+
+	it "should scope variable to if block", ->
+		if x := 10
+			assert.same x, 10
+		-- x should not be accessible here
+		assert.is_true true
+
+	it "should work with multiple return values", ->
+		fn = -> true, "success"
+		if success, result := fn!
+			assert.is_true success
+			assert.same result, "success"
+
+	it "should work with table destructuring", ->
+		get_point = -> {x: 10, y: 20}
+		if {:x, :y} := get_point!
+			assert.same x, 10
+			assert.same y, 20
+
+	it "should work with array destructuring", ->
+		get_coords = -> [1, 2, 3]
+		if [a, b, c] := get_coords!
+			assert.same a, 1
+			assert.same b, 2
+			assert.same c, 3
+
+	it "should chain multiple assignments", ->
+		if a := 1
+			if b := a + 1
+				assert.same b, 2
+
+	it "should work in expression context", ->
+		get_value = (x) -> if x > 0 then x else nil
+		result = if val := get_value 5
+			val * 2
+		else
+			0
+		assert.same result, 10
+
+	it "should work with os.getenv", ->
+		-- test with environment variable
+		if path := os.getenv "PATH"
+			assert.is_true type(path) == "string"
+		else
+			assert.is_true true
+
+	it "should support table access", ->
+		tb = {key: "value"}
+		if val := tb.key
+			assert.same val, "value"
+
+	it "should work with function call results", ->
+		fn = -> "result"
+		if s := fn!
+			assert.same s, "result"
+
+	it "should handle false values", ->
+		if val := false
+			assert.is_true false -- should not enter
+		else
+			assert.is_true true

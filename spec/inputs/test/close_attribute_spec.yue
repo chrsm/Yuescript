@@ -1,0 +1,143 @@
+describe "close attribute", ->
+	it "should declare close variable", ->
+		closed = false
+		do
+			close _ = <close>: -> closed = true
+		assert.is_true closed
+
+	it "should work with metatable syntax", ->
+		called = false
+		do
+			close _ = <close>: -> called = true
+		assert.is_true called
+
+	it "should handle multiple close scopes", ->
+		order = []
+		do
+			close first = <close>: -> table.insert order, "first"
+			close second = <close>: -> table.insert order, "second"
+		assert.same order, {"second", "first"}
+
+	it "should work with resources", ->
+		resource_opened = false
+		resource_closed = false
+
+		do
+			resource_opened = true
+			close _ = <close>: -> resource_closed = true
+
+		assert.is_true resource_opened
+		assert.is_true resource_closed
+
+	it "should support close in function", ->
+		closed = false
+		fn = ->
+			close _ = <close>: -> closed = true
+			return "result"
+
+		result = fn!
+		assert.same result, "result"
+		assert.is_true closed
+
+	it "should work with fat arrow", ->
+		closed = false
+		obj =
+			value: 10
+			close_method: <close>: =>
+				closed = true
+
+		do
+			close _ = obj
+
+		assert.is_true closed
+
+	it "should handle nested close scopes", ->
+		outer_closed = false
+		inner_closed = false
+
+		do
+			close outer = <close>: -> outer_closed = true
+			do
+				close inner = <close>: -> inner_closed = true
+
+		assert.is_true inner_closed
+		assert.is_true outer_closed
+
+	it "should work with conditional close", ->
+		closed = false
+		should_close = true
+
+		if should_close
+			close _ = <close>: -> closed = true
+
+		assert.is_true closed
+
+	it "should support close in loop", ->
+		closed_count = 0
+		for i = 1, 3
+			do
+				close _ = <close>: -> closed_count += 1
+
+		assert.same closed_count, 3
+
+	it "should work with table destructuring", ->
+		closed = false
+		tb = {close: <close>: -> closed = true}
+		do
+			{:close} = tb
+		assert.is_true closed
+
+	it "should handle close with return value", ->
+		closed = false
+		fn = ->
+			close _ = <close>: -> closed = true
+			return 42
+
+		result = fn!
+		assert.same result, 42
+		assert.is_true closed
+
+	it "should work with error handling", ->
+		closed = false
+		error_thrown = false
+
+		do
+			close _ = <close>: -> closed = true
+			error_thrown = true
+
+		assert.is_true closed
+		assert.is_true error_thrown
+
+	it "should support close in varargs function", ->
+		closed = false
+		fn = (...) ->
+			close _ = <close>: -> closed = true
+			{...}
+
+		result = fn 1, 2, 3
+		assert.same result, {1, 2, 3}
+		assert.is_true closed
+
+	it "should work with multiple variables", ->
+		first_closed = false
+		second_closed = false
+
+		do
+			close first = <close>: -> first_closed = true
+			close second = <close>: -> second_closed = true
+
+		assert.is_true first_closed
+		assert.is_true second_closed
+
+	it "should handle close in try block", ->
+		closed = false
+		success = false
+
+		success = try
+			close _ = <close>: -> closed = true
+			true
+		catch err
+			false
+
+		assert.is_true success
+		assert.is_true closed

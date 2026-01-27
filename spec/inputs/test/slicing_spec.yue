@@ -1,0 +1,77 @@
+describe "slicing", ->
+	it "should slice array with basic syntax", ->
+		items = [1, 2, 3, 4, 5]
+		result = items[1..3]
+		assert.same result, {1, 2, 3}
+
+	it "should slice from beginning", ->
+		items = [1, 2, 3, 4, 5]
+		result = items[1..#items]
+		assert.same result, {1, 2, 3, 4, 5}
+
+	it "should slice to end", ->
+		items = [1, 2, 3, 4, 5]
+		result = items[3..5]
+		assert.same result, {3, 4, 5}
+
+	it "should handle negative indices", ->
+		items = [1, 2, 3, 4, 5]
+		result = items[#items-2..#items]
+		assert.same result, {3, 4, 5}
+
+	it "should slice single element", ->
+		items = [1, 2, 3, 4, 5]
+		result = items[2..2]
+		assert.same result, {2}
+
+	it "should work with strings", ->
+		s = "hello"
+		result = s\sub 1, 3
+		assert.same result, "hel"
+
+	it "should handle out of bounds", ->
+		items = [1, 2, 3]
+		result = items[1..10]
+		assert.same result, {1, 2, 3}
+
+	it "should create new table", ->
+		original = [1, 2, 3, 4, 5]
+		sliced = original[2..4]
+		sliced[1] = 99
+		assert.same original[2], 2  -- original unchanged
+
+	it "should work with nested arrays", ->
+		nested = [[1, 2], [3, 4], [5, 6]]
+		result = nested[1..2]
+		assert.same result, {{1, 2}, {3, 4}}
+
+	it "should slice with step simulation", ->
+		items = [1, 2, 3, 4, 5]
+		result = [items[i] for i = 1, #items, 2]
+		assert.same result, {1, 3, 5}
+
+	it "should handle empty slice range", ->
+		items = [1, 2, 3, 4, 5]
+		result = items[6..10]
+		assert.same result, nil
+
+	it "should work with reverse indexing", ->
+		items = [1, 2, 3, 4, 5]
+		last = items[#]
+		second_last = items[#-1]
+		assert.same last, 5
+		assert.same second_last, 4
+
+	it "should support slice in assignment", ->
+		items = [1, 2, 3, 4, 5]
+		[a, b, c] = [items[i] for i in *{1, 2, 3}]
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 3
+
+	it "should work with table comprehensions", ->
+		items = [1, 2, 3, 4, 5]
+		result = {i, items[i] for i = 2, 4}
+		assert.same result[2], 2
+		assert.same result[3], 3
+		assert.same result[4], 4

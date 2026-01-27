@@ -1,0 +1,94 @@
+describe "in expression", ->
+	it "should check value in table", ->
+		items = {1, 2, 3, 4, 5}
+		assert.is_true 3 in items
+		assert.is_false 10 in items
+
+	it "should work with strings", ->
+		chars = {"a", "b", "c"}
+		assert.is_true "b" in chars
+		assert.is_false "z" in chars
+
+	it "should check keys in table", ->
+		obj = {x: 1, y: 2, z: 3}
+		assert.is_true "x" in obj
+		assert.is_true "y" in obj
+		assert.is_false "w" in obj
+
+	it "should work with mixed types", ->
+		items = {1, "two", true, nil}
+		assert.is_true 1 in items
+		assert.is_true "two" in items
+		assert.is_true true in items
+		assert.is_false false in items
+
+	it "should handle empty table", ->
+		empty = {}
+		assert.is_false 1 in empty
+		assert.is_false "test" in empty
+
+	it "should work in conditional", ->
+		items = {1, 2, 3}
+		result = if 2 in items
+			"found"
+		else
+			"not found"
+		assert.same result, "found"
+
+	it "should support negation", ->
+		items = {1, 2, 3}
+		assert.is_true not (4 in items)
+		assert.is_false not (2 in items)
+
+	it "should work with nested tables", ->
+		nested = {{1, 2}, {3, 4}, {5, 6}}
+		assert.is_true {1, 2} in nested
+		assert.is_false {1, 3} in nested
+
+	it "should handle boolean values", ->
+		bools = {true, false}
+		assert.is_true true in bools
+		assert.is_true false in bools
+
+	it "should work in loop", ->
+		items = {1, 2, 3, 4, 5}
+		count = 0
+		for i = 1, 10
+			count += 1 if i in items
+		assert.same count, 5
+
+	it "should support table as value", ->
+		key1 = {a: 1}
+		key2 = {b: 2}
+		tb = {[key1]: "first", [key2]: "second"}
+
+		-- Note: this tests table reference equality
+		assert.is_true key1 in tb
+		assert.is_true key2 in tb
+
+	it "should work with function results", ->
+		get_items = -> {1, 2, 3}
+		assert.is_true 2 in get_items!
+		assert.is_false 5 in get_items!
+
+	it "should handle nil in table", ->
+		items = {1, nil, 3}
+		assert.is_true nil in items
+		assert.is_true 1 in items
+
+	it "should work with string keys", ->
+		obj = {name: "test", value: 42}
+		assert.is_true "name" in obj
+		assert.is_true "value" in obj
+		assert.is_false "missing" in obj
+
+	it "should support complex expressions", ->
+		items = {1, 2, 3}
+		result = (2 in items) and "yes" or "no"
+		assert.same result, "yes"
+
+	it "should work in comprehension", ->
+		source = {1, 2, 3, 4, 5}
+		allowed = {2, 4}
+		result = [item for item in *source when item in allowed]
+		assert.same result, {2, 4}

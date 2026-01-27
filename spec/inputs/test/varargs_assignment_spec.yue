@@ -1,0 +1,96 @@
+describe "varargs assignment", ->
+	it "should assign varargs from function", ->
+		list = [1, 2, 3, 4, 5]
+		fn = (ok) -> ok, table.unpack list
+		ok, ... = fn true
+		count = select '#', ...
+		assert.same count, 5
+		assert.same ok, true
+
+	it "should access varargs elements", ->
+		list = [10, 20, 30]
+		fn = -> table.unpack list
+		... = fn!
+		first = select 1, ...
+		second = select 2, ...
+		third = select 3, ...
+		assert.same first, 10
+		assert.same second, 20
+		assert.same third, 30
+
+	it "should work with pcall", ->
+		fn = -> 1, 2, 3
+		success, ... = pcall fn
+		assert.is_true success
+		assert.same select('#', ...), 3
+
+	it "should handle empty varargs", ->
+		fn = ->
+		... = fn!
+		count = select '#', ...
+		assert.same count, 0
+
+	it "should work with mixed return values", ->
+		fn = -> "first", nil, "third", false
+		a, ... = fn!
+		assert.same a, "first"
+		assert.same select('#', ...), 3
+
+	it "should preserve nil values in varargs", ->
+		fn = -> 1, nil, 2, nil, 3
+		... = fn!
+		count = select '#', ...
+		assert.same count, 5
+		assert.same select(1, ...), 1
+		assert.same select(2, ...), nil
+		assert.same select(3, ...), 2
+
+	it "should work with table.unpack", ->
+		tb = {a: 1, b: 2, c: 3}
+		fn = -> table.unpack tb
+		... = fn!
+		count = select '#', ...
+		assert.same count, 3
+
+	it "should chain varargs assignment", ->
+		fn1 = -> 1, 2, 3
+		fn2 = -> table.unpack {4, 5, 6}
+		a, ... = fn1!
+		b, ... = fn2!
+		assert.same a, 1
+		assert.same b, 4
+		assert.same select('#', ...), 2
+
+	it "should work in expressions", ->
+		sum = (...) ->
+			total = 0
+			for i = 1, select '#', ...
+				total += select i, ... if type(select(i, ...)) == "number"
+			total
+
+		fn = -> 1, 2, 3, 4, 5
+		... = fn!
+		result = sum ...
+		assert.same result, 15
+
+	it "should work with string.format", ->
+		... = "hello", 123, true
+		result = string.format "str: %s, num: %d, bool: %s", ...
+		assert.same result, "str: hello, num: 123, bool: true"
+
+	it "should handle single return value", ->
+		fn = -> 42
+		... = fn!
+		count = select '#', ...
+		assert.same count, 1
+		assert.same select(1, ...), 42
+
+	it "should work with nested functions", ->
+		outer = -> 1, 2, 3
+		inner = -> 4, 5
+		a, b, ... = outer!
+		c, d = inner!
+		assert.same a, 1
+		assert.same b, 2
+		assert.same c, 4
+		assert.same d, 5

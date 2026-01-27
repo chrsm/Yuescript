@@ -1,0 +1,42 @@
+describe "while assignment", ->
+	it "should loop while value is truthy", ->
+		counter = 0
+		get_next = ->
+			if counter < 3
+				counter += 1
+				counter
+			else
+				nil
+		results = {}
+		while val := get_next!
+			table.insert results, val
+		assert.same results, {1, 2, 3}
+
+	it "should work with function results", ->
+		counter = 0
+		fn = ->
+			counter += 1
+			if counter <= 3
+				counter * 10
+			else
+				nil
+
+		sum = 0
+		while val := fn!
+			sum += val
+		assert.same sum, 60 -- (10+20+30)
+
+	it "should exit immediately on nil", ->
+		get_val = -> nil
+		counter = 0
+		while val := get_val!
+			counter += 1
+		assert.same counter, 0
+
+	it "should support break in loop", ->
+		items = {1, 2, 3, 4, 5}
+		sum = 0
+		for item in *items
+			sum += item
+			break if sum > 6
+		assert.same sum, 10

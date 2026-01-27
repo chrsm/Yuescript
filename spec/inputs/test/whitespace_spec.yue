@@ -1,0 +1,118 @@
+describe "whitespace", ->
+	it "should support semicolon statement separator", ->
+		a = 1; b = 2; result = a + b
+		assert.same result, 3
+
+	it "should handle multiple statements on one line", ->
+		x = 10; y = 20; z = x + y
+		assert.same z, 30
+
+	it "should work with semicolon in function", ->
+		fn = -> a = 1; b = 2; a + b
+		assert.same fn!, 3
+
+	it "should support multiline chaining", ->
+		obj =
+			value: 10
+			add: (n) => @value += n
+			get: => @value
+
+		result = obj
+			\add 5
+			\add 10
+			\get!
+		assert.same result, 25
+
+	it "should handle multiline method calls", ->
+		str = "  hello  "
+		result = str
+			\trim!
+			\upper!
+		assert.same result, "HELLO"
+
+	it "should work with nested chaining", ->
+		obj =
+			level1:
+				level2:
+					level3: => "deep"
+
+		result = obj
+			.level1
+			.level2
+			\level3!
+		assert.same result, "deep"
+
+	it "should support chaining with conditionals", ->
+		obj =
+			value: 10
+			isPositive: => @value > 0
+
+		result = obj
+			\isPositive!
+		assert.is_true result
+
+	it "should work with pipe in chaining", ->
+		result = [1, 2, 3]
+			|> [x * 2 for x in *]
+			|> table.concat
+		assert.same result, "246"
+
+	it "should handle mixed separators", ->
+		a = 1; b = 2
+		c = 3
+		d = 4
+		result = a + b + c + d
+		assert.same result, 10
+
+	it "should support indentation with spaces", ->
+		fn = ->
+			if true
+				result = 10
+			result
+
+		assert.same fn!, 10
+
+	it "should work with consistent indentation", ->
+		tb = {
+			a: 1
+			b: 2
+			nested:
+				c: 3
+				d: 4
+		}
+		assert.same tb.a, 1
+		assert.same tb.nested.c, 3
+
+	it "should handle semicolon with comments", ->
+		a = 1; -- comment
+		b = 2; -- another comment
+		result = a + b
+		assert.same result, 3
+
+	it "should work in multiline function call", ->
+		sum = (a, b) -> a + b
+		result = sum 5, 10,
+			sum 3, 7
+		assert.same result, 25
+
+	it "should support chaining in assignment", ->
+		obj =
+			value: 5
+			double: => @value * 2
+
+		doubled = obj
+			\double!
+		assert.same doubled, 10
+
+	it "should handle complex chaining", ->
+		result = "hello"
+			\upper!
+			\sub 1, 3
+			\lower!
+		assert.same result, "hel"
+
+	it "should work with backcalls and whitespace", ->
+		results = do
+			data <- readAsync "data.txt"
+			process data
+		assert.is_true true

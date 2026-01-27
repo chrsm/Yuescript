@@ -80,7 +80,7 @@ endif
 ifeq ($(IS_TERMUX),true)
 	ifeq ($(NO_WATCHER),)
 		NO_WATCHER := true
-		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+        $(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
 	endif
 endif
 

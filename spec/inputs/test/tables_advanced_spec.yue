@@ -1,0 +1,153 @@
+describe "advanced tables", ->
+	it "should create table with implicit keys", ->
+		hair = "golden"
+		height = 200
+		person = { :hair, :height, shoe_size: 40 }
+		assert.same person.hair, "golden"
+		assert.same person.height, 200
+
+	it "should work with computed keys", ->
+		t = {
+			[1 + 2]: "hello"
+			["key_" .. "suffix"]: "value"
+		}
+		assert.same t[3], "hello"
+		assert.same t["key_suffix"], "value"
+
+	it "should support keyword keys", ->
+		tbl = {
+			do: "something"
+			end: "hunger"
+			function: "test"
+		}
+		assert.same tbl.do, "something"
+		assert.same tbl.end, "hunger"
+		assert.same tbl.function, "test"
+
+	it "should handle array syntax with mixed content", ->
+		tb = {
+			1, 2, 3
+			name: "superman"
+			4, 5, 6
+		}
+		assert.same tb[1], 1
+		assert.same tb.name, "superman"
+		assert.same tb[4], 4
+
+	it "should work with single line table literals", ->
+		my_function dance: "Tango", partner: "none"
+		assert.is_true true
+
+	it "should support nested tables", ->
+		tb =
+			outer:
+				inner:
+					value: 42
+		assert.same tb.outer.inner.value, 42
+
+	it "should handle table without braces", ->
+		profile =
+			height: "4 feet"
+			shoe_size: 13
+			favorite_foods: ["ice cream", "donuts"]
+		assert.same profile.height, "4 feet"
+		assert.same profile.shoe_size, 13
+
+	it "should work with colon syntax for keys", ->
+		t = {
+			name: "Bill"
+			age: 200
+			["favorite food"]: "rice"
+		}
+		assert.same t.name, "Bill"
+		assert.same t["favorite food"], "rice"
+
+	it "should support implicit object in table", ->
+		tb =
+			name: "abc"
+			values:
+				- "a"
+				- "b"
+				- "c"
+		assert.same tb.values, {"a", "b", "c"}
+
+	it "should handle array only table", ->
+		some_values = [1, 2, 3, 4]
+		assert.same some_values[1], 1
+		assert.same some_values[4], 4
+
+	it "should work with trailing comma", ->
+		list_with_one = [1,]
+		assert.same list_with_one[1], 1
+
+	it "should support table spreading", ->
+		a = {1, 2, 3, x: 1}
+		b = {4, 5, y: 1}
+		merge = {...a, ...b}
+		assert.same merge[1], 1
+		assert.same merge[4], 4
+		assert.same merge.x, 1
+		assert.same merge.y, 1
+
+	it "should handle mixed spread", ->
+		parts = {
+			* "shoulders"
+			* "knees"
+		}
+		lyrics =
+			* "head"
+			* ...parts
+			* "and"
+			* "toes"
+		assert.same lyrics, {"head", "shoulders", "knees", "and", "toes"}
+
+	it "should work with metatable creation", ->
+		mt = {}
+		add = (right) => <>: mt, value: @value + right.value
+		mt.__add = add
+
+		a = <>: mt, value: 1
+		b = value: 2
+		b.<>, mt
+		c = a + b
+		assert.same c.value, 3
+
+	it "should support metatable accessing", ->
+		tb = <"value">: 123
+		tb.<index> = tb.<>
+		assert.same tb.value, 123
+
+	it "should handle metatable destructuring", ->
+		tb = {
+			item: "test"
+			new: -> "created"
+			close: -> "closed"
+		}
+		{:item, :new, :<close>} = tb
+		assert.same item, "test"
+		assert.same new!, "created"
+
+	it "should work with string keys directly", ->
+		t = {
+			"hello world": true
+			"test-key": "value"
+		}
+		assert.is_true t["hello world"]
+		assert.same t["test-key"], "value"
+
+	it "should support number keys", ->
+		t = {
+			[10]: "ten"
+			[20]: "twenty"
+		}
+		assert.same t[10], "ten"
+		assert.same t[20], "twenty"
+
+	it "should handle empty tables", ->
+		empty = {}
+		assert.same #empty, 0
+
+	it "should work with table literals in function calls", ->
+		fn = (tb) -> tb.x + tb.y
+		result = fn x: 10, y: 20
+		assert.same result, 30

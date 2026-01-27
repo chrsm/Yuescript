@@ -1,0 +1,59 @@
+describe "reverse index", ->
+	it "should get last element", ->
+		data = {items: [1, 2, 3, 4, 5]}
+		last = data.items[#]
+		assert.same last, 5
+
+	it "should get second last element", ->
+		data = {items: [1, 2, 3, 4, 5]}
+		second_last = data.items[#-1]
+		assert.same second_last, 4
+
+	it "should get third last element", ->
+		data = {items: [1, 2, 3, 4, 5]}
+		third_last = data.items[#-2]
+		assert.same third_last, 3
+
+	it "should set last element", ->
+		data = {items: [1, 2, 3, 4, 5]}
+		data.items[#] = 10
+		assert.same data.items[5], 10
+
+	it "should set second last element", ->
+		data = {items: [1, 2, 3, 4, 5]}
+		data.items[#-1] = 20
+		assert.same data.items[4], 20
+
+	it "should work with single element", ->
+		tab = {42}
+		assert.same tab[#], 42
+
+	it "should work with empty table", ->
+		tab = []
+		assert.same tab[#], nil
+
+	it "should work in expressions", ->
+		tab = [1, 2, 3, 4, 5]
+		result = tab[#] + tab[#-1]
+		assert.same result, 9
+
+	it "should support chaining", ->
+		data = {items: {nested: [1, 2, 3]}}
+		last = data.items.nested[#]
+		assert.same last, 3
+
+	it "should work with string", ->
+		s = "hello"
+		assert.same s[#], "o"
+
+	it "should handle negative offsets", ->
+		tab = [1, 2, 3, 4, 5]
+		assert.same tab[#-3], 2
+		assert.same tab[#-4], 1
+
+	it "should work in loops", ->
+		tab = [1, 2, 3, 4, 5]
+		results = []
+		for i = 0, 2
+			table.insert results, tab[#-i]
+		assert.same results, {5, 4, 3}

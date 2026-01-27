@@ -1,0 +1,77 @@
+describe "table append", ->
+	it "should append single value", ->
+		tab = []
+		tab[] = "Value"
+		assert.same tab[1], "Value"
+		assert.same #tab, 1
+
+	it "should append multiple values", ->
+		tab = []
+		tab[] = 1
+		tab[] = 2
+		tab[] = 3
+		assert.same tab, {1, 2, 3}
+
+	it "should append with spread operator", ->
+		tbA = [1, 2, 3]
+		tbB = [4, 5, 6]
+		tbA[] = ...tbB
+		assert.same tbA, {1, 2, 3, 4, 5, 6}
+
+	it "should append table with single element", ->
+		tab = [1, 2]
+		tb2 = {3}
+		tab[] = table.unpack tb2
+		assert.same tab, {1, 2, 3}
+
+	it "should append empty table", ->
+		tab = [1, 2]
+		tb2 = []
+		tab[] = ...tb2
+		assert.same tab, {1, 2}
+
+	it "should append nil values", ->
+		tab = []
+		tab[] = nil
+		tab[] = "value"
+		assert.same tab[1], nil
+		assert.same tab[2], "value"
+
+	it "should work in loop", ->
+		tab = []
+		for i = 1, 3
+			tab[] = i * 2
+		assert.same tab, {2, 4, 6}
+
+	it "should append with expressions", ->
+		tab = []
+		x = 10
+		tab[] = x + 5
+		assert.same tab[1], 15
+
+	it "should append mixed types", ->
+		tab = []
+		tab[] = "string"
+		tab[] = 123
+		tab[] = true
+		tab[] = nil
+		assert.same tab, {"string", 123, true, nil}
+
+	it "should append to table with existing elements", ->
+		tab = [1, 2, 3]
+		tab[] = 4
+		tab[] = 5
+		assert.same tab, {1, 2, 3, 4, 5}
+
+	it "should work with nested tables", ->
+		tab = []
+		tab[] = {a: 1, b: 2}
+		tab[] = [3, 4]
+		assert.same tab[1], {a: 1, b: 2}
+		assert.same tab[2], [3, 4]
+
+	it "should append function results", ->
+		fn = -> 1, 2, 3
+		tab = []
+		tab[] = fn!
+		assert.same tab, {1, 2, 3}

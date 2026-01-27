@@ -1,0 +1,145 @@
+describe "with statement", ->
+	it "should access properties with dot", ->
+		obj = {x: 10, y: 20}
+		result = nil
+		with obj
+			result = .x + .y
+		assert.same result, 30
+
+	it "should chain property access", ->
+		obj = {nested: {value: 42}}
+		result = nil
+		with obj
+			result = .nested.value
+		assert.same result, 42
+
+	it "should work with method calls", ->
+		obj =
+			value: 10
+			double: => @value * 2
+
+		result = nil
+		with obj
+			result = \double!
+		assert.same result, 20
+
+	it "should handle nested with statements", ->
+		obj = {x: 1}
+		with obj
+			.x = 10
+			with .nested = {y: 2}
+				.y = 20
+		assert.same obj.x, 10
+		assert.same obj.nested.y, 20
+
+	it "should work in expressions", ->
+		obj = {value: 5}
+		result = with obj
+			.value * 2
+		assert.same result, 10
+
+	it "should support multiple statements", ->
+		obj = {a: 1, b: 2}
+		sum = nil
+		product = nil
+		with obj
+			sum = .a + .b
+			product = .a * .b
+		assert.same sum, 3
+		assert.same product, 2
+
+	it "should work with table manipulation", ->
+		obj = {items: [1, 2, 3]}
+		with obj
+			table.insert .items, 4
+		assert.same #obj.items, 4
+
+	it "should handle conditional inside with", ->
+		obj = {value: 10}
+		result = nil
+		with obj
+			if .value > 5
+				result = "large"
+			else
+				result = "small"
+		assert.same result, "large"
+
+	it "should work with loops", ->
+		obj = {items: [1, 2, 3]}
+		sum = nil
+		with obj
+			sum = 0
+			for item in *.items
+				sum += item
+		assert.same sum, 6
+
+	it "should support with in assignment", ->
+		obj = {x: 5, y: 10}
+		result = with obj
+			.x + .y
+		assert.same result, 15
+
+	it "should work with string methods", ->
+		s = "hello"
+		result = with s
+			\upper!
+		assert.same result, "HELLO"
+
+	it "should handle metatable access", ->
+		obj = setmetatable {value: 10}, {
+			__index: {extra: 5}
+		}
+		sum = nil
+		with obj
+			sum = .value + .<index>.extra
+		assert.same sum, 15
+
+	it "should work in function", ->
+		fn = ->
+			obj = {x: 10}
+			with obj
+				.x * 2
+
+		result = fn!
+		assert.same result, 20
+
+	it "should support with in return", ->
+		get_value = ->
+			obj = {value: 42}
+			with obj
+				.value
+
+		assert.same get_value!, 42
+
+	it "should work with existential operator", ->
+		obj = {value: 10}
+		result = with obj
+			.value ? 0
+		assert.same result, 10
+
+	it "should handle nil object safely", ->
+		result = with nil
+			.value
+		assert.same result, nil
+
+	it "should work with method chaining", ->
+		obj =
+			value: 5
+			add: (n) => @value += n
+			get: => @value
+
+		result = with obj
+			\add 10
+			\add 5
+			\get!
+		assert.same result, 20
+
+	it "should support nested property access", ->
+		obj =
+			level1:
+				level2:
+					level3: "deep"
+
+		result = with obj
+			.level1.level2.level3
+		assert.same result, "deep"

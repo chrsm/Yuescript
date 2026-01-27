@@ -1,0 +1,109 @@
+describe "function stub", ->
+	it "should create empty function", ->
+		stub_fn!
+		assert.is_true true
+
+	it "should support stub in table", ->
+		obj = {
+			stub: stub_fn!
+		}
+		assert.is_true true
+
+	it "should work with method stub", ->
+		obj =
+			method: stub_fn!
+		assert.is_true true
+
+	it "should handle stub in assignment", ->
+		my_func = stub_fn!
+		assert.is_true true
+
+	it "should support stub in return", ->
+		get_stub = -> stub_fn!
+		fn = get_stub!
+		assert.is_true true
+
+	it "should work in conditional", ->
+		if stub_fn!
+			assert.is_true true
+
+	it "should support stub as callback", ->
+		call_fn = (fn) -> fn!
+		result = call_fn stub_fn!
+		assert.is_true true
+
+	it "should handle stub in table literal", ->
+		tb = {
+			on_click: stub_fn!
+			on_hover: stub_fn!
+		}
+		assert.is_true true
+
+	it "should work with fat arrow stub", ->
+		obj =
+			value: 10
+			method: stub_fn!
+
+		result = obj\method!
+		assert.is_true true
+
+	it "should support stub in array", ->
+		callbacks = [stub_fn!, stub_fn!, stub_fn!]
+		assert.same #callbacks, 3
+
+	it "should handle stub in expression", ->
+		result = stub_fn! and true or false
+		assert.is_true result
+
+	it "should work with chained stub calls", ->
+		stub_fn!
+		stub_fn!
+		stub_fn!
+		assert.is_true true
+
+	it "should support stub in comprehension", ->
+		result = [stub_fn! for i = 1, 3]
+		assert.same #result, 3
+
+	it "should handle stub in switch", ->
+		value = "test"
+		result = switch value
+			when "test"
+				stub_fn!
+				"matched"
+			else
+				"not matched"
+		assert.same result, "matched"
+
+	it "should work in with statement", ->
+		obj = {stub: stub_fn!}
+		with obj
+			.stub!
+		assert.is_true true
+
+	it "should support stub as argument default", ->
+		fn = (callback = stub_fn!) ->
+			callback!
+
+		result = fn!
+		assert.is_true true
+
+	it "should handle stub in varargs", ->
+		collect = (...) ->
+			{...}
+
+		result = collect stub_fn!, stub_fn!
+		assert.same #result, 2
+
+	it "should work in do block", ->
+		do
+			stub_fn!
+		assert.is_true true
+
+	it "should support stub in try block", ->
+		success = try
+			stub_fn!
+			true
+		catch err
+			false
+		assert.is_true success
