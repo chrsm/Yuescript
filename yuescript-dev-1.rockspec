@@ -16,6 +16,7 @@ description = {
 dependencies = {
 	"lua >= 5.1",
 }
+
 build = {
 	type = "cmake",
 	variables = {
@@ -29,6 +30,21 @@ build = {
 		},
 		bin = {
 			"build.luarocks/yue"
+		}
+	}
+}
+
+platform = {
+	win32 = {
+		build = {
+			install = {
+				lib = {
+					"build.luarocks/yue.dll"
+				},
+				bin = {
+					"build.luarocks/yue.exe"
+				}
+			}
 		}
 	}
 }
