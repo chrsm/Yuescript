@@ -4,33 +4,42 @@ project(yue CXX)
 set(LUA_LIBDIR ${LUA_INCDIR}/../lib ${LUA_INCDIR}/../../lib)
 set(LUA_INCLUDE_DIR "${LUA_INCDIR}")
 
+# Get Lua executable name to detect LuaJIT
 get_filename_component(LUA_EXEC_NAME ${LUA} NAME)
-if (LUA_EXEC_NAME STREQUAL "luajit")
+
+# Detect Lua version by executing the binary and checking _VERSION
+execute_process(
+	COMMAND ${LUA} -e "print(_VERSION)"
+	OUTPUT_VARIABLE LUA_VERSION_STRING
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+	ERROR_QUIET
+)
+
+message(STATUS "Lua version string: ${LUA_VERSION_STRING}")
+message(STATUS "Lua executable: ${LUA_EXEC_NAME}")
+
+# Parse Lua version from _VERSION output or detect LuaJIT by executable name
+if (LUA_EXEC_NAME MATCHES "luajit")
 	find_library(LUA_LIBRARIES
 		NAMES luajit libluajit
 		PATHS ${LUA_LIBDIR}
 		NO_DEFAULT_PATH)
-elseif (LUA_EXEC_NAME MATCHES "lua5\.5" OR LUA_EXEC_NAME MATCHES "lua55")
-	find_library(LUA_LIBRARIES
-		NAMES lua55 lua5.5 liblua55 liblua5.5 lua liblua
-		PATHS ${LUA_LIBDIR}
-		NO_DEFAULT_PATH)
-elseif (LUA_EXEC_NAME MATCHES "lua5\.4" OR LUA_EXEC_NAME MATCHES "lua54")
+elseif (LUA_VERSION_STRING MATCHES "Lua 5.4")
 	find_library(LUA_LIBRARIES
 		NAMES lua54 lua5.4 liblua54 liblua5.4 lua liblua
 		PATHS ${LUA_LIBDIR}
 		NO_DEFAULT_PATH)
-elseif (LUA_EXEC_NAME MATCHES "lua5\.3" OR LUA_EXEC_NAME MATCHES "lua53")
+elseif (LUA_VERSION_STRING MATCHES "Lua 5.3")
 	find_library(LUA_LIBRARIES
 		NAMES lua53 lua5.3 liblua53 liblua5.3 lua liblua
 		PATHS ${LUA_LIBDIR}
 		NO_DEFAULT_PATH)
-elseif (LUA_EXEC_NAME MATCHES "lua5\.2" OR LUA_EXEC_NAME MATCHES "lua52")
+elseif (LUA_VERSION_STRING MATCHES "Lua 5.2")
 	find_library(LUA_LIBRARIES
 		NAMES lua52 lua5.2 liblua52 liblua5.2 lua liblua
 		PATHS ${LUA_LIBDIR}
 		NO_DEFAULT_PATH)
-elseif (LUA_EXEC_NAME MATCHES "lua5\.1" OR LUA_EXEC_NAME MATCHES "lua51")
+elseif (LUA_VERSION_STRING MATCHES "Lua 5.1")
 	find_library(LUA_LIBRARIES
 		NAMES lua51 lua5.1 liblua51 liblua5.1 lua liblua
 		PATHS ${LUA_LIBDIR}
