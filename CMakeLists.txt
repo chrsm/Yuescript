@@ -197,6 +197,7 @@ endif()
 
 if (MSVC)
 	target_compile_definitions(yue PRIVATE _SCL_SECURE_NO_WARNINGS)
+	target_compile_options(yue PRIVATE /Zc:__cplusplus)
 else ()
 	target_compile_options(yue PRIVATE -Wall -Wno-long-long -fPIC)
 	set_source_files_properties(src/3rdParty/colib/ljson.c PROPERTIES COMPILE_FLAGS "-std=c99")
