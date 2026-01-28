@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(yue CXX)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(LUA_LIBDIR ${LUA_INCDIR}/../lib ${LUA_INCDIR}/../../lib)
 set(LUA_INCLUDE_DIR "${LUA_INCDIR}")
 
@@ -66,7 +70,11 @@ message(STATUS "Lua library: ${LUA_LIBRARIES}")
 
 enable_language(C CXX)
 include_directories(src src/3rdParty ${LUA_INCLUDE_DIR})
-add_definitions(-std=c++17 -O3 -fPIC -DYUE_UTF8_IMPL)
+if (MSVC)
+	add_definitions(/O2 /DYUE_UTF8_IMPL)
+else ()
+	add_definitions(-O3 -fPIC -DYUE_UTF8_IMPL)
+endif ()
 
 # Detect Android Termux environment
 # Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory
