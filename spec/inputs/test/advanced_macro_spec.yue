@@ -70,7 +70,7 @@ describe "advanced macro", ->
 
 	it "should work with builtin FILE macro", ->
 		macro file_test = ->
-			"$FILE"
+			"'#{$FILE}'"
 
 		result = $file_test
 		assert.is_true type(result) == "string"

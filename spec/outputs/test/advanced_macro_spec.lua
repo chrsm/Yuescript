@@ -40,7 +40,7 @@ multiline_var = "test work"
 		return assert.same(result, 10)
 	end)
 	it("should work with builtin FILE macro", function()
-		local result = "./spec/inputs/test/advanced_macro_spec.yue"
+		local result = '=(macro file_test)'
 		return assert.is_true(type(result) == "string")
 	end)
 	it("should work with builtin LINE macro", function()
