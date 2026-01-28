@@ -34,7 +34,7 @@ build = {
 	}
 }
 
-platform = {
+platforms = {
 	win32 = {
 		build = {
 			install = {
