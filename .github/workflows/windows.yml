@@ -48,6 +48,7 @@ jobs:
         uses: luarocks/gh-actions-luarocks@v6
       - name: Install and run busted
         run: |
+          luarocks make
           luarocks install busted
           busted
       - name: pack
