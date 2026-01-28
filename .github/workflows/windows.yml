@@ -43,9 +43,9 @@ jobs:
       - name: Setup MSVC dev cmd
         uses: ilammy/msvc-dev-cmd@v1
       - name: Setup Lua
-        uses: leafo/gh-actions-lua@v12
+        uses: luarocks/gh-actions-lua@v11
       - name: Setup LuaRocks
-        uses: leafo/gh-actions-luarocks@v6
+        uses: luarocks/gh-actions-luarocks@v6
       - name: Install and run busted
         run: |
           luarocks install busted
