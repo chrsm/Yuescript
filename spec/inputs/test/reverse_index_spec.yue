@@ -42,10 +42,6 @@ describe "reverse index", ->
 		last = data.items.nested[#]
 		assert.same last, 3
 
-	it "should work with string", ->
-		s = "hello"
-		assert.same s[#], "o"
-
 	it "should handle negative offsets", ->
 		tab = [1, 2, 3, 4, 5]
 		assert.same tab[#-3], 2

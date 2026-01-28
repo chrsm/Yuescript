@@ -62,7 +62,7 @@ describe "do statement", ->
 	it "should support variable shadowing", ->
 		x = "outer"
 		result = do
-			x = "inner"
+			local x = "inner"
 			x
 		assert.same result, "inner"
 		assert.same x, "outer"
@@ -74,7 +74,7 @@ describe "do statement", ->
 
 		result = do
 			with obj
-				\double!
+				break \double!
 		assert.same result, 20
 
 	it "should handle comprehensions in do block", ->
@@ -84,13 +84,13 @@ describe "do statement", ->
 		assert.same result, {2, 4, 6, 8, 10}
 
 	it "should work with try-catch", ->
-		result = do
-			success = try
-				error "test error"
-				false
-			catch err
-				true
-		assert.is_true success
+		success, result = try
+			error "test error"
+			false
+		catch err
+			true
+		assert.is_false success
+		assert.is_true result
 
 	it "should support return statement", ->
 		fn = ->
@@ -125,13 +125,15 @@ describe "do statement", ->
 	it "should support implicit return", ->
 		result = do
 			value = 42
+			value
 		assert.same result, 42
 
 	it "should handle empty do block", ->
-		result = do
+		result = do nil
 		assert.same result, nil
 
 	it "should work with backcalls", ->
+		map = (f, items) -> [f item for item in *items]
 		result = do
 			items = [1, 2, 3]
 			(x) <- map _, items

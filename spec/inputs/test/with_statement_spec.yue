@@ -27,7 +27,7 @@ describe "with statement", ->
 		obj = {x: 1}
 		with obj
 			.x = 10
-			with .nested = {y: 2}
+			with .nested := {y: 2}
 				.y = 20
 		assert.same obj.x, 10
 		assert.same obj.nested.y, 20
@@ -35,7 +35,7 @@ describe "with statement", ->
 	it "should work in expressions", ->
 		obj = {value: 5}
 		result = with obj
-			.value * 2
+			break .value * 2
 		assert.same result, 10
 
 	it "should support multiple statements", ->
@@ -76,13 +76,13 @@ describe "with statement", ->
 	it "should support with in assignment", ->
 		obj = {x: 5, y: 10}
 		result = with obj
-			.x + .y
+			break .x + .y
 		assert.same result, 15
 
 	it "should work with string methods", ->
 		s = "hello"
 		result = with s
-			\upper!
+			break \upper!
 		assert.same result, "HELLO"
 
 	it "should handle metatable access", ->
@@ -98,7 +98,7 @@ describe "with statement", ->
 		fn = ->
 			obj = {x: 10}
 			with obj
-				.x * 2
+				break .x * 2
 
 		result = fn!
 		assert.same result, 20
@@ -107,19 +107,19 @@ describe "with statement", ->
 		get_value = ->
 			obj = {value: 42}
 			with obj
-				.value
+				break .value
 
 		assert.same get_value!, 42
 
 	it "should work with existential operator", ->
 		obj = {value: 10}
 		result = with obj
-			.value ? 0
+			break .value ?? 0
 		assert.same result, 10
 
 	it "should handle nil object safely", ->
-		result = with nil
-			.value
+		result = with? nil
+			break .value
 		assert.same result, nil
 
 	it "should work with method chaining", ->
@@ -131,7 +131,7 @@ describe "with statement", ->
 		result = with obj
 			\add 10
 			\add 5
-			\get!
+			break \get!
 		assert.same result, 20
 
 	it "should support nested property access", ->
@@ -141,5 +141,5 @@ describe "with statement", ->
 					level3: "deep"
 
 		result = with obj
-			.level1.level2.level3
+			break .level1.level2.level3
 		assert.same result, "deep"

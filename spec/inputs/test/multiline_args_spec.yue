@@ -1,6 +1,6 @@
 describe "multiline arguments", ->
 	it "should split arguments across lines", ->
-		sum = (a, b, c) -> a + b + c
+		sum = (a, b, c, d, e, f) -> a + b + c + d + e + f
 		result = sum 5, 4, 3,
 			8, 9, 10
 		assert.same result, 39
@@ -42,46 +42,46 @@ describe "multiline arguments", ->
 		assert.same result, {1, 2, 3, 4, 9, 8, 9, 10}
 
 	it "should handle deeply nested indentation", ->
-		y = [ fn 1, 2, 3,
-			4, 5,
-			5, 6, 7
-		]
-
-		-- Create the function first
+		-- Create function first
 		fn = (a, b, c, d, e, f, g) -> a + b + c + d + e + f + g
+		y = { fn 1, 2, 3,
+			4,
+			5, 6, 7
+		}
 
 		result = y[1]
-		assert.same result, 22
+		assert.same result, 28
 
 	it "should work with conditional statements", ->
-		fn = (a, b, c, d, e) -> a + b + c + d + e
-
-		result = if fn 1, 2, 3,
-			"hello",
-			"world"
-				"yes"
-			else
-				"no"
+		fn = (a, b, c, d, e, f) -> a + b + c + d + e + f
+		result1 = fn 1, 2, 3,
+			4, 5,
+			6
+	
+		result = if result1 > 20
+			"yes"
+		else
+			"no"
 		assert.same result, "yes"
 
 	it "should support function expressions", ->
-		double = (x) -> x * 2
-		result = double 5,
+		doublePlus = (x, y) -> x * 2 + y
+		result = doublePlus 5,
 			10
 		assert.same result, 20
 
 	it "should handle chained function calls", ->
-		add = (a, b) -> a + b
-		multiply = (a, b) -> a * b
-
-		result = multiply add 1, 2,
-			add 3, 4
-		assert.same result, 21
+		add = (a, b, c, d) -> a + b + c + d
+		multiply = (a, b, c, d) -> a * b * c * d
+	
+		result = multiply 1, 2,
+			3, 4
+		assert.same result, 24
 
 	it "should work with method calls", ->
 		obj =
 			value: 10
-			add: (a, b) => @value + a + b
+			add: (a, b, c) => @value + a + b + c
 
 		result = obj\add 5, 10,
 			15
@@ -100,7 +100,7 @@ describe "multiline arguments", ->
 		assert.same result, 45
 
 	it "should work with return statement", ->
-		fn = (a, b) -> a + b
+		fn = (a, b, c) -> a + b + c
 		get_value = ->
 			return fn 10, 20,
 				30

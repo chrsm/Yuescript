@@ -11,7 +11,8 @@ SRC_PATH = ./src
 # Space-separated pkg-config libraries used by this project
 LIBS =
 # General compiler flags
-COMPILE_FLAGS = -std=c++17 -Wall -Wextra -DYUE_UTF8_IMPL
+COMPILE_FLAGS = -Wall -Wextra
+CXXFLAGS = -std=c++17 -DYUE_UTF8_IMPL
 # Additional release-specific flags
 RCOMPILE_FLAGS = -DNDEBUG -O3
 # Additional debug-specific flags
@@ -80,7 +81,7 @@ endif
 ifeq ($(IS_TERMUX),true)
 	ifeq ($(NO_WATCHER),)
 		NO_WATCHER := true
-        $(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
 	endif
 endif
 

@@ -19,32 +19,32 @@ describe "advanced functions", ->
 			x + y
 
 		assert.same fn!, 1200
-		assert.same fn(50), 1150
+		assert.same fn(50), 1100
 
 	it "should work with multi-line arguments", ->
 		my_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
 		result = my_func 5, 4, 3,
 			8, 9, 10
 		assert.same result, 39
-
+ 
 	it "should support nested function calls", ->
+		another_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
+		my_func = (a, b, c, d, e, f, g) -> a + b + c + d + e + f + g
+	
 		result = my_func 5, 6, 7,
 			6, another_func 6, 7, 8,
 				9, 1, 2,
 			5, 4
-
-		another_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
-		my_func = (a, b, c, d, e, f) -> a + b + c + d + e + f
-
-		assert.same result, 52
+	
+		assert.same result, 66
 
 	it "should handle implicit return", ->
 		sum = (x, y) -> x + y
-		assert.same sum 10, 20, 30
+		assert.same sum(10, 20), 30
 
 	it "should work with explicit return", ->
 		difference = (x, y) -> return x - y
-		assert.same difference 20, 10, 10
+		assert.same difference(20, 10), 10
 
 	it "should support multiple return values", ->
 		mystery = (x, y) -> x + y, x - y
@@ -85,7 +85,7 @@ describe "advanced functions", ->
 		assert.same fn(1, 2, 3), 3
 
 	it "should support prefixed return", ->
-		findValue: "not found" ->
+		findValue = (): "not found" ->
 			items = [1, 2, 3]
 			for item in *items
 				if item == 5
@@ -155,4 +155,4 @@ describe "advanced functions", ->
 					-> 0
 
 		add = get_operation "add"
-		assert.same add 5, 3, 8
+		assert.same add(5, 3), 8

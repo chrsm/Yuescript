@@ -43,7 +43,7 @@ describe "close attribute", ->
 		closed = false
 		obj =
 			value: 10
-			close_method: <close>: =>
+			<close>: =>
 				closed = true
 
 		do
@@ -82,9 +82,8 @@ describe "close attribute", ->
 
 	it "should work with table destructuring", ->
 		closed = false
-		tb = {close: <close>: -> closed = true}
 		do
-			{:close} = tb
+			close tb = {<close>: -> closed = true}
 		assert.is_true closed
 
 	it "should handle close with return value", ->

@@ -119,9 +119,9 @@ return describe("varargs assignment", function()
 	end)
 	it("should work with table.unpack", function()
 		local tb = {
-			a = 1,
-			b = 2,
-			c = 3
+			1,
+			2,
+			3
 		}
 		local fn
 		fn = function()

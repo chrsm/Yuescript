@@ -46,7 +46,7 @@ describe "varargs assignment", ->
 		assert.same select(3, ...), 2
 
 	it "should work with table.unpack", ->
-		tb = {a: 1, b: 2, c: 3}
+		tb = [1, 2, 3]
 		fn = -> table.unpack tb
 		... = fn!
 		count = select '#', ...

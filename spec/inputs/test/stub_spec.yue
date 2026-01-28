@@ -1,3 +1,6 @@
+-- Define stub_fn as a helper function that returns an empty function
+stub_fn = -> ->
+
 describe "function stub", ->
 	it "should create empty function", ->
 		stub_fn!

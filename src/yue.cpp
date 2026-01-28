@@ -201,8 +201,13 @@ static std::string compileFile(const fs::path& file, yue::YueConfig conf, const 
 		conf.module = modulePath.string();
 		if (!workPath.empty()) {
 			auto it = conf.options.find("path");
-			if (it == conf.options.end()) {
-				conf.options["path"] = (workPath / "?.lua"sv).string();
+			if (it != conf.options.end()) {
+				if (!it->second.empty()) {
+					it->second += ';';
+				}
+				it->second += (fs::path(workPath) / "?.lua"sv).string();
+			} else {
+				conf.options["path"] = (fs::path(workPath) / "?.lua"sv).string();
 			}
 		}
 		auto result = yue::YueCompiler{YUE_ARGS}.compile(s, conf);
@@ -852,7 +857,6 @@ int main(int narg, const char** args) {
 	std::list<std::future<std::tuple<int, std::string, std::string>>> results;
 	for (const auto& file : files) {
 		auto task = async<std::tuple<int, std::string, std::string>>([=]() {
-			try {
 			std::ifstream input(file.first, std::ios::in);
 			if (input) {
 				std::string s(
@@ -862,7 +866,12 @@ int main(int narg, const char** args) {
 				conf.module = file.first;
 				if (!workPath.empty()) {
 					auto it = conf.options.find("path");
-					if (it == conf.options.end()) {
+					if (it != conf.options.end()) {
+						if (!it->second.empty()) {
+							it->second += ';';
+						}
+						it->second += (fs::path(workPath) / "?.lua"sv).string();
+					} else {
 						conf.options["path"] = (fs::path(workPath) / "?.lua"sv).string();
 					}
 				}
@@ -941,15 +950,6 @@ int main(int narg, const char** args) {
 				}
 			} else {
 				return std::tuple{1, std::string(), "Failed to read file: "s + file.first + '\n'};
-			}
-			} catch (const std::length_error& e) {
-				std::ostringstream buf;
-				buf << "std::length_error: " << e.what() << " for file: " << file.first << '\n';
-				return std::tuple{1, std::string(), buf.str()};
-			} catch (const std::exception& e) {
-				std::ostringstream buf;
-				buf << "Exception: " << e.what() << " for file: " << file.first << '\n';
-				return std::tuple{1, std::string(), buf.str()};
 			}
 		});
 		results.push_back(std::move(task));

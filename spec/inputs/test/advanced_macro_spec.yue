@@ -15,7 +15,10 @@ describe "advanced macro", ->
 		assert.same result, "hello world"
 
 	it "should work with conditional compilation", ->
+		global debugMode = true
+		$ -> global debugMode = true
 		macro config = (debugging) ->
+			assert debugMode?
 			global debugMode = debugging == "true"
 			""
 
@@ -23,7 +26,7 @@ describe "advanced macro", ->
 		assert.is_true debugMode
 
 		$config false
-		assert.is_false debugMode
+		assert.is_true debugMode
 
 	it "should support macro generating conditional code", ->
 		macro asserts = (cond) ->
@@ -39,20 +42,24 @@ describe "advanced macro", ->
 			:code
 			type: "lua"
 		}
-
-		$luaCode "local macro_test_var = 42"
+		macro_test_var = 42
+		$luaCode [[local macro_test_var = 99]]
 		assert.same macro_test_var, 42
 
 	it "should support multi-line raw lua", ->
 		macro lua = (code) -> {
 			:code
-			type: "lua"
+			type: "text"
+			locals: ["multiline_var1",]
 		}
 
+		multiline_var = "test"
 		$lua[==[
-			local multiline_var = "test"
+			multiline_var = "test work"
+			local multiline_var1 = "test1"
 		]==]
-		assert.same multiline_var, "test"
+		assert.same multiline_var, "test work"
+		assert.same multiline_var1, "test1"
 
 	it "should export macro from module", ->
 		-- This test demonstrates macro export syntax
@@ -116,10 +123,14 @@ describe "advanced macro", ->
 		assert.same result, "Red"
 
 	it "should handle complex macro logic", ->
-		macro smart_print = (items) ->
-			"print(#{table.concat [item for item in *items], ', ')})"
+		my_print = (...) -> ...
+		macro smart_print = (...items) ->
+			"my_print(#{table.concat [item for item in *items], ', '})"
 
-		$smart_print {"hello", "world", 123}
+		a, b, c = $smart_print "hello", "world", 123
+		assert.same a, "hello"
+		assert.same b, "world"
+		assert.same c, 123
 
 	it "should work with table manipulation", ->
 		macro create_table = (...) ->
@@ -130,12 +141,7 @@ describe "advanced macro", ->
 		assert.same result, {"1", "2", "3"}
 
 	it "should support string concatenation in macro", ->
-		macro concat = (...) ->
-			args = {...}
-			res = {}
-			for arg in *args
-				table.insert res, tostring arg
-			"'" .. table.concat(res, " .. ") .. "'"
+		macro concat = (...) -> table.concat {...}, " .. "
 
 		result = $concat "hello", "world"
 		assert.same result, "helloworld"

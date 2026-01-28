@@ -35,8 +35,9 @@ describe "advanced tables", ->
 		assert.same tb[4], 4
 
 	it "should work with single line table literals", ->
-		my_function dance: "Tango", partner: "none"
-		assert.is_true true
+		tb = dance: "Tango", partner: "none"
+		assert.same tb.dance, "Tango"
+		assert.same tb.partner, "none"
 
 	it "should support nested tables", ->
 		tb =
@@ -90,10 +91,9 @@ describe "advanced tables", ->
 		assert.same merge.y, 1
 
 	it "should handle mixed spread", ->
-		parts = {
+		parts =
 			* "shoulders"
 			* "knees"
-		}
 		lyrics =
 			* "head"
 			* ...parts
@@ -108,7 +108,7 @@ describe "advanced tables", ->
 
 		a = <>: mt, value: 1
 		b = value: 2
-		b.<>, mt
+		b.<> = mt
 		c = a + b
 		assert.same c.value, 3
 
@@ -121,11 +121,12 @@ describe "advanced tables", ->
 		tb = {
 			item: "test"
 			new: -> "created"
-			close: -> "closed"
+			<close>: -> "closed"
 		}
 		{:item, :new, :<close>} = tb
 		assert.same item, "test"
 		assert.same new!, "created"
+		assert.same close!, "closed"
 
 	it "should work with string keys directly", ->
 		t = {

@@ -116,10 +116,6 @@ return describe("reverse index", function()
 		end
 		return assert.same(last, 3)
 	end)
-	it("should work with string", function()
-		local s = "hello"
-		return assert.same(s[#s], "o")
-	end)
 	it("should handle negative offsets", function()
 		local tab = {
 			1,

@@ -72,12 +72,12 @@ return describe("table append", function()
 			2
 		})
 	end)
-	it("should append nil values", function()
+	it("should not append nil values", function()
 		local tab = { }
 		tab[#tab + 1] = nil
 		tab[#tab + 1] = "value"
-		assert.same(tab[1], nil)
-		return assert.same(tab[2], "value")
+		assert.same(tab[2], nil)
+		return assert.same(tab[1], "value")
 	end)
 	it("should work in loop", function()
 		local tab = { }
@@ -150,7 +150,14 @@ return describe("table append", function()
 			return 1, 2, 3
 		end
 		local tab = { }
-		tab[#tab + 1] = fn()
+		local _len_0 = #tab + 1
+		local _list_0 = {
+			fn()
+		}
+		for _index_0 = 1, #_list_0 do
+			local _elm_0 = _list_0[_index_0]
+			tab[_len_0], _len_0 = _elm_0, _len_0 + 1
+		end
 		return assert.same(tab, {
 			1,
 			2,

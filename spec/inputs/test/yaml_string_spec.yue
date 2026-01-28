@@ -3,15 +3,15 @@ describe "yaml string", ->
 		s = |
 			hello
 			world
-		assert.is_true s\match "hello"
-		assert.is_true s\match "world"
+		assert.is_true s\match("hello")?
+		assert.is_true s\match("world")?
 
 	it "should preserve indentation", ->
 		s = |
 			key1: value1
 			key2: value2
-		assert.is_true s\match "key1"
-		assert.is_true s\match "key2"
+		assert.is_true s\match("key1")?
+		assert.is_true s\match("key2")?
 
 	it "should support interpolation", ->
 		name = "test"
@@ -25,13 +25,13 @@ describe "yaml string", ->
 			point:
 				x: #{x}
 				y: #{y}
-		assert.is_true s\match "x: 10"
-		assert.is_true s\match "y: 20"
+		assert.is_true s\match("x: 10")?
+		assert.is_true s\match("y: 20")?
 
 	it "should work with expressions", ->
 		s = |
 			result: #{1 + 2}
-		assert.is_true s\match "result: 3"
+		assert.is_true s\match("result: 3")?
 
 	it "should support multiline with variables", ->
 		config = |
@@ -39,15 +39,17 @@ describe "yaml string", ->
 				host: localhost
 				port: 5432
 				name: mydb
-		assert.is_true config\match "database:"
-		assert.is_true config\match "host:"
+		assert.is_true config\match("database:")?
+		assert.is_true config\match("host:")?
 
 	it "should escape special characters", ->
+		Hello = "Hello"
 		s = |
 			path: "C:\Program Files\App"
 			note: 'He said: "#{Hello}!"'
-		assert.is_true s\match "path:"
-		assert.is_true s\match "note:"
+		assert.same s, [[
+path: "C:\Program Files\App"
+note: 'He said: "Hello!"']]
 
 	it "should work in function", ->
 		fn = ->
@@ -57,8 +59,7 @@ describe "yaml string", ->
 			return str
 
 		result = fn!
-		assert.is_true result\match "foo:"
-		assert.is_true result\match "bar:"
+		assert.same result, "foo:\n\tbar: baz"
 
 	it "should strip common leading whitespace", ->
 		fn = ->
@@ -68,40 +69,39 @@ describe "yaml string", ->
 			s
 
 		result = fn!
-		assert.is_true result\match "nested:"
-		assert.is_true result\match "item:"
+		assert.same result, "nested:
+	item: value"
 
 	it "should support empty lines", ->
 		s = |
 			line1
 
 			line3
-		assert.is_true s\match "line1"
-		assert.is_true s\match "line3"
+		assert.same s, "line1\nline3"
 
 	it "should work with table access in interpolation", ->
 		t = {value: 100}
 		s = |
 			value: #{t.value}
-		assert.is_true s\match "value: 100"
+		assert.same s, "value: 100"
 
 	it "should support function calls in interpolation", ->
 		s = |
 			result: #{(-> 42)!}
-		assert.is_true s\match "result: 42"
+		assert.same s, "result: 42"
 
 	it "should handle quotes correctly", ->
 		s = |
 			"quoted"
 			'single quoted'
-		assert.is_true s\match '"quoted"'
-		assert.is_true s\match "'single quoted'"
+		assert.is_true s\match('"quoted"')?
+		assert.is_true s\match("'single quoted'")?
 
 	it "should work with multiple interpolations", ->
 		a, b, c = 1, 2, 3
 		s = |
 			values: #{a}, #{b}, #{c}
-		assert.is_true s\match "values: 1, 2, 3"
+		assert.same s, "values: 1, 2, 3"
 
 	it "should preserve newlines", ->
 		s = |

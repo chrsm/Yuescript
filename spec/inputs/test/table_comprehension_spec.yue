@@ -112,7 +112,7 @@ describe "table comprehension", ->
 		assert.same result.e, nil
 
 	it "should work with custom iterator", ->
-		custom_iter = -> ->
+		custom_iter = ->
 			state = 0
 			->
 				state += 1

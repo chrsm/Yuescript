@@ -142,9 +142,9 @@ describe "implicit object", ->
 	it "should handle empty implicit object", ->
 		tb =
 			items:
-				-
+				- nil
 
-		assert.same tb.items, {nil}
+		assert.same tb, {items: [nil,]}
 
 	it "should work in function arguments", ->
 		fn = (items) -> #items

@@ -33,21 +33,21 @@ _u53d8_u91cfa = '你好 #{问候} 你好'
 _u53d8_u91cfb = '#{问候} 你好'
 _u53d8_u91cfc = '你好 #{问候}'
 local _u53d8_u91cf_ = "你好"
-local _call_0 = ("你好")
+local _call_0 = "你好"
 _call_0["格式"](_call_0, 1)
-local _call_1 = ("你好")
+local _call_1 = "你好"
 _call_1["格式"](_call_1, 1, 2, 3)
-local _call_2 = ("你好")
+local _call_2 = "你好"
 _call_2["格式"](_call_2, 1, 2, 3)(1, 2, 3)
-local _call_3 = ("你好")
+local _call_3 = "你好"
 _call_3["世界"](_call_3)
-local _call_4 = ("你好")
+local _call_4 = "你好"
 _call_4["格式"](_call_4)["问候"](1, 2, 3)
-local _call_5 = ("你好")
+local _call_5 = "你好"
 _call_5["格式"](_call_5, 1, 2, 3)
 local _call_6 = _u67d0_u4e8b("你好")
 _call_6["世界"](_call_6)
 return _u67d0_u4e8b((function()
-	local _call_7 = ("你好")
+	local _call_7 = "你好"
 	return _call_7["世界"](_call_7)
 end)())

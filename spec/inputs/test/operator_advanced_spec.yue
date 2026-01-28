@@ -75,7 +75,7 @@ describe "advanced operators", ->
 
 	it "should handle compound bitwise xor", ->
 		x = 12  -- 1100 in binary
-		x ~= 10 -- 1010 in binary
+		x = x~10 -- 1010 in binary
 		assert.same x, 6  -- 0110 in binary
 
 	it "should work with compound left shift", ->
@@ -121,10 +121,10 @@ describe "advanced operators", ->
 	it "should work with :: for method chaining", ->
 		obj =
 			value: 10
-			add: (n) => @value += n
+			add: (n): @ => @value += n
 			get: => @value
 
-		result = obj::add 5::get!
+		result = obj::add(5)::get!
 		assert.same result, 15
 
 	it "should handle complex expressions with precedence", ->

@@ -187,21 +187,19 @@ return describe("named varargs", function()
 		})
 	end)
 	it("should support passing named varargs to another function", function()
+		local inner
+		inner = function(...)
+			return {
+				...
+			}
+		end
 		local outer
 		outer = function(...)
 			local t = {
 				n = select("#", ...),
 				...
 			}
-			return inner((table.unpack(t)))
-		end
-		local inner
-		inner = function(a, b, c)
-			return {
-				a,
-				b,
-				c
-			}
+			return inner(t[1], t[2], t[3])
 		end
 		local result = outer(1, 2, 3)
 		return assert.same(result, {

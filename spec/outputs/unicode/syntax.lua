@@ -77,7 +77,7 @@ _ = _call_2["变量b"](_call_2)
 _ = f("")["变量c"]()
 f(("")[_u53d8_u91cfa])
 f((function()
-	local _call_3 = ("")
+	local _call_3 = ""
 	return _call_3["变量b"](_call_3)
 end)())
 f(("")["变量c"]())

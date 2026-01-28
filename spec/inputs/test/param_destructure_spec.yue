@@ -38,10 +38,10 @@ describe "parameter destructuring", ->
 		assert.same result, {1, 2, 3}
 
 	it "should support mixed array and object", ->
-		f = ([first], {key: :value}) ->
+		f = ([first,], {key: :value}) ->
 			{first, value}
 
-		result = f [1], {key: "test"}
+		result = f [1,], {key: value: "test"}
 		assert.same result, {1, "test"}
 
 	it "should work with fat arrow", ->
@@ -54,7 +54,7 @@ describe "parameter destructuring", ->
 		assert.same result, 130
 
 	it "should handle missing keys", ->
-		f = (:a, :b = "default", :c = "missing") ->
+		f = ({:a, :b = "default", :c = "missing"}) ->
 			{a, b, c}
 
 		result = f a: 1
@@ -89,10 +89,10 @@ describe "parameter destructuring", ->
 		assert.same result, {1, {2, 3, 4}}
 
 	it "should support spreading", ->
-		f = (...rest, :last) ->
+		f = ({...rest, :last}) ->
 			{rest, last}
-
-		result = f 1, 2, 3, {last: "final"}
+	
+		result = f {1, 2, 3, last: "final"}
 		assert.same result, {{1, 2, 3}, 'final'}
 
 	it "should work with table comprehensions", ->
@@ -103,8 +103,8 @@ describe "parameter destructuring", ->
 		assert.same result, {2, 4, 6}
 
 	it "should handle nil arguments", ->
-		f = (:a = "nil_a", :b = "nil_b") ->
+		f = ({:a = "nil_a", :b = "nil_b"}) ->
 			{a, b}
-
-		result = f nil, nil
-		assert.same result, {'nil_a', 'nil_b'}
+	
+		result = f {}
+		assert.same result, {"nil_a", "nil_b"}

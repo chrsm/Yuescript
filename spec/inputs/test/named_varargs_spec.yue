@@ -97,12 +97,11 @@ describe "named varargs", ->
 		assert.same result, {"a", "b", "c"}
 
 	it "should support passing named varargs to another function", ->
+		inner = (...) ->
+			{...}
 		outer = (...t) ->
-			inner (table.unpack t)
-
-		inner = (a, b, c) ->
-			{a, b, c}
-
+			inner t[1], t[2], t[3]
+	
 		result = outer 1, 2, 3
 		assert.same result, {1, 2, 3}
 

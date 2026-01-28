@@ -30,12 +30,12 @@ describe "table append", ->
 		tab[] = ...tb2
 		assert.same tab, {1, 2}
 
-	it "should append nil values", ->
+	it "should not append nil values", ->
 		tab = []
 		tab[] = nil
 		tab[] = "value"
-		assert.same tab[1], nil
-		assert.same tab[2], "value"
+		assert.same tab[2], nil
+		assert.same tab[1], "value"
 
 	it "should work in loop", ->
 		tab = []
@@ -73,5 +73,5 @@ describe "table append", ->
 	it "should append function results", ->
 		fn = -> 1, 2, 3
 		tab = []
-		tab[] = fn!
+		tab[] = ...[fn!,]
 		assert.same tab, {1, 2, 3}
