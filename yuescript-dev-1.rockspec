@@ -31,12 +31,9 @@ build = {
 		bin = {
 			"build.luarocks/yue"
 		}
-	}
-}
-
-platforms = {
-	win32 = {
-		build = {
+	},
+	platforms = {
+		windows = {
 			install = {
 				lib = {
 					"build.luarocks/yue.dll"
@@ -48,3 +45,4 @@ platforms = {
 		}
 	}
 }
+
