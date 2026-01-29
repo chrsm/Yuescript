@@ -36,10 +36,10 @@ build = {
 		windows = {
 			install = {
 				lib = {
-					"build.luarocks/yue.dll"
+					"build.luarocks/Release/yue.dll"
 				},
 				bin = {
-					"build.luarocks/yue.exe"
+					"build.luarocks/Release/yue.exe"
 				}
 			}
 		}
