@@ -132,8 +132,8 @@ release: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DCOMPILE_FLAGS)
 debug: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(DCOMPILE_FLAGS)
 debug: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(DLINK_FLAGS)
-shared: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS) $(TARGET_FLAGS)
-shared: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(RCOMPILE_FLAGS) $(TARGET_FLAGS)
+shared: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
+shared: export CFLAGS := $(CFLAGS) $(filter-out -std=c++17,$(COMPILE_FLAGS)) $(RCOMPILE_FLAGS)
 
 # Build and output paths
 release: export BUILD_PATH := build/release
@@ -379,7 +379,7 @@ endif
 	@$(END_TIME)
 
 $(BUILD_PATH)/yue.so: $(SRC_PATH)/yuescript/ast.cpp $(SRC_PATH)/yuescript/yue_ast.cpp $(SRC_PATH)/yuescript/yue_compiler.cpp $(SRC_PATH)/yuescript/yue_parser.cpp $(SRC_PATH)/yuescript/yuescript.cpp $(SRC_PATH)/yuescript/parser.cpp
-	$(CMD_PREFIX)$(CXX) $(CXXFLAGS) -I $(SRC_PATH) -I $(SRC_PATH)/3rdParty -I $(LUAI) -L $(LUAL) -llua -o $@ -fPIC -shared $?
+	$(CMD_PREFIX)$(CXX) $(CXXFLAGS) $(TARGET_FLAGS) -I $(SRC_PATH) -I $(SRC_PATH)/3rdParty -I $(LUAI) -L $(LUAL) -llua -o $@ -fPIC -shared $?
 
 # Standard, non-optimized release build
 .PHONY: shared
