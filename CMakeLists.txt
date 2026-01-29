@@ -111,6 +111,10 @@ if (IS_TERMUX)
 	target_compile_definitions(libyue PRIVATE YUE_NO_WATCHER)
 endif()
 
+if (MSVC)
+	target_compile_definitions(libyue PRIVATE YUE_BUILD_AS_DLL)
+endif ()
+
 add_executable(yue
 	src/yuescript/ast.cpp
 	src/yuescript/parser.cpp
