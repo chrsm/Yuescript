@@ -1,0 +1,27 @@
+describe "anonymous class", ->
+	it "should create anonymous class", ->
+		AnonymousClass = class
+			value: 100
+			getValue: => @value
+		
+		instance = AnonymousClass!
+		assert.same instance\getValue!, 100
+	
+	it "should use assigned name", ->
+		MyClass = class
+			value: 50
+		
+		instance = MyClass!
+		assert.is_true MyClass.__name == "MyClass"
+		assert.same instance.value, 50
+	
+	it "should support anonymous subclass", ->
+		Base = class
+			baseMethod: => "base"
+		
+		Sub = class extends Base
+			subMethod: => "sub"
+		
+		instance = Sub!
+		assert.same instance\baseMethod!, "base"
+		assert.same instance\subMethod!, "sub"

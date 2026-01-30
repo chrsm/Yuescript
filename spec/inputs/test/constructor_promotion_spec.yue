@@ -1,0 +1,26 @@
+describe "constructor promotion", ->
+	it "should promote simple arguments to assignment", ->
+		class Thing
+			new: (@name, @age) =>
+
+		instance = Thing "Alice", 30
+		assert.same instance.name, "Alice"
+		assert.same instance.age, 30
+
+	it "should promote multiple arguments", ->
+		class Point
+			new: (@x, @y, @z) =>
+
+		p = Point 1, 2, 3
+		assert.same p.x, 1
+		assert.same p.y, 2
+		assert.same p.z, 3
+
+	it "should work with multiple parameters", ->
+		class Container
+			new: (@a, @b, @c) =>
+		
+		c = Container!
+		assert.same c.a, nil
+		assert.same c.b, nil
+		assert.same c.c, nil

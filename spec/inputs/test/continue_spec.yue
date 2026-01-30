@@ -1,0 +1,37 @@
+describe "continue statement", ->
+	it "should skip odd numbers in for loop", ->
+		numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+		even = for n in *numbers
+			continue if n % 2 == 1
+			n
+
+		assert.same even, {2, 4, 6, 8, 10}
+
+	it "should filter values in while loop", ->
+		i = 0
+		result = []
+
+		while i < 10
+			i += 1
+			continue if i % 3 == 0
+			table.insert result, i
+
+		assert.same result, {1, 2, 4, 5, 7, 8, 10}
+
+	it "should skip with condition in loop expression", ->
+		items = [1, 2, 3, 4, 5]
+		odds = for item in *items
+			continue if item % 2 == 0
+			item
+
+		assert.same odds, {1, 3, 5}
+
+	it "should work with nested loops", ->
+		result = []
+
+		for i = 1, 5
+			for j = 1, 5
+				continue if i == j
+				table.insert result, {i, j}
+
+		assert.same #result, 20

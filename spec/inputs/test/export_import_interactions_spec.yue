@@ -1,0 +1,19 @@
+describe "export import interactions", ->
+	it "should import with alias and destructuring", ->
+		source = {
+			origin: {x: 10, y: 20}
+			target: "result"
+			point: {x: 5, y: 15}
+		}
+		import x, y from source.origin
+		import target from source
+		px, py = do
+			local x, y
+			import x, y from source.point
+			x, y
+
+		assert.same x, 10
+		assert.same y, 20
+		assert.same target, "result"
+		assert.same px, 5
+		assert.same py, 15

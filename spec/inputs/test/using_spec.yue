@@ -1,0 +1,47 @@
+describe "using", ->
+	it "should prevent variable shadowing in assignment", ->
+		tmp = 100
+		i, k = 100, 50
+
+		process = (add using k, i) ->
+			tmp = tmp + add
+			i += tmp
+			k += tmp
+
+		process 22
+		assert.same i, 222
+		assert.same k, 172
+		assert.same tmp, 100
+
+	it "should handle multiple variable names", ->
+		a, b, c = 1, 2, 3
+
+		process = (sum using a, b) ->
+			a += 1
+			b += 2
+			c = sum + 100
+
+		process 10
+		assert.same a, 2
+		assert.same b, 4
+		assert.same c, 3
+
+	it "should work with nil value", ->
+		local x = 1
+
+		fn = (val using x) ->
+			if val ~= nil
+				x = val
+
+		fn 100
+		assert.same x, 100
+		assert.is_true x ~= 1
+
+	it "should work with function calls", ->
+		local count = 0
+
+		fn = (n using count) ->
+			count += n
+
+		fn 5
+		assert.same count, 5

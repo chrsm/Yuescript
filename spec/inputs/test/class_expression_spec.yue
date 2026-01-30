@@ -1,0 +1,27 @@
+describe "class expression", ->
+	it "should support class expression assignment", ->
+		MyClass = class
+			value: 100
+
+		assert.same MyClass.value, 100
+
+	it "should support class expression in table", ->
+		classes = {
+			Alpha: class
+				new: => @value = 1
+			Beta: class
+				new: => @value = 2
+		}
+
+		a = classes.Alpha!
+		b = classes.Beta!
+		assert.same a.value, 1
+		assert.same b.value, 2
+
+	it "should work with return", ->
+		fn = ->
+			return class
+				value: 50
+
+		Instance = fn!
+		assert.same Instance!.value, 50
