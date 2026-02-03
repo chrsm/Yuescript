@@ -7,7 +7,7 @@
 ```bash
 yarn dev
 yarn build
+yarn preview
 ```
 
-For more details, please head VuePress's [documentation](https://v1.vuepress.vuejs.org/).
-
+For more details, please head to VitePress's [documentation](https://vitepress.dev/).
