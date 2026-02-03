@@ -15,8 +15,8 @@ features:
     details: 更精简的语法，编译为可读 Lua，输出可预测、易集成。
   - title: 现代语言特性
     details: 管道、模式匹配、切片与解构，同时保留 Lua 互操作性。
-  - title: 内置工具链
-    details: 在线 Playground、语法高亮与同步更新的文档。
+  - title: 快速迭代
+    details: 虚心接受用户反馈，以帮助改进和加速语言的开发和演进！
 footer: MIT Licensed | Copyright © 2017-2026 Li Jin
 ---
 

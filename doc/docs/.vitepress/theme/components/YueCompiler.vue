@@ -39,24 +39,25 @@ import { history, indentWithTab } from '@codemirror/commands'
 import { defaultKeymap, historyKeymap } from '@codemirror/commands'
 import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode'
 
-const vscodeLightTheme = EditorView.theme(
+/* shikijs/themes/light-plus: editor.background #FFFFFF, editor.foreground #000000 */
+const lightPlusTheme = EditorView.theme(
   {
     '&': {
       height: '100%',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#FFFFFF',
       color: '#000000',
-      fontSize: '15px'
+      fontSize: '0.8em'
     },
     '&.cm-focused': {
       outline: 'none'
     },
     '.cm-content': {
       fontFamily:
-        "Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New', Courier, monospace",
+        "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
       lineHeight: '1.375'
     },
     '.cm-gutters': {
-      backgroundColor: '#ffffff',
+      backgroundColor: '#FFFFFF',
       color: '#6e6e6e',
       borderRight: 'none'
     },
@@ -82,24 +83,25 @@ const vscodeLightTheme = EditorView.theme(
   { dark: false }
 )
 
-const vscodeDarkTheme = EditorView.theme(
+/* shikijs/themes/dark-plus: editor.background #1E1E1E, editor.foreground #D4D4D4 */
+const darkPlusTheme = EditorView.theme(
   {
     '&': {
       height: '100%',
-      backgroundColor: '#1e1e1e',
-      color: '#d4d4d4',
-      fontSize: '15px'
+      backgroundColor: '#1E1E1E',
+      color: '#D4D4D4',
+      fontSize: '0.8em'
     },
     '&.cm-focused': {
       outline: 'none'
     },
     '.cm-content': {
       fontFamily:
-        "Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New', Courier, monospace",
+        "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
       lineHeight: '1.375'
     },
     '.cm-gutters': {
-      backgroundColor: '#1e1e1e',
+      backgroundColor: '#1E1E1E',
       color: '#858585',
       borderRight: 'none'
     },
@@ -125,16 +127,17 @@ const vscodeDarkTheme = EditorView.theme(
   { dark: true }
 )
 
-const vscodeLightHighlightStyle = HighlightStyle.define([
+/* shikijs/themes/light-plus tokenColors */
+const lightPlusHighlightStyle = HighlightStyle.define([
   { tag: tags.comment, color: '#008000' },
-  { tag: tags.keyword, color: '#0000ff' },
+  { tag: tags.keyword, color: '#AF00DB' },
   { tag: [tags.operator, tags.punctuation], color: '#000000' },
   { tag: [tags.string, tags.special(tags.string)], color: '#a31515' },
+  { tag: tags.regexp, color: '#811f3f' },
   { tag: [tags.number, tags.bool, tags.null], color: '#098658' },
   { tag: tags.function(tags.variableName), color: '#795e26' },
   { tag: tags.typeName, color: '#267f99' },
   { tag: tags.className, color: '#267f99' },
-  { tag: tags.variableName, color: '#001080' },
   { tag: tags.propertyName, color: '#001080' },
   { tag: tags.tagName, color: '#800000' },
   { tag: tags.attributeName, color: '#e50000' },
@@ -142,16 +145,17 @@ const vscodeLightHighlightStyle = HighlightStyle.define([
   { tag: tags.invalid, color: '#cd3131' }
 ])
 
-const vscodeDarkHighlightStyle = HighlightStyle.define([
+/* shikijs/themes/dark-plus tokenColors */
+const darkPlusHighlightStyle = HighlightStyle.define([
   { tag: tags.comment, color: '#6a9955' },
-  { tag: tags.keyword, color: '#569cd6' },
+  { tag: tags.keyword, color: '#C586C0' },
   { tag: [tags.operator, tags.punctuation], color: '#d4d4d4' },
   { tag: [tags.string, tags.special(tags.string)], color: '#ce9178' },
+  { tag: tags.regexp, color: '#d16969' },
   { tag: [tags.number, tags.bool, tags.null], color: '#b5cea8' },
   { tag: tags.function(tags.variableName), color: '#dcdcaa' },
   { tag: tags.typeName, color: '#4ec9b0' },
   { tag: tags.className, color: '#4ec9b0' },
-  { tag: tags.variableName, color: '#9cdcfe' },
   { tag: tags.propertyName, color: '#9cdcfe' },
   { tag: tags.tagName, color: '#569cd6' },
   { tag: tags.attributeName, color: '#9cdcfe' },
@@ -328,12 +332,12 @@ export default {
           this.readOnlyCompartment.of(EditorState.readOnly.of(this.readonly)),
           this.highlightCompartment.of(
             syntaxHighlighting(
-              isDark ? vscodeDarkHighlightStyle : vscodeLightHighlightStyle,
+              isDark ? darkPlusHighlightStyle : lightPlusHighlightStyle,
               { fallback: true }
             )
           ),
           updateListener,
-          this.themeCompartment.of(isDark ? vscodeDarkTheme : vscodeLightTheme)
+          this.themeCompartment.of(isDark ? darkPlusTheme : lightPlusTheme)
         ]
       })
 
@@ -350,11 +354,11 @@ export default {
       this.editorView.dispatch({
         effects: [
           this.themeCompartment.reconfigure(
-            isDark ? vscodeDarkTheme : vscodeLightTheme
+            isDark ? darkPlusTheme : lightPlusTheme
           ),
           this.highlightCompartment.reconfigure(
             syntaxHighlighting(
-              isDark ? vscodeDarkHighlightStyle : vscodeLightHighlightStyle,
+              isDark ? darkPlusHighlightStyle : lightPlusHighlightStyle,
               { fallback: true }
             )
           )

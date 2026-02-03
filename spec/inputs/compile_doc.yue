@@ -7,13 +7,13 @@ for [compiledFile, docFile] in *[
 		import "yue" as :to_lua
 		text = \read "*a"
 		codes = []
-		for code in text\gmatch "```moonscript(.-)```"
+		for code in text\gmatch "```yuescript[\r\n]+(.-)```[^%w]"
 			if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
 				codes[] = result
 			elseif not err\match "macro exporting module only accepts macro definition"
 				print err
 				os.exit 1
-		for code in text\gmatch "```yue(.-)```"
+		for code in text\gmatch "```yue[\r\n]+(.-)```[^%w]"
 			if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
 				codes[] = result
 			else

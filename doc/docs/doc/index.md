@@ -2908,7 +2908,7 @@ thing = {
   width: 123
 }
 
-thing_copy = \{k, v for k, v in pairs thing}
+thing_copy = {k, v for k, v in pairs thing}
 ```
 
 </YueDisplay>
@@ -2919,7 +2919,7 @@ no_color = {k, v for k, v in pairs thing when k != "color"}
 <YueDisplay>
 
 ```yue
-no_color = \{k, v for k, v in pairs thing when k != "color"}
+no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
 
 </YueDisplay>
@@ -2934,7 +2934,7 @@ sqrts = {i, math.sqrt i for i in *numbers}
 
 ```yue
 numbers = [1, 2, 3, 4]
-sqrts = \{i, math.sqrt i for i in *numbers}
+sqrts = {i, math.sqrt i for i in *numbers}
 ```
 
 </YueDisplay>
@@ -2951,7 +2951,7 @@ tbl = {unpack tuple for tuple in *tuples}
 
 ```yue
 tuples = [ ["hello", "world"], ["foo", "bar"]]
-tbl = \{unpack tuple for tuple in *tuples}
+tbl = {unpack tuple for tuple in *tuples}
 ```
 
 </YueDisplay>
@@ -4751,7 +4751,7 @@ to_lua: function(code: string, config?: Config):
 | --- | --- |
 | string \| nil | The compiled Lua code, or nil if the compilation failed. |
 | string \| nil | The error message, or nil if the compilation succeeded. |
-| \{\{string, integer, integer}} \| nil | The global variables appearing in the code (with name, row and column), or nil if the compiler option `lint_global` is false. |
+| {{string, integer, integer}} \| nil | The global variables appearing in the code (with name, row and column), or nil if the compiler option `lint_global` is false. |
 
 #### file_exist
 

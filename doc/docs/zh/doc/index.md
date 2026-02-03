@@ -2858,7 +2858,7 @@ thing = {
   width: 123
 }
 
-thing_copy = \{k, v for k, v in pairs thing}
+thing_copy = {k, v for k, v in pairs thing}
 ```
 
 </YueDisplay>
@@ -2869,7 +2869,7 @@ no_color = {k, v for k, v in pairs thing when k != "color"}
 <YueDisplay>
 
 ```yue
-no_color = \{k, v for k, v in pairs thing when k != "color"}
+no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
 
 </YueDisplay>
@@ -2884,7 +2884,7 @@ sqrts = {i, math.sqrt i for i in *numbers}
 
 ```yue
 numbers = [1, 2, 3, 4]
-sqrts = \{i, math.sqrt i for i in *numbers}
+sqrts = {i, math.sqrt i for i in *numbers}
 ```
 
 </YueDisplay>
@@ -2901,7 +2901,7 @@ tbl = {unpack tuple for tuple in *tuples}
 
 ```yue
 tuples = [ ["hello", "world"], ["foo", "bar"]]
-tbl = \{unpack tuple for tuple in *tuples}
+tbl = {unpack tuple for tuple in *tuples}
 ```
 
 </YueDisplay>
@@ -3588,7 +3588,7 @@ switch item
 <YueDisplay>
 
 ```yue
-item = \{}
+item = {}
 
 {pos: {:x = 50, :y = 200}} = item -- 获取错误：尝试索引nil值（字段'pos'）
 
@@ -3748,7 +3748,7 @@ class Inventory
 ```yue
 class Inventory
   new: =>
-    @items = \{}
+    @items = {}
 
   add_item: (name) =>
     if @items[name]
@@ -4463,7 +4463,7 @@ tbl = {
 <YueDisplay>
 
 ```yue
-tbl = \{
+tbl = {
   key: do
     print "分配键值!"
     1234
@@ -4501,7 +4501,7 @@ run_callback my_object\write
 <YueDisplay>
 
 ```yue
-my_object = \{
+my_object = {
   value: 1000
   write: => print "值为:", @value
 }
@@ -4698,7 +4698,7 @@ to_lua: function(code: string, config?: Config):
 | --- | --- |
 | string \| nil | 编译后的 Lua 代码，如果编译失败则为 nil。 |
 | string \| nil | 错误消息，如果编译成功则为 nil。 |
-| \{\{string, integer, integer}} \| nil | 代码中出现的全局变量（带有名称、行和列），如果编译器选项 `lint_global` 为 false 则为 nil。 |
+| {{string, integer, integer}} \| nil | 代码中出现的全局变量（带有名称、行和列），如果编译器选项 `lint_global` 为 false 则为 nil。 |
 
 #### file_exist
 

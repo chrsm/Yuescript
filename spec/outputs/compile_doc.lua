@@ -2,11 +2,11 @@ local outputFolder = ...
 local _list_0 = {
 	{
 		"codes_from_doc.lua",
-		"doc/docs/doc/README.md"
+		"doc/docs/doc/index.md"
 	},
 	{
 		"codes_from_doc_zh.lua",
-		"doc/docs/zh/doc/README.md"
+		"doc/docs/zh/doc/index.md"
 	}
 }
 for _index_0 = 1, #_list_0 do
@@ -18,7 +18,7 @@ for _index_0 = 1, #_list_0 do
 		local to_lua = require("yue").to_lua
 		local text = _with_0:read("*a")
 		local codes = { }
-		for code in text:gmatch("```moonscript(.-)```") do
+		for code in text:gmatch("```yuescript[\r\n]+(.-)```[^%w]") do
 			local result, err = to_lua(code, {
 				implicit_return_root = false,
 				reserve_line_number = false
@@ -30,8 +30,8 @@ for _index_0 = 1, #_list_0 do
 				os.exit(1)
 			end
 		end
-		for code in text:gmatch("<pre>(.-)</pre>") do
-			local result, err = to_lua(code:gsub("&lt;", "<"):gsub("&gt;", ">"), {
+		for code in text:gmatch("```yue[\r\n]+(.-)```[^%w]") do
+			local result, err = to_lua(code, {
 				implicit_return_root = false,
 				reserve_line_number = false
 			})

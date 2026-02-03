@@ -107,7 +107,7 @@ if cond then
 end
 end
 print("yuescript")
-print(3)
+print(2)
 print("Valid enum type:", "Static")
 do
 	print(123, "hello")
@@ -992,6 +992,36 @@ local arg1 = {
 	a = 0
 }
 f2(arg1, arg2)
+local findFirstEven
+findFirstEven = function(list)
+	for _index_0 = 1, #list do
+		local item = list[_index_0]
+		if type(item) == "table" then
+			for _index_1 = 1, #item do
+				local sub = item[_index_1]
+				if sub % 2 == 0 then
+					return sub
+				end
+			end
+		end
+	end
+	return nil
+end
+local findFirstEven
+findFirstEven = function(list)
+	for _index_0 = 1, #list do
+		local item = list[_index_0]
+		if type(item) == "table" then
+			for _index_1 = 1, #item do
+				local sub = item[_index_1]
+				if sub % 2 == 0 then
+					return sub
+				end
+			end
+		end
+	end
+	return nil
+end
 local f
 f = function(...)
 	local t = {
@@ -2637,7 +2667,7 @@ if cond then
 end
 end
 print("yuescript")
-print(3)
+print(2)
 print("Valid enum type:", "Static")
 do
 	print(123, "hello")

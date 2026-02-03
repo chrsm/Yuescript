@@ -15,8 +15,8 @@ features:
     details: Write concise syntax that compiles to readable Lua, with predictable output.
   - title: Modern language features
     details: Pipe, pattern matching, slicing, and destructuring without giving up Lua interop.
-  - title: Tooling built in
-    details: Browser-based playground, syntax highlighting, and docs that stay in sync.
+  - title: Rapid Iteration
+    details: Any feedback is welcome to help accelerate the language development and evolution!
 footer: MIT Licensed | Copyright © 2017-2026 Li Jin
 ---
 
