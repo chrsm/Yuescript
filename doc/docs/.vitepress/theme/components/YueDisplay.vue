@@ -12,7 +12,9 @@ export default {
   methods: {
     compile() {
       const node = this.$el.children[1]
-      const code = node.innerText
+      const pre = node.querySelector('pre')
+      const codeNode = pre?.querySelector('code') || pre || node
+      const code = (codeNode?.textContent || '').replace(/\r\n?/g, '\n')
       window.dispatchEvent(new CustomEvent('yue:open-compiler', { detail: code }))
     }
   }

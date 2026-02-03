@@ -1,7 +1,7 @@
 outputFolder = ...
 for [compiledFile, docFile] in *[
-		["codes_from_doc.lua", "doc/docs/doc/README.md"]
-		["codes_from_doc_zh.lua", "doc/docs/zh/doc/README.md"]
+		["codes_from_doc.lua", "doc/docs/doc/index.md"]
+		["codes_from_doc_zh.lua", "doc/docs/zh/doc/index.md"]
 	]
 	close input = with? io.open docFile
 		import "yue" as :to_lua
@@ -13,8 +13,8 @@ for [compiledFile, docFile] in *[
 			elseif not err\match "macro exporting module only accepts macro definition"
 				print err
 				os.exit 1
-		for code in text\gmatch "<pre>(.-)</pre>"
-			if result, err := to_lua code\gsub("&lt;", "<")\gsub("&gt;", ">"), implicit_return_root: false, reserve_line_number: false
+		for code in text\gmatch "```yue(.-)```"
+			if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
 				codes[] = result
 			else
 				print err

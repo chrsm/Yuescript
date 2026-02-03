@@ -13,3 +13,4 @@ tup/t/*.lua
 Yuescript.vcxproj.user
 spec/generated
 .release_time
+doc/docs/.vitepress/cache

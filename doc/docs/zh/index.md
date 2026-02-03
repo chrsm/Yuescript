@@ -1,0 +1,25 @@
+---
+layout: home
+hero:
+  name: 月之脚本
+  text: 一门编译到 Lua 的语言
+  image:
+    src: /image/yuescript.svg
+    alt: 月之脚本
+  actions:
+    - theme: brand
+      text: 快速上手 →
+      link: /zh/doc/
+features:
+  - title: 熟悉的 Lua 工作流
+    details: 更精简的语法，编译为可读 Lua，输出可预测、易集成。
+  - title: 现代语言特性
+    details: 管道、模式匹配、切片与解构，同时保留 Lua 互操作性。
+  - title: 内置工具链
+    details: 在线 Playground、语法高亮与同步更新的文档。
+footer: MIT Licensed | Copyright © 2017-2026 Li Jin
+---
+
+### 版权和协议
+
+MIT 许可。Copyright © 2017-2026 Li Jin. 保留所有权利。

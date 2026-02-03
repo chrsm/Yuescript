@@ -1,8 +1,98 @@
 :root {
-  --vp-c-brand-1: #3eaf7c;
+  --vp-c-brand-1: #b4ac8f;
+  --vp-button-brand-bg: #b4ac8f;
+  --vp-button-brand-hover-bg: #b4ac8f;
+  --vp-button-brand-active-bg: #b4ac8f;
+  --vp-button-brand-border: #b4ac8f;
+  --vp-button-brand-hover-border: #b4ac8f;
+  --vp-button-brand-active-border: #b4ac8f;
+  --vp-button-brand-text: #fff;
 }
 
 .VPHomeHero .image img {
   width: 450px;
   max-width: 450px !important;
+}
+
+/* Prism theme for YueCompiler output (VS Code Light/Dark) */
+.code-output,
+.code-output code {
+  background: #ffffff;
+  color: #000000;
+}
+
+.dark .code-output,
+.dark .code-output code {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+.code-output .token.comment {
+  color: #008000;
+}
+
+.code-output .token.keyword {
+  color: #0000ff;
+}
+
+.code-output .token.operator,
+.code-output .token.punctuation {
+  color: #000000;
+}
+
+.code-output .token.string,
+.code-output .token.char,
+.code-output .token.regex,
+.code-output .token.variable {
+  color: #a31515;
+}
+
+.code-output .token.number,
+.code-output .token.boolean,
+.code-output .token.constant {
+  color: #098658;
+}
+
+.code-output .token.function {
+  color: #795e26;
+}
+
+.code-output .token.class-name,
+.code-output .token.builtin {
+  color: #267f99;
+}
+
+.dark .code-output .token.comment {
+  color: #6a9955;
+}
+
+.dark .code-output .token.keyword {
+  color: #569cd6;
+}
+
+.dark .code-output .token.operator,
+.dark .code-output .token.punctuation {
+  color: #d4d4d4;
+}
+
+.dark .code-output .token.string,
+.dark .code-output .token.char,
+.dark .code-output .token.regex,
+.dark .code-output .token.variable {
+  color: #ce9178;
+}
+
+.dark .code-output .token.number,
+.dark .code-output .token.boolean,
+.dark .code-output .token.constant {
+  color: #b5cea8;
+}
+
+.dark .code-output .token.function {
+  color: #dcdcaa;
+}
+
+.dark .code-output .token.class-name,
+.dark .code-output .token.builtin {
+  color: #4ec9b0;
 }

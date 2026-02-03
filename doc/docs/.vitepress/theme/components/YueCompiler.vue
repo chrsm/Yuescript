@@ -1,15 +1,10 @@
 <template>
   <div style="width: 100%; height: auto;">
-    <div class="parent" style="background-color: #f5f7ff;">
+    <div class="parent">
       <div class="editor-section">
         <div class="childTitle">YueScript {{ info }}</div>
         <div class="editor-container">
-          <textarea
-            class="code-input"
-            v-model="code"
-            @input="codeChanged($event.target.value)"
-            :readonly="readonly"
-          ></textarea>
+          <div ref="codeEditor" class="code-editor"></div>
         </div>
       </div>
       <div class="editor-section">
@@ -27,10 +22,142 @@
 </template>
 
 <script>
-import 'prismjs/themes/prism.css'
-import { highlight, languages } from 'prismjs/components/prism-core'
+import pkg from 'prismjs/components/prism-core.js'
+const { highlight, languages } = pkg
 import 'prismjs/components/prism-moonscript'
 import 'prismjs/components/prism-lua'
+import { EditorState, Compartment } from '@codemirror/state'
+import { EditorView, keymap, lineNumbers } from '@codemirror/view'
+import {
+  indentUnit,
+  StreamLanguage,
+  syntaxHighlighting,
+  HighlightStyle
+} from '@codemirror/language'
+import { tags } from '@lezer/highlight'
+import { history, indentWithTab } from '@codemirror/commands'
+import { defaultKeymap, historyKeymap } from '@codemirror/commands'
+import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode'
+
+const vscodeLightTheme = EditorView.theme(
+  {
+    '&': {
+      height: '100%',
+      backgroundColor: '#ffffff',
+      color: '#000000',
+      fontSize: '15px'
+    },
+    '&.cm-focused': {
+      outline: 'none'
+    },
+    '.cm-content': {
+      fontFamily:
+        "Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New', Courier, monospace",
+      lineHeight: '1.375'
+    },
+    '.cm-gutters': {
+      backgroundColor: '#ffffff',
+      color: '#6e6e6e',
+      borderRight: 'none'
+    },
+    '.cm-activeLine': {
+      backgroundColor: 'transparent'
+    },
+    '.cm-activeLineGutter': {
+      backgroundColor: 'transparent'
+    },
+    '.cm-selectionBackground': {
+      backgroundColor: '#add6ff'
+    },
+    '&.cm-focused .cm-selectionBackground': {
+      backgroundColor: '#add6ff'
+    },
+    '.cm-cursor': {
+      borderLeftColor: '#000000'
+    },
+    '.cm-matchingBracket': {
+      backgroundColor: '#c9def5'
+    }
+  },
+  { dark: false }
+)
+
+const vscodeDarkTheme = EditorView.theme(
+  {
+    '&': {
+      height: '100%',
+      backgroundColor: '#1e1e1e',
+      color: '#d4d4d4',
+      fontSize: '15px'
+    },
+    '&.cm-focused': {
+      outline: 'none'
+    },
+    '.cm-content': {
+      fontFamily:
+        "Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New', Courier, monospace",
+      lineHeight: '1.375'
+    },
+    '.cm-gutters': {
+      backgroundColor: '#1e1e1e',
+      color: '#858585',
+      borderRight: 'none'
+    },
+    '.cm-activeLine': {
+      backgroundColor: 'transparent'
+    },
+    '.cm-activeLineGutter': {
+      backgroundColor: 'transparent'
+    },
+    '.cm-selectionBackground': {
+      backgroundColor: '#264f78'
+    },
+    '&.cm-focused .cm-selectionBackground': {
+      backgroundColor: '#264f78'
+    },
+    '.cm-cursor': {
+      borderLeftColor: '#aeafad'
+    },
+    '.cm-matchingBracket': {
+      backgroundColor: '#3a3d41'
+    }
+  },
+  { dark: true }
+)
+
+const vscodeLightHighlightStyle = HighlightStyle.define([
+  { tag: tags.comment, color: '#008000' },
+  { tag: tags.keyword, color: '#0000ff' },
+  { tag: [tags.operator, tags.punctuation], color: '#000000' },
+  { tag: [tags.string, tags.special(tags.string)], color: '#a31515' },
+  { tag: [tags.number, tags.bool, tags.null], color: '#098658' },
+  { tag: tags.function(tags.variableName), color: '#795e26' },
+  { tag: tags.typeName, color: '#267f99' },
+  { tag: tags.className, color: '#267f99' },
+  { tag: tags.variableName, color: '#001080' },
+  { tag: tags.propertyName, color: '#001080' },
+  { tag: tags.tagName, color: '#800000' },
+  { tag: tags.attributeName, color: '#e50000' },
+  { tag: tags.meta, color: '#666666' },
+  { tag: tags.invalid, color: '#cd3131' }
+])
+
+const vscodeDarkHighlightStyle = HighlightStyle.define([
+  { tag: tags.comment, color: '#6a9955' },
+  { tag: tags.keyword, color: '#569cd6' },
+  { tag: [tags.operator, tags.punctuation], color: '#d4d4d4' },
+  { tag: [tags.string, tags.special(tags.string)], color: '#ce9178' },
+  { tag: [tags.number, tags.bool, tags.null], color: '#b5cea8' },
+  { tag: tags.function(tags.variableName), color: '#dcdcaa' },
+  { tag: tags.typeName, color: '#4ec9b0' },
+  { tag: tags.className, color: '#4ec9b0' },
+  { tag: tags.variableName, color: '#9cdcfe' },
+  { tag: tags.propertyName, color: '#9cdcfe' },
+  { tag: tags.tagName, color: '#569cd6' },
+  { tag: tags.attributeName, color: '#9cdcfe' },
+  { tag: tags.meta, color: '#d4d4d4' },
+  { tag: tags.invalid, color: '#f44747' }
+])
 
 export default {
   props: {
@@ -54,7 +181,12 @@ export default {
       code: '',
       compiled: '',
       result: '',
-      windowWidth: 0
+      windowWidth: 0,
+      editorView: null,
+      readOnlyCompartment: null,
+      themeCompartment: null,
+      highlightCompartment: null,
+      themeObserver: null
     }
   },
   computed: {
@@ -68,20 +200,22 @@ export default {
   mounted() {
     this.windowWidth = window.innerWidth
     window.addEventListener('resize', this.handleResize)
+    this.observeTheme()
 
-    if (this.text !== '') {
-      this.code = this.text
-      this.codeChanged(this.text)
-    }
+    const initialCode = this.text !== '' ? this.text : ''
+    this.code = initialCode
+    this.codeChanged(initialCode)
+    this.initEditor(initialCode)
+    this.$nextTick(() => {
+      this.focusEditorToEnd()
+    })
 
     const check = ((self) => {
       return () => {
         if (window.yue) {
           self.info = window.yue.version()
           self.readonly = false
-          if (this.code !== '') {
-            this.codeChanged(this.code)
-          }
+          this.refreshEditorReadOnly()
         } else {
           setTimeout(check, 100)
         }
@@ -91,10 +225,151 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
+    if (this.editorView) {
+      this.editorView.destroy()
+      this.editorView = null
+    }
+    if (this.themeObserver) {
+      this.themeObserver.disconnect()
+      this.themeObserver = null
+    }
   },
   methods: {
+    focusEditorToEnd() {
+      if (!this.editorView) {
+        return
+      }
+      const docLength = this.editorView.state.doc.length
+      this.editorView.dispatch({
+        selection: { anchor: docLength },
+        scrollIntoView: true
+      })
+      this.editorView.focus()
+    },
     handleResize() {
       this.windowWidth = window.innerWidth
+    },
+    isDarkTheme() {
+      return document.documentElement.classList.contains('dark')
+    },
+    observeTheme() {
+      if (this.themeObserver) {
+        return
+      }
+      this.themeObserver = new MutationObserver(() => {
+        this.refreshEditorTheme()
+      })
+      this.themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      })
+    },
+    initEditor(initialCode) {
+      if (!this.$refs.codeEditor) {
+        return
+      }
+
+      const moonscriptMode = simpleMode({
+        start: [
+          { regex: /--\[\[/, token: 'comment', push: 'commentBlock' },
+          { regex: /\[\[/, token: 'string', push: 'stringBlock' },
+          { regex: /--.*/, token: 'comment' },
+          { regex: /"(?:[^\\"]|\\.)*"?/, token: 'string' },
+          { regex: /'(?:[^\\']|\\.)*'?/, token: 'string' },
+          {
+            regex: /\b(?:class|extends|if|else|elseif|then|for|in|while|until|do|return|break|continue|switch|when|case|default|try|catch|finally|with|import|export|from|as|super|self|true|false|nil|and|or|not)\b/,
+            token: 'keyword'
+          },
+          { regex: /@[a-zA-Z_]\w*/, token: 'variable-2' },
+          { regex: /\b[A-Z][\w]*\b/, token: 'typeName' },
+          {
+            regex: /(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i,
+            token: 'number'
+          },
+          { regex: /[+\-/*=<>!]=?|[~^|&%]/, token: 'operator' },
+          { regex: /[()\[\]{}]/, token: 'bracket' },
+          { regex: /[a-zA-Z_]\w*/, token: 'variable' }
+        ],
+        commentBlock: [
+          { regex: /.*?\]\]/, token: 'comment', pop: true },
+          { regex: /.*/, token: 'comment' }
+        ],
+        stringBlock: [
+          { regex: /.*?\]\]/, token: 'string', pop: true },
+          { regex: /.*/, token: 'string' }
+        ],
+        languageData: {
+          name: 'moonscript'
+        }
+      })
+
+      this.readOnlyCompartment = new Compartment()
+      this.themeCompartment = new Compartment()
+      this.highlightCompartment = new Compartment()
+      const updateListener = EditorView.updateListener.of((update) => {
+        if (!update.docChanged) {
+          return
+        }
+        const nextCode = update.state.doc.toString()
+        this.code = nextCode
+        this.codeChanged(nextCode)
+      })
+
+      const isDark = this.isDarkTheme()
+
+      const state = EditorState.create({
+        doc: initialCode,
+        extensions: [
+          lineNumbers(),
+          history(),
+          keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
+          StreamLanguage.define(moonscriptMode),
+          indentUnit.of('  '),
+          this.readOnlyCompartment.of(EditorState.readOnly.of(this.readonly)),
+          this.highlightCompartment.of(
+            syntaxHighlighting(
+              isDark ? vscodeDarkHighlightStyle : vscodeLightHighlightStyle,
+              { fallback: true }
+            )
+          ),
+          updateListener,
+          this.themeCompartment.of(isDark ? vscodeDarkTheme : vscodeLightTheme)
+        ]
+      })
+
+      this.editorView = new EditorView({
+        state,
+        parent: this.$refs.codeEditor
+      })
+    },
+    refreshEditorTheme() {
+      if (!this.editorView || !this.themeCompartment || !this.highlightCompartment) {
+        return
+      }
+      const isDark = this.isDarkTheme()
+      this.editorView.dispatch({
+        effects: [
+          this.themeCompartment.reconfigure(
+            isDark ? vscodeDarkTheme : vscodeLightTheme
+          ),
+          this.highlightCompartment.reconfigure(
+            syntaxHighlighting(
+              isDark ? vscodeDarkHighlightStyle : vscodeLightHighlightStyle,
+              { fallback: true }
+            )
+          )
+        ]
+      })
+    },
+    refreshEditorReadOnly() {
+      if (!this.editorView || !this.readOnlyCompartment) {
+        return
+      }
+      this.editorView.dispatch({
+        effects: this.readOnlyCompartment.reconfigure(
+          EditorState.readOnly.of(this.readonly)
+        )
+      })
     },
     runCode() {
       if (window.yue && this.compiled !== '') {
@@ -138,6 +413,10 @@ export default {
   width: calc(100% - 120px);
   height: 55px;
   border-color: #b7ae8f;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
   outline: none;
   resize: none;
   margin-top: 5px;
@@ -147,12 +426,13 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  background: var(--vp-c-bg-alt);
 }
 
 .editor-section {
   width: 50%;
   box-sizing: border-box;
-  background: #f5f7ff;
+  background: var(--vp-c-bg-alt);
 }
 
 .editor-container {
@@ -200,21 +480,17 @@ export default {
   outline: none;
 }
 
-.code-input {
-  width: 100%;
+.code-editor {
   height: 100%;
-  border: none;
-  resize: none;
-  padding: 12px;
-  font-family: Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono',
-    'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono',
-    'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New',
-    Courier, monospace;
-  line-height: 1.375;
-  background: #f5f7ff;
-  color: #5e6687;
-  font-size: 15px;
-  outline: none;
+}
+
+.code-editor :deep(.cm-scroller) {
+  overscroll-behavior: contain;
+}
+
+.code-editor :deep(.cm-content) {
+  padding-top: 15px;
+  padding-left: 10px;
 }
 
 .code-output {
@@ -222,8 +498,6 @@ export default {
   height: 100%;
   overflow: auto;
   padding: 12px;
-  background: #f5f7ff;
-  color: #5e6687;
   font-size: 15px;
 }
 

@@ -1,10 +1,26 @@
 import { defineConfig } from 'vitepress'
+import { resolve, dirname } from 'path'
+import { readFileSync } from 'fs'
+import { fileURLToPath } from 'url'
+import lightPlus from '@shikijs/themes/light-plus'
+import darkPlus from '@shikijs/themes/dark-plus'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const moonscriptGrammarPath = resolve(__dirname, 'grammars/moonscript.tmLanguage.json')
+const moonscriptGrammar = JSON.parse(readFileSync(moonscriptGrammarPath, 'utf-8'))
+const moonscriptLanguage = {
+  ...moonscriptGrammar,
+  name: 'moonscript',
+  scopeName: 'source.moonscript',
+  aliases: ['yue', 'yuescript', 'moon'],
+}
 
 export default defineConfig({
   title: 'YueScript',
   description: 'A language that compiles to Lua',
+  base: '/',
   head: [
-    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { name: 'theme-color', content: '#b4ac8f' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
     ['meta', { property: 'og:title', content: 'YueScript' }],
@@ -29,10 +45,35 @@ export default defineConfig({
     window.yue = Module;
     window.dispatchEvent(new Event('yue:ready'));
   }
-};`
-    ],
-    ['script', { src: '/js/yuescript.js' }]
+};
+(function() {
+  function loadStub() {
+    window.yue = {
+      version: function() { return '(build with: make wasm)'; },
+      tolua: function() { return ['', 'Build yuescript wasm with: make wasm']; },
+      exec: function() { return ''; }
+    };
+    window.dispatchEvent(new Event('yue:ready'));
+  }
+  var s = document.createElement('script');
+  s.src = '/js/yuescript.js';
+  s.async = true;
+  document.head.appendChild(s);
+})();`
+    ]
   ],
+  vite: {
+    publicDir: resolve(__dirname, 'public'),
+  },
+  markdown: {
+    languages: [
+      moonscriptLanguage,
+    ],
+    theme: {
+      light: lightPlus,
+      dark: darkPlus,
+    },
+  },
   locales: {
     root: {
       label: 'English',
@@ -42,7 +83,7 @@ export default defineConfig({
         nav: [
           { text: 'Document', link: '/doc/' },
           { text: 'Try yue!', link: '/try/' },
-          { text: 'Github', link: 'https://github.com/pigpigyyy/Yuescript' }
+          { text: 'Github', link: 'https://github.com/IppClub/Yuescript' }
         ]
       }
     },
@@ -54,7 +95,7 @@ export default defineConfig({
         nav: [
           { text: '文档', link: '/zh/doc/' },
           { text: '试一试!', link: '/zh/try/' },
-          { text: 'Github', link: 'https://github.com/pigpigyyy/Yuescript' }
+          { text: 'Github', link: 'https://github.com/IppClub/Yuescript' }
         ]
       }
     }

@@ -1,7 +1,6 @@
 <template>
   <div v-if="isOpen" class="modal-backdrop" @click.self="close">
     <div class="modal-body">
-      <button class="modal-close" type="button" @click="close">×</button>
       <YueCompiler :text="content" compileronly displayonly />
     </div>
   </div>
@@ -25,10 +24,17 @@ export default {
       this.content = event?.detail || ''
       this.isOpen = true
     }
+    this.handleKeydown = (event) => {
+      if (event.key === 'Escape' && this.isOpen) {
+        this.close()
+      }
+    }
     window.addEventListener('yue:open-compiler', this.handleOpen)
+    window.addEventListener('keydown', this.handleKeydown)
   },
   beforeUnmount() {
     window.removeEventListener('yue:open-compiler', this.handleOpen)
+    window.removeEventListener('keydown', this.handleKeydown)
   },
   methods: {
     close() {
@@ -55,19 +61,7 @@ export default {
   max-height: 90vh;
   overflow: auto;
   background: #ffffff;
-  border-radius: 8px;
-  padding: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.modal-close {
-  position: sticky;
-  top: 0;
-  margin-left: auto;
-  border: none;
-  background: transparent;
-  font-size: 24px;
-  cursor: pointer;
-  color: #444;
-}
 </style>

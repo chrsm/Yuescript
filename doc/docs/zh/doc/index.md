@@ -5,7 +5,7 @@ title: 参考手册
 
 # 月之脚本
 
-<img src="/image/yuescript.svg" width="300px" height="300px" alt="logo"/>
+<img src="/image/yuescript.svg" width="250px" height="250px" alt="logo" style="padding-top: 3em;"/>
 
 ## 介绍
 
@@ -14,7 +14,7 @@ title: 参考手册
 Yue（月）是中文中“月亮”的名称。
 
 ### 月之脚本概览
-```moonscript
+```yuescript
 -- 导入语法
 import p, to_lua from "yue"
 
@@ -59,7 +59,8 @@ with apple
 export 🌛 = "月之脚本"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 导入语法
 import p, to_lua from "yue"
 
@@ -94,15 +95,16 @@ reduce = (arr, init, action): init ->
 -- 元表操作
 apple =
   size: 15
-  &lt;index&gt;:
+  <index>:
     color: 0x00ffff
 
 with apple
-  p .size, .color, .&lt;index&gt; if .&lt;&gt;?
+  p .size, .color, .<index> if .<>?
 
 -- 类似js的导出语法
 export 🌛 = "月之脚本"
-</pre>
+```
+
 </YueDisplay>
 
 ## 安装
@@ -194,7 +196,7 @@ f!
 ### 月之脚本编译工具
 
 使用月之脚本编译工具：
-```
+```sh
 命令行用法: yue
          [选项] [<文件/目录>] ...
          yue -e <代码或文件> [参数...]
@@ -235,12 +237,12 @@ f!
    不带选项直接运行可进入交互模式（REPL），在交互模式里输入单独的符号 '$'
    可用于开始或结束多行模式。
 ```
-&emsp;&emsp;使用案例：  
-&emsp;&emsp;递归编译当前路径下扩展名为 **.yue** 的每个月之脚本文件： **yue .**  
-&emsp;&emsp;编译并将结果保存到目标路径： **yue -t /target/path/ .**  
-&emsp;&emsp;编译并保留调试信息： **yue -l .**  
-&emsp;&emsp;编译并生成压缩代码： **yue -m .**  
-&emsp;&emsp;直接执行代码： **yue -e 'print 123'**  
+&emsp;&emsp;使用案例：
+&emsp;&emsp;递归编译当前路径下扩展名为 **.yue** 的每个月之脚本文件： **yue .**
+&emsp;&emsp;编译并将结果保存到目标路径： **yue -t /target/path/ .**
+&emsp;&emsp;编译并保留调试信息： **yue -l .**
+&emsp;&emsp;编译并生成压缩代码： **yue -m .**
+&emsp;&emsp;直接执行代码： **yue -e 'print 123'**
 &emsp;&emsp;执行一个月之脚本文件： **yue -e main.yue**
 
 ## 宏
@@ -249,7 +251,7 @@ f!
 
 宏函数用于在编译时执行一段代码来生成新的代码，并将生成的代码插入到最终编译结果中。
 
-```moonscript
+```yuescript
 macro PI2 = -> math.pi * 2
 area = $PI2 * 5
 
@@ -278,7 +280,8 @@ if $and f1!, f2!, f3!
   print "OK"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 macro PI2 = -> math.pi * 2
 area = $PI2 * 5
 
@@ -305,13 +308,14 @@ value = $assert item
 macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
-</pre>
+```
+
 </YueDisplay>
 
 ### 直接插入代码
 
 宏函数可以返回一个包含月之脚本代码的字符串，或是一个包含 Lua 代码字符串的配置表。
-```moonscript
+```yuescript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "无法访问宏生成月之脚本里定义的变量"
@@ -337,7 +341,8 @@ end
 ]==]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
 funcA = -> "无法访问宏生成月之脚本里定义的变量"
@@ -361,13 +366,14 @@ if cond then
   print("输出")
 end
 ]==]
-</pre>
+```
+
 </YueDisplay>
 
 ### 导出宏
 
 宏函数可以从一个模块中导出，并在另一个模块中导入。你必须将导出的宏函数放在一个单独的文件中使用，而且只有宏定义、宏导入和宏展开可以放入这个宏导出模块中。
-```moonscript
+```yuescript
 -- 文件: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
 export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
@@ -382,7 +388,8 @@ import "utils" as {
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 文件: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
 export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
@@ -397,28 +404,31 @@ import "utils" as {
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ]]
-</pre>
+```
+
 </YueDisplay>
 
 ### 内置宏
 
 月之脚本中有一些内置可以直接使用的宏，但你可以通过声明相同名称的宏来覆盖它们。
-```moonscript
+```yuescript
 print $FILE -- 获取当前模块名称的字符串
 print $LINE -- 获取当前代码行数：2
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print $FILE -- 获取当前模块名称的字符串
 print $LINE -- 获取当前代码行数：2
-</pre>
+```
+
 </YueDisplay>
 
 ### 用宏生成宏
 
 在月之脚本中，宏函数允许你在编译时生成代码。通过嵌套的宏函数，你可以创建更复杂的生成模式。这个特性允许你定义一个宏函数，用它来生成另一个宏函数，从而实现更加动态的代码生成。
 
-```moonscript
+```yuescript
 macro Enum = (...) ->
   items = {...}
   itemSet = {item, true for item in *items}
@@ -436,7 +446,8 @@ print "有效的枚举类型:", $BodyType Static
 -- print "编译报错的枚举类型:", $BodyType Unknown
 ```
 <YueDisplay>
-<pre>
+
+```yue
 macro Enum = (...) ->
   items = {...}
   itemSet = {item, true for item in *items}
@@ -452,14 +463,15 @@ macro BodyType = $Enum(
 
 print "有效的枚举类型:", $BodyType Static
 -- print "编译报错的枚举类型:", $BodyType Unknown
-</pre>
+```
+
 </YueDisplay>
 
 ### 宏参数检查
 
 可以直接在参数列表中声明期望的 AST 节点类型，并在编译时检查传入的宏参数是否符合预期。
 
-```moonscript
+```yuescript
 macro printNumAndStr = (num `Num, str `String) -> |
   print(
     #{num}
@@ -469,7 +481,8 @@ macro printNumAndStr = (num `Num, str `String) -> |
 $printNumAndStr 123, "hello"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 macro printNumAndStr = (num `Num, str `String) -> |
   print(
     #{num}
@@ -477,12 +490,13 @@ macro printNumAndStr = (num `Num, str `String) -> |
   )
 
 $printNumAndStr 123, "hello"
-</pre>
+```
+
 </YueDisplay>
 
 如果需要做更加灵活的参数检查操作，可以使用内置的 `$is_ast` 宏函数在合适的位置进行手动检查。
 
-```moonscript
+```yuescript
 macro printNumAndStr = (num, str) ->
   error "expected Num as first argument" unless $is_ast Num, num
   error "expected String as second argument" unless $is_ast String, str
@@ -491,14 +505,16 @@ macro printNumAndStr = (num, str) ->
 $printNumAndStr 123, "hello"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 macro printNumAndStr = (num, str) ->
   error "expected Num as first argument" unless $is_ast Num, num
   error "expected String as second argument" unless $is_ast String, str
   "print(#{num}, #{str})"
 
 $printNumAndStr 123, "hello"
-</pre>
+```
+
 </YueDisplay>
 
 更多关于可用 AST 节点的详细信息，请参考 [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp) 中大写的规则定义。
@@ -507,22 +523,24 @@ $printNumAndStr 123, "hello"
 
 Lua 的所有二元和一元操作符在月之脚本中都是可用的。此外，**!=** 符号是 **~=** 的别名，而 **\\** 或 **::** 均可用于编写链式函数调用，如写作 `tb\func!` 或 `tb::func!`。此外月之脚本还提供了一些其他特殊的操作符，以编写更具表达力的代码。
 
-```moonscript
+```yuescript
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tb\func! if tb ~= nil
 tb::func! if tb != nil
-</pre>
+```
+
 </YueDisplay>
 
 ### 链式比较
 
 你可以在月之脚本中进行比较表达式的链式书写：
 
-```moonscript
+```yuescript
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
 -- 输出：true
 
@@ -531,19 +549,21 @@ print 1 <= a <= 10
 -- 输出：true
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
 -- 输出：true
 
 a = 5
 print 1 <= a <= 10
 -- 输出：true
-</pre>
+```
+
 </YueDisplay>
 
 可以注意一下链式比较表达式的求值行为：
 
-```moonscript
+```yuescript
 v = (x) ->
   print x
   x
@@ -566,7 +586,8 @@ print v(1) > v(2) <= v(3)
 ]]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 v = (x) ->
   print x
   x
@@ -587,7 +608,8 @@ print v(1) > v(2) <= v(3)
   1
   false
 ]]
-</pre>
+```
+
 </YueDisplay>
 
 在上面的例子里，中间的表达式 `v(2)` 仅被计算一次，如果把表达式写成 `v(1) < v(2) and v(2) <= v(3)` 的方式，中间的 `v(2)` 才会被计算两次。在链式比较中，求值的顺序往往是未定义的。所以强烈建议不要在链式比较中使用具有副作用（比如做打印操作）的表达式。如果需要使用有副作用的函数，应明确使用短路 `and` 运算符来做连接。
@@ -596,39 +618,43 @@ print v(1) > v(2) <= v(3)
 
 **[] =** 操作符用于向 Lua 表的最后插入值。
 
-```moonscript
+```yuescript
 tab = []
 tab[] = "Value"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tab = []
 tab[] = "Value"
-</pre>
+```
+
 </YueDisplay>
 
 你还可以使用展开操作符 `...` 来将一个列表中的所有元素追加到另一个列表中：
 
-```moonscript
+```yuescript
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
 -- tbA 现在为 [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
 -- tbA 现在为 [1, 2, 3, 4, 5, 6]
-</pre>
+```
+
 </YueDisplay>
 
 ### 表扩展
 
 你可以使用前置 `...` 操作符在 Lua 表中插入数组表或哈希表。
 
-```moonscript
+```yuescript
 parts =
   * "shoulders"
   * "knees"
@@ -645,7 +671,8 @@ b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
 <YueDisplay>
-<pre>
+
+```yue
 parts =
   * "shoulders"
   * "knees"
@@ -660,24 +687,27 @@ copy = {...other}
 a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
-</pre>
+```
+
 </YueDisplay>
 
 ### 表反向索引
 
 你可以使用 **#** 操作符来反向索引表中的元素。
 
-```moonscript
+```yuescript
 last = data.items[#]
 second_last = data.items[#-1]
 data.items[#] = 1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 last = data.items[#]
 second_last = data.items[#-1]
 data.items[#] = 1
-</pre>
+```
+
 </YueDisplay>
 
 ### 元表
@@ -687,7 +717,7 @@ data.items[#] = 1
 * **元表创建**
 使用空括号 **<>** 或被 **<>** 包围的元方法键创建普通的 Lua 表。
 
-```moonscript
+```yuescript
 mt = {}
 add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
@@ -703,27 +733,29 @@ print d.value
 close _ = <close>: -> print "超出范围"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 mt = {}
-add = (right) => &lt;&gt;: mt, value: @value + right.value
+add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
-a = &lt;&gt;: mt, value: 1
+a = <>: mt, value: 1
 -- 使用与临时变量名相同的字段名，将临时变量赋值给元表
-b = :&lt;add&gt;, value: 2
-c = &lt;add&gt;: mt.__add, value: 3
+b = :<add>, value: 2
+c = <add>: mt.__add, value: 3
 
 d = a + b + c
 print d.value
 
-close _ = &lt;close&gt;: -> print "超出范围"
-</pre>
+close _ = <close>: -> print "超出范围"
+```
+
 </YueDisplay>
 
 * **元表访问**
 使用 **<>** 或被 **<>** 包围的元方法名或在 **<>** 中编写某些表达式来访问元表。
 
-```moonscript
+```yuescript
 -- 使用包含字段 "value" 的元表创建
 tb = <"value">: 123
 tb.<index> = tb.<>
@@ -734,35 +766,39 @@ print tb.item
 ```
 <YueDisplay>
 
-<pre>
+
+```yue
 -- 使用包含字段 "value" 的元表创建
-tb = &lt;"value"&gt;: 123
-tb.&lt;index&gt; = tb.&lt;&gt;
+tb = <"value">: 123
+tb.<index> = tb.<>
 print tb.value
-tb.&lt;&gt; = __index: {item: "hello"}
+tb.<> = __index: {item: "hello"}
 print tb.item
-</pre>
+```
+
 </YueDisplay>
 
 * **元表解构**
 使用被 **<>** 包围的元方法键解构元表。
 
-```moonscript
+```yuescript
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
 <YueDisplay>
-<pre>
-{item, :new, :&lt;close&gt;, &lt;index&gt;: getter} = tb
+
+```yue
+{item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
-</pre>
+```
+
 </YueDisplay>
 
 ### 存在性
 
 **?** 运算符可以在多种上下文中用来检查存在性。
 
-```moonscript
+```yuescript
 func?!
 print abc?["你好 世界"]?.xyz
 
@@ -777,7 +813,8 @@ with? io.open "test.txt", "w"
   \close!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 func?!
 print abc?["你好 世界"]?.xyz
 
@@ -790,14 +827,15 @@ if print and x?
 with? io.open "test.txt", "w"
   \write "你好"
   \close!
-</pre>
+```
+
 </YueDisplay>
 
 ### 管道
 
 与其使用一系列嵌套的函数调用，你还可以考虑使用运算符 **|>** 来传递值。
 
-```moonscript
+```yuescript
 "你好" |> print
 1 |> print 2 -- 将管道项作为第一个参数插入
 2 |> print 1, _, 3 -- 带有占位符的管道
@@ -811,7 +849,8 @@ readFile "example.txt"
   |> print
 ```
 <YueDisplay>
-<pre>
+
+```yue
 "你好" |> print
 1 |> print 2 -- 将管道项作为第一个参数插入
 2 |> print 1, _, 3 -- 带有占位符的管道
@@ -822,13 +861,14 @@ readFile "example.txt"
   |> emit
   |> render
   |> print
-</pre>
+```
+
 </YueDisplay>
 
 ### 空值合并
 
 如果其左操作数不是 **nil**，则nil合并运算符 **??** 返回其左操作数的值；否则，它将计算右操作数并返回其结果。如果左操作数计算结果为非 nil 的值，**??** 运算符将不再计算其右操作数。
-```moonscript
+```yuescript
 local a, b, c, d
 a = b ?? c ?? d
 func a ?? {}
@@ -836,19 +876,21 @@ func a ?? {}
 a ??= false
 ```
 <YueDisplay>
-<pre>
+
+```yue
 local a, b, c, d
 a = b ?? c ?? d
 func a ?? {}
 a ??= false
-</pre>
+```
+
 </YueDisplay>
 
 ### 隐式对象
 
 你可以在表格块内使用符号 **\*** 或是 **-** 开始编写一系列隐式结构。如果你正在创建隐式对象，对象的字段必须具有相同的缩进。
 
-```moonscript
+```yuescript
 -- 赋值时使用隐式对象
 list =
   * 1
@@ -890,7 +932,8 @@ tb =
       tb: { }
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 赋值时使用隐式对象
 list =
   * 1
@@ -930,7 +973,8 @@ tb =
       value: 2
       func: => @value + 2
       tb: { }
-</pre>
+```
+
 </YueDisplay>
 
 ## 模块
@@ -939,7 +983,7 @@ tb =
 
 导入语句是一个语法糖，用于需要引入一个模块或者从已导入的模块中提取子项目。从模块导入的变量默认为不可修改的常量。
 
-```moonscript
+```yuescript
 -- 用作表解构
 do
   import insert, concat from table
@@ -964,7 +1008,8 @@ do
   import "export" as {one, two, Something:{umm:{ch}}}
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 用作表解构
 do
   import insert, concat from table
@@ -987,26 +1032,29 @@ do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
   import "export" as {one, two, Something:{umm:{ch}}}
-</pre>
+```
+
 </YueDisplay>
 
 ### 导入全局变量
 
 你可以使用 `import` 将指定的全局变量导入到本地变量中。当导入一系列对全局变量的链式访问时，最后一个访问的字段将被赋值给本地变量。
 
-```moonscript
+```yuescript
 do
   import tostring
   import table.concat
   print concat ["a", tostring 1]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 do
   import tostring
   import table.concat
   print concat ["a", tostring 1]
-</pre>
+```
+
 </YueDisplay>
 
 #### 自动导入
@@ -1015,7 +1063,7 @@ do
 
 但是在同一作用域中被显式声明为全局的变量不会被自动导入，因此可以继续进行赋值操作。
 
-```moonscript
+```yuescript
 do
   import global
   print "hello"
@@ -1030,7 +1078,8 @@ do
   FLAG = 123
 ```
 <YueDisplay>
-<pre>
+
+```yue
 do
   import global
   print "hello"
@@ -1043,7 +1092,8 @@ do
   global FLAG
   print FLAG
   FLAG = 123
-</pre>
+```
+
 </YueDisplay>
 
 ### 导出
@@ -1053,7 +1103,7 @@ do
 * **命名导出**
 带命名的导出将定义一个局部变量，并在导出的表中添加一个同名的字段。
 
-```moonscript
+```yuescript
 export a, b, c = 1, 2, 3
 export cool = "cat"
 
@@ -1069,7 +1119,8 @@ export class Something
   umm: "cool"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 export a, b, c = 1, 2, 3
 export cool = "cat"
 
@@ -1083,41 +1134,46 @@ export y = ->
 
 export class Something
   umm: "cool"
-</pre>
+```
+
 </YueDisplay>
 
 使用解构进行命名导出。
 
-```moonscript
+```yuescript
 export :loadstring, to_lua: tolua = yue
 export {itemA: {:fieldA = '默认值'}} = tb
 ```
 <YueDisplay>
-<pre>
+
+```yue
 export :loadstring, to_lua: tolua = yue
 export {itemA: {:fieldA = '默认值'}} = tb
-</pre>
+```
+
 </YueDisplay>
 
 从模块导出命名项目时，可以不用创建局部变量。
 
-```moonscript
+```yuescript
 export.itemA = tb
 export.<index> = items
 export["a-b-c"] = 123
 ```
 <YueDisplay>
-<pre>
+
+```yue
 export.itemA = tb
-export.&lt;index&gt; = items
+export.<index> = items
 export["a-b-c"] = 123
-</pre>
+```
+
 </YueDisplay>
 
 * **未命名导出**
 未命名导出会将要导出的目标项目添加到导出表的数组部分。
 
-```moonscript
+```yuescript
 d, e, f = 3, 2, 1
 export d, e, f
 
@@ -1130,7 +1186,8 @@ export with tmp
   j = 2000
 ```
 <YueDisplay>
-<pre>
+
+```yue
 d, e, f = 3, 2, 1
 export d, e, f
 
@@ -1141,46 +1198,51 @@ else
 
 export with tmp
   j = 2000
-</pre>
+```
+
 </YueDisplay>
 
 * **默认导出**
 在导出语句中使用 **default** 关键字，来替换导出的表为一个目标的对象。
 
-```moonscript
+```yuescript
 export default ->
   print "你好"
   123
 ```
 <YueDisplay>
-<pre>
+
+```yue
 export default ->
   print "你好"
   123
-</pre>
+```
+
 </YueDisplay>
 
 ## 赋值
 
 月之脚本中定义的变量是动态类型的，并默认为局部变量。但你可以通过 **local** 和 **global** 声明来改变声明变量的作用范围。
 
-```moonscript
+```yuescript
 hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- 访问现有的变量
 ```
 <YueDisplay>
-<pre>
+
+```yue
 hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- 访问现有的变量
-</pre>
+```
+
 </YueDisplay>
 
 ### 执行更新
 
 你可以使用各式二进制运算符执行更新赋值。
-```moonscript
+```yuescript
 x = 1
 x += 1
 x -= 1
@@ -1191,7 +1253,8 @@ s ..= "world" -- 如果执行更新的局部变量不存在，将新建一个局
 arg or= "默认值"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 x = 1
 x += 1
 x -= 1
@@ -1200,25 +1263,28 @@ x /= 10
 x %= 10
 s ..= "world" -- 如果执行更新的局部变量不存在，将新建一个局部变量
 arg or= "默认值"
-</pre>
+```
+
 </YueDisplay>
 
 ### 链式赋值
 
 你可以进行链式赋值，将多个项目赋予相同的值。
-```moonscript
+```yuescript
 a = b = c = d = e = 0
 x = y = z = f!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 a = b = c = d = e = 0
 x = y = z = f!
-</pre>
+```
+
 </YueDisplay>
 
 ### 显式声明局部变量
-```moonscript
+```yuescript
 do
   local a = 1
   local *
@@ -1235,7 +1301,8 @@ do
   B = 2
 ```
 <YueDisplay>
-<pre>
+
+```yue
 do
   local a = 1
   local *
@@ -1250,11 +1317,12 @@ do
   print "只预先声明后续大写的变量为局部变量"
   a = 1
   B = 2
-</pre>
+```
+
 </YueDisplay>
 
 ### 显式声明全局变量
-```moonscript
+```yuescript
 do
   global a = 1
   global *
@@ -1271,7 +1339,8 @@ do
   local Temp = "一个局部值"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 do
   global a = 1
   global *
@@ -1286,7 +1355,8 @@ do
   a = 1
   B = 2
   local Temp = "一个局部值"
-</pre>
+```
+
 </YueDisplay>
 
 ## 解构赋值
@@ -1297,7 +1367,7 @@ do
 
 最好是通过示例来解释。以下是如何从表格中解包前两个值的方法：
 
-```moonscript
+```yuescript
 thing = [1, 2]
 
 [a, b] = thing
@@ -1305,17 +1375,19 @@ print a, b
 ```
 <YueDisplay>
 
-<pre>
+
+```yue
 thing = [1, 2]
 
 [a, b] = thing
 print a, b
-</pre>
+```
+
 </YueDisplay>
 
 在解构表格字面量中，键代表从右侧读取的键，值代表读取的值将被赋予的名称。
 
-```moonscript
+```yuescript
 obj = {
   hello: "world"
   day: "tuesday"
@@ -1328,7 +1400,8 @@ print hello, the_day
 :day = obj -- 可以不带大括号进行简单的解构
 ```
 <YueDisplay>
-<pre>
+
+```yue
 obj = {
   hello: "world"
   day: "tuesday"
@@ -1339,12 +1412,13 @@ obj = {
 print hello, the_day
 
 :day = obj -- 可以不带大括号进行简单的解构
-</pre>
+```
+
 </YueDisplay>
 
 这也适用于嵌套的数据结构：
 
-```moonscript
+```yuescript
 obj2 = {
   numbers: [1,2,3,4]
   properties: {
@@ -1357,7 +1431,8 @@ obj2 = {
 print first, second, color
 ```
 <YueDisplay>
-<pre>
+
+```yue
 obj2 = {
   numbers: [1,2,3,4]
   properties: {
@@ -1368,12 +1443,13 @@ obj2 = {
 
 {numbers: [first, second]} = obj2
 print first, second, color
-</pre>
+```
+
 </YueDisplay>
 
 如果解构语句很复杂，也可以任意将其分散在几行中。稍微复杂一些的示例：
 
-```moonscript
+```yuescript
 {
   numbers: [first, second]
   properties: {
@@ -1382,65 +1458,75 @@ print first, second, color
 } = obj2
 ```
 <YueDisplay>
-<pre>
+
+```yue
 {
   numbers: [first, second]
   properties: {
     color: color
   }
 } = obj2
-</pre>
+```
+
 </YueDisplay>
 
 有时候我们会需要从 Lua 表中提取值并将它们赋给与键同名的局部变量。为了避免编写重复代码，我们可以使用 **:** 前缀操作符：
 
-```moonscript
+```yuescript
 {:concat, :insert} = table
 ```
 <YueDisplay>
-<pre>
+
+```yue
 {:concat, :insert} = table
-</pre>
+```
+
 </YueDisplay>
 
 这样的用法与导入语法有些相似。但我们可以通过混合语法重命名我们想要提取的字段：
 
-```moonscript
+```yuescript
 {:mix, :max, random: rand} = math
 ```
 <YueDisplay>
-<pre>
+
+```yue
 {:mix, :max, random: rand} = math
-</pre>
+```
+
 </YueDisplay>
 
 在进行解构时，你可以指定默认值，如：
 
-```moonscript
+```yuescript
 {:name = "nameless", :job = "jobless"} = person
 ```
 <YueDisplay>
-<pre>
+
+```yue
 {:name = "nameless", :job = "jobless"} = person
-</pre>
+```
+
 </YueDisplay>
 
 在进行列表解构时，你可以使用`_`作为占位符：
 
-```moonscript
+```yuescript
 [_, two, _, four] = items
 ```
 <YueDisplay>
-<pre>
+
+```yue
 [_, two, _, four] = items
-</pre>
+```
+
 </YueDisplay>
 
 ### 范围解构
 
 你可以使用展开运算符 `...` 在列表解构中来捕获一个范围的值到子列表中。这在当你想要从列表的开头和结尾提取特定元素，同时收集中间的元素时非常有用。
 
-```moonscript
+```yuescript
 orders = ["first", "second", "third", "fourth", "last"]
 [first, ...bulk, last] = orders
 print first  -- 打印: first
@@ -1448,18 +1534,20 @@ print bulk   -- 打印: {"second", "third", "fourth"}
 print last   -- 打印: last
 ```
 <YueDisplay>
-<pre>
+
+```yue
 orders = ["first", "second", "third", "fourth", "last"]
 [first, ...bulk, last] = orders
 print first  -- 打印: first
 print bulk   -- 打印: {"second", "third", "fourth"}
 print last   -- 打印: last
-</pre>
+```
+
 </YueDisplay>
 
 展开运算符可以用在不同的位置来捕获不同的范围，并且你可以使用 `_` 作为占位符来表示你想跳过对应范围的捕获：
 
-```moonscript
+```yuescript
 -- 捕获第一个元素之后的所有元素
 [first, ...rest] = orders
 
@@ -1470,7 +1558,8 @@ print last   -- 打印: last
 [first, ..._, last] = orders
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 捕获第一个元素之后的所有元素
 [first, ...rest] = orders
 
@@ -1479,14 +1568,15 @@ print last   -- 打印: last
 
 -- 跳过中间的元素，只捕获第一个和最后一个元素
 [first, ..._, last] = orders
-</pre>
+```
+
 </YueDisplay>
 
 ### 在其它地方的解构赋值
 
 解构赋值也可以出现在其它隐式进行赋值的地方。一个例子是用在 for 循环中：
 
-```moonscript
+```yuescript
 tuples = [
   ["hello", "world"]
   ["egg", "head"]
@@ -1496,7 +1586,8 @@ for [left, right] in *tuples
   print left, right
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tuples = [
   ["hello", "world"]
   ["egg", "head"]
@@ -1504,7 +1595,8 @@ tuples = [
 
 for [left, right] in *tuples
   print left, right
-</pre>
+```
+
 </YueDisplay>
 
 我们知道数组表中的每个元素都是一个两项的元组，所以我们可以直接在 for 语句的名称子句中使用解构来解包它。
@@ -1513,18 +1605,20 @@ for [left, right] in *tuples
 
 `if` 和 `elseif` 代码块可以在条件表达式的位置进行赋值。在代码执行到要计算条件时，会首先进行赋值计算，并使用赋与的值作为分支判断的条件。赋值的变量仅在条件分支的代码块内有效，这意味着如果值不是真值，那么它就不会被用到。注意，你必须使用“海象运算符” `:=` 而不是 `=` 来做赋值。
 
-```moonscript
+```yuescript
 if user := database.find_user "moon"
   print user.name
 ```
 <YueDisplay>
-<pre>
+
+```yue
 if user := database.find_user "moon"
   print user.name
-</pre>
+```
+
 </YueDisplay>
 
-```moonscript
+```yuescript
 if hello := os.getenv "hello"
   print "你有 hello", hello
 elseif world := os.getenv "world"
@@ -1533,50 +1627,56 @@ else
   print "什么都没有 :("
 ```
 <YueDisplay>
-<pre>
+
+```yue
 if hello := os.getenv "hello"
   print "你有 hello", hello
 elseif world := os.getenv "world"
   print "你有 world", world
 else
   print "什么都没有 :("
-</pre>
+```
+
 </YueDisplay>
 
 使用多个返回值的 If 赋值。只有第一个值会被检查，其他值都有同样的作用域。
-```moonscript
+```yuescript
 if success, result := pcall -> "无报错地获取结果"
   print result -- 变量 result 是有作用域的
 print "好的"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 if success, result := pcall -> "无报错地获取结果"
   print result -- 变量 result 是有作用域的
 print "好的"
-</pre>
+```
+
 </YueDisplay>
 
 ### While 赋值
 
 你可以在 while 循环中同样使用赋值来获取循环条件的值。
-```moonscript
+```yuescript
 while byte := stream\read_one!
   -- 对 byte 做一些操作
   print byte
 ```
 <YueDisplay>
-<pre>
+
+```yue
 while byte := stream\read_one!
   -- 对 byte 做一些操作
   print byte
-</pre>
+```
+
 </YueDisplay>
 
 ## 可变参数赋值
 
 你可以将函数返回的结果赋值给一个可变参数符号 `...`。然后使用 Lua 的方式访问其内容。
-```moonscript
+```yuescript
 list = [1, 2, 3, 4, 5]
 fn = (ok) -> ok, table.unpack list
 ok, ... = fn true
@@ -1585,14 +1685,16 @@ first = select 1, ...
 print ok, count, first
 ```
 <YueDisplay>
-<pre>
+
+```yue
 list = [1, 2, 3, 4, 5]
 fn = (ok) -> ok, table.unpack list
 ok, ... = fn true
 count = select '#', ...
 first = select 1, ...
 print ok, count, first
-</pre>
+```
+
 </YueDisplay>
 
 ## 空白
@@ -1603,19 +1705,21 @@ print ok, count, first
 
 一条语句通常以换行结束。你也可以使用分号 `;` 显式结束一条语句，从而在同一行中编写多条语句：
 
-```moonscript
+```yuescript
 a = 1; b = 2; print a + b
 ```
 <YueDisplay>
-<pre>
+
+```yue
 a = 1; b = 2; print a + b
-</pre>
+```
+
 </YueDisplay>
 
 ### 多行链式调用
 
 你可以使用相同的缩进来编写多行链式函数调用。
-```moonscript
+```yuescript
 Rx.Observable
   .fromRange 1, 8
   \filter (x) -> x % 2 == 0
@@ -1624,19 +1728,21 @@ Rx.Observable
   \subscribe print
 ```
 <YueDisplay>
-<pre>
+
+```yue
 Rx.Observable
   .fromRange 1, 8
   \filter (x) -> x % 2 == 0
   \concat Rx.Observable.of 'who do we appreciate'
   \map (value) -> value .. '!'
   \subscribe print
-</pre>
+```
+
 </YueDisplay>
 
 ## 注释
 
-```moonscript
+```yuescript
 -- 我是一个注释
 
 str = --[[
@@ -1649,7 +1755,8 @@ str = --[[
 func --[[端口]] 3000, --[[ip]] "192.168.1.1"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 我是一个注释
 
 str = --[[
@@ -1660,14 +1767,15 @@ str = --[[
   .. strC
 
 func --[[端口]] 3000, --[[ip]] "192.168.1.1"
-</pre>
+```
+
 </YueDisplay>
 
 ## 错误处理
 
 用于统一进行 Lua 错误处理的便捷语法。
 
-```moonscript
+```yuescript
 try
   func 1, 2, 3
 catch err
@@ -1695,7 +1803,8 @@ catch err
   print result
 ```
 <YueDisplay>
-<pre>
+
+```yue
 try
   func 1, 2, 3
 catch err
@@ -1721,14 +1830,15 @@ if success, result := try func 1, 2, 3
 catch err
     print yue.traceback err
   print result
-</pre>
+```
+
 </YueDisplay>
 
 ### 错误处理简化
 
 `try?` 是 `try` 的功能简化语法，它不再返回 `try` 语句的布尔状态，并在成功时直接返回 `try` 代码块的结果，失败时返回 `nil` 值而非错误对象。
 
-```moonscript
+```yuescript
 a, b, c = try? func!
 
 -- 与空值合并运算符一起使用
@@ -1746,7 +1856,8 @@ catch e
   e
 ```
 <YueDisplay>
-<pre>
+
+```yue
 a, b, c = try? func!
 
 -- 与空值合并运算符一起使用
@@ -1762,48 +1873,55 @@ f try?
 catch e
   print e
   e
-</pre>
+```
+
 </YueDisplay>
 
 ## 属性
 
 月之脚本现在提供了 Lua 5.4 新增的叫做属性的语法支持。在月之脚本编译到的 Lua 目标版本低于 5.4 时，你仍然可以同时使用`const` 和 `close` 的属性声明语法，并获得常量检查和作用域回调的功能。
 
-```moonscript
+```yuescript
 const a = 123
 close _ = <close>: -> print "超出范围。"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 const a = 123
-close _ = &lt;close&gt;: -> print "超出范围。"
-</pre>
+close _ = <close>: -> print "超出范围。"
+```
+
 </YueDisplay>
 
 你可以对进行解构得到的变量标记为常量。
 
-```moonscript
+```yuescript
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 const {:a, :b, c, d} = tb
 -- a = 1
-</pre>
+```
+
 </YueDisplay>
 
 你也可以声明全局变量为常量。
 
-```moonscript
+```yuescript
 global const Constant = 123
 -- Constant = 1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 global const Constant = 123
 -- Constant = 1
-</pre>
+```
+
 </YueDisplay>
 
 ## 字面量
@@ -1812,7 +1930,7 @@ Lua 中的所有基本字面量都可以在月之脚本中使用。包括数字�
 
 但与 Lua 不同的是，单引号和双引号字符串内部允许有换行：
 
-```moonscript
+```yuescript
 some_string = "这是一个字符串
   并包括一个换行。"
 
@@ -1821,39 +1939,43 @@ some_string = "这是一个字符串
 print "我有#{math.random! * 100}%的把握。"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 some_string = "这是一个字符串
   并包括一个换行。"
 
 -- 使用#{}语法可以将表达式插入到字符串字面量中。
 -- 字符串插值只在双引号字符串中可用。
 print "我有#{math.random! * 100}%的把握。"
-</pre>
+```
+
 </YueDisplay>
 
 ### 数字字面量
 
 你可以在数字字面量中使用下划线来增加可读性。
 
-```moonscript
+```yuescript
 integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
 ```
 <YueDisplay>
 
-<pre>
+
+```yue
 integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
-</pre>
+```
+
 </YueDisplay>
 
 ### YAML 风格字符串
 
 使用 `|` 前缀标记一个多行 YAML 风格字符串：
 
-```moonscript
+```yuescript
 str = |
   key: value
   list:
@@ -1861,20 +1983,22 @@ str = |
     - #{expr}
 ```
 <YueDisplay>
-<pre>
+
+```yue
 str = |
   key: value
   list:
     - item1
     - #{expr}
-</pre>
+```
+
 </YueDisplay>
 
 其效果类似于原生 Lua 的多行拼接，所有文本（含换行）将被保留下来，并支持 `#{...}` 语法，通过 `tostring(expr)` 插入表达式结果。
 
 YAML 风格的多行字符串会自动检测首行后最小的公共缩进，并从所有行中删除该前缀空白字符。这让你可以在代码中对齐文本，但输出字符串不会带多余缩进。
 
-```moonscript
+```yuescript
 fn = ->
   str = |
     foo:
@@ -1882,50 +2006,56 @@ fn = ->
   return str
 ```
 <YueDisplay>
-<pre>
+
+```yue
 fn = ->
   str = |
     foo:
       bar: baz
   return str
-</pre>
+```
+
 </YueDisplay>
 
 输出字符串中的 foo: 对齐到行首，不会带有函数缩进空格。保留内部缩进的相对结构，适合书写结构化嵌套样式的内容。
 
 支持自动处理字符中的引号、反斜杠等特殊符号，无需手动转义：
 
-```moonscript
+```yuescript
 str = |
   path: "C:\Program Files\App"
   note: 'He said: "#{Hello}!"'
 ```
 <YueDisplay>
-<pre>
+
+```yue
 str = |
   path: "C:\Program Files\App"
   note: 'He said: "#{Hello}!"'
-</pre>
+```
+
 </YueDisplay>
 
 ## 函数字面量
 
 所有函数都是使用月之脚本的函数表达式创建的。一个简单的函数可以用箭头表示为：**->**。
 
-```moonscript
+```yuescript
 my_function = ->
 my_function() -- 调用空函数
 ```
 <YueDisplay>
-<pre>
+
+```yue
 my_function = ->
 my_function() -- 调用空函数
-</pre>
+```
+
 </YueDisplay>
 
 函数体可以是紧跟在箭头后的一个语句，或者是在后面的行上使用同样缩进的一系列语句：
 
-```moonscript
+```yuescript
 func_a = -> print "你好，世界"
 
 func_b = ->
@@ -1933,147 +2063,169 @@ func_b = ->
   print "这个值是：", value
 ```
 <YueDisplay>
-<pre>
+
+```yue
 func_a = -> print "你好，世界"
 
 func_b = ->
   value = 100
   print "这个值是：", value
-</pre>
+```
+
 </YueDisplay>
 
 如果一个函数没有参数，可以使用 **\!** 操作符调用它，而不是空括号。使用 **\!** 调用没有参数的函数是推荐的写法。
 
-```moonscript
+```yuescript
 func_a!
 func_b()
 ```
 <YueDisplay>
-<pre>
+
+```yue
 func_a!
 func_b()
-</pre>
+```
+
 </YueDisplay>
 
 带有参数的函数可以通过在箭头前加上括号中的参数名列表来进行创建：
 
-```moonscript
+```yuescript
 sum = (x, y) -> print "数字的和", x + y
 ```
 <YueDisplay>
-<pre>
+
+```yue
 sum = (x, y) -> print "数字的和", x + y
-</pre>
+```
+
 </YueDisplay>
 
 函数可以通过在函数名后列出参数来调用。当对函数做嵌套的调用时，后面列出的参数会应用于左侧最近的函数。
 
-```moonscript
+```yuescript
 sum 10, 20
 print sum 10, 20
 
 a b c "a", "b", "c"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 sum 10, 20
 print sum 10, 20
 
 a b c "a", "b", "c"
-</pre>
+```
+
 </YueDisplay>
 
 为了避免在调用函数时产生歧义，也可以使用括号将参数括起来。比如在以下的例子中是必需的，这样才能确保参数被传入到正确的函数。
 
-```moonscript
+```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print "x:", sum(10, 20), "y:", sum(30, 40)
-</pre>
+```
+
 </YueDisplay>
 
 注意：函数名与开始括号之间不能有任何空格。
 
 函数会将函数体中的最后一个语句强制转换为返回语句，这被称作隐式返回：
 
-```moonscript
+```yuescript
 sum = (x, y) -> x + y
 print "数字的和是", sum 10, 20
 ```
 <YueDisplay>
-<pre>
+
+```yue
 sum = (x, y) -> x + y
 print "数字的和是", sum 10, 20
-</pre>
+```
+
 </YueDisplay>
 
 如果你需要做显式返回，可以使用 return 关键字：
 
-```moonscript
+```yuescript
 sum = (x, y) -> return x + y
 ```
 <YueDisplay>
-<pre>
+
+```yue
 sum = (x, y) -> return x + y
-</pre>
+```
+
 </YueDisplay>
 
 就像在Lua中一样，函数可以返回多个值。最后一个语句必须是由逗号分隔的值列表：
 
-```moonscript
+```yuescript
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
 <YueDisplay>
-<pre>
+
+```yue
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
-</pre>
+```
+
 </YueDisplay>
 
 ### 粗箭头
 
 因为在 Lua 中调用方法时，经常习惯将对象作为第一个参数传入，所以月之脚本提供了一种特殊的语法来创建自动包含 self 参数的函数。
 
-```moonscript
+```yuescript
 func = (num) => @value + num
 ```
 <YueDisplay>
-<pre>
+
+```yue
 func = (num) => @value + num
-</pre>
+```
+
 </YueDisplay>
 
 ### 参数默认值
 
 可以为函数的参数提供默认值。如果参数的值为 nil，则确定该参数为空。任何具有默认值的 nil 参数在函数体运行之前都会被替换。
 
-```moonscript
+```yuescript
 my_function = (name = "某物", height = 100) ->
   print "你好，我是", name
   print "我的高度是", height
 ```
 <YueDisplay>
-<pre>
+
+```yue
 my_function = (name = "某物", height = 100) ->
   print "你好，我是", name
   print "我的高度是", height
-</pre>
+```
+
 </YueDisplay>
 
 函数参数的默认值表达式在函数体中会按参数声明的顺序进行计算。因此，在默认值的表达式中可以访问先前声明的参数。
 
-```moonscript
+```yuescript
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
 <YueDisplay>
-<pre>
+
+```yue
 some_args = (x = 100, y = x + 1000) ->
   print x + y
-</pre>
+```
+
 </YueDisplay>
 
 ### 多行参数
@@ -2082,7 +2234,7 @@ some_args = (x = 100, y = x + 1000) ->
 
 如果要将参数列表写到下一行，那么当前行必须以逗号结束。并且下一行的缩进必须比当前的缩进多。一旦做了参数的缩进，所有其他参数列表的行必须保持相同的缩进级别，以成为参数列表的一部分。
 
-```moonscript
+```yuescript
 my_func 5, 4, 3,
   8, 9, 10
 
@@ -2092,7 +2244,8 @@ cool_func 1, 2,
   7, 8
 ```
 <YueDisplay>
-<pre>
+
+```yue
 my_func 5, 4, 3,
   8, 9, 10
 
@@ -2100,29 +2253,32 @@ cool_func 1, 2,
   3, 4,
   5, 6,
   7, 8
-</pre>
+```
+
 </YueDisplay>
 
 这种调用方式可以做嵌套。并通过缩进级别来确定参数属于哪一个函数。
 
-```moonscript
+```yuescript
 my_func 5, 6, 7,
   6, another_func 6, 7, 8,
     9, 1, 2,
   5, 4
 ```
 <YueDisplay>
-<pre>
+
+```yue
 my_func 5, 6, 7,
   6, another_func 6, 7, 8,
     9, 1, 2,
   5, 4
-</pre>
+```
+
 </YueDisplay>
 
 因为 Lua 表也使用逗号作为分隔符，这种缩进语法有助于让值成为参数列表的一部分，而不是 Lua 表的一部分。
 
-```moonscript
+```yuescript
 x = [
   1, 2, 3, 4, a_func 4, 5,
     5, 6,
@@ -2130,35 +2286,39 @@ x = [
 ]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 x = [
   1, 2, 3, 4, a_func 4, 5,
     5, 6,
   8, 9, 10
 ]
-</pre>
+```
+
 </YueDisplay>
 
 有个不常见的写法可以注意一下，如果我们将在后面使用较低的缩进，我们可以为函数参数提供更深的缩进来区分列表的归属。
 
-```moonscript
+```yuescript
 y = [ my_func 1, 2, 3,
    4, 5,
   5, 6, 7
 ]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 y = [ my_func 1, 2, 3,
    4, 5,
   5, 6, 7
 ]
-</pre>
+```
+
 </YueDisplay>
 
 对于其它有代码块跟随的语句，比如条件语句，也可以通过小心安排缩进来做类似的事。比如我们可以通过调整缩进级别来控制一些值归属于哪个语句：
 
-```moonscript
+```yuescript
 if func 1, 2, 3,
   "你好",
   "世界"
@@ -2172,7 +2332,8 @@ if func 1, 2, 3,
   print "我在if内部"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 if func 1, 2, 3,
   "你好",
   "世界"
@@ -2184,7 +2345,8 @@ if func 1, 2, 3,
     "世界"
   print "你好"
   print "我在if内部"
-</pre>
+```
+
 </YueDisplay>
 
 ### 参数解构
@@ -2195,7 +2357,7 @@ if func 1, 2, 3,
 
 - 无 {} 包裹、以键值/简写键序列开头，直至遇到其它表达式终止（例如 :a, b: b1, :c），表示从同一个对象中解构多个字段。
 
-```moonscript
+```yuescript
 f1 = (:a, :b, :c) ->
   print a, b, c
 
@@ -2208,7 +2370,8 @@ arg1 = {a: 0}
 f2 arg1, arg2
 ```
 <YueDisplay>
-<pre>
+
+```yue
 f1 = (:a, :b, :c) ->
   print a, b, c
 
@@ -2219,14 +2382,15 @@ f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
 
 arg1 = {a: 0}
 f2 arg1, arg2
-</pre>
+```
+
 </YueDisplay>
 
 ### 前置返回表达式
 
 在深度嵌套的函数体中，为了提升返回值的可读性及编写便利性，我们新增了 “前置返回表达式” 语法。其形式如下：
 
-```moon
+```yuescript
 findFirstEven = (list): nil ->
   for item in *list
     if type(item) == "table"
@@ -2235,19 +2399,21 @@ findFirstEven = (list): nil ->
           return sub
 ```
 <YueDisplay>
-<pre>
+
+```yue
 findFirstEven = (list): nil ->
   for item in *list
     if type(item) == "table"
       for sub in *item
         if sub % 2 == 0
           return sub
-</pre>
+```
+
 </YueDisplay>
 
 这个写法等价于：
 
-```moon
+```yuescript
 findFirstEven = (list) ->
   for item in *list
     if type(item) == "table"
@@ -2257,7 +2423,8 @@ findFirstEven = (list) ->
   nil
 ```
 <YueDisplay>
-<pre>
+
+```yue
 findFirstEven = (list) ->
   for item in *list
     if type(item) == "table"
@@ -2265,7 +2432,8 @@ findFirstEven = (list) ->
         if sub % 2 == 0
           return sub
   nil
-</pre>
+```
+
 </YueDisplay>
 
 唯一的区别在于：你可以将函数的返回值表达式提前写在 `->` 或 `=>` 前，用以指示该函数应隐式返回该表达式的值。这样即使在多层循环或条件判断的场景下，也无需编写尾行悬挂的返回表达式，逻辑结构会更加直观清晰。
@@ -2274,7 +2442,7 @@ findFirstEven = (list) ->
 
 你可以使用 `(...t) ->` 语法来将变长参数自动存储到一个命名表中。这个表会包含所有传入的参数（包括 `nil` 值），并且会在表的 `n` 字段中存储实际传入的参数个数（包括 `nil` 值在内的个数）。
 
-```moonscript
+```yuescript
 f = (...t) ->
   print "参数个数:", t.n
   print "表长度:", #t
@@ -2296,7 +2464,8 @@ process = (...args) ->
 process 1, nil, 3, nil, 5
 ```
 <YueDisplay>
-<pre>
+
+```yue
 f = (...t) ->
   print "参数个数:", t.n
   print "表长度:", #t
@@ -2316,53 +2485,60 @@ process = (...args) ->
   sum
 
 process 1, nil, 3, nil, 5
-</pre>
+```
+
 </YueDisplay>
 
 ## 反向回调
 
 反向回调用于减少函数回调的嵌套。它们使用指向左侧的箭头，并且默认会被定义为传入后续函数调用的最后一个参数。它的语法大部分与常规箭头函数相同，只是它指向另一方向，并且后续的函数体不需要进行缩进。
 
-```moonscript
+```yuescript
 <- f
 print "hello"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 <- f
 print "hello"
-</pre>
+```
+
 </YueDisplay>
 
 月之脚本也提供了粗箭头反向回调函数。
 
-```moonscript
+```yuescript
 <= f
 print @value
 ```
 <YueDisplay>
-<pre>
+
+```yue
 <= f
 print @value
-</pre>
+```
+
 </YueDisplay>
 
 你可以通过一个占位符指定回调函数的传参位置。
 
-```moonscript
+```yuescript
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
 <YueDisplay>
-<pre>
+
+```yue
 (x) <- map _, [1, 2, 3]
 x * 2
-</pre>
+```
+
 </YueDisplay>
 
 如果你希望在反向回调处理后继续编写更多其它的代码，可以使用 do 语句将不属于反向回调的代码分隔开。对于非粗箭头函数的反向回调，回调返回值的括号也是可以省略的。
 
-```moonscript
+```yuescript
 result, msg = do
   data <- readAsync "文件名.txt"
   print data
@@ -2371,32 +2547,36 @@ result, msg = do
 print result, msg
 ```
 <YueDisplay>
-<pre>
+
+```yue
 result, msg = do
   data <- readAsync "文件名.txt"
   print data
   info <- processAsync data
   check info
 print result, msg
-</pre>
+```
+
 </YueDisplay>
 
 ## 表格字面量
 
 和 Lua 一样，表格可以通过花括号进行定义。
 
-```moonscript
+```yuescript
 some_values = [1, 2, 3, 4]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 some_values = [1, 2, 3, 4]
-</pre>
+```
+
 </YueDisplay>
 
 但与Lua不同的是，给表格中的键赋值是用 **:**（而不是 **=**）。
 
-```moonscript
+```yuescript
 some_values = {
   name: "Bill",
   age: 200,
@@ -2404,35 +2584,39 @@ some_values = {
 }
 ```
 <YueDisplay>
-<pre>
+
+```yue
 some_values = {
   name: "Bill",
   age: 200,
   ["favorite food"]: "rice"
 }
-</pre>
+```
+
 </YueDisplay>
 
 如果只分配一个键值对的表格，可以省略花括号。
 
-```moonscript
+```yuescript
 profile =
   height: "4英尺",
   shoe_size: 13,
   favorite_foods: ["冰淇淋", "甜甜圈"]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 profile =
   height: "4英尺",
   shoe_size: 13,
   favorite_foods: ["冰淇淋", "甜甜圈"]
-</pre>
+```
+
 </YueDisplay>
 
 可以使用换行符而不使用逗号（或两者都用）来分隔表格中的值：
 
-```moonscript
+```yuescript
 values = {
   1, 2, 3, 4
   5, 6, 7, 8
@@ -2441,51 +2625,57 @@ values = {
 }
 ```
 <YueDisplay>
-<pre>
+
+```yue
 values = {
   1, 2, 3, 4
   5, 6, 7, 8
   name: "超人"
   occupation: "打击犯罪"
 }
-</pre>
+```
+
 </YueDisplay>
 
 创建单行表格字面量时，也可以省略花括号：
 
-```moonscript
+```yuescript
 my_function dance: "探戈", partner: "无"
 
 y = type: "狗", legs: 4, tails: 1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 my_function dance: "探戈", partner: "无"
 
 y = type: "狗", legs: 4, tails: 1
-</pre>
+```
+
 </YueDisplay>
 
 表格字面量的键可以使用 Lua 语言的关键字，而无需转义：
 
-```moonscript
+```yuescript
 tbl = {
   do: "某事"
   end: "饥饿"
 }
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tbl = {
   do: "某事"
   end: "饥饿"
 }
-</pre>
+```
+
 </YueDisplay>
 
 如果你要构造一个由变量组成的表，并希望键与变量名相同，那么可以使用 **:** 前缀操作符：
 
-```moonscript
+```yuescript
 hair = "金色"
 height = 200
 person = { :hair, :height, shoe_size: 40 }
@@ -2493,43 +2683,49 @@ person = { :hair, :height, shoe_size: 40 }
 print_table :hair, :height
 ```
 <YueDisplay>
-<pre>
+
+```yue
 hair = "金色"
 height = 200
 person = { :hair, :height, shoe_size: 40 }
 
 print_table :hair, :height
-</pre>
+```
+
 </YueDisplay>
 
 如果你希望表中字段的键是某个表达式的结果，那么可以用 **[ ]** 包裹它，就像在 Lua 中一样。如果键中有任何特殊字符，也可以直接使用字符串字面量作为键，省略方括号。
 
-```moonscript
+```yuescript
 t = {
   [1 + 2]: "你好"
   "你好 世界": true
 }
 ```
 <YueDisplay>
-<pre>
+
+```yue
 t = {
   [1 + 2]: "你好"
   "你好 世界": true
 }
-</pre>
+```
+
 </YueDisplay>
 
 Lua 的表同时具有数组部分和哈希部分，但有时候你会希望在书写 Lua 表时，对 Lua 表做数组和哈希不同用法的语义区分。然后你可以用 **[ ]** 而不是 **{ }** 来编写表示数组的 Lua 表，并且不允许在数组 Lua 表中写入任何键值对。
 
-```moonscript
+```yuescript
 some_values = [ 1, 2, 3, 4 ]
 list_with_one_element = [ 1, ]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 some_values = [ 1, 2, 3, 4 ]
 list_with_one_element = [ 1, ]
-</pre>
+```
+
 </YueDisplay>
 
 ## 推导式
@@ -2540,42 +2736,48 @@ list_with_one_element = [ 1, ]
 
 以下操作创建了一个 items 表的副本，但所有包含的值都翻倍了。
 
-```moonscript
+```yuescript
 items = [1, 2, 3, 4]
 doubled = [item * 2 for i, item in ipairs items]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 items = [1, 2, 3, 4]
 doubled = [item * 2 for i, item in ipairs items]
-</pre>
+```
+
 </YueDisplay>
 
 可以使用 `when` 子句筛选新表中包含的项目：
 
-```moonscript
+```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
-</pre>
+```
+
 </YueDisplay>
 
 因为我们常常需要迭代数值索引表的值，所以引入了 **\*** 操作符来做语法简化。doubled 示例可以重写为：
 
-```moonscript
+```yuescript
 doubled = [item * 2 for item in *items]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 doubled = [item * 2 for item in *items]
-</pre>
+```
+
 </YueDisplay>
 
 在列表推导式中，你还可以使用展开操作符 `...` 来实现对列表嵌套层级进行扁平化的处理：
 
-```moonscript
+```yuescript
 data =
   a: [1, 2, 3]
   b: [4, 5, 6]
@@ -2584,21 +2786,23 @@ flat = [...v for k,v in pairs data]
 -- flat 现在为 [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 data =
   a: [1, 2, 3]
   b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
 -- flat 现在为 [1, 2, 3, 4, 5, 6]
-</pre>
+```
+
 </YueDisplay>
 
 for 和 when 子句可以根据需要进行链式操作。唯一的要求是推导式中至少要有一个 for 子句。
 
 使用多个 for 子句与使用多重循环的效果相同：
 
-```moonscript
+```yuescript
 x_coords = [4, 5, 6, 7]
 y_coords = [9, 2, 3]
 
@@ -2606,24 +2810,28 @@ points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 x_coords = [4, 5, 6, 7]
 y_coords = [9, 2, 3]
 
 points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
-</pre>
+```
+
 </YueDisplay>
 
 在推导式中也可以使用简单的数值 for 循环：
 
-```moonscript
+```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 evens = [i for i = 1, 100 when i % 2 == 0]
-</pre>
+```
+
 </YueDisplay>
 
 ### 表格推导式
@@ -2632,7 +2840,7 @@ evens = [i for i = 1, 100 when i % 2 == 0]
 
 以下示例生成了表格 thing 的副本：
 
-```moonscript
+```yuescript
 thing = {
   color: "red"
   name: "fast"
@@ -2642,52 +2850,60 @@ thing = {
 thing_copy = {k, v for k, v in pairs thing}
 ```
 <YueDisplay>
-<pre>
+
+```yue
 thing = {
   color: "red"
   name: "fast"
   width: 123
 }
 
-thing_copy = {k, v for k, v in pairs thing}
-</pre>
+thing_copy = \{k, v for k, v in pairs thing}
+```
+
 </YueDisplay>
 
-```moonscript
+```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
 <YueDisplay>
-<pre>
-no_color = {k, v for k, v in pairs thing when k != "color"}
-</pre>
+
+```yue
+no_color = \{k, v for k, v in pairs thing when k != "color"}
+```
+
 </YueDisplay>
 
 **\*** 操作符在表格推导式中能使用。在下面的例子里，我们为几个数字创建了一个平方根查找表。
 
-```moonscript
+```yuescript
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
 <YueDisplay>
-<pre>
+
+```yue
 numbers = [1, 2, 3, 4]
-sqrts = {i, math.sqrt i for i in *numbers}
-</pre>
+sqrts = \{i, math.sqrt i for i in *numbers}
+```
+
 </YueDisplay>
 
 表格推导式中的键值元组也可以来自单个表达式，在这种情况下，表达式在计算后应返回两个值。第一个用作键，第二个用作值：
 
 在下面的示例中，我们将一些数组转换为一个表，其中每个数组里的第一项是键，第二项是值。
 
-```moonscript
+```yuescript
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tuples = [ ["hello", "world"], ["foo", "bar"]]
-tbl = {unpack tuple for tuple in *tuples}
-</pre>
+tbl = \{unpack tuple for tuple in *tuples}
+```
+
 </YueDisplay>
 
 ### 切片
@@ -2696,82 +2912,94 @@ tbl = {unpack tuple for tuple in *tuples}
 
 下面的案例中，我们在切片中设置最小和最大边界，取索引在 1 到 5 之间（包括 1 和 5）的所有项目：
 
-```moonscript
+```yuescript
 slice = [item for item in *items[1, 5]]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 slice = [item for item in *items[1, 5]]
-</pre>
+```
+
 </YueDisplay>
 
 切片的任意参数都可以省略，并会使用默认值。在如下示例中，如果省略了最大索引边界，它默认为表的长度。使下面的代码取除第一个元素之外的所有元素：
 
-```moonscript
+```yuescript
 slice = [item for item in *items[2,]]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 slice = [item for item in *items[2,]]
-</pre>
+```
+
 </YueDisplay>
 
 如果省略了最小边界，便默认会设置为 1。这里我们只提供一个步长，并留下其他边界为空。这样会使得代码取出所有奇数索引的项目：(1, 3, 5, …)
 
-```moonscript
+```yuescript
 slice = [item for item in *items[,,2]]
 ```
 <YueDisplay>
 
-<pre>
+
+```yue
 slice = [item for item in *items[,,2]]
-</pre>
+```
+
 </YueDisplay>
 
 最小和最大边界都可以是负数，使用负数意味着边界是从表的末尾开始计算的。
 
-```moonscript
+```yuescript
 -- 取最后4个元素
 slice = [item for item in *items[-4,-1]]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 取最后4个元素
 slice = [item for item in *items[-4,-1]]
-</pre>
+```
+
 </YueDisplay>
 
 切片的步长也可以是负数，这意味着元素会以相反的顺序被取出。
 
-```moonscript
+```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 reverse_slice = [item for item in *items[-1,1,-1]]
-</pre>
+```
+
 </YueDisplay>
 
 #### 切片表达式
 
 切片也可以作为表达式来使用。可以用于获取一个表包含的子列表。
 
-```moonscript
+```yuescript
 -- 取第2和第4个元素作为新的列表
 sub_list = items[2, 4]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 -- 取第2和第4个元素作为新的列表
 sub_list = items[2, 4]
-</pre>
+```
+
 </YueDisplay>
 
 ## for 循环
 
 Lua 中有两种 for 循环形式，数字型和通用型：
 
-```moonscript
+```yuescript
 for i = 10, 20
   print i
 
@@ -2782,7 +3010,8 @@ for key, value in pairs object
   print key, value
 ```
 <YueDisplay>
-<pre>
+
+```yue
 for i = 10, 20
   print i
 
@@ -2791,42 +3020,47 @@ for k = 1, 15, 2 -- 提供了一个遍历的步长
 
 for key, value in pairs object
   print key, value
-</pre>
+```
+
 </YueDisplay>
 
 可以使用切片和 **\*** 操作符，就像在列表推导中一样：
 
-```moonscript
+```yuescript
 for item in *items[2, 4]
   print item
 ```
 <YueDisplay>
-<pre>
+
+```yue
 for item in *items[2, 4]
   print item
-</pre>
+```
+
 </YueDisplay>
 
 当代码语句只有一行时，循环语句也都可以写作更短的语法：
 
-```moonscript
+```yuescript
 for item in *items do print item
 
 for j = 1, 10, 3 do print j
 ```
 <YueDisplay>
-<pre>
+
+```yue
 for item in *items do print item
 
 for j = 1, 10, 3 do print j
-</pre>
+```
+
 </YueDisplay>
 
 for 循环也可以用作表达式。for 循环主体中的最后一条语句会被强制转换为一个返回值的表达式，并会将表达式计算结果的值追加到一个作为结果的数组表中。
 
 将每个偶数加倍：
 
-```moonscript
+```yuescript
 doubled_evens = for i = 1, 20
   if i % 2 == 0
     i * 2
@@ -2834,35 +3068,39 @@ doubled_evens = for i = 1, 20
     i
 ```
 <YueDisplay>
-<pre>
+
+```yue
 doubled_evens = for i = 1, 20
   if i % 2 == 0
     i * 2
   else
     i
-</pre>
+```
+
 </YueDisplay>
 
 此外，for 循环还支持带返回值的 break 语句，这样循环本身就可以作为一个表达式，在满足条件时提前退出并返回有意义的结果。
 
 例如，查找第一个大于 10 的数字：
 
-```moonscript
+```yuescript
 first_large = for n in *numbers
   break n if n > 10
 ```
 <YueDisplay>
-<pre>
+
+```yue
 first_large = for n in *numbers
   break n if n > 10
-</pre>
+```
+
 </YueDisplay>
 
 你还可以结合 for 循环表达式与 continue 语句来过滤值。
 
 注意出现在函数体末尾的 for 循环，不会被当作是一个表达式并将循环结果累积到一个列表中作为返回值（相反，函数将返回 nil）。如果要函数末尾的循环转换为列表表达式，可以显式地使用返回语句加 for 循环表达式。
 
-```moonscript
+```yuescript
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
 
@@ -2870,13 +3108,15 @@ print func_a! -- 打印 nil
 print func_b! -- 打印 table 对象
 ```
 <YueDisplay>
-<pre>
+
+```yue
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
 
 print func_a! -- 打印 nil
 print func_b! -- 打印 table 对象
-</pre>
+```
+
 </YueDisplay>
 
 这样做是为了避免在不需要返回循环结果的函数，创建无效的返回值表格。
@@ -2885,7 +3125,7 @@ print func_b! -- 打印 table 对象
 
 repeat 循环是从 Lua 语言中搬过来的相似语法：
 
-```moonscript
+```yuescript
 i = 10
 repeat
   print i
@@ -2893,20 +3133,22 @@ repeat
 until i == 0
 ```
 <YueDisplay>
-<pre>
+
+```yue
 i = 10
 repeat
   print i
   i -= 1
 until i == 0
-</pre>
+```
+
 </YueDisplay>
 
 ## while 循环
 
 在月之脚本中的 while 循环有四种写法：
 
-```moonscript
+```yuescript
 i = 10
 while i > 0
   print i
@@ -2915,17 +3157,19 @@ while i > 0
 while running == true do my_function!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 i = 10
 while i > 0
   print i
   i -= 1
 
 while running == true do my_function!
-</pre>
+```
+
 </YueDisplay>
 
-```moonscript
+```yuescript
 i = 10
 until i == 0
   print i
@@ -2934,13 +3178,15 @@ until i == 0
 until running == false do my_function!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 i = 10
 until i == 0
   print i
   i -= 1
 until running == false do my_function!
-</pre>
+```
+
 </YueDisplay>
 
 像 for 循环的语法一样，while 循环也可以作为一个表达式使用。为了使函数返回 while 循环的累积列表值，必须明确使用返回语句返回 while 循环表达式。
@@ -2949,7 +3195,7 @@ until running == false do my_function!
 
 继续语句可以用来跳出当前的循环迭代。
 
-```moonscript
+```yuescript
 i = 0
 while i < 10
   i += 1
@@ -2957,35 +3203,39 @@ while i < 10
   print i
 ```
 <YueDisplay>
-<pre>
+
+```yue
 i = 0
 while i < 10
   i += 1
   continue if i % 2 == 0
   print i
-</pre>
+```
+
 </YueDisplay>
 
 继续语句也可以与各种循环表达式一起使用，以防止当前的循环迭代结果累积到结果列表中。以下示例将数组表过滤为仅包含偶数的数组：
 
-```moonscript
+```yuescript
 my_numbers = [1, 2, 3, 4, 5, 6]
 odds = for x in *my_numbers
   continue if x % 2 == 1
   x
 ```
 <YueDisplay>
-<pre>
+
+```yue
 my_numbers = [1, 2, 3, 4, 5, 6]
 odds = for x in *my_numbers
   continue if x % 2 == 1
   x
-</pre>
+```
+
 </YueDisplay>
 
 ## 条件语句
 
-```moonscript
+```yuescript
 have_coins = false
 if have_coins
   print "有硬币"
@@ -2993,44 +3243,50 @@ else
   print "没有硬币"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 have_coins = false
 if have_coins
   print "有硬币"
 else
   print "没有硬币"
-</pre>
+```
+
 </YueDisplay>
 
 对于简单的语句，也可以使用简短的语法：
 
-```moonscript
+```yuescript
 have_coins = false
 if have_coins then print "有硬币" else print "没有硬币"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 have_coins = false
 if have_coins then print "有硬币" else print "没有硬币"
-</pre>
+```
+
 </YueDisplay>
 
 因为if语句可以用作表达式，所以也可以这样写：
 
-```moonscript
+```yuescript
 have_coins = false
 print if have_coins then "有硬币" else "没有硬币"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 have_coins = false
 print if have_coins then "有硬币" else "没有硬币"
-</pre>
+```
+
 </YueDisplay>
 
 条件语句也可以作为表达式用在返回语句和赋值语句中：
 
-```moonscript
+```yuescript
 is_tall = (name) ->
   if name == "Rob"
     true
@@ -3045,7 +3301,8 @@ else
 print message -- 打印: 我很高
 ```
 <YueDisplay>
-<pre>
+
+```yue
 is_tall = (name) ->
   if name == "Rob"
     true
@@ -3058,37 +3315,42 @@ else
   "我不是很高"
 
 print message -- 打印: 我很高
-</pre>
+```
+
 </YueDisplay>
 
 if 的反义词是 unless（相当于 if not，正如“如果”对应“除非”）：
 
-```moonscript
+```yuescript
 unless os.date("%A") == "Monday"
   print "今天不是星期一！"
 ```
 <YueDisplay>
 
-<pre>
+
+```yue
 unless os.date("%A") == "Monday"
   print "今天不是星期一！"
-</pre>
+```
+
 </YueDisplay>
 
-```moonscript
+```yuescript
 print "你真幸运！" unless math.random! > 0.1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print "你真幸运！" unless math.random! > 0.1
-</pre>
+```
+
 </YueDisplay>
 
 ### 范围表达式
 
 你可以使用范围表达式来编写进行范围检查的代码。
 
-```moonscript
+```yuescript
 a = 5
 
 if a in [1, 3, 5, 7]
@@ -3098,7 +3360,8 @@ if a in list
   print "检查`a`是否在列表中"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 a = 5
 
 if a in [1, 3, 5, 7]
@@ -3106,62 +3369,71 @@ if a in [1, 3, 5, 7]
 
 if a in list
   print "检查`a`是否在列表中"
-</pre>
+```
+
 </YueDisplay>
 
-```moonscript
+```yuescript
 print "你很幸运!" unless math.random! > 0.1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print "你很幸运!" unless math.random! > 0.1
-</pre>
+```
+
 </YueDisplay>
 
 ## 代码行修饰符
 
 为了方便编写代码，循环语句和 if 语句可以应用于单行代码语句的末尾：
 
-```moonscript
+```yuescript
 print "你好，世界" if name == "Rob"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print "你好，世界" if name == "Rob"
-</pre>
+```
+
 </YueDisplay>
 
 修饰 for 循环的示例：
 
-```moonscript
+```yuescript
 print "项目: ", item for item in *items
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print "项目: ", item for item in *items
-</pre>
+```
+
 </YueDisplay>
 
 修饰 while 循环的示例：
 
-```moonscript
+```yuescript
 game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
-</pre>
+```
+
 </YueDisplay>
 
 ## switch 语句
 
 switch 语句是为了简化检查一系列相同值的if语句而提供的简写语法。要注意用于比较检查的目标值只会计算一次。和 if 语句一样，switch 语句在最后可以接一个 else 代码块来处理没有匹配的情况。在生成的 Lua 代码中，进行比较是使用 == 操作符完成的。switch 语句中也可以使用赋值表达式来储存临时变量值。
 
-```moonscript
+```yuescript
 switch name := "Dan"
   when "Robert"
     print "你是Robert"
@@ -3171,7 +3443,8 @@ switch name := "Dan"
     print "我不认识你，你的名字是#{name}"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 switch name := "Dan"
   when "Robert"
     print "你是Robert"
@@ -3179,14 +3452,15 @@ switch name := "Dan"
     print "你的名字是Dan"
   else
     print "我不认识你，你的名字是#{name}"
-</pre>
+```
+
 </YueDisplay>
 
 switch 语句的 when 子句中可以通过使用逗号分隔的列表来匹配多个值。
 
 switch 语句也可以作为表达式使用，下面我们可以将 switch 语句返回的结果分配给一个变量：
 
-```moonscript
+```yuescript
 b = 1
 next_number = switch b
   when 1
@@ -3197,7 +3471,8 @@ next_number = switch b
     error "数字数得太大了！"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 b = 1
 next_number = switch b
   when 1
@@ -3206,29 +3481,32 @@ next_number = switch b
     3
   else
     error "数字数得太大了！"
-</pre>
+```
+
 </YueDisplay>
 
 我们可以使用 then 关键字在 when 子句的同一行上编写处理代码。else 代码块的后续代码中要写在同一行上不需要额外的关键字。
 
-```moonscript
+```yuescript
 msg = switch math.random(1, 5)
   when 1 then "你很幸运"
   when 2 then "你差点很幸运"
   else "不太幸运"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 msg = switch math.random(1, 5)
   when 1 then "你很幸运"
   when 2 then "你差点很幸运"
   else "不太幸运"
-</pre>
+```
+
 </YueDisplay>
 
 如果在编写 switch 语句时希望少写一个缩进，那么你可以把第一个 when 子句放在 switch 开始语句的第一行，然后后续的子语句就都可以都少写一个缩进。
 
-```moonscript
+```yuescript
 switch math.random(1, 5)
   when 1
     print "你很幸运" -- 两个缩进级别
@@ -3241,7 +3519,8 @@ else
   print "不太幸运"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 switch math.random(1, 5)
   when 1
     print "你很幸运" -- 两个缩进级别
@@ -3252,7 +3531,8 @@ switch math.random(1, 5) when 1
   print "你很幸运" -- 一个缩进级别
 else
   print "不太幸运"
-</pre>
+```
+
 </YueDisplay>
 
 值得注意的是，在生成 Lua 代码时，我们要做检查的目标变量会放在 == 表达式的右侧。当你希望给 when 子句的比较对象定义一个 \_\_eq 元方法来重载判断逻辑时，可能会有用。
@@ -3261,7 +3541,7 @@ else
 
 在 switch 的 when 子句中，如果期待检查目标是一个表格，且可以通过特定的结构进行解构并获得非 nil 值，那么你可以尝试使用表格匹配的语法。
 
-```moonscript
+```yuescript
 items =
   * x: 100
     y: 200
@@ -3276,7 +3556,8 @@ for item in *items
       print "尺寸 #{width}, #{height}"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 items =
   * x: 100
     y: 200
@@ -3289,12 +3570,13 @@ for item in *items
       print "Vec2 #{x}, #{y}"
     when :width, :height
       print "尺寸 #{width}, #{height}"
-</pre>
+```
+
 </YueDisplay>
 
 你可以使用默认值来选择性地解构表格的某些字段。
 
-```moonscript
+```yuescript
 item = {}
 
 {pos: {:x = 50, :y = 200}} = item -- 获取错误：尝试索引nil值（字段'pos'）
@@ -3304,22 +3586,24 @@ switch item
     print "Vec2 #{x}, #{y}" -- 表格解构仍然会通过
 ```
 <YueDisplay>
-<pre>
-item = {}
+
+```yue
+item = \{}
 
 {pos: {:x = 50, :y = 200}} = item -- 获取错误：尝试索引nil值（字段'pos'）
 
 switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- 表格解构仍然会通过
-</pre>
+```
+
 </YueDisplay>
 
 你也可以匹配数组元素、表格字段，甚至使用数组或表格字面量来匹配嵌套的结构。
 
 匹配数组元素。
 
-```moonscript
+```yuescript
 switch tb
   when [1, 2, 3]
     print "1, 2, 3"
@@ -3329,7 +3613,8 @@ switch tb
     print "1, 2, #{b}"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 switch tb
   when [1, 2, 3]
     print "1, 2, 3"
@@ -3337,12 +3622,13 @@ switch tb
     print "1, #{b}, 3"
   when [1, 2, b = 3] -- 变量b有默认值
     print "1, 2, #{b}"
-</pre>
+```
+
 </YueDisplay>
 
 匹配表格字段。
 
-```moonscript
+```yuescript
 switch tb
   when success: true, :result
     print "成功", result
@@ -3352,7 +3638,8 @@ switch tb
     print "无效值"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 switch tb
   when success: true, :result
     print "成功", result
@@ -3360,12 +3647,13 @@ switch tb
     print "失败", result
   else
     print "无效值"
-</pre>
+```
+
 </YueDisplay>
 
 匹配嵌套的表格结构。
 
-```moonscript
+```yuescript
 switch tb
   when data: {type: "success", :content}
     print "成功", content
@@ -3375,7 +3663,8 @@ switch tb
     print "无效值"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 switch tb
   when data: {type: "success", :content}
     print "成功", content
@@ -3383,12 +3672,13 @@ switch tb
     print "失败", content
   else
     print "无效值"
-</pre>
+```
+
 </YueDisplay>
 
 匹配表格数组。
 
-```moonscript
+```yuescript
 switch tb
   when [
       {a: 1, b: 2}
@@ -3399,7 +3689,8 @@ switch tb
     print "匹配成功", fourth
 ```
 <YueDisplay>
-<pre>
+
+```yue
 switch tb
   when [
       {a: 1, b: 2}
@@ -3408,12 +3699,13 @@ switch tb
       fourth
     ]
     print "匹配成功", fourth
-</pre>
+```
+
 </YueDisplay>
 
 匹配一个列表并捕获特定范围内的元素。
 
-```moonscript
+```yuescript
 segments = ["admin", "users", "logs", "view"]
 switch segments
   when [...groups, resource, action]
@@ -3422,14 +3714,16 @@ switch segments
     print "Action:", action -- 打印: "view"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 segments = ["admin", "users", "logs", "view"]
 switch segments
   when [...groups, resource, action]
     print "Group:", groups -- 打印: {"admin", "users"}
     print "Resource:", resource -- 打印: "logs"
     print "Action:", action -- 打印: "view"
-</pre>
+```
+
 </YueDisplay>
 
 ## 面向对象编程
@@ -3438,7 +3732,7 @@ switch segments
 
 一个简单的类：
 
-```moonscript
+```yuescript
 class Inventory
   new: =>
     @items = {}
@@ -3450,17 +3744,19 @@ class Inventory
       @items[name] = 1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Inventory
   new: =>
-    @items = {}
+    @items = \{}
 
   add_item: (name) =>
     if @items[name]
       @items[name] += 1
     else
       @items[name] = 1
-</pre>
+```
+
 </YueDisplay>
 
 在月之脚本中采用面向对象的编程方式时，通常会使用类声明语句结合 Lua 表格字面量来做类定义。这个类的定义包含了它的所有方法和属性。在这种结构中，键名为 “new” 的成员扮演了一个重要的角色，是作为构造函数来使用。
@@ -3471,18 +3767,20 @@ class Inventory
 
 为了创建类的一个新实例，可以将类名当作一个函数来调用，这样就可以生成并返回一个新的实例。
 
-```moonscript
+```yuescript
 inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
 ```
 <YueDisplay>
 
-<pre>
+
+```yue
 inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
-</pre>
+```
+
 </YueDisplay>
 
 在月之脚本的类中，由于需要将类的实例作为参数传入到调用的方法中，因此使用了 **\\** 操作符做类的成员函数调用。
@@ -3491,7 +3789,7 @@ inv\add_item "pants"
 
 例如，在下面的示例中，clothes 属性在所有实例之间共享。因此，对这个属性在一个实例中的修改，将会影响到其他所有实例。
 
-```moonscript
+```yuescript
 class Person
   clothes: []
   give_item: (name) =>
@@ -3507,7 +3805,8 @@ b\give_item "shirt"
 print item for item in *a.clothes
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Person
   clothes: []
   give_item: (name) =>
@@ -3521,29 +3820,32 @@ b\give_item "shirt"
 
 -- 会同时打印出裤子和衬衫
 print item for item in *a.clothes
-</pre>
+```
+
 </YueDisplay>
 
 避免这个问题的正确方法是在构造函数中创建对象的可变状态：
 
-```moonscript
+```yuescript
 class Person
   new: =>
     @clothes = []
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Person
   new: =>
     @clothes = []
-</pre>
+```
+
 </YueDisplay>
 
 ### 继承
 
 `extends` 关键字可以在类声明中使用，以继承另一个类的属性和方法。
 
-```moonscript
+```yuescript
 class BackPack extends Inventory
   size: 10
   add_item: (name) =>
@@ -3551,13 +3853,15 @@ class BackPack extends Inventory
     super name
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class BackPack extends Inventory
   size: 10
   add_item: (name) =>
     if #@items > size then error "背包已满"
     super name
-</pre>
+```
+
 </YueDisplay>
 
 
@@ -3567,7 +3871,7 @@ class BackPack extends Inventory
 
 此外，当一个类继承自另一个类时，它会尝试调用父类上的 `__inherited` 方法（如果这个方法存在的话），以此来向父类发送通知。这个 `__inherited` 函数接受两个参数：被继承的父类和继承的子类。
 
-```moonscript
+```yuescript
 class Shelf
   @__inherited: (child) =>
     print @__name, "被", child.__name, "继承"
@@ -3576,14 +3880,16 @@ class Shelf
 class Cupboard extends Shelf
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Shelf
   @__inherited: (child) =>
     print @__name, "被", child.__name, "继承"
 
 -- 将打印: Shelf 被 Cupboard 继承
 class Cupboard extends Shelf
-</pre>
+```
+
 </YueDisplay>
 
 ### super 关键字
@@ -3598,7 +3904,7 @@ class Cupboard extends Shelf
 
 下面是一些使用 `super` 的不同方法的示例：
 
-```moonscript
+```yuescript
 class MyClass extends ParentClass
   a_method: =>
     -- 以下效果相同：
@@ -3610,7 +3916,8 @@ class MyClass extends ParentClass
     assert super == ParentClass
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class MyClass extends ParentClass
   a_method: =>
     -- 以下效果相同：
@@ -3620,7 +3927,8 @@ class MyClass extends ParentClass
 
     -- super 作为值等于父类：
     assert super == ParentClass
-</pre>
+```
+
 </YueDisplay>
 
 **super** 也可以用在函数存根的左侧。唯一的主要区别是，生成的函数不是绑定到 super 的值，而是绑定到 self。
@@ -3629,19 +3937,21 @@ class MyClass extends ParentClass
 
 每个类的实例都带有它的类型。这存储在特殊的 \_\_class 属性中。此属性会保存类对象。类对象是我们用来构建新实例的对象。我们还可以索引类对象以检索类方法和属性。
 
-```moonscript
+```yuescript
 b = BackPack!
 assert b.__class == BackPack
 
 print BackPack.size -- 打印 10
 ```
 <YueDisplay>
-<pre>
+
+```yue
 b = BackPack!
 assert b.__class == BackPack
 
 print BackPack.size -- 打印 10
-</pre>
+```
+
 </YueDisplay>
 
 ### 类对象
@@ -3659,13 +3969,15 @@ print BackPack.size -- 打印 10
 
 此外，类对象包含几个特殊的属性：当类被声明时，类的名称会作为一个字符串存储在类对象的 “__name” 字段中。
 
-```moonscript
+```yuescript
 print BackPack.__name -- 打印 Backpack
 ```
 <YueDisplay>
-<pre>
+
+```yue
 print BackPack.__name -- 打印 Backpack
-</pre>
+```
+
 </YueDisplay>
 
 基础对象被保存在一个名为 `__base` 的特殊表中。我们可以编辑这个表，以便为那些已经创建出来的实例和还未创建的实例增加新的功能。
@@ -3676,7 +3988,7 @@ print BackPack.__name -- 打印 Backpack
 
 我们可以直接在类对象中创建变量，而不是在类的基对象中，通过在类声明中的属性名前使用 @。
 
-```moonscript
+```yuescript
 class Things
   @some_func: => print "Hello from", @__name
 
@@ -3686,7 +3998,8 @@ Things\some_func!
 assert Things().some_func == nil
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Things
   @some_func: => print "Hello from", @__name
 
@@ -3694,12 +4007,13 @@ Things\some_func!
 
 -- 类变量在实例中不可见
 assert Things().some_func == nil
-</pre>
+```
+
 </YueDisplay>
 
 在表达式中，我们可以使用 @@ 来访问存储在 `self.__class` 中的值。因此，`@@hello` 是 `self.__class.hello` 的简写。
 
-```moonscript
+```yuescript
 class Counter
   @count: 0
 
@@ -3712,7 +4026,8 @@ Counter!
 print Counter.count -- 输出 2
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Counter
   @count: 0
 
@@ -3723,18 +4038,21 @@ Counter!
 Counter!
 
 print Counter.count -- 输出 2
-</pre>
+```
+
 </YueDisplay>
 
 @@ 的调用语义与 @ 类似。调用 @@ 时，会使用 Lua 的冒号语法将类作为第一个参数传入。
 
-```moonscript
+```yuescript
 @@hello 1,2,3,4
 ```
 <YueDisplay>
-<pre>
+
+```yue
 @@hello 1,2,3,4
-</pre>
+```
+
 </YueDisplay>
 
 ### 类声明语句
@@ -3743,22 +4061,24 @@ print Counter.count -- 输出 2
 
 以下是创建类变量的另一种方法：
 
-```moonscript
+```yuescript
 class Things
   @class_var = "hello world"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Things
   @class_var = "hello world"
-</pre>
+```
+
 </YueDisplay>
 
 这些表达式会在所有属性被添加到类的基对象后执行。
 
 在类的主体中声明的所有变量都会限制作用域只在类声明的范围。这对于放置只有类方法可以访问的私有值或辅助函数很方便：
 
-```moonscript
+```yuescript
 class MoreThings
   secret = 123
   log = (msg) -> print "LOG:", msg
@@ -3767,14 +4087,16 @@ class MoreThings
     log "hello world: " .. secret
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class MoreThings
   secret = 123
   log = (msg) -> print "LOG:", msg
 
   some_method: =>
     log "hello world: " .. secret
-</pre>
+```
+
 </YueDisplay>
 
 ### @ 和 @@ 值
@@ -3783,33 +4105,37 @@ class MoreThings
 
 如果它们单独使用，它们是 self 和 self.\_\_class 的别名。
 
-```moonscript
+```yuescript
 assert @ == self
 assert @@ == self.__class
 ```
 <YueDisplay>
-<pre>
+
+```yue
 assert @ == self
 assert @@ == self.__class
-</pre>
+```
+
 </YueDisplay>
 
 例如，使用 @@ 从实例方法快速创建同一类的新实例的方法：
 
-```moonscript
+```yuescript
 some_instance_method = (...) => @@ ...
 ```
 <YueDisplay>
-<pre>
+
+```yue
 some_instance_method = (...) => @@ ...
-</pre>
+```
+
 </YueDisplay>
 
 ### 构造属性提升
 
 为了减少编写简单值对象定义的代码。你可以这样简单写一个类：
 
-```moonscript
+```yuescript
 class Something
   new: (@foo, @bar, @@biz, @@baz) =>
 
@@ -3823,7 +4149,8 @@ class Something
     @@baz = baz
 ```
 <YueDisplay>
-<pre>
+
+```yue
 class Something
   new: (@foo, @bar, @@biz, @@baz) =>
 
@@ -3835,76 +4162,85 @@ class Something
     @bar = bar
     @@biz = biz
     @@baz = baz
-</pre>
+```
+
 </YueDisplay>
 
 你也可以使用这种语法为一个函数初始化传入对象的字段。
 
-```moonscript
+```yuescript
 new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
 <YueDisplay>
-<pre>
+
+```yue
 new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
-</pre>
+```
+
 </YueDisplay>
 
 ### 类表达式
 
 类声明的语法也可以作为一个表达式使用，可以赋值给一个变量或者被返回语句返回。
 
-```moonscript
+```yuescript
 x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
 <YueDisplay>
-<pre>
+
+```yue
 x = class Bucket
   drops: 0
   add_drop: => @drops += 1
-</pre>
+```
+
 </YueDisplay>
 
 ### 匿名类
 
 声明类时可以省略名称。如果类的表达式不在赋值语句中，\_\_name 属性将为 nil。如果出现在赋值语句中，赋值操作左侧的名称将代替 nil。
 
-```moonscript
+```yuescript
 BigBucket = class extends Bucket
   add_drop: => @drops += 10
 
 assert Bucket.__name == "BigBucket"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 BigBucket = class extends Bucket
   add_drop: => @drops += 10
 
 assert Bucket.__name == "BigBucket"
-</pre>
+```
+
 </YueDisplay>
 
 你甚至可以省略掉主体，这意味着你可以这样写一个空白的匿名类：
 
-```moonscript
+```yuescript
 x = class
 ```
 <YueDisplay>
-<pre>
+
+```yue
 x = class
-</pre>
+```
+
 </YueDisplay>
 
 ### 类混合
 
 你可以通过使用 `using` 关键字来实现类混合。这意味着你可以从一个普通 Lua 表格或已定义的类对象中，复制函数到你创建的新类中。当你使用普通 Lua 表格进行类混合时，你有机会用自己的实现来重写类的索引方法（例如元方法 `__index`）。然而，当你从一个类对象做混合时，需要注意的是该类对象的元方法将不会被复制到新类。
 
-```moonscript
+```yuescript
 MyIndex = __index: var: 1
 
 class X using MyIndex
@@ -3922,7 +4258,8 @@ y\func!
 assert y.__class.__parent ~= X -- X 不是 Y 的父类
 ```
 <YueDisplay>
-<pre>
+
+```yue
 MyIndex = __index: var: 1
 
 class X using MyIndex
@@ -3938,7 +4275,8 @@ y = Y!
 y\func!
 
 assert y.__class.__parent ~= X -- X 不是 Y 的父类
-</pre>
+```
+
 </YueDisplay>
 
 ## with 语句
@@ -3951,7 +4289,7 @@ with 块有助于简化编写这样的代码。在 with 块内，我们可以使
 
 例如，我们可以这样处理一个新创建的对象：
 
-```moonscript
+```yuescript
 with Person!
   .name = "Oswald"
   \add_relative my_dad
@@ -3959,31 +4297,35 @@ with Person!
   print .name
 ```
 <YueDisplay>
-<pre>
+
+```yue
 with Person!
   .name = "Oswald"
   \add_relative my_dad
   \save!
   print .name
-</pre>
+```
+
 </YueDisplay>
 
 with 语句也可以用作一个表达式，并返回它的代码块正在处理的对象。
 
-```moonscript
+```yuescript
 file = with File "favorite_foods.txt"
   \set_encoding "utf8"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 file = with File "favorite_foods.txt"
   \set_encoding "utf8"
-</pre>
+```
+
 </YueDisplay>
 
 或者…
 
-```moonscript
+```yuescript
 create_person = (name,  relatives) ->
   with Person!
     .name = name
@@ -3992,36 +4334,40 @@ create_person = (name,  relatives) ->
 me = create_person "Leaf", [dad, mother, sister]
 ```
 <YueDisplay>
-<pre>
+
+```yue
 create_person = (name,  relatives) ->
   with Person!
     .name = name
     \add_relative relative for relative in *relatives
 
 me = create_person "Leaf", [dad, mother, sister]
-</pre>
+```
+
 </YueDisplay>
 
 在此用法中，with 可以被视为K组合子（k-combinator）的一种特殊形式。
 
 如果你想给表达式另外起一个名称的话，with 语句中的表达式也可以是一个赋值语句。
 
-```moonscript
+```yuescript
 with str := "你好"
   print "原始:", str
   print "大写:", \upper!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 with str := "你好"
   print "原始:", str
   print "大写:", \upper!
-</pre>
+```
+
 </YueDisplay>
 
 你可以在 `with` 语句中使用 `[]` 访问特殊键。
 
-```moonscript
+```yuescript
 with tb
   [1] = 1
   print [2]
@@ -4031,7 +4377,8 @@ with tb
   [] = "abc" -- 追加到 "tb"
 ```
 <YueDisplay>
-<pre>
+
+```yue
 with tb
   [1] = 1
   print [2]
@@ -4039,44 +4386,49 @@ with tb
     [3] = [2]\func!
     ["key-name"] = value
   [] = "abc" -- 追加到 "tb"
-</pre>
+```
+
 </YueDisplay>
 
 `with?` 是 `with` 语法的一个增强版本，引入了存在性检查，用于在不显式判空的情况下安全访问可能为 nil 的对象。
 
-```moonscript
+```yuescript
 with? obj
   print obj.name
 ```
 <YueDisplay>
-<pre>
+
+```yue
 with? obj
   print obj.name
-</pre>
+```
+
 </YueDisplay>
 
 ## do 语句
 
 当用作语句时，do 语句的作用就像在 Lua 中差不多。
 
-```moonscript
+```yuescript
 do
   var = "hello"
   print var
 print var -- 这里是nil
 ```
 <YueDisplay>
-<pre>
+
+```yue
 do
   var = "hello"
   print var
 print var -- 这里是nil
-</pre>
+```
+
 </YueDisplay>
 
 月之脚本的 **do** 也可以用作表达式。允许你将多行代码的处理合并为一个表达式，并将 do 语句代码块的最后一个语句作为表达式返回的结果。
 
-```moonscript
+```yuescript
 counter = do
   i = 0
   ->
@@ -4087,7 +4439,8 @@ print counter!
 print counter!
 ```
 <YueDisplay>
-<pre>
+
+```yue
 counter = do
   i = 0
   ->
@@ -4096,10 +4449,11 @@ counter = do
 
 print counter!
 print counter!
-</pre>
+```
+
 </YueDisplay>
 
-```moonscript
+```yuescript
 tbl = {
   key: do
     print "分配键值!"
@@ -4107,13 +4461,15 @@ tbl = {
 }
 ```
 <YueDisplay>
-<pre>
-tbl = {
+
+```yue
+tbl = \{
   key: do
     print "分配键值!"
     1234
 }
-</pre>
+```
+
 </YueDisplay>
 
 ## 函数存根
@@ -4124,7 +4480,7 @@ tbl = {
 
 这种语法类似于使用 \ 操作符调用实例方法的方式，区别在于，这里不需要在 \ 操作符后面附加参数列表。
 
-```moonscript
+```yuescript
 my_object = {
   value: 1000
   write: => print "值为:", @value
@@ -4143,8 +4499,9 @@ run_callback my_object.write
 run_callback my_object\write
 ```
 <YueDisplay>
-<pre>
-my_object = {
+
+```yue
+my_object = \{
   value: 1000
   write: => print "值为:", @value
 }
@@ -4160,14 +4517,15 @@ run_callback my_object.write
 -- 函数存根语法
 -- 让我们把对象捆绑到一个新函数中
 run_callback my_object\write
-</pre>
+```
+
 </YueDisplay>
 
 ## 使用 using 语句：防止破坏性赋值
 
 Lua 的变量作用域是降低代码复杂度的重要工具。然而，随着代码量的增加，维护这些变量可能变得更加困难。比如，看看下面的代码片段：
 
-```moonscript
+```yuescript
 i = 100
 
 -- 许多代码行...
@@ -4183,7 +4541,8 @@ my_func!
 print i -- 将打印 0
 ```
 <YueDisplay>
-<pre>
+
+```yue
 i = 100
 
 -- 许多代码行...
@@ -4197,7 +4556,8 @@ my_func = ->
 my_func!
 
 print i -- 将打印 0
-</pre>
+```
+
 </YueDisplay>
 
 在 `my_func` 中，我们不小心覆盖了变量 `i` 的值。虽然在这个例子中这个问题很明显，但在一个庞大的或者是由多人共同维护的代码库中，很难追踪每个变量的声明情况。
@@ -4206,7 +4566,7 @@ print i -- 将打印 0
 
 `using` 语句就是为此而生。`using nil` 确保函数内部的赋值不会意外地影响到外部作用域的变量。我们只需将 `using` 子句放在函数的参数列表之后；若函数没有参数，则直接放在括号内即可。
 
-```moonscript
+```yuescript
 i = 100
 
 my_func = (using nil) ->
@@ -4216,7 +4576,8 @@ my_func!
 print i -- 打印 100，i 没有受到影响
 ```
 <YueDisplay>
-<pre>
+
+```yue
 i = 100
 
 my_func = (using nil) ->
@@ -4224,12 +4585,13 @@ my_func = (using nil) ->
 
 my_func!
 print i -- 打印 100，i 没有受到影响
-</pre>
+```
+
 </YueDisplay>
 
 using子句中可以填写多个用逗号分隔名称。指定可以访问和修改的外部变量的名称：
 
-```moonscript
+```yuescript
 tmp = 1213
 i, k = 100, 50
 
@@ -4242,7 +4604,8 @@ my_func(22)
 print i, k -- 这些已经被更新
 ```
 <YueDisplay>
-<pre>
+
+```yue
 tmp = 1213
 i, k = 100, 50
 
@@ -4253,7 +4616,8 @@ my_func = (add using k, i) ->
 
 my_func(22)
 print i, k -- 这些已经被更新
-</pre>
+```
+
 </YueDisplay>
 
 ## 月之脚本语言库
