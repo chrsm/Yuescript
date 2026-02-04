@@ -46,7 +46,7 @@ const lightPlusTheme = EditorView.theme(
       height: '100%',
       backgroundColor: '#FFFFFF',
       color: '#000000',
-      fontSize: '0.8em'
+      fontSize: '14px'
     },
     '&.cm-focused': {
       outline: 'none'
@@ -90,7 +90,7 @@ const darkPlusTheme = EditorView.theme(
       height: '100%',
       backgroundColor: '#1E1E1E',
       color: '#D4D4D4',
-      fontSize: '0.8em'
+      fontSize: '14px'
     },
     '&.cm-focused': {
       outline: 'none'

@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
+import { h } from 'vue'
 import './custom.css'
 
 // @ts-ignore
@@ -11,6 +12,10 @@ import YueDisplay from './components/YueDisplay.vue'
 
 const theme: Theme = {
   extends: DefaultTheme,
+  Layout: () =>
+    h(DefaultTheme.Layout, null, {
+      'layout-bottom': () => h(CompilerModal)
+    }),
   enhanceApp({ app }) {
     app.component('CompilerModal', CompilerModal)
     app.component('YueCompiler', YueCompiler)

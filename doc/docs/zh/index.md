@@ -17,7 +17,6 @@ features:
     details: 管道、模式匹配、切片与解构，同时保留 Lua 互操作性。
   - title: 快速迭代
     details: 虚心接受用户反馈，以帮助改进和加速语言的开发和演进！
-footer: MIT Licensed | Copyright © 2017-2026 Li Jin
 ---
 
 ### 版权和协议

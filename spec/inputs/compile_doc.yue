@@ -1,24 +1,83 @@
 outputFolder = ...
-for [compiledFile, docFile] in *[
-		["codes_from_doc.lua", "doc/docs/doc/index.md"]
-		["codes_from_doc_zh.lua", "doc/docs/zh/doc/index.md"]
+for [compiledFile, docFiles] in *[
+		["codes_from_doc.lua", [
+			"doc/docs/doc/introduction.md"
+			"doc/docs/doc/macro.md"
+			"doc/docs/doc/operator.md"
+			"doc/docs/doc/module.md"
+			"doc/docs/doc/assignment.md"
+			"doc/docs/doc/destructuring-assignment.md"
+			"doc/docs/doc/if-assignment.md"
+			"doc/docs/doc/varargs-assignment.md"
+			"doc/docs/doc/whitespace.md"
+			"doc/docs/doc/comment.md"
+			"doc/docs/doc/try.md"
+			"doc/docs/doc/attributes.md"
+			"doc/docs/doc/literals.md"
+			"doc/docs/doc/function-literals.md"
+			"doc/docs/doc/backcalls.md"
+			"doc/docs/doc/table-literals.md"
+			"doc/docs/doc/comprehensions.md"
+			"doc/docs/doc/for-loop.md"
+			"doc/docs/doc/while-loop.md"
+			"doc/docs/doc/continue.md"
+			"doc/docs/doc/conditionals.md"
+			"doc/docs/doc/line-decorators.md"
+			"doc/docs/doc/switch.md"
+			"doc/docs/doc/object-oriented-programming.md"
+			"doc/docs/doc/with-statement.md"
+			"doc/docs/doc/do.md"
+			"doc/docs/doc/function-stubs.md"
+			"doc/docs/doc/the-using-clause-controlling-destructive-assignment.md"
+		]]
+		["codes_from_doc_zh.lua", [
+			"doc/docs/zh/doc/introduction.md"
+			"doc/docs/zh/doc/macro.md"
+			"doc/docs/zh/doc/operator.md"
+			"doc/docs/zh/doc/module.md"
+			"doc/docs/zh/doc/assignment.md"
+			"doc/docs/zh/doc/destructuring-assignment.md"
+			"doc/docs/zh/doc/if-assignment.md"
+			"doc/docs/zh/doc/varargs-assignment.md"
+			"doc/docs/zh/doc/whitespace.md"
+			"doc/docs/zh/doc/comment.md"
+			"doc/docs/zh/doc/try.md"
+			"doc/docs/zh/doc/attributes.md"
+			"doc/docs/zh/doc/literals.md"
+			"doc/docs/zh/doc/function-literals.md"
+			"doc/docs/zh/doc/backcalls.md"
+			"doc/docs/zh/doc/table-literals.md"
+			"doc/docs/zh/doc/comprehensions.md"
+			"doc/docs/zh/doc/for-loop.md"
+			"doc/docs/zh/doc/while-loop.md"
+			"doc/docs/zh/doc/continue.md"
+			"doc/docs/zh/doc/conditionals.md"
+			"doc/docs/zh/doc/line-decorators.md"
+			"doc/docs/zh/doc/switch.md"
+			"doc/docs/zh/doc/object-oriented-programming.md"
+			"doc/docs/zh/doc/with-statement.md"
+			"doc/docs/zh/doc/do.md"
+			"doc/docs/zh/doc/function-stubs.md"
+			"doc/docs/zh/doc/the-using-clause-controlling-destructive-assignment.md"
+		]]
 	]
-	close input = with? io.open docFile
-		import "yue" as :to_lua
-		text = \read "*a"
-		codes = []
-		for code in text\gmatch "```yuescript[\r\n]+(.-)```[^%w]"
-			if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
-				codes[] = result
-			elseif not err\match "macro exporting module only accepts macro definition"
-				print err
-				os.exit 1
-		for code in text\gmatch "```yue[\r\n]+(.-)```[^%w]"
-			if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
-				codes[] = result
-			else
-				print err
-				os.exit 1
-		close output = with io.open "#{outputFolder}/#{compiledFile}", "w+"
-			\write table.concat codes
+	codes = []
+	for docFile in *docFiles
+		close input = with? io.open docFile
+			import "yue" as :to_lua
+			text = \read "*a"
+			for code in text\gmatch "```yuescript[\r\n]+(.-)```[^%w]"
+				if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
+					codes[] = result
+				elseif not err\match "macro exporting module only accepts macro definition"
+					print err
+					os.exit 1
+			for code in text\gmatch "```yue[\r\n]+(.-)```[^%w]"
+				if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
+					codes[] = result
+				else
+					print err
+					os.exit 1
+	close output = with io.open "#{outputFolder}/#{compiledFile}", "w+"
+		\write table.concat codes
 

@@ -19,6 +19,7 @@
 .code-output code {
   background: #ffffff;
   color: #000000;
+  font-size: 14px;
 }
 
 .dark .code-output,

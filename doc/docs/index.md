@@ -17,9 +17,8 @@ features:
     details: Pipe, pattern matching, slicing, and destructuring without giving up Lua interop.
   - title: Rapid Iteration
     details: Any feedback is welcome to help accelerate the language development and evolution!
-footer: MIT Licensed | Copyright © 2017-2026 Li Jin
 ---
 
-## License & Copyright
+### License & Copyright
 
 MIT License. Copyright © 2017-2026 Li Jin. All rights reserved.
