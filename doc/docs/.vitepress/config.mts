@@ -51,7 +51,7 @@ function createSidebar(basePath: string, zh: boolean) {
       link: `${basePath}/destructuring-assignment`,
     },
     {
-      text: zh ? 'If 赋值' : 'If Assignment',
+      text: zh ? 'if 赋值' : 'If Assignment',
       link: `${basePath}/if-assignment`,
     },
     {
@@ -234,6 +234,11 @@ export default defineConfig({
         ],
         sidebar: createSidebar('/zh/doc', true),
       }
+    }
+  },
+  themeConfig: {
+    search: {
+      provider: 'local'
     }
   }
 })
