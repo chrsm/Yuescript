@@ -538,5 +538,9 @@ do
 
 q = 1 --[[it's q]]; --[[got w]] w = 2; e = 3; print --[[param q]] q, w, e; --[[here]] -- line ends
 
+do
+	--[[abc]]    --[[def]]--[[  dsdsd ]]--OK end
+	print 123 --[[one]] --    two
+
 nil
 

@@ -520,4 +520,7 @@ local q = 1
 local w = 2
 local e = 3
 print(q, w, e)
+do
+	print(123)
+end
 return nil
