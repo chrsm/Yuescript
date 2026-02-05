@@ -10,13 +10,13 @@ import darkPlus from '@shikijs/themes/dark-plus';
 import lightPlus from '@shikijs/themes/light-plus';
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const moonscriptGrammarPath = resolve(__dirname, 'grammars/moonscript.tmLanguage.json')
-const moonscriptGrammar = JSON.parse(readFileSync(moonscriptGrammarPath, 'utf-8'))
-const moonscriptLanguage = {
-  ...moonscriptGrammar,
-  name: 'moonscript',
-  scopeName: 'source.moonscript',
-  aliases: ['yue', 'yuescript', 'moon'],
+const yuescriptGrammarPath = resolve(__dirname, 'grammars/yuescript.tmLanguage.json')
+const yuescriptGrammar = JSON.parse(readFileSync(yuescriptGrammarPath, 'utf-8'))
+const yuescriptLanguage = {
+  ...yuescriptGrammar,
+  name: 'yuescript',
+  scopeName: 'source.yuescript',
+  aliases: ['yue'],
 }
 
 // Generate sidebar configuration function
@@ -205,7 +205,7 @@ export default defineConfig({
   },
   markdown: {
     languages: [
-      moonscriptLanguage,
+      yuescriptLanguage,
     ],
     theme: {
       light: lightPlus,

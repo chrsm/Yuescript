@@ -142,8 +142,23 @@ const lightPlusHighlightStyle = HighlightStyle.define([
   { tag: tags.tagName, color: '#800000' },
   { tag: tags.attributeName, color: '#e50000' },
   { tag: tags.meta, color: '#666666' },
-  { tag: tags.invalid, color: '#cd3131' }
-])
+  { tag: tags.invalid, color: '#cd3131' },
+  // Additional tags for YueScript - ensure all token types have styles
+  { tag: tags.variableName, color: '#001080' },
+  { tag: tags.constant(tags.name), color: '#098658' },
+  { tag: tags.constant(tags.variableName), color: '#098658' },
+  { tag: tags.constant, color: '#098658' },
+  { tag: tags.definition(tags.variableName), color: '#001080' },
+  { tag: tags.modifier, color: '#AF00DB' },
+  { tag: tags.namespace, color: '#267f99' },
+  { tag: tags.labelName, color: '#795e26' },
+  { tag: tags.character, color: '#098658' },
+  { tag: tags.literal, color: '#098658' },
+  { tag: tags.bracket, color: '#000000' },
+  { tag: tags.squareBracket, color: '#000000' },
+  { tag: tags.paren, color: '#000000' },
+  { tag: tags.brace, color: '#000000' }
+], { fallback: true })
 
 /* shikijs/themes/dark-plus tokenColors */
 const darkPlusHighlightStyle = HighlightStyle.define([
@@ -160,8 +175,23 @@ const darkPlusHighlightStyle = HighlightStyle.define([
   { tag: tags.tagName, color: '#569cd6' },
   { tag: tags.attributeName, color: '#9cdcfe' },
   { tag: tags.meta, color: '#d4d4d4' },
-  { tag: tags.invalid, color: '#f44747' }
-])
+  { tag: tags.invalid, color: '#f44747' },
+  // Additional tags for YueScript - ensure all token types have styles
+  { tag: tags.variableName, color: '#9cdcfe' },
+  { tag: tags.constant(tags.name), color: '#b5cea8' },
+  { tag: tags.constant(tags.variableName), color: '#b5cea8' },
+  { tag: tags.constant, color: '#b5cea8' },
+  { tag: tags.definition(tags.variableName), color: '#9cdcfe' },
+  { tag: tags.modifier, color: '#C586C0' },
+  { tag: tags.namespace, color: '#4ec9b0' },
+  { tag: tags.labelName, color: '#dcdcaa' },
+  { tag: tags.character, color: '#b5cea8' },
+  { tag: tags.literal, color: '#b5cea8' },
+  { tag: tags.bracket, color: '#d4d4d4' },
+  { tag: tags.squareBracket, color: '#d4d4d4' },
+  { tag: tags.paren, color: '#d4d4d4' },
+  { tag: tags.brace, color: '#d4d4d4' }
+], { fallback: true })
 
 export default {
   props: {
@@ -273,37 +303,150 @@ export default {
         return
       }
 
-      const moonscriptMode = simpleMode({
+      const yuescriptMode = simpleMode({
         start: [
+          // Shebang
+          { regex: /^#!.*/, token: 'comment' },
+          // Multiline string: [=[...]=] with any number of =
+          { regex: /\[(=*)\[/, token: 'string', push: 'luaString' },
+          // Block comment: --[[...]] (but not ---)
           { regex: /--\[\[/, token: 'comment', push: 'commentBlock' },
-          { regex: /\[\[/, token: 'string', push: 'stringBlock' },
-          { regex: /--.*/, token: 'comment' },
-          { regex: /"(?:[^\\"]|\\.)*"?/, token: 'string' },
-          { regex: /'(?:[^\\']|\\.)*'?/, token: 'string' },
-          {
-            regex: /\b(?:class|extends|if|else|elseif|then|for|in|while|until|do|return|break|continue|switch|when|case|default|try|catch|finally|with|import|export|from|as|super|self|true|false|nil|and|or|not)\b/,
-            token: 'keyword'
-          },
-          { regex: /@[a-zA-Z_]\w*/, token: 'variable-2' },
-          { regex: /\b[A-Z][\w]*\b/, token: 'typeName' },
-          {
-            regex: /(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i,
-            token: 'number'
-          },
-          { regex: /[+\-/*=<>!]=?|[~^|&%]/, token: 'operator' },
+          // Line comment: -- (but not ---)
+          { regex: /--(?!-).*/, token: 'comment' },
+          // Double quoted string with interpolation #{...}
+          { regex: /"/, token: 'string', push: 'doubleString' },
+          // Single quoted string
+          { regex: /'/, token: 'string', push: 'singleString' },
+          // Tag: ::name::
+          { regex: /(::)\s*[a-zA-Z_][a-zA-Z0-9_]*\s*(::)/, token: 'tagName' },
+          // Class definition: class Name extends Base
+          { regex: /\bclass\b\s+(@?[a-zA-Z$_][\w.]*)?(?:\s+\bextends\b\s+(@?[a-zA-Z$._][\w.]*))?/, token: 'keyword' },
+          // Function definition: name: => or name := => or name(params): =>
+          { regex: /(@?[a-zA-Z$_]\??[\w$:.]*\s*[:=]\s*(?:\([^)]*\))?\s*[=-]>)/, token: 'function' },
+          // Destructured assignment: { ... } := or { ... } =
+          { regex: /\{\s*[^}]*\}\s*[:=]/, token: 'keyword' },
+          // Keywords (must come before operators to catch 'and', 'or', 'in', 'not')
+          { regex: /\b(?:import|as|from|export|macro|local|global|close|const|class|extends|using)\b(?![:\w])/, token: 'keyword' },
+          // Control keywords
+          { regex: /\b(?:if|then|else|elseif|until|unless|switch|when|with|do|for|while|repeat|return|continue|break|try|catch|goto)\b(?![:\w])/, token: 'keyword' },
+          { regex: /\b(?:or|and|in|not)\b(?![:\w])/, token: 'keyword' },
+          // Boolean and nil
+          { regex: /\b(?:true|false|nil)\b(?![:\w])/, token: 'number' },
+          // Invalid: function/end
+          { regex: /\b(?:function|end)\b(?![:\w])/, token: 'invalid' },
+          // Invalid: self (deprecated)
+          { regex: /\bself\b(?![:\w])/, token: 'invalid' },
+          // super keyword
+          { regex: /\bsuper\b(?![:\w])/, token: 'variable' },
+          // Invalid variables: $$, $@, @@@, standalone $
+          { regex: /\$\$+/, token: 'invalid' },
+          { regex: /@@@+/, token: 'invalid' },
+          { regex: /\$(?!\w)/, token: 'invalid' },
+          // Special operators: <mode>, <>, <"string">, <'string'>, <word> (invalid)
+          { regex: /<\b(?:mode|name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|tostring|pairs|ipairs)\b>/, token: 'constant' },
+          { regex: /<>/, token: 'constant' },
+          { regex: /<"[^"]*">/, token: 'constant' },
+          { regex: /<'[^']*'>/, token: 'constant' },
+          { regex: /<\w+>/, token: 'invalid' },
+          // Operators (and/or removed since they're keywords, ?? must not match ???)
+          { regex: /(\+|\-|\*|\/|%|\^|\/\/|\||\&|>>|<<|\.\.)=?/, token: 'operator' },
+          { regex: /\?\?(?!\?)/, token: 'operator' },
+          { regex: /\[\]\s*=/, token: 'operator' },
+          { regex: /==|~=|!=|>|>=|<|<=/, token: 'operator' },
+          { regex: /#|~|\?|!/, token: 'operator' },
+          { regex: /\|>|=|:=|:(?!:)|,|\b_\b/, token: 'operator' },
+          { regex: /\.\.\.(?!\.)/, token: 'constant' },
+          // Invalid: 4+ dots
+          { regex: /\.{4,}/, token: 'invalid' },
+          // Class name (capitalized) - must come after keywords
+          { regex: /\b[A-Z]\w*\b/, token: 'typeName' },
+          // Special variables: $variable (preprocessor), @variable (member), @@variable (static)
+          { regex: /\$\b[a-zA-Z_]\w*\b/, token: 'variable-2' },
+          { regex: /@@(?:(?:\b[a-zA-Z_]\w*)?((?:\.|::|\\)\b[a-zA-Z_]\w*\b)*)?/, token: 'variable-2' },
+          { regex: /@(?:(?:\b[a-zA-Z_]\w*)?((?:\.|::|\\)\b[a-zA-Z_]\w*\b)*)?/, token: 'variable-2' },
+          // Magic methods: __class, __base, etc.
+          { regex: /\b__(?:class|base|init|inherited|mode|name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|tostring|pairs|ipairs)\b/, token: 'function' },
+          // Numbers: decimal, hex, with underscores
+          { regex: /\b([\d_]+(\.[\d_]+)?|\.[\d_]+)(e[+\-]?[\d_]+)?\b/i, token: 'number' },
+          { regex: /\b0x([0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?(\.[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?)?|\.[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?)\b/i, token: 'number' },
+          // Invalid number
+          { regex: /\b\d(?:\w|\.|:|::|\\)+\b/, token: 'invalid' },
+          // Built-in constants
+          { regex: /\b(?:_ENV|_G|_VERSION|arg)\b(?![:\w])/, token: 'constant' },
+          // Built-in functions - comprehensive list
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*(?:lpeg|lpeglabel)(?:(?:\\.|::|\\)(?:B|C|Carg|Cb|Cc|Cf|Cg|Cmt|Cp|Cs|Ct|P|R|S|T|V|locale|match|pcode|ptree|setmaxstack|type|utfR|version))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*(?:re|relabel)(?:(?:\\.|::|\\)(?:calcline|compile|find|gsub|match|updatelocale))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*coroutine(?:(?:\\.|::|\\)(?:close|create|isyieldable|resume|running|status|wrap|yield))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*debug(?:(?:\\.|::|\\)(?:debug|gethook|getinfo|getlocal|getmetatable|getregistry|getupvalue|getuservalue|setcstacklimit|sethook|setlocal|setmetatable|setupvalue|setuservalue|traceback|upvalueid|upvaluejoin))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*io(?:(?:\\.|::|\\)(?:close|flush|input|lines|open|output|popen|read|stderr|stdin|stdout|tmpfile|type|write))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*math(?:(?:\\.|::|\\)(?:abs|acos|asin|atan|atan2|ceil|cos|cosh|deg|exp|floor|fmod|frexp|huge|ldexp|log|log10|max|maxinteger|min|mininteger|modf|pi|pow|rad|random|randomseed|sin|sinh|sqrt|tan|tanh|tointeger|type|ult))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*os(?:(?:\\.|::|\\)(?:clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*package(?:(?:\\.|::|\\)(?:config|cpath|loaded|loadlib|path|preload|searchers|searchpath))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*string(?:(?:\\.|::|\\)(?:byte|char|dump|find|format|gmatch|gsub|len|lower|match|pack|packsize|rep|reverse|sub|unpack|upper))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*table(?:(?:\\.|::|\\)(?:concat|insert|move|pack|remove|sort|unpack))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*utf8(?:(?:\\.|::|\\)(?:char|charpattern|codepoint|codes|len|offset))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*yue(?:(?:\\.|::|\\)(?:check|dofile|file_exist|find_modulepath|format|insert_loader|is_ast|loadfile|loadstring|macro_env|options|p|pcall|read_file|to_ast|to_lua|traceback|version|yue_compiled))?\b/, token: 'function' },
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*(?:assert|collectgarbage|dofile|error|getmetatable|ipairs|lfs|load|loadfile|next|pairs|pcall|print|rawequal|rawget|rawlen|rawset|require|select|setmetatable|tonumber|tostring|type|warn|xpcall)\b/, token: 'function' },
+          // pl.* library functions (penlight)
+          { regex: /\b(?:_G(?:\\.|:|::|\\))*pl\.(?:Date|List|Map|MultiMap|OrderedMap|Set|app|array2d|class|compat|comprehension|config|data|dir|file|func|input|lapp|lexer|luabalanced|operator|path|permute|pretty|seq|sip|strict|stringio|stringx|tablex|template|test|text|types|url|utils|xml)(?:(?:\\.|::|\\)\w+)?\b/, token: 'function' },
+          // Arrow functions: (params) => or <= name
+          { regex: /\([^)]*\)\s*[=-]>/, token: 'operator' },
+          { regex: /\([^)]*\)?\s*<[=-]\s*(?=[a-zA-Z_])/, token: 'operator' },
+          // new keyword before arrow function
+          { regex: /\bnew\b(?=:\s*\([^)]*\)?\s*[=-]>)/, token: 'variable' },
+          // Brackets and delimiters
           { regex: /[()\[\]{}]/, token: 'bracket' },
-          { regex: /[a-zA-Z_]\w*/, token: 'variable' }
+          { regex: /\.|::|\\/, token: 'operator' },
+          // Variable names (with dot notation support)
+          { regex: /[a-zA-Z_$][\w$]*(?:(?:\.|::|\\)[a-zA-Z_$][\w$]*)*/, token: 'variable' }
         ],
         commentBlock: [
           { regex: /.*?\]\]/, token: 'comment', pop: true },
+          { regex: /@\w*/, token: 'typeName' },
           { regex: /.*/, token: 'comment' }
         ],
-        stringBlock: [
-          { regex: /.*?\]\]/, token: 'string', pop: true },
+        luaString: [
+          // Match closing ]=] where number of = matches opening
+          // This is a simplified version - matches ]=] with 0 or more =
+          { regex: /\](=*)\]/, token: 'string', pop: true },
           { regex: /.*/, token: 'string' }
         ],
+        doubleString: [
+          { regex: /"/, token: 'string', pop: true },
+          { regex: /\\[abfnrtvz\\'"]/, token: 'constant' },
+          { regex: /\\\d{1,3}/, token: 'constant' },
+          { regex: /\\x[0-9a-fA-F]{2}/, token: 'constant' },
+          { regex: /\\u\{[0-9a-fA-F]+\}/, token: 'constant' },
+          { regex: /\\\./, token: 'invalid' },
+          { regex: /#\{/, token: 'operator', push: 'interpolation' },
+          { regex: /%[%aAcdeEfgiopsuxX]/, token: 'constant' },
+          { regex: /[^"\\#%]+/, token: 'string' }
+        ],
+        singleString: [
+          { regex: /'/, token: 'string', pop: true },
+          { regex: /\\[abfnrtvz\\']/, token: 'string' },
+          { regex: /\\\d{1,3}/, token: 'string' },
+          { regex: /\\x[0-9a-fA-F]{2}/, token: 'string' },
+          { regex: /\\u\{[0-9a-fA-F]+\}/, token: 'string' },
+          { regex: /\\\./, token: 'invalid' },
+          { regex: /%[%aAcdeEfgiopsuxX]/, token: 'constant' },
+          { regex: /[^'\\%]+/, token: 'string' }
+        ],
+        interpolation: [
+          { regex: /\}/, token: 'operator', pop: true },
+          { regex: /\{/, token: 'operator', push: 'interpolation' },
+          { regex: /"(?:[^\\"]|\\.)*"?/, token: 'string' },
+          { regex: /'(?:[^\\']|\\.)*'?/, token: 'string' },
+          { regex: /\b(?:import|as|from|export|macro|local|global|close|const|class|extends|using|if|then|else|elseif|until|unless|switch|when|with|do|for|while|repeat|return|continue|break|try|catch|goto|or|and|in|not|true|false|nil)\b/, token: 'keyword' },
+          { regex: /\b[A-Z]\w*\b/, token: 'typeName' },
+          { regex: /[a-zA-Z_$][\w$]*/, token: 'variable' },
+          { regex: /(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i, token: 'number' },
+          { regex: /[+\-/*=<>!]=?|[~^|&%]/, token: 'operator' },
+          { regex: /[()\[\]{}]/, token: 'bracket' },
+          { regex: /[^}]/, token: 'variable' }
+        ],
         languageData: {
-          name: 'moonscript'
+          name: 'yuescript'
         }
       })
 
@@ -327,7 +470,7 @@ export default {
           lineNumbers(),
           history(),
           keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
-          StreamLanguage.define(moonscriptMode),
+          StreamLanguage.define(yuescriptMode),
           indentUnit.of('  '),
           this.readOnlyCompartment.of(EditorState.readOnly.of(this.readonly)),
           this.highlightCompartment.of(

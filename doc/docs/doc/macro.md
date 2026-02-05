@@ -148,6 +148,7 @@ export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
 export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
 export macro foreach = (items, action) -> "for _ in *#{items}
   #{action}"
+
 -- file main.yue
 -- import function is not available in browser, try it in a real environment
 --[[
