@@ -15,7 +15,7 @@ print(counter())
 print(counter())
 local tbl = {
 	key = (function()
-		print("分配键值!")
+		print("assigning key!")
 		return 1234
 	end)()
 }
@@ -36,17 +36,17 @@ print(counter())
 print(counter())
 local tbl = {
 	key = (function()
-		print("分配键值!")
+		print("assigning key!")
 		return 1234
 	end)()
 }
 if name == "Rob" then
-	print("你好，世界")
+	print("hello world")
 end
 local _list_0 = items
 for _index_0 = 1, #_list_0 do
 	local item = _list_0[_index_0]
-	print("项目: ", item)
+	print("item: ", item)
 end
 while game:isRunning() do
 	game:update()
@@ -55,12 +55,12 @@ while not reader:eof() do
 	reader:parse_line()
 end
 if name == "Rob" then
-	print("你好，世界")
+	print("hello world")
 end
 local _list_0 = items
 for _index_0 = 1, #_list_0 do
 	local item = _list_0[_index_0]
-	print("项目: ", item)
+	print("item: ", item)
 end
 while game:isRunning() do
 	game:update()
@@ -69,7 +69,7 @@ while not reader:eof() do
 	reader:parse_line()
 end
 local area = 6.2831853071796 * 5
-print('你好 世界')
+print('hello world')
 do
 	assert(item ~= nil)
 end
@@ -83,24 +83,24 @@ do
 end
 local funcA
 funcA = function()
-	return "无法访问宏生成月之脚本里定义的变量"
+	return "fail to assign to the Yue macro defined variable"
 end
 do
 local function funcB() end
 end
 local funcB
 funcB = function()
-	return "无法访问宏生成 Lua 代码里定义的变量"
+	return "fail to assign to the Lua macro defined variable"
 end
 do
--- 插入原始Lua代码
+-- raw Lua codes insertion
 if cond then
-  print("输出")
+  print("output")
 end
 end
 print("yuescript")
 print(2)
-print("有效的枚举类型:", "Static")
+print("Valid enum type:", "Static")
 do
 	print(123, "hello")
 end
@@ -108,7 +108,7 @@ do
 	print(123, "hello")
 end
 local area = 6.2831853071796 * 5
-print('你好 世界')
+print('hello world')
 do
 	assert(item ~= nil)
 end
@@ -122,24 +122,24 @@ do
 end
 local funcA
 funcA = function()
-	return "无法访问宏生成月之脚本里定义的变量"
+	return "fail to assign to the Yue macro defined variable"
 end
 do
 local function funcB() end
 end
 local funcB
 funcB = function()
-	return "无法访问宏生成 Lua 代码里定义的变量"
+	return "fail to assign to the Lua macro defined variable"
 end
 do
--- 插入原始Lua代码
+-- raw Lua codes insertion
 if cond then
-  print("输出")
+  print("output")
 end
 end
 print("yuescript")
 print(2)
-print("有效的枚举类型:", "Static")
+print("Valid enum type:", "Static")
 do
 	print(123, "hello")
 end
@@ -248,7 +248,7 @@ end
 _module_0["loadstring"], _module_0["tolua"] = loadstring, tolua
 local fieldA = tb.itemA.fieldA
 if fieldA == nil then
-	fieldA = '默认值'
+	fieldA = 'default'
 end
 _module_0["fieldA"] = fieldA
 return _module_0
@@ -273,7 +273,7 @@ _module_0[#_module_0 + 1] = _with_0
 return _module_0
 local _module_0 = nil
 _module_0 = function()
-	print("你好")
+	print("hello")
 	return 123
 end
 return _module_0
@@ -379,7 +379,7 @@ end
 _module_0["loadstring"], _module_0["tolua"] = loadstring, tolua
 local fieldA = tb.itemA.fieldA
 if fieldA == nil then
-	fieldA = '默认值'
+	fieldA = 'default'
 end
 _module_0["fieldA"] = fieldA
 return _module_0
@@ -404,7 +404,7 @@ _module_0[#_module_0 + 1] = _with_0
 return _module_0
 local _module_0 = nil
 _module_0 = function()
-	print("你好")
+	print("hello")
 	return 123
 end
 return _module_0
@@ -427,7 +427,7 @@ success, result = pcall(function()
 	return func(1, 2, 3)
 end)
 pcall(function()
-	print("尝试中")
+	print("trying")
 	return func(1, 2, 3)
 end)
 success, result = xpcall(function()
@@ -507,7 +507,7 @@ success, result = pcall(function()
 	return func(1, 2, 3)
 end)
 pcall(function()
-	print("尝试中")
+	print("trying")
 	return func(1, 2, 3)
 end)
 success, result = xpcall(function()
@@ -580,11 +580,11 @@ local some_values = {
 	["favorite food"] = "rice"
 }
 local profile = {
-	height = "4英尺",
+	height = "4 feet",
 	shoe_size = 13,
 	favorite_foods = {
-		"冰淇淋",
-		"甜甜圈"
+		"ice cream",
+		"donuts"
 	}
 }
 local values = {
@@ -596,23 +596,23 @@ local values = {
 	6,
 	7,
 	8,
-	name = "超人",
-	occupation = "打击犯罪"
+	name = "superman",
+	occupation = "crime fighting"
 }
 my_function({
-	dance = "探戈",
-	partner = "无"
+	dance = "Tango",
+	partner = "none"
 })
 local y = {
-	type = "狗",
+	type = "dog",
 	legs = 4,
 	tails = 1
 }
 local tbl = {
-	["do"] = "某事",
-	["end"] = "饥饿"
+	["do"] = "something",
+	["end"] = "hunger"
 }
-local hair = "金色"
+local hair = "golden"
 local height = 200
 local person = {
 	hair = hair,
@@ -624,8 +624,8 @@ print_table({
 	height = height
 })
 local t = {
-	[1 + 2] = "你好",
-	["你好 世界"] = true
+	[1 + 2] = "hello",
+	["hello world"] = true
 }
 local some_values = {
 	1,
@@ -648,11 +648,11 @@ local some_values = {
 	["favorite food"] = "rice"
 }
 local profile = {
-	height = "4英尺",
+	height = "4 feet",
 	shoe_size = 13,
 	favorite_foods = {
-		"冰淇淋",
-		"甜甜圈"
+		"ice cream",
+		"donuts"
 	}
 }
 local values = {
@@ -664,23 +664,23 @@ local values = {
 	6,
 	7,
 	8,
-	name = "超人",
-	occupation = "打击犯罪"
+	name = "superman",
+	occupation = "crime fighting"
 }
 my_function({
-	dance = "探戈",
-	partner = "无"
+	dance = "Tango",
+	partner = "none"
 })
 local y = {
-	type = "狗",
+	type = "dog",
 	legs = 4,
 	tails = 1
 }
 local tbl = {
-	["do"] = "某事",
-	["end"] = "饥饿"
+	["do"] = "something",
+	["end"] = "hunger"
 }
-local hair = "金色"
+local hair = "golden"
 local height = 200
 local person = {
 	hair = hair,
@@ -692,8 +692,8 @@ print_table({
 	height = height
 })
 local t = {
-	[1 + 2] = "你好",
-	["你好 世界"] = true
+	[1 + 2] = "hello",
+	["hello world"] = true
 }
 local some_values = {
 	1,
@@ -1245,7 +1245,7 @@ local _base_0 = {
 	size = 10,
 	add_item = function(self, name)
 		if #self.items > size then
-			error("背包已满")
+			error("backpack is full")
 		end
 		return _class_0.__parent.__base.add_item(self, name)
 	end
@@ -1311,7 +1311,7 @@ do
 	_base_0.__class = _class_0
 	local self = _class_0;
 	self.__inherited = function(self, child)
-		return print(self.__name, "被", child.__name, "继承")
+		return print(self.__name, "was inherited by", child.__name)
 	end
 	Shelf = _class_0
 end
@@ -1363,9 +1363,9 @@ local _class_0
 local _parent_0 = ParentClass
 local _base_0 = {
 	a_method = function(self)
-		_class_0.__parent.__base.a_method(self, "你好", "世界")
-		_class_0.__parent.a_method(self, "你好", "世界")
-		_class_0.__parent.a_method(self, "你好", "世界")
+		_class_0.__parent.__base.a_method(self, "hello", "world")
+		_class_0.__parent.a_method(self, "hello", "world")
+		_class_0.__parent.a_method(self, "hello", "world")
 		return assert(_class_0.__parent == ParentClass)
 	end
 }
@@ -1865,7 +1865,7 @@ local _base_0 = {
 	size = 10,
 	add_item = function(self, name)
 		if #self.items > size then
-			error("背包已满")
+			error("backpack is full")
 		end
 		return _class_0.__parent.__base.add_item(self, name)
 	end
@@ -1931,7 +1931,7 @@ do
 	_base_0.__class = _class_0
 	local self = _class_0;
 	self.__inherited = function(self, child)
-		return print(self.__name, "被", child.__name, "继承")
+		return print(self.__name, "was inherited by", child.__name)
 	end
 	Shelf = _class_0
 end
@@ -1983,9 +1983,9 @@ local _class_0
 local _parent_0 = ParentClass
 local _base_0 = {
 	a_method = function(self)
-		_class_0.__parent.__base.a_method(self, "你好", "世界")
-		_class_0.__parent.a_method(self, "你好", "世界")
-		_class_0.__parent.a_method(self, "你好", "世界")
+		_class_0.__parent.__base.a_method(self, "hello", "world")
+		_class_0.__parent.a_method(self, "hello", "world")
+		_class_0.__parent.a_method(self, "hello", "world")
 		return assert(_class_0.__parent == ParentClass)
 	end
 }
@@ -2410,9 +2410,9 @@ local me = create_person("Leaf", {
 	mother,
 	sister
 })
-local str = "你好"
-print("原始:", str)
-print("大写:", str:upper())
+local str = "Hello"
+print("original:", str)
+print("upper:", str:upper())
 local _with_0 = tb
 _with_0[1] = 1
 print(_with_0[2])
@@ -2450,9 +2450,9 @@ local me = create_person("Leaf", {
 	mother,
 	sister
 })
-local str = "你好"
-print("原始:", str)
-print("大写:", str:upper())
+local str = "Hello"
+print("original:", str)
+print("upper:", str:upper())
 local _with_0 = tb
 _with_0[1] = 1
 print(_with_0[2])
@@ -2476,7 +2476,7 @@ x = x * 10
 x = x / 10
 x = x % 10
 local s = s .. "world"
-local arg = arg or "默认值"
+local arg = arg or "default value"
 local a = 0
 local b = 0
 local c = 0
@@ -2488,7 +2488,7 @@ local z = x
 do
 	local a = 1
 	local x, y, z
-	print("预先声明后续所有变量为局部变量")
+	print("forward declare all variables as locals")
 	x = function()
 		return 1 + y + z
 	end
@@ -2498,24 +2498,24 @@ end
 do
 	local X = 1
 	local B
-	print("只预先声明后续大写的变量为局部变量")
+	print("only forward declare upper case variables")
 	local a = 1
 	B = 2
 end
 do
 	a = 1
-	print("预先声明所有变量为全局变量")
+	print("declare all variables as globals")
 	x = function()
 		return 1 + y + z
 	end
 	y, z = 2, 3
 end
 do
-	x = 1
-	print("只预先声明大写的变量为全局变量")
+	X = 1
+	print("only declare upper case variables as globals")
 	local a = 1
 	B = 2
-	local Temp = "一个局部值"
+	local Temp = "a local value"
 end
 local hello = "world"
 local a, b, c = 1, 2, 3
@@ -2527,7 +2527,7 @@ x = x * 10
 x = x / 10
 x = x % 10
 local s = s .. "world"
-local arg = arg or "默认值"
+local arg = arg or "default value"
 local a = 0
 local b = 0
 local c = 0
@@ -2539,7 +2539,7 @@ local z = x
 do
 	local a = 1
 	local x, y, z
-	print("预先声明后续所有变量为局部变量")
+	print("forward declare all variables as locals")
 	x = function()
 		return 1 + y + z
 	end
@@ -2549,24 +2549,24 @@ end
 do
 	local X = 1
 	local B
-	print("只预先声明后续大写的变量为局部变量")
+	print("only forward declare upper case variables")
 	local a = 1
 	B = 2
 end
 do
 	a = 1
-	print("预先声明所有变量为全局变量")
+	print("declare all variables as globals")
 	x = function()
 		return 1 + y + z
 	end
 	y, z = 2, 3
 end
 do
-	x = 1
-	print("只预先声明大写的变量为全局变量")
+	X = 1
+	print("only declare upper case variables as globals")
 	local a = 1
 	B = 2
-	local Temp = "一个局部值"
+	local Temp = "a local value"
 end
 local list = {
 	1,
@@ -2608,24 +2608,24 @@ if user then
 end
 local hello = os.getenv("hello")
 if hello then
-	print("你有 hello", hello)
+	print("You have hello", hello)
 else
 	local world = os.getenv("world")
 	if world then
-		print("你有 world", world)
+		print("you have world", world)
 	else
-		print("什么都没有 :(")
+		print("nothing :(")
 	end
 end
 do
 	local success, result = pcall(function()
-		return "无报错地获取结果"
+		return "get result without problems"
 	end)
 	if success then
 		print(result)
 	end
 end
-print("好的")
+print("OK")
 repeat
 	local byte = stream:read_one()
 	if byte then
@@ -2640,24 +2640,24 @@ if user then
 end
 local hello = os.getenv("hello")
 if hello then
-	print("你有 hello", hello)
+	print("You have hello", hello)
 else
 	local world = os.getenv("world")
 	if world then
-		print("你有 world", world)
+		print("you have world", world)
 	else
-		print("什么都没有 :(")
+		print("nothing :(")
 	end
 end
 do
 	local success, result = pcall(function()
-		return "无报错地获取结果"
+		return "get result without problems"
 	end)
 	if success then
 		print(result)
 	end
 end
-print("好的")
+print("OK")
 repeat
 	local byte = stream:read_one()
 	if byte then
@@ -3114,22 +3114,22 @@ _module_0["🌛"] = _u1f31b
 return _module_0
 local have_coins = false
 if have_coins then
-	print("有硬币")
+	print("Got coins")
 else
-	print("没有硬币")
+	print("No coins")
 end
 local have_coins = false
 if have_coins then
-	print("有硬币")
+	print("Got coins")
 else
-	print("没有硬币")
+	print("No coins")
 end
 local have_coins = false
 print((function()
 	if have_coins then
-		return "有硬币"
+		return "Got coins"
 	else
-		return "没有硬币"
+		return "No coins"
 	end
 end)())
 local is_tall
@@ -3142,20 +3142,20 @@ is_tall = function(name)
 end
 local message
 if is_tall("Rob") then
-	message = "我很高"
+	message = "I am very tall"
 else
-	message = "我不是很高"
+	message = "I am not so tall"
 end
 print(message)
 if not (os.date("%A") == "Monday") then
-	print("今天不是星期一！")
+	print("it is not Monday!")
 end
 if not (math.random() > 0.1) then
-	print("你真幸运！")
+	print("You're lucky!")
 end
 local a = 5
 if (1 == a or 3 == a or 5 == a or 7 == a) then
-	print("检查离散值的相等性")
+	print("checking equality with discrete values")
 end
 if (function()
 	local _check_0 = list
@@ -3166,29 +3166,29 @@ if (function()
 	end
 	return false
 end)() then
-	print("检查`a`是否在列表中")
+	print("checking if `a` is in a list")
 end
 if not (math.random() > 0.1) then
-	print("你很幸运!")
+	print("You're lucky!")
 end
 local have_coins = false
 if have_coins then
-	print("有硬币")
+	print("Got coins")
 else
-	print("没有硬币")
+	print("No coins")
 end
 local have_coins = false
 if have_coins then
-	print("有硬币")
+	print("Got coins")
 else
-	print("没有硬币")
+	print("No coins")
 end
 local have_coins = false
 print((function()
 	if have_coins then
-		return "有硬币"
+		return "Got coins"
 	else
-		return "没有硬币"
+		return "No coins"
 	end
 end)())
 local is_tall
@@ -3201,20 +3201,20 @@ is_tall = function(name)
 end
 local message
 if is_tall("Rob") then
-	message = "我很高"
+	message = "I am very tall"
 else
-	message = "我不是很高"
+	message = "I am not so tall"
 end
 print(message)
 if not (os.date("%A") == "Monday") then
-	print("今天不是星期一！")
+	print("it is not Monday!")
 end
 if not (math.random() > 0.1) then
-	print("你真幸运！")
+	print("You're lucky!")
 end
 local a = 5
 if (1 == a or 3 == a or 5 == a or 7 == a) then
-	print("检查离散值的相等性")
+	print("checking equality with discrete values")
 end
 if (function()
 	local _check_0 = list
@@ -3225,10 +3225,10 @@ if (function()
 	end
 	return false
 end)() then
-	print("检查`a`是否在列表中")
+	print("checking if `a` is in a list")
 end
 if not (math.random() > 0.1) then
-	print("你很幸运!")
+	print("You're lucky!")
 end
 for i = 10, 20 do
 	print(i)
@@ -3420,11 +3420,11 @@ end
 odds = _accum_0
 local name = "Dan"
 if "Robert" == name then
-	print("你是Robert")
+	print("You are Robert")
 elseif "Dan" == name or "Daniel" == name then
-	print("你的名字是Dan")
+	print("Your name, it's Dan")
 else
-	print("我不认识你，你的名字是" .. tostring(name))
+	print("I don't know about you with name " .. tostring(name))
 end
 local b = 1
 local next_number
@@ -3433,30 +3433,30 @@ if 1 == b then
 elseif 2 == b then
 	next_number = 3
 else
-	next_number = error("数字数得太大了！")
+	next_number = error("can't count that high!")
 end
 local msg
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	msg = "你很幸运"
+	msg = "you are lucky"
 elseif 2 == _exp_0 then
-	msg = "你差点很幸运"
+	msg = "you are almost lucky"
 else
-	msg = "不太幸运"
+	msg = "not so lucky"
 end
 do
 	local _exp_0 = math.random(1, 5)
 	if 1 == _exp_0 then
-		print("你很幸运")
+		print("you are lucky")
 	else
-		print("不太幸运")
+		print("not so lucky")
 	end
 end
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	print("你很幸运")
+	print("you are lucky")
 else
-	print("不太幸运")
+	print("not so lucky")
 end
 local items = {
 	{
@@ -3486,7 +3486,7 @@ for _index_0 = 1, #items do
 			local width = item.width
 			local height = item.height
 			if width ~= nil and height ~= nil then
-				print("尺寸 " .. tostring(width) .. ", " .. tostring(height))
+				print("size " .. tostring(width) .. ", " .. tostring(height))
 			end
 		end
 	end
@@ -3563,7 +3563,7 @@ if _tab_0 then
 	local result = _exp_0.result
 	if true == _exp_0.success and result ~= nil then
 		_match_0 = true
-		print("成功", result)
+		print("success", result)
 	end
 end
 if not _match_0 then
@@ -3571,11 +3571,11 @@ if not _match_0 then
 	if _tab_0 then
 		if false == _exp_0.success then
 			_match_1 = true
-			print("失败", result)
+			print("failed", result)
 		end
 	end
 	if not _match_1 then
-		print("无效值")
+		print("invalid")
 	end
 end
 local _exp_0 = tb
@@ -3600,7 +3600,7 @@ if _tab_0 then
 	end
 	if "success" == _val_0 and content ~= nil then
 		_match_0 = true
-		print("成功", content)
+		print("success", content)
 	end
 end
 if not _match_0 then
@@ -3623,11 +3623,11 @@ if not _match_0 then
 		end
 		if "error" == _val_0 and content ~= nil then
 			_match_1 = true
-			print("失败", content)
+			print("failed", content)
 		end
 	end
 	if not _match_1 then
-		print("无效值")
+		print("invalid")
 	end
 end
 local _exp_0 = tb
@@ -3678,7 +3678,7 @@ if _tab_0 then
 		end
 	end
 	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
-		print("匹配成功", fourth)
+		print("matched", fourth)
 	end
 end
 local segments = {
@@ -3712,11 +3712,11 @@ if _tab_0 then
 end
 local name = "Dan"
 if "Robert" == name then
-	print("你是Robert")
+	print("You are Robert")
 elseif "Dan" == name or "Daniel" == name then
-	print("你的名字是Dan")
+	print("Your name, it's Dan")
 else
-	print("我不认识你，你的名字是" .. tostring(name))
+	print("I don't know about you with name " .. tostring(name))
 end
 local b = 1
 local next_number
@@ -3725,30 +3725,30 @@ if 1 == b then
 elseif 2 == b then
 	next_number = 3
 else
-	next_number = error("数字数得太大了！")
+	next_number = error("can't count that high!")
 end
 local msg
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	msg = "你很幸运"
+	msg = "you are lucky"
 elseif 2 == _exp_0 then
-	msg = "你差点很幸运"
+	msg = "you are almost lucky"
 else
-	msg = "不太幸运"
+	msg = "not so lucky"
 end
 do
 	local _exp_0 = math.random(1, 5)
 	if 1 == _exp_0 then
-		print("你很幸运")
+		print("you are lucky")
 	else
-		print("不太幸运")
+		print("not so lucky")
 	end
 end
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	print("你很幸运")
+	print("you are lucky")
 else
-	print("不太幸运")
+	print("not so lucky")
 end
 local items = {
 	{
@@ -3778,7 +3778,7 @@ for _index_0 = 1, #items do
 			local width = item.width
 			local height = item.height
 			if width ~= nil and height ~= nil then
-				print("尺寸 " .. tostring(width) .. ", " .. tostring(height))
+				print("size " .. tostring(width) .. ", " .. tostring(height))
 			end
 		end
 	end
@@ -3855,7 +3855,7 @@ if _tab_0 then
 	local result = _exp_0.result
 	if true == _exp_0.success and result ~= nil then
 		_match_0 = true
-		print("成功", result)
+		print("success", result)
 	end
 end
 if not _match_0 then
@@ -3863,11 +3863,11 @@ if not _match_0 then
 	if _tab_0 then
 		if false == _exp_0.success then
 			_match_1 = true
-			print("失败", result)
+			print("failed", result)
 		end
 	end
 	if not _match_1 then
-		print("无效值")
+		print("invalid")
 	end
 end
 local _exp_0 = tb
@@ -3892,7 +3892,7 @@ if _tab_0 then
 	end
 	if "success" == _val_0 and content ~= nil then
 		_match_0 = true
-		print("成功", content)
+		print("success", content)
 	end
 end
 if not _match_0 then
@@ -3915,11 +3915,11 @@ if not _match_0 then
 		end
 		if "error" == _val_0 and content ~= nil then
 			_match_1 = true
-			print("失败", content)
+			print("failed", content)
 		end
 	end
 	if not _match_1 then
-		print("无效值")
+		print("invalid")
 	end
 end
 local _exp_0 = tb
@@ -3970,7 +3970,7 @@ if _tab_0 then
 		end
 	end
 	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
-		print("匹配成功", fourth)
+		print("matched", fourth)
 	end
 end
 local segments = {
@@ -4047,12 +4047,12 @@ until i == 0
 local my_object = {
 	value = 1000,
 	write = function(self)
-		return print("值为:", self.value)
+		return print("the value:", self.value)
 	end
 }
 local run_callback
 run_callback = function(func)
-	print("运行回调...")
+	print("running callback...")
 	return func()
 end
 run_callback(my_object.write)
@@ -4066,12 +4066,12 @@ end)())
 local my_object = {
 	value = 1000,
 	write = function(self)
-		return print("值为:", self.value)
+		return print("the value:", self.value)
 	end
 }
 local run_callback
 run_callback = function(func)
-	print("运行回调...")
+	print("running callback...")
 	return func()
 end
 run_callback(my_object.write)
@@ -4097,7 +4097,7 @@ end, {
 })
 local result, msg
 do
-	result, msg = readAsync("文件名.txt", function(data)
+	result, msg = readAsync("filename.txt", function(data)
 		print(data)
 		return processAsync(data, function(info)
 			return check(info)
@@ -4120,7 +4120,7 @@ end, {
 })
 local result, msg
 do
-	result, msg = readAsync("文件名.txt", function(data)
+	result, msg = readAsync("filename.txt", function(data)
 		print(data)
 		return processAsync(data, function(info)
 			return check(info)
@@ -4133,18 +4133,18 @@ my_function = function() end
 my_function()
 local func_a
 func_a = function()
-	return print("你好，世界")
+	return print("hello world")
 end
 local func_b
 func_b = function()
 	local value = 100
-	return print("这个值是：", value)
+	return print("The value:", value)
 end
 func_a()
 func_b()
 local sum
 sum = function(x, y)
-	return print("数字的和", x + y)
+	return print("sum", x + y)
 end
 sum(10, 20)
 print(sum(10, 20))
@@ -4154,7 +4154,7 @@ local sum
 sum = function(x, y)
 	return x + y
 end
-print("数字的和是", sum(10, 20))
+print("The sum is ", sum(10, 20))
 local sum
 sum = function(x, y)
 	return x + y
@@ -4171,13 +4171,13 @@ end
 local my_function
 my_function = function(name, height)
 	if name == nil then
-		name = "某物"
+		name = "something"
 	end
 	if height == nil then
 		height = 100
 	end
-	print("你好，我是", name)
-	return print("我的高度是", height)
+	print("Hello I am", name)
+	return print("My height is", height)
 end
 local some_args
 some_args = function(x, y)
@@ -4214,13 +4214,13 @@ local y = {
 	6,
 	7
 }
-if func(1, 2, 3, "你好", "世界") then
-	print("你好")
-	print("我在if内部")
-end
-if func(1, 2, 3, "你好", "世界") then
+if func(1, 2, 3, "hello", "world") then
 	print("hello")
-	print("我在if内部")
+	print("I am inside if")
+end
+if func(1, 2, 3, "hello", "world") then
+	print("hello")
+	print("I am inside if")
 end
 local f1
 f1 = function(_arg_0)
@@ -4288,8 +4288,8 @@ f = function(...)
 		n = select("#", ...),
 		...
 	}
-	print("参数个数:", t.n)
-	print("表长度:", #t)
+	print("argument count:", t.n)
+	print("table length:", #t)
 	for i = 1, t.n do
 		print(t[i])
 	end
@@ -4317,18 +4317,18 @@ my_function = function() end
 my_function()
 local func_a
 func_a = function()
-	return print("你好，世界")
+	return print("hello world")
 end
 local func_b
 func_b = function()
 	local value = 100
-	return print("这个值是：", value)
+	return print("The value:", value)
 end
 func_a()
 func_b()
 local sum
 sum = function(x, y)
-	return print("数字的和", x + y)
+	return print("sum", x + y)
 end
 sum(10, 20)
 print(sum(10, 20))
@@ -4338,7 +4338,7 @@ local sum
 sum = function(x, y)
 	return x + y
 end
-print("数字的和是", sum(10, 20))
+print("The sum is ", sum(10, 20))
 local sum
 sum = function(x, y)
 	return x + y
@@ -4355,13 +4355,13 @@ end
 local my_function
 my_function = function(name, height)
 	if name == nil then
-		name = "某物"
+		name = "something"
 	end
 	if height == nil then
 		height = 100
 	end
-	print("你好，我是", name)
-	return print("我的高度是", height)
+	print("Hello I am", name)
+	return print("My height is", height)
 end
 local some_args
 some_args = function(x, y)
@@ -4398,13 +4398,13 @@ local y = {
 	6,
 	7
 }
-if func(1, 2, 3, "你好", "世界") then
-	print("你好")
-	print("我在if内部")
+if func(1, 2, 3, "hello", "world") then
+	print("hello")
+	print("I am inside if")
 end
-if func(1, 2, 3, "你好", "世界") then
-	print("你好")
-	print("我在if内部")
+if func(1, 2, 3, "hello", "world") then
+	print("hello")
+	print("I am inside if")
 end
 local f1
 f1 = function(_arg_0)
@@ -4430,8 +4430,8 @@ f2 = function(_arg_0, c)
 	if c == nil then
 		c = { }
 	end
-	return print(a1, b, c)
 end
+print(a1, b, c)
 local arg1 = {
 	a = 0
 }
@@ -4472,8 +4472,8 @@ f = function(...)
 		n = select("#", ...),
 		...
 	}
-	print("参数个数:", t.n)
-	print("表长度:", #t)
+	print("argument count:", t.n)
+	print("table length:", #t)
 	for i = 1, t.n do
 		print(t[i])
 	end
@@ -4519,7 +4519,7 @@ func(3000, "192.168.1.1")
 local a <const> = 123
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("超出范围。")
+		return print("Out of scope.")
 	end
 })
 local a, b, c, d
@@ -4529,7 +4529,7 @@ Constant = 123
 local a <const> = 123
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("超出范围。")
+		return print("Out of scope.")
 	end
 })
 local a, b, c, d
@@ -4688,7 +4688,7 @@ local d = a + b + c
 print(d.value)
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("超出范围")
+		return print("out of scope")
 	end
 })
 local tb = setmetatable({ }, {
@@ -4721,7 +4721,7 @@ end
 print((function()
 	local _obj_0 = abc
 	if _obj_0 ~= nil then
-		local _obj_1 = _obj_0["你好 世界"]
+		local _obj_1 = _obj_0["hello world"]
 		if _obj_1 ~= nil then
 			return _obj_1.xyz
 		end
@@ -4756,10 +4756,10 @@ if print and (x ~= nil) then
 end
 local _with_0 = io.open("test.txt", "w")
 if _with_0 ~= nil then
-	_with_0:write("你好")
+	_with_0:write("hello")
 	_with_0:close()
 end
-print("你好")
+print("hello")
 print(1, 2)
 print(1, 2, 3)
 print(render(emit(parse(extract(readFile("example.txt"), language, { }), language))))
@@ -4981,7 +4981,7 @@ local d = a + b + c
 print(d.value)
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("超出范围")
+		return print("out of scope")
 	end
 })
 local tb = setmetatable({ }, {
@@ -5014,7 +5014,7 @@ end
 print((function()
 	local _obj_0 = abc
 	if _obj_0 ~= nil then
-		local _obj_1 = _obj_0["你好 世界"]
+		local _obj_1 = _obj_0["hello world"]
 		if _obj_1 ~= nil then
 			return _obj_1.xyz
 		end
@@ -5049,10 +5049,10 @@ if print and (x ~= nil) then
 end
 local _with_0 = io.open("test.txt", "w")
 if _with_0 ~= nil then
-	_with_0:write("你好")
+	_with_0:write("hello")
 	_with_0:close()
 end
-print("你好")
+print("hello")
 print(1, 2)
 print(1, 2, 3)
 print(render(emit(parse(extract(readFile("example.txt"), language, { }), language))))
@@ -5122,8 +5122,8 @@ local tb = {
 		}
 	}
 }
-local some_string = "这是一个字符串\n  并包括一个换行。"
-print("我有" .. tostring(math.random() * 100) .. "%的把握。")
+local some_string = "Here is a string\n  that has a line break in it."
+print("I am " .. tostring(math.random() * 100) .. "% sure.")
 local integer = 1000000
 local hex = 0xEFBBBF
 local binary = 19
@@ -5134,8 +5134,8 @@ fn = function()
 	return str
 end
 local str = "path: \"C:\\Program Files\\App\"\nnote: 'He said: \"" .. tostring(Hello) .. "!\"'"
-local some_string = "这是一个字符串\n  并包括一个换行。"
-print("我有" .. tostring(math.random() * 100) .. "%的把握。")
+local some_string = "Here is a string\n  that has a line break in it."
+print("I am " .. tostring(math.random() * 100) .. "% sure.")
 local integer = 1000000
 local hex = 0xEFBBBF
 local binary = 19

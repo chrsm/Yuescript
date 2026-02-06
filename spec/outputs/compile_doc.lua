@@ -1,74 +1,70 @@
 local outputFolder = ...
-local _list_0 = {
-	{
-		"codes_from_doc.lua",
-		{
-			"doc/docs/doc/introduction.md",
-			"doc/docs/doc/macro.md",
-			"doc/docs/doc/operator.md",
-			"doc/docs/doc/module.md",
-			"doc/docs/doc/assignment.md",
-			"doc/docs/doc/destructuring-assignment.md",
-			"doc/docs/doc/if-assignment.md",
-			"doc/docs/doc/varargs-assignment.md",
-			"doc/docs/doc/whitespace.md",
-			"doc/docs/doc/comment.md",
-			"doc/docs/doc/try.md",
-			"doc/docs/doc/attributes.md",
-			"doc/docs/doc/literals.md",
-			"doc/docs/doc/function-literals.md",
-			"doc/docs/doc/backcalls.md",
-			"doc/docs/doc/table-literals.md",
-			"doc/docs/doc/comprehensions.md",
-			"doc/docs/doc/for-loop.md",
-			"doc/docs/doc/while-loop.md",
-			"doc/docs/doc/continue.md",
-			"doc/docs/doc/conditionals.md",
-			"doc/docs/doc/line-decorators.md",
-			"doc/docs/doc/switch.md",
-			"doc/docs/doc/object-oriented-programming.md",
-			"doc/docs/doc/with-statement.md",
-			"doc/docs/doc/do.md",
-			"doc/docs/doc/function-stubs.md",
-			"doc/docs/doc/the-using-clause-controlling-destructive-assignment.md"
-		}
-	},
-	{
-		"codes_from_doc_zh.lua",
-		{
-			"doc/docs/zh/doc/introduction.md",
-			"doc/docs/zh/doc/macro.md",
-			"doc/docs/zh/doc/operator.md",
-			"doc/docs/zh/doc/module.md",
-			"doc/docs/zh/doc/assignment.md",
-			"doc/docs/zh/doc/destructuring-assignment.md",
-			"doc/docs/zh/doc/if-assignment.md",
-			"doc/docs/zh/doc/varargs-assignment.md",
-			"doc/docs/zh/doc/whitespace.md",
-			"doc/docs/zh/doc/comment.md",
-			"doc/docs/zh/doc/try.md",
-			"doc/docs/zh/doc/attributes.md",
-			"doc/docs/zh/doc/literals.md",
-			"doc/docs/zh/doc/function-literals.md",
-			"doc/docs/zh/doc/backcalls.md",
-			"doc/docs/zh/doc/table-literals.md",
-			"doc/docs/zh/doc/comprehensions.md",
-			"doc/docs/zh/doc/for-loop.md",
-			"doc/docs/zh/doc/while-loop.md",
-			"doc/docs/zh/doc/continue.md",
-			"doc/docs/zh/doc/conditionals.md",
-			"doc/docs/zh/doc/line-decorators.md",
-			"doc/docs/zh/doc/switch.md",
-			"doc/docs/zh/doc/object-oriented-programming.md",
-			"doc/docs/zh/doc/with-statement.md",
-			"doc/docs/zh/doc/do.md",
-			"doc/docs/zh/doc/function-stubs.md",
-			"doc/docs/zh/doc/the-using-clause-controlling-destructive-assignment.md"
-		}
+local getFiles
+getFiles = function(locale)
+	if locale == "en" then
+		locale = ""
+	else
+		locale = tostring(locale) .. "/"
+	end
+	return {
+		"doc/docs/" .. tostring(locale) .. "doc/index.md",
+		"doc/docs/" .. tostring(locale) .. "doc/advanced/do.md",
+		"doc/docs/" .. tostring(locale) .. "doc/advanced/line-decorators.md",
+		"doc/docs/" .. tostring(locale) .. "doc/advanced/macro.md",
+		"doc/docs/" .. tostring(locale) .. "doc/advanced/module.md",
+		"doc/docs/" .. tostring(locale) .. "doc/advanced/try.md",
+		"doc/docs/" .. tostring(locale) .. "doc/data-structures/table-literals.md",
+		"doc/docs/" .. tostring(locale) .. "doc/data-structures/comprehensions.md",
+		"doc/docs/" .. tostring(locale) .. "doc/objects/object-oriented-programming.md",
+		"doc/docs/" .. tostring(locale) .. "doc/objects/with-statement.md",
+		"doc/docs/" .. tostring(locale) .. "doc/assignment/assignment.md",
+		"doc/docs/" .. tostring(locale) .. "doc/assignment/varargs-assignment.md",
+		"doc/docs/" .. tostring(locale) .. "doc/assignment/if-assignment.md",
+		"doc/docs/" .. tostring(locale) .. "doc/assignment/destructuring-assignment.md",
+		"doc/docs/" .. tostring(locale) .. "doc/assignment/the-using-clause-controlling-destructive-assignment.md",
+		"doc/docs/" .. tostring(locale) .. "doc/getting-started/usage.md",
+		"doc/docs/" .. tostring(locale) .. "doc/getting-started/introduction.md",
+		"doc/docs/" .. tostring(locale) .. "doc/getting-started/installation.md",
+		"doc/docs/" .. tostring(locale) .. "doc/control-flow/conditionals.md",
+		"doc/docs/" .. tostring(locale) .. "doc/control-flow/for-loop.md",
+		"doc/docs/" .. tostring(locale) .. "doc/control-flow/continue.md",
+		"doc/docs/" .. tostring(locale) .. "doc/control-flow/switch.md",
+		"doc/docs/" .. tostring(locale) .. "doc/control-flow/while-loop.md",
+		"doc/docs/" .. tostring(locale) .. "doc/functions/function-stubs.md",
+		"doc/docs/" .. tostring(locale) .. "doc/functions/backcalls.md",
+		"doc/docs/" .. tostring(locale) .. "doc/functions/function-literals.md",
+		"doc/docs/" .. tostring(locale) .. "doc/language-basics/whitespace.md",
+		"doc/docs/" .. tostring(locale) .. "doc/language-basics/comment.md",
+		"doc/docs/" .. tostring(locale) .. "doc/language-basics/attributes.md",
+		"doc/docs/" .. tostring(locale) .. "doc/language-basics/operator.md",
+		"doc/docs/" .. tostring(locale) .. "doc/language-basics/literals.md",
+		"doc/docs/" .. tostring(locale) .. "doc/reference/license-mit.md",
+		"doc/docs/" .. tostring(locale) .. "doc/reference/the-yuescript-library.md"
 	}
-}
-for _index_0 = 1, #_list_0 do
-	local _des_0 = _list_0[_index_0]
+end
+local docs
+do
+	local _accum_0 = { }
+	local _len_0 = 1
+	local _list_0 = {
+		"en",
+		"zh",
+		"pt-br",
+		"de",
+		"id-id"
+	}
+	for _index_0 = 1, #_list_0 do
+		local locale = _list_0[_index_0]
+		_accum_0[_len_0] = {
+			"codes_from_doc_" .. tostring(locale) .. ".lua",
+			getFiles(locale)
+		}
+		_len_0 = _len_0 + 1
+	end
+	docs = _accum_0
+end
+for _index_0 = 1, #docs do
+	local _des_0 = docs[_index_0]
 	local compiledFile, docFiles = _des_0[1], _des_0[2]
 	local codes = { }
 	for _index_1 = 1, #docFiles do

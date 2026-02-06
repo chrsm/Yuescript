@@ -182,7 +182,7 @@ for file in *files
 	original_ast = yue.to_ast code
 	assert.is_not_nil original_ast
 	rewriteLineCol original_ast
-	formated = yue.format code, 0, false
+	formated = yue.format code, 0, true
 	ast = yue.to_ast formated
 	assert.is_not_nil ast
 	rewriteLineCol ast
