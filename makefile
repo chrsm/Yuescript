@@ -447,6 +447,12 @@ test: debug
 	@busted
 	@echo "Done!"
 
+# Test CLI tool functionality
+.PHONY: test-cli
+test-cli: debug
+	@echo "Running CLI tests..."
+	@bash spec/cli/run_all_tests.sh
+
 # Test Yuescript compiler
 .PHONY: gen
 gen: release
