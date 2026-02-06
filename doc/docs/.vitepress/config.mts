@@ -19,92 +19,293 @@ const yuescriptLanguage = {
   aliases: ['yue'],
 }
 
-// Generate sidebar configuration function
-function createSidebar(basePath: string, zh: boolean) {
+const sidebarText = {
+  en: {
+    introduction: 'Introduction',
+    installation: 'Installation',
+    usage: 'Usage',
+    macro: 'Macro',
+    operator: 'Operator',
+    module: 'Module',
+    assignment: 'Assignment',
+    destructuringAssignment: 'Destructuring Assignment',
+    ifAssignment: 'If Assignment',
+    varargsAssignment: 'Varargs Assignment',
+    whitespace: 'Whitespace',
+    comment: 'Comment',
+    try: 'Try',
+    attributes: 'Attributes',
+    literals: 'Literals',
+    functionLiterals: 'Function Literals',
+    backcalls: 'Backcalls',
+    tableLiterals: 'Table Literals',
+    comprehensions: 'Comprehensions',
+    forLoop: 'For Loop',
+    whileLoop: 'While Loop',
+    continueStatement: 'Continue Statement',
+    conditionals: 'Conditionals',
+    lineDecorators: 'Line Decorators',
+    switch: 'Switch',
+    objectOrientedProgramming: 'Object Oriented Programming',
+    withStatement: 'With Statement',
+    do: 'Do',
+    functionStubs: 'Function Stubs',
+    usingClause: 'The Using Clause; Controlling Destructive Assignment',
+    yuescriptLibrary: 'The YueScript Library',
+    licenseMit: 'License: MIT',
+  },
+  zh: {
+    introduction: '介绍',
+    installation: '安装',
+    usage: '使用方法',
+    macro: '宏',
+    operator: '操作符',
+    module: '模块',
+    assignment: '赋值',
+    destructuringAssignment: '解构赋值',
+    ifAssignment: 'if 赋值',
+    varargsAssignment: '可变参数赋值',
+    whitespace: '空白',
+    comment: '注释',
+    try: '错误处理',
+    attributes: '属性',
+    literals: '字面量',
+    functionLiterals: '函数字面量',
+    backcalls: '反向回调',
+    tableLiterals: '表格字面量',
+    comprehensions: '推导式',
+    forLoop: 'for 循环',
+    whileLoop: 'while 循环',
+    continueStatement: 'continue 语句',
+    conditionals: '条件语句',
+    lineDecorators: '代码行修饰符',
+    switch: 'switch 语句',
+    objectOrientedProgramming: '面向对象编程',
+    withStatement: 'with 语句',
+    do: 'do 语句',
+    functionStubs: '函数存根',
+    usingClause: '使用 using 语句：防止破坏性赋值',
+    yuescriptLibrary: '月之脚本语言库',
+    licenseMit: 'MIT 许可证',
+  },
+  de: {
+    introduction: 'Einführung',
+    installation: 'Installation',
+    usage: 'Verwendung',
+    macro: 'Makro',
+    operator: 'Operatoren',
+    module: 'Modul',
+    assignment: 'Zuweisung',
+    destructuringAssignment: 'Destrukturierende Zuweisung',
+    ifAssignment: 'If-Zuweisung',
+    varargsAssignment: 'Varargs-Zuweisung',
+    whitespace: 'Leerraum',
+    comment: 'Kommentare',
+    try: 'Try/Catch',
+    attributes: 'Attribute',
+    literals: 'Literale',
+    functionLiterals: 'Funktionsliterale',
+    backcalls: 'Backcalls',
+    tableLiterals: 'Tabellenliterale',
+    comprehensions: 'Comprehensions',
+    forLoop: 'For-Schleife',
+    whileLoop: 'While-Schleife',
+    continueStatement: 'Continue-Anweisung',
+    conditionals: 'Bedingungen',
+    lineDecorators: 'Zeilen-Dekoratoren',
+    switch: 'Switch',
+    objectOrientedProgramming: 'Objektorientierte Programmierung',
+    withStatement: 'With-Anweisung',
+    do: 'Do',
+    functionStubs: 'Funktions-Stubs',
+    usingClause: 'Die Using-Klausel; Kontrolle destruktiver Zuweisung',
+    yuescriptLibrary: 'Die YueScript-Bibliothek',
+    licenseMit: 'Lizenz: MIT',
+  },
+  ptBr: {
+    introduction: 'Introdução',
+    installation: 'Instalação',
+    usage: 'Uso',
+    macro: 'Macro',
+    operator: 'Operadores',
+    module: 'Módulo',
+    assignment: 'Atribuição',
+    destructuringAssignment: 'Atribuição com desestruturação',
+    ifAssignment: 'Atribuição com if',
+    varargsAssignment: 'Atribuição de varargs',
+    whitespace: 'Espaços em branco',
+    comment: 'Comentários',
+    try: 'Try/Catch',
+    attributes: 'Atributos',
+    literals: 'Literais',
+    functionLiterals: 'Literais de função',
+    backcalls: 'Backcalls',
+    tableLiterals: 'Literais de tabela',
+    comprehensions: 'Compreensões',
+    forLoop: 'Laço for',
+    whileLoop: 'Laço while',
+    continueStatement: 'Instrução continue',
+    conditionals: 'Condicionais',
+    lineDecorators: 'Decoradores de linha',
+    switch: 'Switch',
+    objectOrientedProgramming: 'Programação orientada a objetos',
+    withStatement: 'Instrução with',
+    do: 'Do',
+    functionStubs: 'Stubs de função',
+    usingClause: 'Cláusula using; controlando atribuição destrutiva',
+    yuescriptLibrary: 'A biblioteca do YueScript',
+    licenseMit: 'Licença: MIT',
+  },
+} as const
+
+type SidebarLocale = keyof typeof sidebarText
+
+type SidebarGroupText = {
+  gettingStarted: string
+  languageBasics: string
+  assignment: string
+  functions: string
+  controlFlow: string
+  dataStructures: string
+  objects: string
+  advancedFeatures: string
+  reference: string
+}
+
+const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
+  en: {
+    gettingStarted: 'Getting Started',
+    languageBasics: 'Language Basics',
+    assignment: 'Assignment',
+    functions: 'Functions',
+    controlFlow: 'Control Flow',
+    dataStructures: 'Data Structures',
+    objects: 'Objects',
+    advancedFeatures: 'Advanced Features',
+    reference: 'Reference',
+  },
+  zh: {
+    gettingStarted: '起步',
+    languageBasics: '语言基础',
+    assignment: '赋值',
+    functions: '函数',
+    controlFlow: '控制流',
+    dataStructures: '数据结构',
+    objects: '面向对象',
+    advancedFeatures: '高级特性',
+    reference: '参考',
+  },
+  de: {
+    gettingStarted: 'Erste Schritte',
+    languageBasics: 'Sprachgrundlagen',
+    assignment: 'Zuweisung',
+    functions: 'Funktionen',
+    controlFlow: 'Kontrollfluss',
+    dataStructures: 'Datenstrukturen',
+    objects: 'Objekte',
+    advancedFeatures: 'Erweiterte Funktionen',
+    reference: 'Referenz',
+  },
+  ptBr: {
+    gettingStarted: 'Primeiros passos',
+    languageBasics: 'Fundamentos da linguagem',
+    assignment: 'Atribuição',
+    functions: 'Funções',
+    controlFlow: 'Controle de fluxo',
+    dataStructures: 'Estruturas de dados',
+    objects: 'Objetos',
+    advancedFeatures: 'Recursos avançados',
+    reference: 'Referência',
+  },
+}
+
+function createSidebar(basePath: string, locale: SidebarLocale) {
+  const text = sidebarText[locale]
+  const group = sidebarGroups[locale]
   return [
     {
-      text: zh ? '起步' : 'Getting Started',
+      text: group.gettingStarted,
       items: [
-        { text: zh ? '介绍' : 'Introduction', link: `${basePath}/getting-started/introduction` },
-        { text: zh ? '安装' : 'Installation', link: `${basePath}/getting-started/installation` },
-        { text: zh ? '使用方法' : 'Usage', link: `${basePath}/getting-started/usage` },
+        { text: text.introduction, link: `${basePath}/getting-started/introduction` },
+        { text: text.installation, link: `${basePath}/getting-started/installation` },
+        { text: text.usage, link: `${basePath}/getting-started/usage` },
       ]
     },
     {
-      text: zh ? '语言基础' : 'Language Basics',
+      text: group.languageBasics,
       collapsed: true,
       items: [
-        { text: zh ? '空白' : 'Whitespace', link: `${basePath}/language-basics/whitespace` },
-        { text: zh ? '注释' : 'Comment', link: `${basePath}/language-basics/comment` },
-        { text: zh ? '字面量' : 'Literals', link: `${basePath}/language-basics/literals` },
-        { text: zh ? '操作符' : 'Operator', link: `${basePath}/language-basics/operator` },
-        { text: zh ? '属性' : 'Attributes', link: `${basePath}/language-basics/attributes` },
+        { text: text.whitespace, link: `${basePath}/language-basics/whitespace` },
+        { text: text.comment, link: `${basePath}/language-basics/comment` },
+        { text: text.literals, link: `${basePath}/language-basics/literals` },
+        { text: text.operator, link: `${basePath}/language-basics/operator` },
+        { text: text.attributes, link: `${basePath}/language-basics/attributes` },
       ]
     },
     {
-      text: zh ? '赋值' : 'Assignment',
+      text: group.assignment,
       collapsed: true,
       items: [
-        { text: zh ? '赋值' : 'Assignment', link: `${basePath}/assignment/assignment` },
-        { text: zh ? '解构赋值' : 'Destructuring Assignment', link: `${basePath}/assignment/destructuring-assignment` },
-        { text: zh ? 'if 赋值' : 'If Assignment', link: `${basePath}/assignment/if-assignment` },
-        { text: zh ? '可变参数赋值' : 'Varargs Assignment', link: `${basePath}/assignment/varargs-assignment` },
-        { text: zh ? '使用 using 语句' : 'The Using Clause', link: `${basePath}/assignment/the-using-clause-controlling-destructive-assignment` },
+        { text: text.assignment, link: `${basePath}/assignment/assignment` },
+        { text: text.destructuringAssignment, link: `${basePath}/assignment/destructuring-assignment` },
+        { text: text.ifAssignment, link: `${basePath}/assignment/if-assignment` },
+        { text: text.varargsAssignment, link: `${basePath}/assignment/varargs-assignment` },
+        { text: text.usingClause, link: `${basePath}/assignment/the-using-clause-controlling-destructive-assignment` },
       ]
     },
     {
-      text: zh ? '函数' : 'Functions',
+      text: group.functions,
       collapsed: true,
       items: [
-        { text: zh ? '函数字面量' : 'Function Literals', link: `${basePath}/functions/function-literals` },
-        { text: zh ? '反向回调' : 'Backcalls', link: `${basePath}/functions/backcalls` },
-        { text: zh ? '函数存根' : 'Function Stubs', link: `${basePath}/functions/function-stubs` },
+        { text: text.functionLiterals, link: `${basePath}/functions/function-literals` },
+        { text: text.backcalls, link: `${basePath}/functions/backcalls` },
+        { text: text.functionStubs, link: `${basePath}/functions/function-stubs` },
       ]
     },
     {
-      text: zh ? '控制流' : 'Control Flow',
+      text: group.controlFlow,
       collapsed: true,
       items: [
-        { text: zh ? '条件语句' : 'Conditionals', link: `${basePath}/control-flow/conditionals` },
-        { text: zh ? 'for 循环' : 'For Loop', link: `${basePath}/control-flow/for-loop` },
-        { text: zh ? 'while 循环' : 'While Loop', link: `${basePath}/control-flow/while-loop` },
-        { text: zh ? 'continue 语句' : 'Continue Statement', link: `${basePath}/control-flow/continue` },
-        { text: zh ? 'switch 语句' : 'Switch', link: `${basePath}/control-flow/switch` },
+        { text: text.conditionals, link: `${basePath}/control-flow/conditionals` },
+        { text: text.forLoop, link: `${basePath}/control-flow/for-loop` },
+        { text: text.whileLoop, link: `${basePath}/control-flow/while-loop` },
+        { text: text.continueStatement, link: `${basePath}/control-flow/continue` },
+        { text: text.switch, link: `${basePath}/control-flow/switch` },
       ]
     },
     {
-      text: zh ? '数据结构' : 'Data Structures',
+      text: group.dataStructures,
       collapsed: true,
       items: [
-        { text: zh ? '表格字面量' : 'Table Literals', link: `${basePath}/data-structures/table-literals` },
-        { text: zh ? '推导式' : 'Comprehensions', link: `${basePath}/data-structures/comprehensions` },
+        { text: text.tableLiterals, link: `${basePath}/data-structures/table-literals` },
+        { text: text.comprehensions, link: `${basePath}/data-structures/comprehensions` },
       ]
     },
     {
-      text: zh ? '面向对象' : 'Objects',
+      text: group.objects,
       collapsed: true,
       items: [
-        { text: zh ? '面向对象编程' : 'Object Oriented Programming', link: `${basePath}/objects/object-oriented-programming` },
-        { text: zh ? 'with 语句' : 'With Statement', link: `${basePath}/objects/with-statement` },
+        { text: text.objectOrientedProgramming, link: `${basePath}/objects/object-oriented-programming` },
+        { text: text.withStatement, link: `${basePath}/objects/with-statement` },
       ]
     },
     {
-      text: zh ? '高级特性' : 'Advanced Features',
+      text: group.advancedFeatures,
       collapsed: true,
       items: [
-        { text: zh ? '宏' : 'Macro', link: `${basePath}/advanced/macro` },
-        { text: zh ? '模块' : 'Module', link: `${basePath}/advanced/module` },
-        { text: zh ? '代码行修饰符' : 'Line Decorators', link: `${basePath}/advanced/line-decorators` },
-        { text: zh ? 'do 语句' : 'Do', link: `${basePath}/advanced/do` },
-        { text: zh ? '错误处理' : 'Try', link: `${basePath}/advanced/try` },
+        { text: text.macro, link: `${basePath}/advanced/macro` },
+        { text: text.module, link: `${basePath}/advanced/module` },
+        { text: text.lineDecorators, link: `${basePath}/advanced/line-decorators` },
+        { text: text.do, link: `${basePath}/advanced/do` },
+        { text: text.try, link: `${basePath}/advanced/try` },
       ]
     },
     {
-      text: zh ? '参考' : 'Reference',
+      text: group.reference,
       collapsed: true,
       items: [
-        { text: zh ? '月之脚本语言库' : 'The YueScript Library', link: `${basePath}/reference/the-yuescript-library` },
-        { text: zh ? 'MIT 许可证' : 'License: MIT', link: `${basePath}/reference/license-mit` },
+        { text: text.yuescriptLibrary, link: `${basePath}/reference/the-yuescript-library` },
+        { text: text.licenseMit, link: `${basePath}/reference/license-mit` },
       ]
     },
   ]
@@ -180,7 +381,7 @@ export default defineConfig({
           { text: 'Try yue!', link: '/try/' },
           { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
         ],
-        sidebar: createSidebar('/doc', false),
+        sidebar: createSidebar('/doc', 'en'),
       }
     },
     zh: {
@@ -193,7 +394,33 @@ export default defineConfig({
           { text: '试一试!', link: '/zh/try/' },
           { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
         ],
-        sidebar: createSidebar('/zh/doc', true),
+        sidebar: createSidebar('/zh/doc', 'zh'),
+      }
+    },
+    de: {
+      label: 'Deutsch',
+      lang: 'de-DE',
+      description: 'Eine Sprache, die zu Lua kompiliert',
+      themeConfig: {
+        nav: [
+          { text: 'Dokumentation', link: '/de/doc/' },
+          { text: 'Yue ausprobieren!', link: '/de/try/' },
+          { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
+        ],
+        sidebar: createSidebar('/de/doc', 'de'),
+      }
+    },
+    'pt-br': {
+      label: 'Português (Brasil)',
+      lang: 'pt-BR',
+      description: 'Uma linguagem que compila para Lua',
+      themeConfig: {
+        nav: [
+          { text: 'Documentação', link: '/pt-br/doc/' },
+          { text: 'Experimente Yue!', link: '/pt-br/try/' },
+          { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
+        ],
+        sidebar: createSidebar('/pt-br/doc', 'ptBr'),
       }
     }
   },
