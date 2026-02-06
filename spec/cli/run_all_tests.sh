@@ -110,16 +110,16 @@ run_test_suite "Execution Test" "$SCRIPT_DIR/test_execution.sh"
 
 # Print detailed summary
 echo ""
-echo -e "${CYAN}╔════════════════════════════════════════════════════════╗"
-echo "║           YueScript CLI Test Results Summary            ║"
-echo "╚════════════════════════════════════════════════════════╝${NC}"
+echo -e "${BLUE}═══════════════════════════════════════════════════════════"
+echo "           YueScript CLI Test Results Summary"
+echo "═══════════════════════════════════════════════════════════${NC}"
 echo ""
 
 # Print per-suite statistics
 echo -e "${CYAN}Test Suite Details:${NC}"
-echo "┌────────────────────────────────┬────────┬────────┬────────┬──────────┐"
-echo "│ Test Suite                      │ Total  │ Passed │ Failed │ Status   │"
-echo "├────────────────────────────────┼────────┼────────┼────────┼──────────┤"
+echo "┌──────────────────────────────┬───────┬────────┬────────┬─────────┐"
+echo "│ Test Suite                   │ Total │ Passed │ Failed │ Status  │"
+echo "├──────────────────────────────┼───────┼────────┼────────┼─────────┤"
 
 for ((i=0; i<TOTAL_SUITES; i++)); do
     name="${SUITE_NAMES[$i]}"
@@ -129,50 +129,56 @@ for ((i=0; i<TOTAL_SUITES; i++)); do
     status="${SUITE_STATUS[$i]}"
 
     # Format suite name (truncate if too long)
-    name_display=$(printf "%.30s" "$name")
-    printf "│ %-30s │ %6d │ %6d │ %6d │ " "$name_display" $total $passed $failed
+    name_display=$(printf "%.28s" "$name")
+    printf "│ %-28s │ %5d │ %6d │ %6d │ " "$name_display" $total $passed $failed
 
     if [ "$status" = "PASS" ]; then
-        echo -e "${GREEN}✓ PASS   ${NC}│"
+        echo -e "${GREEN}PASS  ${NC}│"
     else
-        echo -e "${RED}✗ FAIL   ${NC}│"
+        echo -e "${RED}FAIL  ${NC}│"
     fi
 done
 
-echo "└────────────────────────────────┴────────┴────────┴────────┴──────────┘"
+echo "└──────────────────────────────┴───────┴────────┴────────┴─────────┘"
 echo ""
 
 # Print overall statistics
 echo -e "${CYAN}Overall Statistics:${NC}"
-echo "┌─────────────────────────────────────────────────────────────────┐"
-printf "│ Total Test Suites:   %3d                                          │\n" $TOTAL_SUITES
-printf "│ Passed Test Suites:  %3d                                          │\n" $PASSED_SUITES
-printf "│ Failed Test Suites:  %3d                                          │\n" $FAILED_SUITES
-echo "├─────────────────────────────────────────────────────────────────┤"
-printf "│ Total Test Cases:   %3d                                          │\n" $TOTAL_TESTS
-printf "│ Passed Test Cases:  %3d                                          │\n" $TOTAL_PASSED
-printf "│ Failed Test Cases:  %3d                                          │\n" $TOTAL_FAILED
-echo "└─────────────────────────────────────────────────────────────────┘"
-echo ""
+echo "┌────────────────────────────────────────────────────────────┐"
+printf "│  Total Test Suites:   %3d                                     │\n" $TOTAL_SUITES
+printf "│  Passed Test Suites:  %3d                                     │\n" $PASSED_SUITES
+printf "│  Failed Test Suites:  %3d                                     │\n" $FAILED_SUITES
+echo "├────────────────────────────────────────────────────────────┤"
+printf "│  Total Test Cases:    %3d                                     │\n" $TOTAL_TESTS
+printf "│  Passed Test Cases:   %3d                                     │\n" $TOTAL_PASSED
+printf "│  Failed Test Cases:   %3d                                     │\n" $TOTAL_FAILED
+echo "└────────────────────────────────────────────────────────────┘"
 
 # Calculate pass rate
 if [ $TOTAL_TESTS -gt 0 ]; then
     pass_rate=$((TOTAL_PASSED * 100 / TOTAL_TESTS))
-    echo -e "Overall Pass Rate: ${CYAN}$pass_rate%%${NC}"
-    echo ""
+    printf "  Overall Pass Rate: "
+    if [ $pass_rate -eq 100 ]; then
+        echo -e "${GREEN}${pass_rate}%%${NC}"
+    elif [ $pass_rate -ge 80 ]; then
+        echo -e "${YELLOW}${pass_rate}%%${NC}"
+    else
+        echo -e "${RED}${pass_rate}%%${NC}"
+    fi
 fi
+echo ""
 
 # Final verdict
-echo -e "${BLUE}======================================"
-echo "Final Verdict"
-echo "======================================${NC}"
+echo -e "${BLUE}═══════════════════════════════════════════════════════════"
+echo "                    Final Verdict"
+echo "═══════════════════════════════════════════════════════════${NC}"
 
 if [ $FAILED_SUITES -eq 0 ]; then
-    echo -e "${GREEN}✓ All test suites passed!${NC}"
-    echo -e "${GREEN}✓ All $TOTAL_TESTS test cases passed!${NC}"
+    echo -e "${GREEN}  ✓ All test suites passed!${NC}"
+    echo -e "${GREEN}  ✓ All $TOTAL_TESTS test cases passed!${NC}"
     exit 0
 else
-    echo -e "${RED}✗ $FAILED_SUITES test suite(s) failed${NC}"
-    echo -e "${RED}✗ $TOTAL_FAILED test case(s) failed${NC}"
+    echo -e "${RED}  ✗ $FAILED_SUITES test suite(s) failed${NC}"
+    echo -e "${RED}  ✗ $TOTAL_FAILED test case(s) failed${NC}"
     exit 1
 fi
