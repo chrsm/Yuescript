@@ -133,9 +133,9 @@ for ((i=0; i<TOTAL_SUITES; i++)); do
     printf "│ %-28s │ %5d │ %6d │ %6d │ " "$name_display" $total $passed $failed
 
     if [ "$status" = "PASS" ]; then
-        echo -e "${GREEN}PASS  ${NC}│"
+        echo -e "${GREEN}PASS  ${NC}  │"
     else
-        echo -e "${RED}FAIL  ${NC}│"
+        echo -e "${RED}FAIL  ${NC}  │"
     fi
 done
 
@@ -145,13 +145,13 @@ echo ""
 # Print overall statistics
 echo -e "${CYAN}Overall Statistics:${NC}"
 echo "┌────────────────────────────────────────────────────────────┐"
-printf "│  Total Test Suites:   %3d                                     │\n" $TOTAL_SUITES
-printf "│  Passed Test Suites:  %3d                                     │\n" $PASSED_SUITES
-printf "│  Failed Test Suites:  %3d                                     │\n" $FAILED_SUITES
+printf "│  Total Test Suites:   %3d                                  │\n" $TOTAL_SUITES
+printf "│  Passed Test Suites:  %3d                                  │\n" $PASSED_SUITES
+printf "│  Failed Test Suites:  %3d                                  │\n" $FAILED_SUITES
 echo "├────────────────────────────────────────────────────────────┤"
-printf "│  Total Test Cases:    %3d                                     │\n" $TOTAL_TESTS
-printf "│  Passed Test Cases:   %3d                                     │\n" $TOTAL_PASSED
-printf "│  Failed Test Cases:   %3d                                     │\n" $TOTAL_FAILED
+printf "│  Total Test Cases:    %3d                                  │\n" $TOTAL_TESTS
+printf "│  Passed Test Cases:   %3d                                  │\n" $TOTAL_PASSED
+printf "│  Failed Test Cases:   %3d                                  │\n" $TOTAL_FAILED
 echo "└────────────────────────────────────────────────────────────┘"
 
 # Calculate pass rate
