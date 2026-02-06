@@ -1,13 +1,12 @@
-# With Statement
+# Pernyataan With
 
+Pola umum saat membuat objek adalah memanggil serangkaian fungsi dan mengatur serangkaian properti segera setelah objek dibuat.
 
-A common pattern involving the creation of an object is calling a series of functions and setting a series of properties immediately after creating it.
+Hal ini menyebabkan nama objek diulang berkali-kali di kode, menambah noise yang tidak perlu. Solusi umum untuk ini adalah meneruskan tabel sebagai argumen yang berisi kumpulan kunci dan nilai untuk ditimpa. Kekurangannya adalah konstruktor objek harus mendukung bentuk ini.
 
-This results in repeating the name of the object multiple times in code, adding unnecessary noise. A common solution to this is to pass a table in as an argument which contains a collection of keys and values to overwrite. The downside to this is that the constructor of this object must support this form.
+Blok `with` membantu mengatasi hal ini. Di dalam blok `with`, kita bisa menggunakan pernyataan khusus yang diawali dengan `.` atau `\` yang merepresentasikan operasi tersebut diterapkan pada objek yang sedang dipakai.
 
-The with block helps to alleviate this. Within a with block we can use a special statements that begin with either . or \ which represent those operations applied to the object we are using with on.
-
-For example, we work with a newly created object:
+Sebagai contoh, kita bekerja dengan objek yang baru dibuat:
 
 ```yuescript
 with Person!
@@ -28,7 +27,7 @@ with Person!
 
 </YueDisplay>
 
-The with statement can also be used as an expression which returns the value it has been giving access to.
+Pernyataan `with` juga bisa digunakan sebagai ekspresi yang mengembalikan nilai yang diberi akses.
 
 ```yuescript
 file = with File "favorite_foods.txt"
@@ -43,7 +42,7 @@ file = with File "favorite_foods.txt"
 
 </YueDisplay>
 
-Or…
+Atau…
 
 ```yuescript
 create_person = (name,  relatives) ->
@@ -66,9 +65,9 @@ me = create_person "Leaf", [dad, mother, sister]
 
 </YueDisplay>
 
-In this usage, with can be seen as a special form of the K combinator.
+Dalam penggunaan ini, `with` dapat dilihat sebagai bentuk khusus dari kombinator K.
 
-The expression in the with statement can also be an assignment, if you want to give a name to the expression.
+Ekspresi pada pernyataan `with` juga bisa berupa assignment jika Anda ingin memberi nama pada ekspresi tersebut.
 
 ```yuescript
 with str := "Hello"
@@ -85,7 +84,7 @@ with str := "Hello"
 
 </YueDisplay>
 
-You can access special keys with `[]` in a `with` statement.
+Anda bisa mengakses kunci khusus dengan `[]` di dalam pernyataan `with`.
 
 ```yuescript
 with tb
@@ -94,7 +93,7 @@ with tb
   with [abc]
     [3] = [2]\func!
     ["key-name"] = value
-  [] = "abc" -- appending to "tb"
+  [] = "abc" -- menambahkan ke "tb"
 ```
 <YueDisplay>
 
@@ -105,12 +104,12 @@ with tb
   with [abc]
     [3] = [2]\func!
     ["key-name"] = value
-  [] = "abc" -- appending to "tb"
+  [] = "abc" -- menambahkan ke "tb"
 ```
 
 </YueDisplay>
 
-`with?` is an enhanced version of `with` syntax, which introduces an existential check to safely access objects that may be nil without explicit null checks.
+`with?` adalah versi yang ditingkatkan dari sintaks `with`, yang memperkenalkan pengecekan keberadaan untuk mengakses objek yang mungkin nil secara aman tanpa pemeriksaan null eksplisit.
 
 ```yuescript
 with? obj

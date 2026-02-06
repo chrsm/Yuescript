@@ -1,43 +1,43 @@
-# Installation
+# Instalasi
 
-## Lua Module
+## Modul Lua
 
-Install [luarocks](https://luarocks.org), a package manager for Lua modules. Then install it as a Lua module and executable with:
+Instal [luarocks](https://luarocks.org), manajer paket untuk modul Lua. Lalu instal sebagai modul Lua dan executable dengan:
 
 ```shell
 luarocks install yuescript
 ```
 
-Or you can build `yue.so` file with:
+Atau Anda dapat membangun file `yue.so` dengan:
 
 ```shell
 make shared LUAI=/usr/local/include/lua LUAL=/usr/local/lib/lua
 ```
 
-Then get the binary file from path **bin/shared/yue.so**.
+Lalu ambil file biner dari path **bin/shared/yue.so**.
 
-## Build Binary Tool
+## Membangun Tool Biner
 
-Clone this repo, then build and install executable with:
+Klon repo ini, lalu bangun dan instal executable dengan:
 
 ```shell
 make install
 ```
 
-Build YueScript tool without macro feature:
+Bangun tool YueScript tanpa fitur macro:
 
 ```shell
 make install NO_MACRO=true
 ```
 
-Build YueScript tool without built-in Lua binary:
+Bangun tool YueScript tanpa biner Lua bawaan:
 
 ```shell
 make install NO_LUA=true
 ```
 
-## Download Precompiled Binary
+## Unduh Biner Pra-kompilasi
 
-You can download precompiled binary files, including binary executable files compatible with different Lua versions and library files.
+Anda dapat mengunduh file biner pra-kompilasi, termasuk file executable biner yang kompatibel dengan berbagai versi Lua dan file library.
 
-Download precompiled binary files from [here](https://github.com/IppClub/YueScript/releases).
+Unduh file biner pra-kompilasi dari [sini](https://github.com/IppClub/YueScript/releases).

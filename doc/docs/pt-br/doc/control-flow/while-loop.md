@@ -1,6 +1,6 @@
-# While Loop
+# Loop While
 
-The while loop also comes in four variations:
+O loop while também vem em quatro variações:
 
 ```yuescript
 i = 10
@@ -43,11 +43,11 @@ until running == false do my_function!
 
 </YueDisplay>
 
-Like for loops, the while loop can also be used an expression. Additionally, for a function to return the accumulated value of a while loop, the statement must be explicitly returned.
+Como os loops for, o loop while também pode ser usado como expressão. Além disso, para uma função retornar o valor acumulado de um loop while, a instrução deve ser explicitamente retornada.
 
-## Repeat Loop
+## Loop Repeat
 
-The repeat loop comes from Lua:
+O loop repeat vem do Lua:
 
 ```yuescript
 i = 10

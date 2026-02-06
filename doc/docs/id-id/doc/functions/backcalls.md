@@ -1,6 +1,6 @@
-# Backcalls
+# Backcall
 
-Backcalls are used for unnesting callbacks. They are defined using arrows pointed to the left as the last parameter by default filling in a function call. All the syntax is mostly the same as regular arrow functions except that it is just pointing the other way and the function body does not require indent.
+Backcall digunakan untuk meratakan callback yang bersarang. Backcall didefinisikan menggunakan panah yang mengarah ke kiri sebagai parameter terakhir secara default yang akan mengisi pemanggilan fungsi. Semua sintaks pada dasarnya sama seperti fungsi panah biasa, kecuali arahnya berlawanan dan badan fungsi tidak memerlukan indentasi.
 
 ```yuescript
 x <- f
@@ -15,7 +15,7 @@ print "hello" .. x
 
 </YueDisplay>
 
-Fat arrow functions are also available.
+Fungsi panah tebal juga tersedia.
 
 ```yuescript
 <= f
@@ -30,7 +30,7 @@ print @value
 
 </YueDisplay>
 
-You can specify a placeholder for where you want the backcall function to go as a parameter.
+Anda dapat menentukan placeholder untuk posisi fungsi backcall sebagai parameter.
 
 ```yuescript
 (x) <- map _, [1, 2, 3]
@@ -45,7 +45,7 @@ x * 2
 
 </YueDisplay>
 
-If you wish to have further code after your backcalls, you can set them aside with a do statement. And the parentheses can be omitted with non-fat arrow functions.
+Jika Anda ingin menulis kode lanjutan setelah backcall, Anda dapat memisahkannya dengan pernyataan `do`. Tanda kurung dapat dihilangkan untuk fungsi panah non-tebal.
 
 ```yuescript
 result, msg = do

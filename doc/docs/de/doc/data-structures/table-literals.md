@@ -1,6 +1,6 @@
-# Table Literals
+# Tabellenliterale
 
-Like in Lua, tables are delimited in curly braces.
+Wie in Lua werden Tabellen mit geschweiften Klammern definiert.
 
 ```yuescript
 some_values = [1, 2, 3, 4]
@@ -13,13 +13,13 @@ some_values = [1, 2, 3, 4]
 
 </YueDisplay>
 
-Unlike Lua, assigning a value to a key in a table is done with **:** (instead of **=**).
+Anders als in Lua weist man einem Schlüssel in einer Tabelle mit **:** (statt **=**) einen Wert zu.
 
 ```yuescript
 some_values = {
   name: "Bill",
   age: 200,
-  ["favorite food"]: "rice"
+  ["Lieblingsessen"]: "Reis"
 }
 ```
 <YueDisplay>
@@ -28,39 +28,39 @@ some_values = {
 some_values = {
   name: "Bill",
   age: 200,
-  ["favorite food"]: "rice"
+  ["Lieblingsessen"]: "Reis"
 }
 ```
 
 </YueDisplay>
 
-The curly braces can be left off if a single table of key value pairs is being assigned.
+Die geschweiften Klammern können weggelassen werden, wenn eine einzelne Tabelle aus Schlüssel-Wert-Paaren zugewiesen wird.
 
 ```yuescript
 profile =
-  height: "4 feet",
+  height: "4 Fuß",
   shoe_size: 13,
-  favorite_foods: ["ice cream", "donuts"]
+  favorite_foods: ["Eis", "Donuts"]
 ```
 <YueDisplay>
 
 ```yue
 profile =
-  height: "4 feet",
+  height: "4 Fuß",
   shoe_size: 13,
-  favorite_foods: ["ice cream", "donuts"]
+  favorite_foods: ["Eis", "Donuts"]
 ```
 
 </YueDisplay>
 
-Newlines can be used to delimit values instead of a comma (or both):
+Zeilenumbrüche können Werte statt eines Kommas trennen (oder zusätzlich):
 
 ```yuescript
 values = {
   1, 2, 3, 4
   5, 6, 7, 8
-  name: "superman"
-  occupation: "crime fighting"
+  name: "Superman"
+  occupation: "Verbrechensbekämpfung"
 }
 ```
 <YueDisplay>
@@ -69,50 +69,50 @@ values = {
 values = {
   1, 2, 3, 4
   5, 6, 7, 8
-  name: "superman"
-  occupation: "crime fighting"
+  name: "Superman"
+  occupation: "Verbrechensbekämpfung"
 }
 ```
 
 </YueDisplay>
 
-When creating a single line table literal, the curly braces can also be left off:
+Beim Erstellen eines einzeiligen Tabellenliterals können die geschweiften Klammern ebenfalls weggelassen werden:
 
 ```yuescript
-my_function dance: "Tango", partner: "none"
+my_function dance: "Tango", partner: "keiner"
 
-y = type: "dog", legs: 4, tails: 1
+y = type: "Hund", legs: 4, tails: 1
 ```
 <YueDisplay>
 
 ```yue
-my_function dance: "Tango", partner: "none"
+my_function dance: "Tango", partner: "keiner"
 
-y = type: "dog", legs: 4, tails: 1
+y = type: "Hund", legs: 4, tails: 1
 ```
 
 </YueDisplay>
 
-The keys of a table literal can be language keywords without being escaped:
+Die Schlüssel eines Tabellenliterals können Sprach-Schlüsselwörter sein, ohne sie zu escapen:
 
 ```yuescript
 tbl = {
-  do: "something"
-  end: "hunger"
+  do: "etwas"
+  end: "Hunger"
 }
 ```
 <YueDisplay>
 
 ```yue
 tbl = {
-  do: "something"
-  end: "hunger"
+  do: "etwas"
+  end: "Hunger"
 }
 ```
 
 </YueDisplay>
 
-If you are constructing a table out of variables and wish the keys to be the same as the variable names, then the **:** prefix operator can be used:
+Wenn du eine Tabelle aus Variablen konstruierst und die Schlüssel den Variablennamen entsprechen sollen, kannst du den Präfix-Operator **:** verwenden:
 
 ```yuescript
 hair = "golden"
@@ -133,26 +133,26 @@ print_table :hair, :height
 
 </YueDisplay>
 
-If you want the key of a field in the table to to be result of an expression, then you can wrap it in **[ ]**, just like in Lua. You can also use a string literal directly as a key, leaving out the square brackets. This is useful if your key has any special characters.
+Wenn der Schlüssel eines Feldes das Ergebnis eines Ausdrucks sein soll, kannst du ihn wie in Lua in **[ ]** setzen. Du kannst auch ein String-Literal direkt als Schlüssel verwenden und die eckigen Klammern weglassen. Das ist nützlich, wenn dein Schlüssel Sonderzeichen enthält.
 
 ```yuescript
 t = {
-  [1 + 2]: "hello"
-  "hello world": true
+  [1 + 2]: "hallo"
+  "Hallo Welt": true
 }
 ```
 <YueDisplay>
 
 ```yue
 t = {
-  [1 + 2]: "hello"
-  "hello world": true
+  [1 + 2]: "hallo"
+  "Hallo Welt": true
 }
 ```
 
 </YueDisplay>
 
-Lua tables have both an array part and a hash part, but sometimes you want to make a semantic distinction between array and hash usage when writing Lua tables. Then you can write Lua table with **[ ]** instead of **{ }** to represent an array table and writing any key value pair in a list table won't be allowed.
+Lua-Tabellen haben einen Array-Teil und einen Hash-Teil, aber manchmal möchte man beim Schreiben von Lua-Tabellen eine semantische Unterscheidung zwischen Array- und Hash-Nutzung machen. Dann kannst du eine Lua-Tabelle mit **[ ]** statt **{ }** schreiben, um eine Array-Tabelle darzustellen, und das Schreiben von Schlüssel-Wert-Paaren in einer Listentabelle ist nicht erlaubt.
 
 ```yuescript
 some_values = [1, 2, 3, 4]

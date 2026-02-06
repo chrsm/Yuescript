@@ -1,28 +1,28 @@
-# Module
+# Modul
 
 ## Import
 
-The import statement is a syntax sugar for requiring a module or help extracting items from an imported module. The imported items are const by default.
+Pernyataan `import` adalah sintaks sugar untuk me-require modul atau membantu mengekstrak item dari modul yang diimpor. Item yang diimpor bersifat `const` secara default.
 
 ```yuescript
--- used as table destructuring
+-- digunakan sebagai destrukturisasi tabel
 do
   import insert, concat from table
-  -- report error when assigning to insert, concat
+  -- akan error saat meng-assign ke insert, concat
   import C, Ct, Cmt from require "lpeg"
-  -- shortcut for implicit requiring
+  -- shortcut untuk require implisit
   import x, y, z from 'mymodule'
-  -- import with Python style
+  -- import gaya Python
   from 'module' import a, b, c
 
--- shortcut for requring a module
+-- shortcut untuk require modul
 do
   import 'module'
   import 'module_x'
   import "d-a-s-h-e-s"
   import "module.part"
 
--- requring module with aliasing or table destructuring
+-- require modul dengan aliasing atau destrukturisasi tabel
 do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
@@ -31,24 +31,24 @@ do
 <YueDisplay>
 
 ```yue
--- used as table destructuring
+-- digunakan sebagai destrukturisasi tabel
 do
   import insert, concat from table
-  -- report error when assigning to insert, concat
+  -- akan error saat meng-assign ke insert, concat
   import C, Ct, Cmt from require "lpeg"
-  -- shortcut for implicit requiring
+  -- shortcut untuk require implisit
   import x, y, z from 'mymodule'
-  -- import with Python style
+  -- import gaya Python
   from 'module' import a, b, c
 
--- shortcut for requring a module
+-- shortcut untuk require modul
 do
   import 'module'
   import 'module_x'
   import "d-a-s-h-e-s"
   import "module.part"
 
--- requring module with aliasing or table destructuring
+-- require modul dengan aliasing atau destrukturisasi tabel
 do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
@@ -59,7 +59,7 @@ do
 
 ## Import Global
 
-You can import specific globals into local variables with `import`. When importing a chain of global variable accessings, the last field will be assigned to the local variable.
+Anda dapat mengimpor global tertentu ke variabel local dengan `import`. Saat mengimpor rangkaian akses variabel global, field terakhir akan di-assign ke variabel local.
 
 ```yuescript
 do
@@ -78,11 +78,11 @@ do
 
 </YueDisplay>
 
-### Automatic Global Variable Import
+### Import Variabel Global Otomatis
 
-You can place `import global` at the top of a block to automatically import all names that have not been explicitly declared or assigned in the current scope as globals. These implicit imports are treated as local consts that reference the corresponding globals at the position of the statement.
+Anda dapat menempatkan `import global` di awal blok untuk mengimpor secara otomatis semua nama yang belum dideklarasikan atau di-assign secara eksplisit di scope saat ini sebagai global. Import implisit ini diperlakukan sebagai local const yang mereferensikan global terkait pada posisi pernyataan tersebut.
 
-Names that are explicitly declared as globals in the same scope will not be imported, so you can still assign to them.
+Nama yang secara eksplisit dideklarasikan sebagai global di scope yang sama tidak akan diimpor, sehingga Anda masih bisa meng-assign ke mereka.
 
 ```yuescript
 do
@@ -92,7 +92,7 @@ do
   -- print = nil -- error: imported globals are const
 
 do
-  -- explicit global variable will not be imported
+  -- variabel global eksplisit tidak akan diimpor
   import global
   global FLAG
   print FLAG
@@ -108,7 +108,7 @@ do
   -- print = nil -- error: imported globals are const
 
 do
-  -- explicit global variable will not be imported
+  -- variabel global eksplisit tidak akan diimpor
   import global
   global FLAG
   print FLAG
@@ -119,11 +119,11 @@ do
 
 ## Export
 
-The export statement offers a concise way to define modules.
+Pernyataan `export` menawarkan cara ringkas untuk mendefinisikan modul.
 
-### Named Export
+### Export Bernama
 
-Named export will define a local variable as well as adding a field in the exported table.
+Export bernama akan mendefinisikan variabel local sekaligus menambahkan field di tabel export.
 
 ```yuescript
 export a, b, c = 1, 2, 3
@@ -160,7 +160,7 @@ export class Something
 
 </YueDisplay>
 
-Doing named export with destructuring.
+Melakukan export bernama dengan destrukturisasi.
 
 ```yuescript
 export :loadstring, to_lua: tolua = yue
@@ -175,7 +175,7 @@ export {itemA: {:fieldA = 'default'}} = tb
 
 </YueDisplay>
 
-Export named items from module without creating local variables.
+Export item bernama dari modul tanpa membuat variabel local.
 
 ```yuescript
 export.itemA = tb
@@ -192,9 +192,9 @@ export["a-b-c"] = 123
 
 </YueDisplay>
 
-### Unnamed Export
+### Export Tanpa Nama
 
-Unnamed export will add the target item into the array part of the exported table.
+Export tanpa nama akan menambahkan item target ke bagian array dari tabel export.
 
 ```yuescript
 d, e, f = 3, 2, 1
@@ -225,9 +225,9 @@ export with tmp
 
 </YueDisplay>
 
-### Default Export
+### Export Default
 
-Using the **default** keyword in export statement to replace the exported table with any thing.
+Gunakan kata kunci **default** dalam pernyataan export untuk mengganti tabel export dengan apa pun.
 
 ```yuescript
 export default ->

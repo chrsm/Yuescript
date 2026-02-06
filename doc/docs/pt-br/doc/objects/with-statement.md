@@ -1,13 +1,12 @@
-# With Statement
+# Instrução With
 
+Um padrão comum envolvendo a criação de um objeto é chamar uma série de funções e definir uma série de propriedades imediatamente após criá-lo.
 
-A common pattern involving the creation of an object is calling a series of functions and setting a series of properties immediately after creating it.
+Isso resulta em repetir o nome do objeto várias vezes no código, adicionando ruído desnecessário. Uma solução comum para isso é passar uma tabela como argumento que contém uma coleção de chaves e valores para sobrescrever. O inconveniente é que o construtor desse objeto deve suportar essa forma.
 
-This results in repeating the name of the object multiple times in code, adding unnecessary noise. A common solution to this is to pass a table in as an argument which contains a collection of keys and values to overwrite. The downside to this is that the constructor of this object must support this form.
+O bloco with ajuda a aliviar isso. Dentro de um bloco with podemos usar instruções especiais que começam com . ou \ que representam essas operações aplicadas ao objeto com o qual estamos usando with.
 
-The with block helps to alleviate this. Within a with block we can use a special statements that begin with either . or \ which represent those operations applied to the object we are using with on.
-
-For example, we work with a newly created object:
+Por exemplo, trabalhamos com um objeto recém-criado:
 
 ```yuescript
 with Person!
@@ -28,7 +27,7 @@ with Person!
 
 </YueDisplay>
 
-The with statement can also be used as an expression which returns the value it has been giving access to.
+A instrução with também pode ser usada como expressão que retorna o valor ao qual foi dado acesso.
 
 ```yuescript
 file = with File "favorite_foods.txt"
@@ -43,7 +42,7 @@ file = with File "favorite_foods.txt"
 
 </YueDisplay>
 
-Or…
+Ou…
 
 ```yuescript
 create_person = (name,  relatives) ->
@@ -66,9 +65,9 @@ me = create_person "Leaf", [dad, mother, sister]
 
 </YueDisplay>
 
-In this usage, with can be seen as a special form of the K combinator.
+Neste uso, with pode ser visto como uma forma especial do combinador K.
 
-The expression in the with statement can also be an assignment, if you want to give a name to the expression.
+A expressão na instrução with também pode ser uma atribuição, se você quiser dar um nome à expressão.
 
 ```yuescript
 with str := "Hello"
@@ -85,7 +84,7 @@ with str := "Hello"
 
 </YueDisplay>
 
-You can access special keys with `[]` in a `with` statement.
+Você pode acessar chaves especiais com `[]` em uma instrução `with`.
 
 ```yuescript
 with tb
@@ -94,7 +93,7 @@ with tb
   with [abc]
     [3] = [2]\func!
     ["key-name"] = value
-  [] = "abc" -- appending to "tb"
+  [] = "abc" -- anexando a "tb"
 ```
 <YueDisplay>
 
@@ -105,12 +104,12 @@ with tb
   with [abc]
     [3] = [2]\func!
     ["key-name"] = value
-  [] = "abc" -- appending to "tb"
+  [] = "abc" -- anexando a "tb"
 ```
 
 </YueDisplay>
 
-`with?` is an enhanced version of `with` syntax, which introduces an existential check to safely access objects that may be nil without explicit null checks.
+`with?` é uma versão aprimorada da sintaxe `with`, que introduz uma verificação existencial para acessar com segurança objetos que podem ser nil sem verificações explícitas de null.
 
 ```yuescript
 with? obj

@@ -1,32 +1,32 @@
-# Line Decorators
+# Line-Decorators
 
-For convenience, the for loop and if statement can be applied to single statements at the end of the line:
+Zur Vereinfachung können `for`-Schleifen und `if`-Anweisungen auf einzelne Anweisungen am Zeilenende angewendet werden:
 
 ```yuescript
-print "hello world" if name == "Rob"
+print "Hallo Welt" if name == "Rob"
 ```
 <YueDisplay>
 
 ```yue
-print "hello world" if name == "Rob"
+print "Hallo Welt" if name == "Rob"
 ```
 
 </YueDisplay>
 
-And with basic loops:
+Und mit einfachen Schleifen:
 
 ```yuescript
-print "item: ", item for item in *items
+print "Element: ", item for item in *items
 ```
 <YueDisplay>
 
 ```yue
-print "item: ", item for item in *items
+print "Element: ", item for item in *items
 ```
 
 </YueDisplay>
 
-And with while loops:
+Und mit `while`-Schleifen:
 
 ```yuescript
 game\update! while game\isRunning!

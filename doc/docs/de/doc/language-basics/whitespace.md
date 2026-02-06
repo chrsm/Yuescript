@@ -1,10 +1,10 @@
-# Whitespace
+# Leerraum
 
-YueScript is a whitespace significant language. You have to write some code block in the same indent with space **' '** or tab **'\t'** like function body, value list and some control blocks. And expressions containing different whitespaces might mean different things. Tab is treated like 4 space, but it's better not mix the use of spaces and tabs.
+YueScript ist eine whitespace-sensible Sprache. Du musst bestimmte Code-Blöcke mit derselben Einrückung (Leerzeichen **' '** oder Tab **'\t'**) schreiben, z. B. Funktionskörper, Wertelisten und Kontrollblöcke. Ausdrücke mit unterschiedlichem Leerraum können unterschiedliche Bedeutungen haben. Ein Tab wird wie 4 Leerzeichen behandelt, aber es ist besser, Leerzeichen und Tabs nicht zu mischen.
 
-## Statement Separator
+## Anweisungs-Trenner
 
-A statement normally ends at a line break. You can also use a semicolon `;` to explicitly terminate a statement, which allows writing multiple statements on the same line:
+Eine Anweisung endet normalerweise an einem Zeilenumbruch. Du kannst auch ein Semikolon `;` verwenden, um eine Anweisung explizit zu beenden, wodurch mehrere Anweisungen in einer Zeile möglich sind:
 
 ```yuescript
 a = 1; b = 2; print a + b
@@ -17,9 +17,9 @@ a = 1; b = 2; print a + b
 
 </YueDisplay>
 
-## Multiline Chaining
+## Mehrzeiliges Chaining
 
-You can write multi-line chaining function calls with a same indent.
+Du kannst mehrzeilige, verkettete Funktionsaufrufe mit derselben Einrückung schreiben.
 
 ```yuescript
 Rx.Observable

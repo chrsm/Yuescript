@@ -1,13 +1,12 @@
-# With Statement
+# With-Statement
 
+Ein häufiges Muster bei der Erstellung eines Objekts ist, unmittelbar danach eine Reihe von Funktionen aufzurufen und Eigenschaften zu setzen.
 
-A common pattern involving the creation of an object is calling a series of functions and setting a series of properties immediately after creating it.
+Das führt dazu, dass der Objektname mehrfach wiederholt wird und unnötiges Rauschen entsteht. Eine gängige Lösung ist, eine Tabelle als Argument zu übergeben, die eine Sammlung von Schlüsseln und Werten enthält, die überschrieben werden sollen. Der Nachteil ist, dass der Konstruktor dieses Objekts diese Form unterstützen muss.
 
-This results in repeating the name of the object multiple times in code, adding unnecessary noise. A common solution to this is to pass a table in as an argument which contains a collection of keys and values to overwrite. The downside to this is that the constructor of this object must support this form.
+Der `with`-Block hilft, das zu vermeiden. Innerhalb eines `with`-Blocks können wir spezielle Anweisungen verwenden, die mit `.` oder `\` beginnen und die Operationen auf das Objekt anwenden, mit dem wir gerade arbeiten.
 
-The with block helps to alleviate this. Within a with block we can use a special statements that begin with either . or \ which represent those operations applied to the object we are using with on.
-
-For example, we work with a newly created object:
+Zum Beispiel arbeiten wir mit einem neu erstellten Objekt:
 
 ```yuescript
 with Person!
@@ -28,22 +27,22 @@ with Person!
 
 </YueDisplay>
 
-The with statement can also be used as an expression which returns the value it has been giving access to.
+Das `with`-Statement kann auch als Ausdruck verwendet werden und gibt den Wert zurück, auf den es Zugriff gewährt.
 
 ```yuescript
-file = with File "favorite_foods.txt"
+file = with File "Lieblingsessen.txt"
   \set_encoding "utf8"
 ```
 <YueDisplay>
 
 ```yue
-file = with File "favorite_foods.txt"
+file = with File "Lieblingsessen.txt"
   \set_encoding "utf8"
 ```
 
 </YueDisplay>
 
-Or…
+Oder …
 
 ```yuescript
 create_person = (name,  relatives) ->
@@ -66,26 +65,26 @@ me = create_person "Leaf", [dad, mother, sister]
 
 </YueDisplay>
 
-In this usage, with can be seen as a special form of the K combinator.
+In dieser Verwendung kann `with` als spezielle Form des K-Kombinators gesehen werden.
 
-The expression in the with statement can also be an assignment, if you want to give a name to the expression.
+Der Ausdruck im `with`-Statement kann auch eine Zuweisung sein, wenn du dem Ausdruck einen Namen geben willst.
 
 ```yuescript
-with str := "Hello"
-  print "original:", str
-  print "upper:", \upper!
+with str := "Hallo"
+  print "Original:", str
+  print "Großbuchstaben:", \upper!
 ```
 <YueDisplay>
 
 ```yue
-with str := "Hello"
-  print "original:", str
-  print "upper:", \upper!
+with str := "Hallo"
+  print "Original:", str
+  print "Großbuchstaben:", \upper!
 ```
 
 </YueDisplay>
 
-You can access special keys with `[]` in a `with` statement.
+Du kannst in einem `with`-Statement über `[]` auf spezielle Schlüssel zugreifen.
 
 ```yuescript
 with tb
@@ -94,7 +93,7 @@ with tb
   with [abc]
     [3] = [2]\func!
     ["key-name"] = value
-  [] = "abc" -- appending to "tb"
+  [] = "abc" -- an "tb" anhängen
 ```
 <YueDisplay>
 
@@ -105,12 +104,12 @@ with tb
   with [abc]
     [3] = [2]\func!
     ["key-name"] = value
-  [] = "abc" -- appending to "tb"
+  [] = "abc" -- an "tb" anhängen
 ```
 
 </YueDisplay>
 
-`with?` is an enhanced version of `with` syntax, which introduces an existential check to safely access objects that may be nil without explicit null checks.
+`with?` ist eine erweiterte Version der `with`-Syntax, die einen Existenz-Check einführt, um Objekte, die `nil` sein könnten, sicher zuzugreifen, ohne explizite Nullprüfungen.
 
 ```yuescript
 with? obj

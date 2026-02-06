@@ -1,25 +1,25 @@
 # Do
 
-When used as a statement, do works just like it does in Lua.
+Als Statement verhält sich `do` wie in Lua.
 
 ```yuescript
 do
-  var = "hello"
+  var = "hallo"
   print var
-print var -- nil here
+print var -- nil hier
 ```
 <YueDisplay>
 
 ```yue
 do
-  var = "hello"
+  var = "hallo"
   print var
-print var -- nil here
+print var -- nil hier
 ```
 
 </YueDisplay>
 
-YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+YueScripts **do** kann auch als Ausdruck verwendet werden. So kannst du mehrere Zeilen in einem Ausdruck kombinieren. Das Ergebnis des `do`-Ausdrucks ist die letzte Anweisung im Block.
 
 ```yuescript
 counter = do
@@ -49,7 +49,7 @@ print counter!
 ```yuescript
 tbl = {
   key: do
-    print "assigning key!"
+    print "Schlüssel wird zugewiesen!"
     1234
 }
 ```
@@ -58,7 +58,7 @@ tbl = {
 ```yue
 tbl = {
   key: do
-    print "assigning key!"
+    print "Schlüssel wird zugewiesen!"
     1234
 }
 ```

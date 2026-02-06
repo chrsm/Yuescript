@@ -1,10 +1,10 @@
-# Introduction
+# Pendahuluan
 
-YueScript is a dynamic language that compiles to Lua. And it's a [MoonScript](https://github.com/leafo/moonscript) dialect. The codes written in YueScript are expressive and extremely concise. And it is suitable for writing some changing application logic with more maintainable codes and runs in a Lua embeded environment such as games or website servers.
+YueScript adalah bahasa dinamis yang dikompilasi ke Lua, dan merupakan dialek [MoonScript](https://github.com/leafo/moonscript). Kode yang ditulis dengan YueScript ekspresif dan sangat ringkas. YueScript cocok untuk menulis logika aplikasi yang sering berubah dengan kode yang lebih mudah dipelihara, serta berjalan di lingkungan embed Lua seperti game atau server situs web.
 
-Yue (月) is the name of moon in Chinese and it's pronounced as [jyɛ].
+Yue (月) adalah kata untuk bulan dalam bahasa Tionghoa dan diucapkan sebagai [jyɛ].
 
-## An Overview of YueScript
+## Ikhtisar YueScript
 
 ```yuescript
 -- import syntax
@@ -48,7 +48,7 @@ with apple
   p .size, .color, .<index> if .<>?
 
 -- js-like export syntax
-export 🌛 = "月之脚本"
+export 🌛 = "Skrip Bulan"
 ```
 
 <YueDisplay>
@@ -95,11 +95,11 @@ with apple
   p .size, .color, .<index> if .<>?
 
 -- js-like export syntax
-export 🌛 = "月之脚本"
+export 🌛 = "Skrip Bulan"
 ```
 
 </YueDisplay>
 
-## About Dora SSR
+## Tentang Dora SSR
 
-YueScript is being developed and maintained alongside the open-source game engine [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). It has been used to create engine tools, game demos and prototypes, validating its capabilities in real-world scenarios while enhancing the Dora SSR development experience.
+YueScript dikembangkan dan dipelihara bersama mesin game open-source [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). YueScript telah digunakan untuk membuat alat mesin, demo game, dan prototipe, membuktikan kemampuannya dalam skenario dunia nyata sekaligus meningkatkan pengalaman pengembangan Dora SSR.

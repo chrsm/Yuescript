@@ -1,8 +1,8 @@
 # Macro
 
-## Common Usage
+## Uso comum
 
-Macro function is used for evaluating a string in the compile time and insert the generated codes into final compilation.
+A função macro é usada para avaliar uma string em tempo de compilação e inserir os códigos gerados na compilação final.
 
 ```yuescript
 macro PI2 = -> math.pi * 2
@@ -27,7 +27,7 @@ $asserts item ~= nil
 $config false
 value = $assert item
 
--- the passed expressions are treated as strings
+-- as expressões passadas são tratadas como strings
 macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
@@ -57,7 +57,7 @@ $asserts item ~= nil
 $config false
 value = $assert item
 
--- the passed expressions are treated as strings
+-- as expressões passadas são tratadas como strings
 macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
@@ -65,9 +65,9 @@ if $and f1!, f2!, f3!
 
 </YueDisplay>
 
-## Insert Raw Codes
+## Inserir códigos brutos
 
-A macro function can either return a YueScript string or a config table containing Lua codes.
+Uma função macro pode retornar uma string YueScript ou uma tabela de configuração contendo códigos Lua.
 ```yuescript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
@@ -85,9 +85,9 @@ macro lua = (code) -> {
   type: "lua"
 }
 
--- the raw string leading and ending symbols are auto trimed
+-- os símbolos inicial e final da string bruta são aparados automaticamente
 $lua[==[
--- raw Lua codes insertion
+-- inserção de códigos Lua brutos
 if cond then
   print("output")
 end
@@ -112,9 +112,9 @@ macro lua = (code) -> {
   type: "lua"
 }
 
--- the raw string leading and ending symbols are auto trimed
+-- os símbolos inicial e final da string bruta são aparados automaticamente
 $lua[==[
--- raw Lua codes insertion
+-- inserção de códigos Lua brutos
 if cond then
   print("output")
 end
@@ -123,38 +123,37 @@ end
 
 </YueDisplay>
 
-## Export Macro
+## Exportar macro
 
-Macro functions can be exported from a module and get imported in another module. You have to put export macro functions in a single file to be used, and only macro definition, macro importing and macro expansion in place can be put into the macro exporting module.
+Funções macro podem ser exportadas de um módulo e importadas em outro módulo. Você deve colocar funções export macro em um único arquivo para uso, e apenas definição de macro, importação de macro e expansão de macro inline podem ser colocadas no módulo exportador de macro.
 ```yuescript
--- file: utils.yue
+-- arquivo: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
 export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
 export macro foreach = (items, action) -> "for _ in *#{items}
   #{action}"
 
--- file main.yue
+-- arquivo main.yue
 import "utils" as {
-  $, -- symbol to import all macros
-  $foreach: $each -- rename macro $foreach to $each
+  $, -- símbolo para importar todas as macros
+  $foreach: $each -- renomear macro $foreach para $each
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
 <YueDisplay>
 
 ```yue
--- file: utils.yue
+-- arquivo: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
 export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
 export macro foreach = (items, action) -> "for _ in *#{items}
   #{action}"
 
--- file main.yue
--- import function is not available in browser, try it in a real environment
+-- arquivo main.yue
 --[[
 import "utils" as {
-  $, -- symbol to import all macros
-  $foreach: $each -- rename macro $foreach to $each
+  $, -- símbolo para importar todas as macros
+  $foreach: $each -- renomear macro $foreach para $each
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ]]
@@ -162,25 +161,25 @@ import "utils" as {
 
 </YueDisplay>
 
-## Builtin Macro
+## Macro embutida
 
-There are some builtin macros but you can override them by declaring macros with the same names.
+Existem algumas macros embutidas, mas você pode sobrescrevê-las declarando macros com os mesmos nomes.
 ```yuescript
-print $FILE -- get string of current module name
-print $LINE -- get number 2
+print $FILE -- obtém string do nome do módulo atual
+print $LINE -- obtém número 2
 ```
 <YueDisplay>
 
 ```yue
-print $FILE -- get string of current module name
-print $LINE -- get number 2
+print $FILE -- obtém string do nome do módulo atual
+print $LINE -- obtém número 2
 ```
 
 </YueDisplay>
 
-## Generating Macros with Macros
+## Gerando macros com macros
 
-In YueScript, macro functions allow you to generate code at compile time. By nesting macro functions, you can create more complex generation patterns. This feature enables you to define a macro function that generates another macro function, allowing for more dynamic code generation.
+No YueScript, as funções macro permitem que você gere código em tempo de compilação. Aninhando funções macro, você pode criar padrões de geração mais complexos. Este recurso permite que você defina uma função macro que gera outra função macro, permitindo geração de código mais dinâmica.
 
 ```yuescript
 macro Enum = (...) ->
@@ -222,9 +221,9 @@ print "Valid enum type:", $BodyType Static
 
 </YueDisplay>
 
-## Argument Validation
+## Validação de argumentos
 
-You can declare the expected AST node types in the argument list, and check whether the incoming macro arguments meet the expectations at compile time.
+Você pode declarar os tipos de nós AST esperados na lista de argumentos e verificar se os argumentos da macro recebidos atendem às expectativas em tempo de compilação.
 
 ```yuescript
 macro printNumAndStr = (num `Num, str `String) -> |
@@ -249,7 +248,7 @@ $printNumAndStr 123, "hello"
 
 </YueDisplay>
 
-If you need more flexible argument checking, you can use the built-in `$is_ast` macro function to manually check at the appropriate place.
+Se você precisar de verificação de argumentos mais flexível, pode usar a função macro embutida `$is_ast` para verificar manualmente no lugar apropriado.
 
 ```yuescript
 macro printNumAndStr = (num, str) ->
@@ -272,4 +271,4 @@ $printNumAndStr 123, "hello"
 
 </YueDisplay>
 
-For more details about available AST nodes, please refer to the uppercased definitions in [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
+Para mais detalhes sobre os nós AST disponíveis, consulte as definições em maiúsculas em [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).

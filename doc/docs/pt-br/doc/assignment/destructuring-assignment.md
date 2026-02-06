@@ -1,10 +1,10 @@
-# Destructuring Assignment
+# Atribuição por desestruturação
 
-Destructuring assignment is a way to quickly extract values from a table by their name or position in array based tables.
+A atribuição por desestruturação é uma forma de extrair rapidamente valores de uma tabela por seu nome ou posição em tabelas baseadas em array.
 
-Typically when you see a table literal, {1,2,3}, it is on the right hand side of an assignment because it is a value. Destructuring assignment swaps the role of the table literal, and puts it on the left hand side of an assign statement.
+Tipicamente, quando você vê um literal de tabela, {1,2,3}, ele está no lado direito de uma atribuição porque é um valor. A atribuição por desestruturação troca o papel do literal de tabela e o coloca no lado esquerdo de uma instrução de atribuição.
 
-This is best explained with examples. Here is how you would unpack the first two values from a table:
+Isso é melhor explicado com exemplos. Assim você extrairia os dois primeiros valores de uma tabela:
 
 ```yuescript
 thing = [1, 2]
@@ -23,7 +23,7 @@ print a, b
 
 </YueDisplay>
 
-In the destructuring table literal, the key represents the key to read from the right hand side, and the value represents the name the read value will be assigned to.
+No literal de tabela de desestruturação, a chave representa a chave para ler do lado direito, e o valor representa o nome ao qual o valor lido será atribuído.
 
 ```yuescript
 obj = {
@@ -35,7 +35,7 @@ obj = {
 {hello: hello, day: the_day} = obj
 print hello, the_day
 
-:day = obj -- OK to do simple destructuring without braces
+:day = obj -- OK fazer desestruturação simples sem chaves
 ```
 <YueDisplay>
 
@@ -49,12 +49,12 @@ obj = {
 {hello: hello, day: the_day} = obj
 print hello, the_day
 
-:day = obj -- OK to do simple destructuring without braces
+:day = obj -- OK fazer desestruturação simples sem chaves
 ```
 
 </YueDisplay>
 
-This also works with nested data structures as well:
+Isso também funciona com estruturas de dados aninhadas:
 
 ```yuescript
 obj2 = {
@@ -85,7 +85,7 @@ print first, second, color
 
 </YueDisplay>
 
-If the destructuring statement is complicated, feel free to spread it out over a few lines. A slightly more complicated example:
+Se a instrução de desestruturação for complicada, sinta-se à vontade para espalhá-la em várias linhas. Um exemplo um pouco mais complicado:
 
 ```yuescript
 {
@@ -108,7 +108,7 @@ If the destructuring statement is complicated, feel free to spread it out over a
 
 </YueDisplay>
 
-It's common to extract values from at table and assign them the local variables that have the same name as the key. In order to avoid repetition we can use the **:** prefix operator:
+É comum extrair valores de uma tabela e atribuí-los a variáveis locais que têm o mesmo nome da chave. Para evitar repetição, podemos usar o operador de prefixo **:**:
 
 ```yuescript
 {:concat, :insert} = table
@@ -121,7 +121,7 @@ It's common to extract values from at table and assign them the local variables 
 
 </YueDisplay>
 
-This is effectively the same as import, but we can rename fields we want to extract by mixing the syntax:
+Isso é efetivamente o mesmo que import, mas podemos renomear campos que queremos extrair misturando a sintaxe:
 
 ```yuescript
 {:mix, :max, random: rand} = math
@@ -134,20 +134,20 @@ This is effectively the same as import, but we can rename fields we want to extr
 
 </YueDisplay>
 
-You can write default values while doing destructuring like:
+Você pode escrever valores padrão ao fazer desestruturação:
 
 ```yuescript
-{:name = "nameless", :job = "jobless"} = person
+{:name = "sem nome", :job = "sem emprego"} = person
 ```
 <YueDisplay>
 
 ```yue
-{:name = "nameless", :job = "jobless"} = person
+{:name = "sem nome", :job = "sem emprego"} = person
 ```
 
 </YueDisplay>
 
-You can use `_` as placeholder when doing a list destructuring:
+Você pode usar `_` como placeholder ao fazer desestruturação de lista:
 
 ```yuescript
 [_, two, _, four] = items
@@ -160,59 +160,59 @@ You can use `_` as placeholder when doing a list destructuring:
 
 </YueDisplay>
 
-## Range Destructuring
+## Desestruturação por intervalo
 
-You can use the spread operator `...` in list destructuring to capture a range of values. This is useful when you want to extract specific elements from the beginning and end of a list while collecting the rest in between.
+Você pode usar o operador spread `...` na desestruturação de lista para capturar um intervalo de valores. Isso é útil quando você quer extrair elementos específicos do início e do fim de uma lista enquanto coleta o restante entre eles.
 
 ```yuescript
 orders = ["first", "second", "third", "fourth", "last"]
 [first, ...bulk, last] = orders
-print first  -- prints: first
-print bulk   -- prints: {"second", "third", "fourth"}
-print last   -- prints: last
+print first  -- imprime: first
+print bulk   -- imprime: {"second", "third", "fourth"}
+print last   -- imprime: last
 ```
 <YueDisplay>
 
 ```yue
 orders = ["first", "second", "third", "fourth", "last"]
 [first, ...bulk, last] = orders
-print first  -- prints: first
-print bulk   -- prints: {"second", "third", "fourth"}
-print last   -- prints: last
+print first  -- imprime: first
+print bulk   -- imprime: {"second", "third", "fourth"}
+print last   -- imprime: last
 ```
 
 </YueDisplay>
 
-The spread operator can be used in different positions to capture different ranges, and you can use `_` as a placeholder for the values you don't want to capture:
+O operador spread pode ser usado em diferentes posições para capturar diferentes intervalos, e você pode usar `_` como placeholder para os valores que não quer capturar:
 
 ```yuescript
--- Capture everything after first element
+-- Capturar tudo após o primeiro elemento
 [first, ...rest] = orders
 
--- Capture everything before last element
+-- Capturar tudo antes do último elemento
 [...start, last] = orders
 
--- Capture things except the middle elements
+-- Capturar tudo exceto os elementos do meio
 [first, ..._, last] = orders
 ```
 <YueDisplay>
 
 ```yue
--- Capture everything after first element
+-- Capturar tudo após o primeiro elemento
 [first, ...rest] = orders
 
--- Capture everything before last element
+-- Capturar tudo antes do último elemento
 [...start, last] = orders
 
--- Capture things except the middle elements
+-- Capturar tudo exceto os elementos do meio
 [first, ..._, last] = orders
 ```
 
 </YueDisplay>
 
-## Destructuring In Other Places
+## Desestruturação em outros lugares
 
-Destructuring can also show up in places where an assignment implicitly takes place. An example of this is a for loop:
+A desestruturação também pode aparecer em lugares onde uma atribuição ocorre implicitamente. Um exemplo disso é um loop for:
 
 ```yuescript
 tuples = [
@@ -237,4 +237,4 @@ for [left, right] in *tuples
 
 </YueDisplay>
 
-We know each element in the array table is a two item tuple, so we can unpack it directly in the names clause of the for statement using a destructure.
+Sabemos que cada elemento na tabela array é uma tupla de dois itens, então podemos desempacotá-lo diretamente na cláusula de nomes da instrução for usando desestruturação.

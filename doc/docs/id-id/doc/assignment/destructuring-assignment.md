@@ -1,10 +1,10 @@
-# Destructuring Assignment
+# Penugasan Destrukturisasi
 
-Destructuring assignment is a way to quickly extract values from a table by their name or position in array based tables.
+Assignment destrukturisasi adalah cara cepat untuk mengekstrak nilai dari sebuah tabel berdasarkan nama kunci atau posisinya pada tabel berbasis array.
 
-Typically when you see a table literal, {1,2,3}, it is on the right hand side of an assignment because it is a value. Destructuring assignment swaps the role of the table literal, and puts it on the left hand side of an assign statement.
+Biasanya ketika Anda melihat literal tabel, `{1,2,3}`, ia berada di sisi kanan assignment karena merupakan nilai. Assignment destrukturisasi menukar peran literal tabel dan menaruhnya di sisi kiri pernyataan assignment.
 
-This is best explained with examples. Here is how you would unpack the first two values from a table:
+Ini paling mudah dijelaskan dengan contoh. Berikut cara membongkar dua nilai pertama dari sebuah tabel:
 
 ```yuescript
 thing = [1, 2]
@@ -23,7 +23,7 @@ print a, b
 
 </YueDisplay>
 
-In the destructuring table literal, the key represents the key to read from the right hand side, and the value represents the name the read value will be assigned to.
+Di literal tabel destrukturisasi, kunci mewakili kunci yang dibaca dari sisi kanan, dan nilai mewakili nama yang akan menerima nilai tersebut.
 
 ```yuescript
 obj = {
@@ -35,7 +35,7 @@ obj = {
 {hello: hello, day: the_day} = obj
 print hello, the_day
 
-:day = obj -- OK to do simple destructuring without braces
+:day = obj -- OK untuk destrukturisasi sederhana tanpa kurung
 ```
 <YueDisplay>
 
@@ -49,12 +49,12 @@ obj = {
 {hello: hello, day: the_day} = obj
 print hello, the_day
 
-:day = obj -- OK to do simple destructuring without braces
+:day = obj -- OK untuk destrukturisasi sederhana tanpa kurung
 ```
 
 </YueDisplay>
 
-This also works with nested data structures as well:
+Ini juga bekerja pada struktur data bertingkat:
 
 ```yuescript
 obj2 = {
@@ -85,7 +85,7 @@ print first, second, color
 
 </YueDisplay>
 
-If the destructuring statement is complicated, feel free to spread it out over a few lines. A slightly more complicated example:
+Jika pernyataan destrukturisasi kompleks, Anda bisa memecahnya ke beberapa baris. Contoh yang sedikit lebih rumit:
 
 ```yuescript
 {
@@ -108,7 +108,7 @@ If the destructuring statement is complicated, feel free to spread it out over a
 
 </YueDisplay>
 
-It's common to extract values from at table and assign them the local variables that have the same name as the key. In order to avoid repetition we can use the **:** prefix operator:
+Umumnya mengekstrak nilai dari tabel lalu menugaskannya ke variabel local dengan nama yang sama dengan kuncinya. Untuk menghindari pengulangan, kita bisa menggunakan operator prefiks **:**:
 
 ```yuescript
 {:concat, :insert} = table
@@ -121,7 +121,7 @@ It's common to extract values from at table and assign them the local variables 
 
 </YueDisplay>
 
-This is effectively the same as import, but we can rename fields we want to extract by mixing the syntax:
+Ini secara efektif sama seperti import, tetapi kita dapat mengganti nama field yang ingin diekstrak dengan menggabungkan sintaks:
 
 ```yuescript
 {:mix, :max, random: rand} = math
@@ -134,7 +134,7 @@ This is effectively the same as import, but we can rename fields we want to extr
 
 </YueDisplay>
 
-You can write default values while doing destructuring like:
+Anda bisa menulis nilai default saat destrukturisasi seperti:
 
 ```yuescript
 {:name = "nameless", :job = "jobless"} = person
@@ -147,7 +147,7 @@ You can write default values while doing destructuring like:
 
 </YueDisplay>
 
-You can use `_` as placeholder when doing a list destructuring:
+Anda dapat menggunakan `_` sebagai placeholder saat destrukturisasi list:
 
 ```yuescript
 [_, two, _, four] = items
@@ -160,9 +160,9 @@ You can use `_` as placeholder when doing a list destructuring:
 
 </YueDisplay>
 
-## Range Destructuring
+## Destrukturisasi Rentang
 
-You can use the spread operator `...` in list destructuring to capture a range of values. This is useful when you want to extract specific elements from the beginning and end of a list while collecting the rest in between.
+Anda dapat menggunakan operator spread `...` pada destrukturisasi list untuk menangkap rentang nilai. Ini berguna ketika Anda ingin mengekstrak elemen tertentu dari awal dan akhir list sambil mengumpulkan sisanya di tengah.
 
 ```yuescript
 orders = ["first", "second", "third", "fourth", "last"]
@@ -183,36 +183,36 @@ print last   -- prints: last
 
 </YueDisplay>
 
-The spread operator can be used in different positions to capture different ranges, and you can use `_` as a placeholder for the values you don't want to capture:
+Operator spread dapat digunakan pada posisi berbeda untuk menangkap rentang yang berbeda, dan Anda bisa memakai `_` sebagai placeholder untuk nilai yang tidak ingin ditangkap:
 
 ```yuescript
--- Capture everything after first element
+-- Tangkap semuanya setelah elemen pertama
 [first, ...rest] = orders
 
--- Capture everything before last element
+-- Tangkap semuanya sebelum elemen terakhir
 [...start, last] = orders
 
--- Capture things except the middle elements
+-- Tangkap semuanya kecuali elemen tengah
 [first, ..._, last] = orders
 ```
 <YueDisplay>
 
 ```yue
--- Capture everything after first element
+-- Tangkap semuanya setelah elemen pertama
 [first, ...rest] = orders
 
--- Capture everything before last element
+-- Tangkap semuanya sebelum elemen terakhir
 [...start, last] = orders
 
--- Capture things except the middle elements
+-- Tangkap semuanya kecuali elemen tengah
 [first, ..._, last] = orders
 ```
 
 </YueDisplay>
 
-## Destructuring In Other Places
+## Destrukturisasi di Tempat Lain
 
-Destructuring can also show up in places where an assignment implicitly takes place. An example of this is a for loop:
+Destrukturisasi juga dapat muncul di tempat-tempat di mana assignment terjadi secara implisit. Contohnya adalah perulangan for:
 
 ```yuescript
 tuples = [
@@ -237,4 +237,4 @@ for [left, right] in *tuples
 
 </YueDisplay>
 
-We know each element in the array table is a two item tuple, so we can unpack it directly in the names clause of the for statement using a destructure.
+Kita tahu setiap elemen pada tabel array adalah tuple dua item, sehingga kita dapat membongkarnya langsung di klausa nama pada pernyataan for menggunakan destrukturisasi.

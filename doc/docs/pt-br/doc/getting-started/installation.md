@@ -1,43 +1,43 @@
-# Installation
+# Instalação
 
-## Lua Module
+## Módulo Lua
 
-Install [luarocks](https://luarocks.org), a package manager for Lua modules. Then install it as a Lua module and executable with:
+Instale o [luarocks](https://luarocks.org), um gerenciador de pacotes para módulos Lua. Em seguida, instale-o como módulo Lua e executável com:
 
 ```shell
 luarocks install yuescript
 ```
 
-Or you can build `yue.so` file with:
+Ou você pode compilar o arquivo `yue.so` com:
 
 ```shell
 make shared LUAI=/usr/local/include/lua LUAL=/usr/local/lib/lua
 ```
 
-Then get the binary file from path **bin/shared/yue.so**.
+Depois, obtenha o arquivo binário no caminho **bin/shared/yue.so**.
 
-## Build Binary Tool
+## Compilar ferramenta binária
 
-Clone this repo, then build and install executable with:
+Clone este repositório e compile e instale o executável com:
 
 ```shell
 make install
 ```
 
-Build YueScript tool without macro feature:
+Compilar a ferramenta YueScript sem o recurso de macro:
 
 ```shell
 make install NO_MACRO=true
 ```
 
-Build YueScript tool without built-in Lua binary:
+Compilar a ferramenta YueScript sem o binário Lua embutido:
 
 ```shell
 make install NO_LUA=true
 ```
 
-## Download Precompiled Binary
+## Baixar binário pré-compilado
 
-You can download precompiled binary files, including binary executable files compatible with different Lua versions and library files.
+Você pode baixar arquivos binários pré-compilados, incluindo executáveis compatíveis com diferentes versões do Lua e arquivos de biblioteca.
 
-Download precompiled binary files from [here](https://github.com/IppClub/YueScript/releases).
+Baixe os arquivos binários pré-compilados [aqui](https://github.com/IppClub/YueScript/releases).

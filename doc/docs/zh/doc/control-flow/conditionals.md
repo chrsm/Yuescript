@@ -137,14 +137,3 @@ if a in list
 ```
 
 </YueDisplay>
-
-```yuescript
-print "你很幸运!" unless math.random! > 0.1
-```
-<YueDisplay>
-
-```yue
-print "你很幸运!" unless math.random! > 0.1
-```
-
-</YueDisplay>

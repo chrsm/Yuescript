@@ -1,20 +1,20 @@
-# Usage
+# Verwendung
 
-## Lua Module
+## Lua-Modul
 
-Use YueScript module in Lua:
+YueScript-Modul in Lua verwenden:
 
-* **Case 1**
+* **Fall 1**
 
-	Require "your_yuescript_entry.yue" in Lua.
+	"your_yuescript_entry.yue" in Lua require'n.
 	```Lua
 	require("yue")("your_yuescript_entry")
 	```
-	And this code still works when you compile "your_yuescript_entry.yue"  to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
+	Dieser Code funktioniert weiterhin, wenn du "your_yuescript_entry.yue" im gleichen Pfad zu "your_yuescript_entry.lua" kompilierst. In den restlichen YueScript-Dateien verwendest du einfach normales **require** oder **import**. Die Zeilennummern in Fehlermeldungen werden korrekt behandelt.
 
-* **Case 2**
+* **Fall 2**
 
-	Require YueScript module and rewite message by hand.
+	YueScript-Modul require'n und das Fehlermapping manuell umschreiben.
 
 	```lua
 	local yue = require("yue")
@@ -26,15 +26,15 @@ Use YueScript module in Lua:
 	end)
 	```
 
-* **Case 3**
+* **Fall 3**
 
-	Use the YueScript compiler function in Lua.
+	Die YueScript-Compilerfunktion in Lua verwenden.
 
 	```lua
 	local yue = require("yue")
 	local codes, err, globals = yue.to_lua([[
 	  f = ->
-	    print "hello world"
+	    print "Hallo Welt"
 	  f!
 	]],{
 	  implicit_return_root = true,
@@ -48,64 +48,66 @@ Use YueScript module in Lua:
 	})
 	```
 
-## YueScript Tool
+## YueScript-Tool
 
-Use YueScript tool with:
+YueScript-Tool verwenden mit:
 
 ```shell
 > yue -h
-Usage: yue
-       [options] [<file/directory>] ...
-       yue -e <code_or_file> [args...]
-       yue -w [<directory>] [options]
-       yue -
+Verwendung: yue
+          [Optionen] [<Datei/Verzeichnis>] ...
+          yue -e <code_oder_datei> [argumente...]
+          yue -w [<verzeichnis>] [optionen]
+          yue -
 
-Notes:
-   - '-' / '--' must be the first and only argument.
-   - '-o/--output' can not be used with multiple input files.
-   - '-w/--watch' can not be used with file input (directory only).
-   - with '-e/--execute', remaining tokens are treated as script args.
+Hinweise:
+   - '-' / '--' muss das erste und einzige Argument sein.
+   - '-o/--output' kann nicht mit mehreren Eingabedateien verwendet werden.
+   - '-w/--watch' kann nicht mit Dateieingabe verwendet werden (nur Verzeichnisse).
+   - Mit '-e/--execute' werden verbleibende Tokens als Skriptargumente behandelt.
 
-Options:
-   -h, --help                 Show this help message and exit.
-   -e <str>, --execute <str>  Execute a file or raw codes
-   -m, --minify               Generate minified codes
-   -r, --rewrite              Rewrite output to match original line numbers
-   -t <output_to>, --output-to <output_to>
-                              Specify where to place compiled files
-   -o <file>, --output <file> Write output to file
-   -p, --print                Write output to standard out
-   -b, --benchmark            Dump compile time (doesn't write output)
-   -g, --globals              Dump global variables used in NAME LINE COLUMN
-   -s, --spaces               Use spaces in generated codes instead of tabs
-   -l, --line-numbers         Write line numbers from source codes
-   -j, --no-implicit-return   Disable implicit return at end of file
-   -c, --reserve-comments     Reserve comments before statement from source codes
-   -w [<dir>], --watch [<dir>]
-                              Watch changes and compile every file under directory
-   -v, --version              Print version
-   -                          Read from standard in, print to standard out
-                              (Must be first and only argument)
-   --                         Same as '-' (kept for backward compatibility)
+Optionen:
+   -h, --help                 Zeigt diese Hilfemeldung an und beendet das Programm.
+   -e <str>, --execute <str>  Datei oder Quellcode ausführen
+   -m, --minify               Minimierten Code erzeugen
+   -r, --rewrite              Ausgabe so umschreiben, dass die Zeilennummern dem Original entsprechen
+   -t <ziel>, --output-to <ziel>
+                              Ziel für kompilierte Dateien angeben
+   -o <datei>, --output <datei>
+                              Schreibe die Ausgabe in eine Datei
+   -p, --print                Schreibe die Ausgabe auf die Standardausgabe
+   -b, --benchmark            Gibt die Kompilierungszeit aus (keine Ausgabe schreiben)
+   -g, --globals              Gibt verwendete globale Variablen im Format NAME ZEILE SPALTE aus
+   -s, --spaces               Verwende Leerzeichen anstelle von Tabs im generierten Code
+   -l, --line-numbers         Schreibe Zeilennummern aus dem Quellcode
+   -j, --no-implicit-return   Deaktiviert implizites Rückgabe am Datei-Ende
+   -c, --reserve-comments     Kommentare aus dem Quellcode vor Anweisungen beibehalten
+   -w [<verz>], --watch [<verz>]
+                              Änderungen beobachten und alle Dateien im Verzeichnis kompilieren
+   -v, --version              Version ausgeben
+   -                          Lese von Standardinput, schreibe auf Standardausgabe
+                              (muss das erste und einzige Argument sein)
+   --                         Wie '-', bleibt zur Abwärtskompatibilität bestehen
 
-   --target <version>         Specify the Lua version that codes will be generated to
-                              (version can only be 5.1 to 5.5)
-   --path <path_str>          Append an extra Lua search path string to package.path
-   --<key>=<value>            Pass compiler option in key=value form (existing behavior)
+   --target <version>         Gib an, welche Lua-Version erzeugt werden soll
+                              (Version nur von 5.1 bis 5.5 möglich)
+   --path <pfad_str>          Füge einen zusätzlichen Lua-Suchpfad zu package.path hinzu
+   --<schlüssel>=<wert>       Übertrage Compileroption im Schlüssel=Wert-Format (bestehendes Verhalten)
 
-   Execute without options to enter REPL, type symbol '$'
-   in a single line to start/stop multi-line mode
+   Ohne Optionen wird die REPL gestartet, gebe das Symbol '$'
+   in eine einzelne Zeile ein, um den Multi-Line-Modus zu starten/beenden
 ```
-Use cases:
 
-Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
+Anwendungsfälle:
 
-Compile and save results to a target path:  **yue -t /target/path/ .**
+Rekursiv jede YueScript-Datei mit der Endung **.yue** unter dem aktuellen Pfad kompilieren: **yue .**
 
-Compile and reserve debug info:  **yue -l .**
+Kompilieren und Ergebnisse in einen Zielpfad schreiben: **yue -t /target/path/ .**
 
-Compile and generate minified codes:  **yue -m .**
+Kompilieren und Debug-Infos beibehalten: **yue -l .**
 
-Execute raw codes:  **yue -e 'print 123'**
+Kompilieren und minifizierten Code erzeugen: **yue -m .**
 
-Execute a YueScript file:  **yue -e main.yue**
+Rohcode ausführen: **yue -e 'print 123'**
+
+Eine YueScript-Datei ausführen: **yue -e main.yue**

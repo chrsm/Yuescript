@@ -1,27 +1,27 @@
-# Function Stubs
+# Funktions-Stubs
 
-It is common to pass a function from an object around as a value, for example, passing an instance method into a function as a callback. If the function expects the object it is operating on as the first argument then you must somehow bundle that object with the function so it can be called properly.
+Es ist üblich, eine Funktion eines Objekts als Wert weiterzureichen, z. B. eine Instanzmethode als Callback. Wenn die Funktion das Objekt, auf dem sie arbeitet, als erstes Argument erwartet, musst du dieses Objekt irgendwie mit der Funktion bündeln, damit sie korrekt aufgerufen werden kann.
 
-The function stub syntax is a shorthand for creating a new closure function that bundles both the object and function. This new function calls the wrapped function in the correct context of the object.
+Die Funktions-Stub-Syntax ist eine Kurzform, um eine neue Closure-Funktion zu erstellen, die sowohl Objekt als auch Funktion bündelt. Diese neue Funktion ruft die umschlossene Funktion im richtigen Kontext des Objekts auf.
 
-Its syntax is the same as calling an instance method with the \ operator but with no argument list provided.
+Die Syntax entspricht dem Aufruf einer Instanzmethode mit dem `\`-Operator, jedoch ohne Argumentliste.
 
 ```yuescript
 my_object = {
   value: 1000
-  write: => print "the value:", @value
+  write: => print "der Wert:", @value
 }
 
 run_callback = (func) ->
-  print "running callback..."
+  print "Callback wird ausgeführt..."
   func!
 
--- this will not work:
--- the function has to no reference to my_object
+-- das funktioniert nicht:
+-- die Funktion darf keine Referenz auf my_object haben
 run_callback my_object.write
 
--- function stub syntax
--- lets us bundle the object into a new function
+-- Funktions-Stub-Syntax
+-- bindet das Objekt in eine neue Funktion ein
 run_callback my_object\write
 ```
 <YueDisplay>
@@ -29,19 +29,19 @@ run_callback my_object\write
 ```yue
 my_object = {
   value: 1000
-  write: => print "the value:", @value
+  write: => print "der Wert:", @value
 }
 
 run_callback = (func) ->
-  print "running callback..."
+  print "Callback wird ausgeführt..."
   func!
 
--- this will not work:
--- the function has to no reference to my_object
+-- das funktioniert nicht:
+-- die Funktion darf keine Referenz auf my_object haben
 run_callback my_object.write
 
--- function stub syntax
--- lets us bundle the object into a new function
+-- Funktions-Stub-Syntax
+-- bindet das Objekt in eine neue Funktion ein
 run_callback my_object\write
 ```
 

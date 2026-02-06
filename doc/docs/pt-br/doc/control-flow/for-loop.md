@@ -1,12 +1,12 @@
-# For Loop
+# Loop For
 
-There are two for loop forms, just like in Lua. A numeric one and a generic one:
+Existem duas formas de loop for, assim como no Lua. Uma numérica e uma genérica:
 
 ```yuescript
 for i = 10, 20
   print i
 
-for k = 1, 15, 2 -- an optional step provided
+for k = 1, 15, 2 -- um passo opcional fornecido
   print k
 
 for key, value in pairs object
@@ -18,7 +18,7 @@ for key, value in pairs object
 for i = 10, 20
   print i
 
-for k = 1, 15, 2 -- an optional step provided
+for k = 1, 15, 2 -- um passo opcional fornecido
   print k
 
 for key, value in pairs object
@@ -27,7 +27,7 @@ for key, value in pairs object
 
 </YueDisplay>
 
-The slicing and **\*** operators can be used, just like with comprehensions:
+Os operadores de slicing e **\*** podem ser usados, assim como com compreensões:
 
 ```yuescript
 for item in *items[2, 4]
@@ -42,7 +42,7 @@ for item in *items[2, 4]
 
 </YueDisplay>
 
-A shorter syntax is also available for all variations when the body is only a single line:
+Uma sintaxe mais curta também está disponível para todas as variações quando o corpo é apenas uma linha:
 
 ```yuescript
 for item in *items do print item
@@ -59,9 +59,9 @@ for j = 1, 10, 3 do print j
 
 </YueDisplay>
 
-A for loop can also be used as an expression. The last statement in the body of the for loop is coerced into an expression and appended to an accumulating array table.
+Um loop for também pode ser usado como expressão. A última instrução no corpo do loop for é convertida em expressão e anexada a uma tabela array acumuladora.
 
-Doubling every even number:
+Dobrando cada número par:
 
 ```yuescript
 doubled_evens = for i = 1, 20
@@ -82,9 +82,9 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-In addition, for loops support break with a return value, allowing the loop itself to be used as an expression that exits early with a meaningful result.
+Além disso, os loops for suportam break com valor de retorno, permitindo que o próprio loop seja usado como expressão que sai antecipadamente com um resultado significativo.
 
-For example, to find the first number greater than 10:
+Por exemplo, para encontrar o primeiro número maior que 10:
 
 ```yuescript
 first_large = for n in *numbers
@@ -99,18 +99,18 @@ first_large = for n in *numbers
 
 </YueDisplay>
 
-This break-with-value syntax enables concise and expressive search or early-exit patterns directly within loop expressions.
+Esta sintaxe de break-com-valor permite padrões concisos e expressivos de busca ou saída antecipada diretamente em expressões de loop.
 
-You can also filter values by combining the for loop expression with the continue statement.
+Você também pode filtrar valores combinando a expressão do loop for com a instrução continue.
 
-For loops at the end of a function body are not accumulated into a table for a return value (Instead the function will return nil). Either an explicit return statement can be used, or the loop can be converted into a list comprehension.
+Loops for no final do corpo de uma função não são acumulados em uma tabela para valor de retorno (em vez disso, a função retornará nil). Uma instrução return explícita pode ser usada, ou o loop pode ser convertido em compreensão de lista.
 
 ```yuescript
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
 
-print func_a! -- prints nil
-print func_b! -- prints table object
+print func_a! -- imprime nil
+print func_b! -- imprime objeto table
 ```
 <YueDisplay>
 
@@ -118,10 +118,10 @@ print func_b! -- prints table object
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
 
-print func_a! -- prints nil
-print func_b! -- prints table object
+print func_a! -- imprime nil
+print func_b! -- imprime objeto table
 ```
 
 </YueDisplay>
 
-This is done to avoid the needless creation of tables for functions that don't need to return the results of the loop.
+Isso é feito para evitar a criação desnecessária de tabelas para funções que não precisam retornar os resultados do loop.

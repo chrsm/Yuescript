@@ -1,11 +1,11 @@
-# The Using Clause; Controlling Destructive Assignment
+# A cláusula Using; controlando atribuição destrutiva
 
-While lexical scoping can be a great help in reducing the complexity of the code we write, things can get unwieldy as the code size increases. Consider the following snippet:
+Embora o escopo léxico possa ser uma grande ajuda na redução da complexidade do código que escrevemos, as coisas podem ficar difíceis de gerenciar conforme o tamanho do código aumenta. Considere o seguinte trecho:
 
 ```yuescript
 i = 100
 
--- many lines of code...
+-- muitas linhas de código...
 
 my_func = ->
   i = 10
@@ -15,14 +15,14 @@ my_func = ->
 
 my_func!
 
-print i -- will print 0
+print i -- vai imprimir 0
 ```
 <YueDisplay>
 
 ```yue
 i = 100
 
--- many lines of code...
+-- muitas linhas de código...
 
 my_func = ->
   i = 10
@@ -32,25 +32,25 @@ my_func = ->
 
 my_func!
 
-print i -- will print 0
+print i -- vai imprimir 0
 ```
 
 </YueDisplay>
 
-In my_func, we've overwritten the value of i mistakenly. In this example it is quite obvious, but consider a large, or foreign code base where it isn't clear what names have already been declared.
+Em my_func, sobrescrevemos o valor de i por engano. Neste exemplo é bem óbvio, mas considere uma base de código grande ou estrangeira onde não está claro quais nomes já foram declarados.
 
-It would be helpful to say which variables from the enclosing scope we intend on change, in order to prevent us from changing others by accident.
+Seria útil dizer quais variáveis do escopo envolvente pretendemos alterar, para evitar que alteremos outras por acidente.
 
-The using keyword lets us do that. using nil makes sure that no closed variables are overwritten in assignment. The using clause is placed after the argument list in a function, or in place of it if there are no arguments.
+A palavra-chave using nos permite fazer isso. using nil garante que nenhuma variável fechada seja sobrescrita na atribuição. A cláusula using é colocada após a lista de argumentos em uma função, ou no lugar dela se não houver argumentos.
 
 ```yuescript
 i = 100
 
 my_func = (using nil) ->
-  i = "hello" -- a new local variable is created here
+  i = "hello" -- uma nova variável local é criada aqui
 
 my_func!
-print i -- prints 100, i is unaffected
+print i -- imprime 100, i não é afetado
 ```
 <YueDisplay>
 
@@ -58,27 +58,27 @@ print i -- prints 100, i is unaffected
 i = 100
 
 my_func = (using nil) ->
-  i = "hello" -- a new local variable is created here
+  i = "hello" -- uma nova variável local é criada aqui
 
 my_func!
-print i -- prints 100, i is unaffected
+print i -- imprime 100, i não é afetado
 ```
 
 </YueDisplay>
 
-Multiple names can be separated by commas. Closure values can still be accessed, they just cant be modified:
+Múltiplos nomes podem ser separados por vírgulas. Os valores do closure ainda podem ser acessados, apenas não podem ser modificados:
 
 ```yuescript
 tmp = 1213
 i, k = 100, 50
 
 my_func = (add using k, i) ->
-  tmp = tmp + add -- a new local tmp is created
+  tmp = tmp + add -- uma nova variável local tmp é criada
   i += tmp
   k += tmp
 
 my_func(22)
-print i, k -- these have been updated
+print i, k -- estes foram atualizados
 ```
 <YueDisplay>
 
@@ -87,12 +87,12 @@ tmp = 1213
 i, k = 100, 50
 
 my_func = (add using k, i) ->
-  tmp = tmp + add -- a new local tmp is created
+  tmp = tmp + add -- uma nova variável local tmp é criada
   i += tmp
   k += tmp
 
 my_func(22)
-print i, k -- these have been updated
+print i, k -- estes foram atualizados
 ```
 
 </YueDisplay>

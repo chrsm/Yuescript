@@ -1,25 +1,26 @@
-# Assignment
+# Zuweisung
 
-The variable is dynamic typed and is defined as local by default. But you can change the scope of declaration by **local** and **global** statement.
+Variablen sind dynamisch typisiert und standardmäßig `local`. Du kannst den Geltungsbereich mit den Statements **local** und **global** ändern.
 
 ```yuescript
 hello = "world"
 a, b, c = 1, 2, 3
-hello = 123 -- uses the existing variable
+hello = 123 -- nutzt die bestehende Variable
 ```
 <YueDisplay>
 
 ```yue
 hello = "world"
 a, b, c = 1, 2, 3
-hello = 123 -- uses the existing variable
+hello = 123 -- nutzt die bestehende Variable
 ```
 
 </YueDisplay>
 
-## Perform Update
+## Update-Zuweisung
 
-You can perform update assignment with many binary operators.
+Du kannst Update-Zuweisungen mit vielen binären Operatoren durchführen.
+
 ```yuescript
 x = 1
 x += 1
@@ -27,7 +28,7 @@ x -= 1
 x *= 10
 x /= 10
 x %= 10
-s ..= "world" -- will add a new local if local variable is not exist
+s ..= "world" -- legt eine neue lokale Variable an, wenn sie nicht existiert
 arg or= "default value"
 ```
 <YueDisplay>
@@ -39,15 +40,16 @@ x -= 1
 x *= 10
 x /= 10
 x %= 10
-s ..= "world" -- will add a new local if local variable is not exist
+s ..= "world" -- legt eine neue lokale Variable an, wenn sie nicht existiert
 arg or= "default value"
 ```
 
 </YueDisplay>
 
-## Chaining Assignment
+## Verkettete Zuweisung
 
-You can do chaining assignment to assign multiple items to hold the same value.
+Mit verketteten Zuweisungen kannst du mehrere Variablen auf denselben Wert setzen.
+
 ```yuescript
 a = b = c = d = e = 0
 x = y = z = f!
@@ -61,7 +63,8 @@ x = y = z = f!
 
 </YueDisplay>
 
-## Explicit Locals
+## Explizite Locals
+
 ```yuescript
 do
   local a = 1
@@ -99,7 +102,8 @@ do
 
 </YueDisplay>
 
-## Explicit Globals
+## Explizite Globals
+
 ```yuescript
 do
   global a = 1

@@ -1,6 +1,6 @@
-# Line Decorators
+# Dekorator Baris
 
-For convenience, the for loop and if statement can be applied to single statements at the end of the line:
+Untuk kemudahan, loop for dan pernyataan if dapat diterapkan pada pernyataan tunggal di akhir baris:
 
 ```yuescript
 print "hello world" if name == "Rob"
@@ -13,7 +13,7 @@ print "hello world" if name == "Rob"
 
 </YueDisplay>
 
-And with basic loops:
+Dan dengan loop dasar:
 
 ```yuescript
 print "item: ", item for item in *items
@@ -26,7 +26,7 @@ print "item: ", item for item in *items
 
 </YueDisplay>
 
-And with while loops:
+Dan dengan loop while:
 
 ```yuescript
 game\update! while game\isRunning!

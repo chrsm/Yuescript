@@ -1,21 +1,21 @@
-# Function Literals
+# Literais de função
 
-All functions are created using a function expression. A simple function is denoted using the arrow: **->**.
+Todas as funções são criadas usando uma expressão de função. Uma função simples é denotada usando a seta: **->**.
 
 ```yuescript
 my_function = ->
-my_function() -- call the empty function
+my_function() -- chama a função vazia
 ```
 <YueDisplay>
 
 ```yue
 my_function = ->
-my_function() -- call the empty function
+my_function() -- chama a função vazia
 ```
 
 </YueDisplay>
 
-The body of the function can either be one statement placed directly after the arrow, or it can be a series of statements indented on the following lines:
+O corpo da função pode ser uma instrução colocada diretamente após a seta, ou pode ser uma série de instruções indentadas nas linhas seguintes:
 
 ```yuescript
 func_a = -> print "hello world"
@@ -36,7 +36,7 @@ func_b = ->
 
 </YueDisplay>
 
-If a function has no arguments, it can be called using the ! operator, instead of empty parentheses. The ! invocation is the preferred way to call functions with no arguments.
+Se uma função não tem argumentos, ela pode ser chamada usando o operador !, em vez de parênteses vazios. A invocação ! é a forma preferida de chamar funções sem argumentos.
 
 ```yuescript
 func_a!
@@ -51,7 +51,7 @@ func_b()
 
 </YueDisplay>
 
-Functions with arguments can be created by preceding the arrow with a list of argument names in parentheses:
+Funções com argumentos podem ser criadas precedendo a seta com uma lista de nomes de argumentos entre parênteses:
 
 ```yuescript
 sum = (x, y) -> print "sum", x + y
@@ -64,7 +64,7 @@ sum = (x, y) -> print "sum", x + y
 
 </YueDisplay>
 
-Functions can be called by listing the arguments after the name of an expression that evaluates to a function. When chaining together function calls, the arguments are applied to the closest function to the left.
+Funções podem ser chamadas listando os argumentos após o nome de uma expressão que avalia para uma função. Ao encadear chamadas de função, os argumentos são aplicados à função mais próxima à esquerda.
 
 ```yuescript
 sum 10, 20
@@ -83,7 +83,7 @@ a b c "a", "b", "c"
 
 </YueDisplay>
 
-In order to avoid ambiguity in when calling functions, parentheses can also be used to surround the arguments. This is required here in order to make sure the right arguments get sent to the right functions.
+Para evitar ambiguidade ao chamar funções, parênteses também podem ser usados para envolver os argumentos. Isso é necessário aqui para garantir que os argumentos certos sejam enviados às funções certas.
 
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
@@ -96,9 +96,9 @@ print "x:", sum(10, 20), "y:", sum(30, 40)
 
 </YueDisplay>
 
-There must not be any space between the opening parenthesis and the function.
+Não deve haver espaço entre o parêntese de abertura e a função.
 
-Functions will coerce the last statement in their body into a return statement, this is called implicit return:
+As funções convertem a última instrução em seu corpo em uma instrução de retorno, isso é chamado de retorno implícito:
 
 ```yuescript
 sum = (x, y) -> x + y
@@ -113,7 +113,7 @@ print "The sum is ", sum 10, 20
 
 </YueDisplay>
 
-And if you need to explicitly return, you can use the return keyword:
+E se você precisar retornar explicitamente, pode usar a palavra-chave return:
 
 ```yuescript
 sum = (x, y) -> return x + y
@@ -126,7 +126,7 @@ sum = (x, y) -> return x + y
 
 </YueDisplay>
 
-Just like in Lua, functions can return multiple values. The last statement must be a list of values separated by commas:
+Assim como no Lua, as funções podem retornar múltiplos valores. A última instrução deve ser uma lista de valores separados por vírgulas:
 
 ```yuescript
 mystery = (x, y) -> x + y, x - y
@@ -141,9 +141,9 @@ a, b = mystery 10, 20
 
 </YueDisplay>
 
-## Fat Arrows
+## Setas fat
 
-Because it is an idiom in Lua to send an object as the first argument when calling a method, a special syntax is provided for creating functions which automatically includes a self argument.
+Como é um idioma em Lua enviar um objeto como primeiro argumento ao chamar um método, uma sintaxe especial é fornecida para criar funções que incluem automaticamente um argumento self.
 
 ```yuescript
 func = (num) => @value + num
@@ -156,9 +156,9 @@ func = (num) => @value + num
 
 </YueDisplay>
 
-## Argument Defaults
+## Valores padrão de argumentos
 
-It is possible to provide default values for the arguments of a function. An argument is determined to be empty if its value is nil. Any nil arguments that have a default value will be replace before the body of the function is run.
+É possível fornecer valores padrão para os argumentos de uma função. Um argumento é determinado como vazio se seu valor for nil. Qualquer argumento nil que tenha valor padrão será substituído antes da execução do corpo da função.
 
 ```yuescript
 my_function = (name = "something", height = 100) ->
@@ -175,7 +175,7 @@ my_function = (name = "something", height = 100) ->
 
 </YueDisplay>
 
-An argument default value expression is evaluated in the body of the function in the order of the argument declarations. For this reason default values have access to previously declared arguments.
+Uma expressão de valor padrão de argumento é avaliada no corpo da função na ordem das declarações de argumentos. Por esse motivo, os valores padrão têm acesso aos argumentos declarados anteriormente.
 
 ```yuescript
 some_args = (x = 100, y = x + 1000) ->
@@ -190,11 +190,11 @@ some_args = (x = 100, y = x + 1000) ->
 
 </YueDisplay>
 
-## Considerations
+## Considerações
 
-Because of the expressive parentheses-less way of calling functions, some restrictions must be put in place to avoid parsing ambiguity involving whitespace.
+Devido à forma expressiva de chamar funções sem parênteses, algumas restrições devem ser colocadas para evitar ambiguidade de análise envolvendo espaço em branco.
 
-The minus sign plays two roles, a unary negation operator and a binary subtraction operator. Consider how the following examples compile:
+O sinal de menos desempenha dois papéis: um operador de negação unário e um operador de subtração binário. Considere como os seguintes exemplos compilam:
 
 ```yuescript
 a = x - 10
@@ -213,11 +213,11 @@ d = x- z
 
 </YueDisplay>
 
-The precedence of the first argument of a function call can be controlled using whitespace if the argument is a literal string. In Lua, it is common to leave off parentheses when calling a function with a single string or table literal.
+A precedência do primeiro argumento de uma chamada de função pode ser controlada usando espaço em branco se o argumento for um literal de string. Em Lua, é comum omitir parênteses ao chamar uma função com uma única string ou literal de tabela.
 
-When there is no space between a variable and a string literal, the function call takes precedence over any following expressions. No other arguments can be passed to the function when it is called this way.
+Quando não há espaço entre uma variável e um literal de string, a chamada de função tem precedência sobre quaisquer expressões seguintes. Nenhum outro argumento pode ser passado para a função quando ela é chamada dessa forma.
 
-Where there is a space following a variable and a string literal, the function call acts as show above. The string literal belongs to any following expressions (if they exist), which serves as the argument list.
+Quando há um espaço após uma variável e um literal de string, a chamada de função age como mostrado acima. O literal de string pertence a quaisquer expressões seguintes (se existirem), que servem como lista de argumentos.
 
 ```yuescript
 x = func"hello" + 100
@@ -232,11 +232,11 @@ y = func "hello" + 100
 
 </YueDisplay>
 
-## Multi-line arguments
+## Argumentos multilinha
 
-When calling functions that take a large number of arguments, it is convenient to split the argument list over multiple lines. Because of the white-space sensitive nature of the language, care must be taken when splitting up the argument list.
+Ao chamar funções que recebem um grande número de argumentos, é conveniente dividir a lista de argumentos em várias linhas. Devido à natureza sensível a espaço em branco da linguagem, deve-se ter cuidado ao dividir a lista de argumentos.
 
-If an argument list is to be continued onto the next line, the current line must end in a comma. And the following line must be indented more than the current indentation. Once indented, all other argument lines must be at the same level of indentation to be part of the argument list
+Se uma lista de argumentos for continuada na próxima linha, a linha atual deve terminar em vírgula. E a linha seguinte deve estar mais indentada que a indentação atual. Uma vez indentada, todas as outras linhas de argumentos devem estar no mesmo nível de indentação para fazer parte da lista de argumentos.
 
 ```yuescript
 my_func 5, 4, 3,
@@ -261,7 +261,7 @@ cool_func 1, 2,
 
 </YueDisplay>
 
-This type of invocation can be nested. The level of indentation is used to determine to which function the arguments belong to.
+Este tipo de invocação pode ser aninhado. O nível de indentação é usado para determinar a qual função os argumentos pertencem.
 
 ```yuescript
 my_func 5, 6, 7,
@@ -280,7 +280,7 @@ my_func 5, 6, 7,
 
 </YueDisplay>
 
-Because tables also use the comma as a delimiter, this indentation syntax is helpful for letting values be part of the argument list instead of being part of the table.
+Como as tabelas também usam vírgula como delimitador, esta sintaxe de indentação ajuda a deixar os valores fazerem parte da lista de argumentos em vez de fazerem parte da tabela.
 
 ```yuescript
 x = [
@@ -301,7 +301,7 @@ x = [
 
 </YueDisplay>
 
-Although uncommon, notice how we can give a deeper indentation for function arguments if we know we will be using a lower indentation further on.
+Embora incomum, observe como podemos dar uma indentação mais profunda para argumentos de função se soubermos que usaremos uma indentação menor mais adiante.
 
 ```yuescript
 y = [ my_func 1, 2, 3,
@@ -320,7 +320,7 @@ y = [ my_func 1, 2, 3,
 
 </YueDisplay>
 
-The same thing can be done with other block level statements like conditionals. We can use indentation level to determine what statement a value belongs to:
+A mesma coisa pode ser feita com outras instruções em nível de bloco como condicionais. Podemos usar o nível de indentação para determinar a qual instrução um valor pertence:
 
 ```yuescript
 if func 1, 2, 3,
@@ -353,13 +353,13 @@ if func 1, 2, 3,
 
 </YueDisplay>
 
-## Parameter Destructuring
+## Desestruturação de parâmetros
 
-YueScript now supports destructuring function parameters when the argument is an object. Two forms of destructuring table literals are available:
+YueScript agora suporta desestruturação de parâmetros de função quando o argumento é um objeto. Duas formas de literais de tabela de desestruturação estão disponíveis:
 
-* **Curly-brace wrapped literals/object parameters**, allowing optional default values when fields are missing (e.g., `{:a, :b}`, `{a: a1 = 123}`).
+* **Literais/parâmetros de objeto envolvidos em chaves**, permitindo valores padrão opcionais quando os campos estão ausentes (ex.: `{:a, :b}`, `{a: a1 = 123}`).
 
-* **Unwrapped simple table syntax**, starting with a sequence of key-value or shorthand bindings and continuing until another expression terminates it (e.g., `:a, b: b1, :c`). This form extracts multiple fields from the same object.
+* **Sintaxe de tabela simples não envolvida**, começando com uma sequência de ligações chave-valor ou abreviadas e continuando até outra expressão terminá-la (ex.: `:a, b: b1, :c`). Esta forma extrai múltiplos campos do mesmo objeto.
 
 ```yuescript
 f1 = (:a, :b, :c) ->
@@ -390,9 +390,9 @@ f2 arg1, arg2
 
 </YueDisplay>
 
-## Prefixed Return Expression
+## Expressão de retorno prefixada
 
-When working with deeply nested function bodies, it can be tedious to maintain readability and consistency of the return value. To address this, YueScript introduces the **Prefixed Return Expression** syntax. Its form is as follows:
+Ao trabalhar com corpos de função profundamente aninhados, pode ser tedioso manter a legibilidade e consistência do valor de retorno. Para resolver isso, YueScript introduz a sintaxe **Expressão de Retorno Prefixada**. Sua forma é a seguinte:
 
 ```yuescript
 findFirstEven = (list): nil ->
@@ -415,7 +415,7 @@ findFirstEven = (list): nil ->
 
 </YueDisplay>
 
-This is equivalent to:
+Isso é equivalente a:
 
 ```yuescript
 findFirstEven = (list) ->
@@ -440,16 +440,16 @@ findFirstEven = (list) ->
 
 </YueDisplay>
 
-The only difference is that you can move the final return expression before the `->` or `=>` token to indicate the function’s implicit return value as the last statement. This way, even in functions with multiple nested loops or conditional branches, you no longer need to write a trailing return expression at the end of the function body, making the logic structure more straightforward and easier to follow.
+A única diferença é que você pode mover a expressão de retorno final antes do token `->` ou `=>` para indicar o valor de retorno implícito da função como última instrução. Dessa forma, mesmo em funções com múltiplos loops aninhados ou ramificações condicionais, você não precisa mais escrever uma expressão de retorno no final do corpo da função, tornando a estrutura lógica mais direta e fácil de seguir.
 
-## Named Varargs
+## Varargs nomeados
 
-You can use the `(...t) ->` syntax to automatically store varargs into a named table. This table will contain all passed arguments (including `nil` values), and the `n` field of the table will store the actual number of arguments passed (including `nil` values).
+Você pode usar a sintaxe `(...t) ->` para armazenar automaticamente varargs em uma tabela nomeada. Esta tabela conterá todos os argumentos passados (incluindo valores `nil`), e o campo `n` da tabela armazenará o número real de argumentos passados (incluindo valores `nil`).
 
 ```yuescript
 f = (...t) ->
-  print "argument count:", t.n
-  print "table length:", #t
+  print "contagem de argumentos:", t.n
+  print "comprimento da tabela:", #t
   for i = 1, t.n
     print t[i]
 
@@ -457,7 +457,7 @@ f 1, 2, 3
 f "a", "b", "c", "d"
 f!
 
--- Handling cases with nil values
+-- Tratando casos com valores nil
 process = (...args) ->
   sum = 0
   for i = 1, args.n
@@ -471,8 +471,8 @@ process 1, nil, 3, nil, 5
 
 ```yue
 f = (...t) ->
-  print "argument count:", t.n
-  print "table length:", #t
+  print "contagem de argumentos:", t.n
+  print "comprimento da tabela:", #t
   for i = 1, t.n
     print t[i]
 
@@ -480,7 +480,7 @@ f 1, 2, 3
 f "a", "b", "c", "d"
 f!
 
--- Handling cases with nil values
+-- Tratando casos com valores nil
 process = (...args) ->
   sum = 0
   for i = 1, args.n

@@ -1,8 +1,8 @@
-# Macro
+# Makro
 
-## Common Usage
+## Penggunaan Umum
 
-Macro function is used for evaluating a string in the compile time and insert the generated codes into final compilation.
+Fungsi macro digunakan untuk mengevaluasi string pada waktu kompilasi dan menyisipkan kode yang dihasilkan ke kompilasi akhir.
 
 ```yuescript
 macro PI2 = -> math.pi * 2
@@ -27,7 +27,7 @@ $asserts item ~= nil
 $config false
 value = $assert item
 
--- the passed expressions are treated as strings
+-- ekspresi yang dikirim diperlakukan sebagai string
 macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
@@ -57,7 +57,7 @@ $asserts item ~= nil
 $config false
 value = $assert item
 
--- the passed expressions are treated as strings
+-- ekspresi yang dikirim diperlakukan sebagai string
 macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
@@ -65,29 +65,29 @@ if $and f1!, f2!, f3!
 
 </YueDisplay>
 
-## Insert Raw Codes
+## Menyisipkan Kode Mentah
 
-A macro function can either return a YueScript string or a config table containing Lua codes.
+Fungsi macro bisa mengembalikan string YueScript atau tabel konfigurasi yang berisi kode Lua.
 ```yuescript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
-funcA = -> "fail to assign to the Yue macro defined variable"
+funcA = -> "gagal meng-assign ke variabel yang didefinisikan oleh macro Yue"
 
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
 }
 $luaFunc funcB
-funcB = -> "fail to assign to the Lua macro defined variable"
+funcB = -> "gagal meng-assign ke variabel yang didefinisikan oleh macro Lua"
 
 macro lua = (code) -> {
   :code
   type: "lua"
 }
 
--- the raw string leading and ending symbols are auto trimed
+-- simbol awal dan akhir string mentah otomatis di-trim
 $lua[==[
--- raw Lua codes insertion
+-- penyisipan kode Lua mentah
 if cond then
   print("output")
 end
@@ -98,23 +98,23 @@ end
 ```yue
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
-funcA = -> "fail to assign to the Yue macro defined variable"
+funcA = -> "gagal meng-assign ke variabel yang didefinisikan oleh macro Yue"
 
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
   type: "lua"
 }
 $luaFunc funcB
-funcB = -> "fail to assign to the Lua macro defined variable"
+funcB = -> "gagal meng-assign ke variabel yang didefinisikan oleh macro Lua"
 
 macro lua = (code) -> {
   :code
   type: "lua"
 }
 
--- the raw string leading and ending symbols are auto trimed
+-- simbol awal dan akhir string mentah otomatis di-trim
 $lua[==[
--- raw Lua codes insertion
+-- penyisipan kode Lua mentah
 if cond then
   print("output")
 end
@@ -125,7 +125,7 @@ end
 
 ## Export Macro
 
-Macro functions can be exported from a module and get imported in another module. You have to put export macro functions in a single file to be used, and only macro definition, macro importing and macro expansion in place can be put into the macro exporting module.
+Fungsi macro dapat diekspor dari modul dan diimpor di modul lain. Anda harus menaruh fungsi macro export dalam satu file agar dapat digunakan, dan hanya definisi macro, impor macro, dan ekspansi macro yang boleh ada di modul export macro.
 ```yuescript
 -- file: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
@@ -135,8 +135,8 @@ export macro foreach = (items, action) -> "for _ in *#{items}
 
 -- file main.yue
 import "utils" as {
-  $, -- symbol to import all macros
-  $foreach: $each -- rename macro $foreach to $each
+  $, -- simbol untuk mengimpor semua macro
+  $foreach: $each -- ganti nama macro $foreach menjadi $each
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
@@ -150,11 +150,11 @@ export macro foreach = (items, action) -> "for _ in *#{items}
   #{action}"
 
 -- file main.yue
--- import function is not available in browser, try it in a real environment
+-- fungsi import tidak tersedia di browser, coba di lingkungan nyata
 --[[
 import "utils" as {
-  $, -- symbol to import all macros
-  $foreach: $each -- rename macro $foreach to $each
+  $, -- simbol untuk mengimpor semua macro
+  $foreach: $each -- ganti nama macro $foreach menjadi $each
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ]]
@@ -162,25 +162,25 @@ import "utils" as {
 
 </YueDisplay>
 
-## Builtin Macro
+## Macro Bawaan
 
-There are some builtin macros but you can override them by declaring macros with the same names.
+Ada beberapa macro bawaan tetapi Anda bisa menimpanya dengan mendeklarasikan macro dengan nama yang sama.
 ```yuescript
-print $FILE -- get string of current module name
-print $LINE -- get number 2
+print $FILE -- mendapatkan string nama modul saat ini
+print $LINE -- mendapatkan angka 2
 ```
 <YueDisplay>
 
 ```yue
-print $FILE -- get string of current module name
-print $LINE -- get number 2
+print $FILE -- mendapatkan string nama modul saat ini
+print $LINE -- mendapatkan angka 2
 ```
 
 </YueDisplay>
 
-## Generating Macros with Macros
+## Menghasilkan Macro dengan Macro
 
-In YueScript, macro functions allow you to generate code at compile time. By nesting macro functions, you can create more complex generation patterns. This feature enables you to define a macro function that generates another macro function, allowing for more dynamic code generation.
+Di YueScript, fungsi macro memungkinkan Anda menghasilkan kode pada waktu kompilasi. Dengan menumpuk fungsi macro, Anda dapat membuat pola generasi yang lebih kompleks. Fitur ini memungkinkan Anda mendefinisikan fungsi macro yang menghasilkan fungsi macro lain, sehingga menghasilkan kode yang lebih dinamis.
 
 ```yuescript
 macro Enum = (...) ->
@@ -222,9 +222,9 @@ print "Valid enum type:", $BodyType Static
 
 </YueDisplay>
 
-## Argument Validation
+## Validasi Argumen
 
-You can declare the expected AST node types in the argument list, and check whether the incoming macro arguments meet the expectations at compile time.
+Anda dapat mendeklarasikan tipe node AST yang diharapkan dalam daftar argumen, dan memeriksa apakah argumen macro yang masuk memenuhi harapan pada waktu kompilasi.
 
 ```yuescript
 macro printNumAndStr = (num `Num, str `String) -> |
@@ -249,7 +249,7 @@ $printNumAndStr 123, "hello"
 
 </YueDisplay>
 
-If you need more flexible argument checking, you can use the built-in `$is_ast` macro function to manually check at the appropriate place.
+Jika Anda membutuhkan pengecekan argumen yang lebih fleksibel, Anda dapat menggunakan fungsi macro bawaan `$is_ast` untuk memeriksa secara manual pada tempat yang tepat.
 
 ```yuescript
 macro printNumAndStr = (num, str) ->
@@ -272,4 +272,4 @@ $printNumAndStr 123, "hello"
 
 </YueDisplay>
 
-For more details about available AST nodes, please refer to the uppercased definitions in [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
+Untuk detail lebih lanjut tentang node AST yang tersedia, silakan lihat definisi huruf besar di [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).

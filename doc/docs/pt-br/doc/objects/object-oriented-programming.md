@@ -1,8 +1,8 @@
-# Object Oriented Programming
+# Programação orientada a objetos
 
-In these examples, the generated Lua code may appear overwhelming. It is best to focus on the meaning of the YueScript code at first, then look into the Lua code if you wish to know the implementation details.
+Nestes exemplos, o código Lua gerado pode parecer avassalador. É melhor focar primeiro no significado do código YueScript e depois olhar o código Lua se desejar conhecer os detalhes da implementação.
 
-A simple class:
+Uma classe simples:
 
 ```yuescript
 class Inventory
@@ -31,15 +31,15 @@ class Inventory
 
 </YueDisplay>
 
-A class is declared with a class statement followed by a table-like declaration where all of the methods and properties are listed.
+Uma classe é declarada com uma instrução class seguida de uma declaração semelhante a tabela onde todos os métodos e propriedades são listados.
 
-The new property is special in that it will become the constructor.
+A propriedade new é especial pois se tornará o construtor.
 
-Notice how all the methods in the class use the fat arrow function syntax. When calling methods on a instance, the instance itself is sent in as the first argument. The fat arrow handles the creation of a self argument.
+Observe como todos os métodos da classe usam a sintaxe de função seta fat. Ao chamar métodos em uma instância, a própria instância é enviada como primeiro argumento. A seta fat cuida da criação do argumento self.
 
-The @ prefix on a variable name is shorthand for self.. @items becomes self.items.
+O prefixo @ em um nome de variável é abreviação para self.. @items torna-se self.items.
 
-Creating an instance of the class is done by calling the name of the class as a function.
+Criar uma instância da classe é feito chamando o nome da classe como uma função.
 
 ```yuescript
 inv = Inventory!
@@ -56,11 +56,11 @@ inv\add_item "pants"
 
 </YueDisplay>
 
-Because the instance of the class needs to be sent to the methods when they are called, the \ operator is used.
+Como a instância da classe precisa ser enviada aos métodos quando são chamados, o operador \ é usado.
 
-All properties of a class are shared among the instances. This is fine for functions, but for other types of objects, undesired results may occur.
+Todas as propriedades de uma classe são compartilhadas entre as instâncias. Isso é bom para funções, mas para outros tipos de objetos, resultados indesejados podem ocorrer.
 
-Consider the example below, the clothes property is shared amongst all instances, so modifications to it in one instance will show up in another:
+Considere o exemplo abaixo, a propriedade clothes é compartilhada entre todas as instâncias, então modificações nela em uma instância aparecerão em outra:
 
 ```yuescript
 class Person
@@ -74,7 +74,7 @@ b = Person!
 a\give_item "pants"
 b\give_item "shirt"
 
--- will print both pants and shirt
+-- vai imprimir tanto pants quanto shirt
 print item for item in *a.clothes
 ```
 <YueDisplay>
@@ -91,13 +91,13 @@ b = Person!
 a\give_item "pants"
 b\give_item "shirt"
 
--- will print both pants and shirt
+-- vai imprimir tanto pants quanto shirt
 print item for item in *a.clothes
 ```
 
 </YueDisplay>
 
-The proper way to avoid this problem is to create the mutable state of the object in the constructor:
+A forma correta de evitar esse problema é criar o estado mutável do objeto no construtor:
 
 ```yuescript
 class Person
@@ -114,9 +114,9 @@ class Person
 
 </YueDisplay>
 
-## Inheritance
+## Herança
 
-The extends keyword can be used in a class declaration to inherit the properties and methods from another class.
+A palavra-chave extends pode ser usada em uma declaração de classe para herdar as propriedades e métodos de outra classe.
 
 ```yuescript
 class BackPack extends Inventory
@@ -137,18 +137,18 @@ class BackPack extends Inventory
 
 </YueDisplay>
 
-Here we extend our Inventory class, and limit the amount of items it can carry.
+Aqui estendemos nossa classe Inventory e limitamos a quantidade de itens que ela pode carregar.
 
-In this example, we don't define a constructor on the subclass, so the parent class' constructor is called when we make a new instance. If we did define a constructor then we can use the super method to call the parent constructor.
+Neste exemplo, não definimos um construtor na subclasse, então o construtor da classe pai é chamado quando criamos uma nova instância. Se definirmos um construtor, podemos usar o método super para chamar o construtor pai.
 
-Whenever a class inherits from another, it sends a message to the parent class by calling the method __inherited on the parent class if it exists. The function receives two arguments, the class that is being inherited and the child class.
+Sempre que uma classe herda de outra, ela envia uma mensagem à classe pai chamando o método __inherited na classe pai se ele existir. A função recebe dois argumentos: a classe que está sendo herdada e a classe filha.
 
 ```yuescript
 class Shelf
   @__inherited: (child) =>
     print @__name, "was inherited by", child.__name
 
--- will print: Shelf was inherited by Cupboard
+-- vai imprimir: Shelf was inherited by Cupboard
 class Cupboard extends Shelf
 ```
 <YueDisplay>
@@ -158,7 +158,7 @@ class Shelf
   @__inherited: (child) =>
     print @__name, "was inherited by", child.__name
 
--- will print: Shelf was inherited by Cupboard
+-- vai imprimir: Shelf was inherited by Cupboard
 class Cupboard extends Shelf
 ```
 
@@ -166,27 +166,27 @@ class Cupboard extends Shelf
 
 ## Super
 
-**super** is a special keyword that can be used in two different ways: It can be treated as an object, or it can be called like a function. It only has special functionality when inside a class.
+**super** é uma palavra-chave especial que pode ser usada de duas formas diferentes: pode ser tratado como um objeto, ou pode ser chamado como uma função. Só tem funcionalidade especial quando está dentro de uma classe.
 
-When called as a function, it will call the function of the same name in the parent class. The current self will automatically be passed as the first argument. (As seen in the inheritance example above)
+Quando chamado como função, chamará a função de mesmo nome na classe pai. O self atual será automaticamente passado como primeiro argumento. (Como visto no exemplo de herança acima)
 
-When super is used as a normal value, it is a reference to the parent class object.
+Quando super é usado como valor normal, é uma referência ao objeto da classe pai.
 
-It can be accessed like any of object in order to retrieve values in the parent class that might have been shadowed by the child class.
+Pode ser acessado como qualquer objeto para recuperar valores na classe pai que possam ter sido sombreados pela classe filha.
 
-When the \ calling operator is used with super, self is inserted as the first argument instead of the value of super itself. When using . to retrieve a function, the raw function is returned.
+Quando o operador de chamada \ é usado com super, self é inserido como primeiro argumento em vez do valor do próprio super. Ao usar . para recuperar uma função, a função bruta é retornada.
 
-A few examples of using super in different ways:
+Alguns exemplos de uso de super de diferentes formas:
 
 ```yuescript
 class MyClass extends ParentClass
   a_method: =>
-    -- the following have the same effect:
+    -- os seguintes têm o mesmo efeito:
     super "hello", "world"
     super\a_method "hello", "world"
     super.a_method self, "hello", "world"
 
-    -- super as a value is equal to the parent class:
+    -- super como valor é igual à classe pai:
     assert super == ParentClass
 ```
 <YueDisplay>
@@ -194,28 +194,28 @@ class MyClass extends ParentClass
 ```yue
 class MyClass extends ParentClass
   a_method: =>
-    -- the following have the same effect:
+    -- os seguintes têm o mesmo efeito:
     super "hello", "world"
     super\a_method "hello", "world"
     super.a_method self, "hello", "world"
 
-    -- super as a value is equal to the parent class:
+    -- super como valor é igual à classe pai:
     assert super == ParentClass
 ```
 
 </YueDisplay>
 
-**super** can also be used on left side of a Function Stub. The only major difference is that instead of the resulting function being bound to the value of super, it is bound to self.
+**super** também pode ser usado no lado esquerdo de um Function Stub. A única diferença principal é que, em vez da função resultante estar vinculada ao valor de super, ela está vinculada a self.
 
-## Types
+## Tipos
 
-Every instance of a class carries its type with it. This is stored in the special __class property. This property holds the class object. The class object is what we call to build a new instance. We can also index the class object to retrieve class methods and properties.
+Cada instância de uma classe carrega seu tipo consigo. Isso é armazenado na propriedade especial __class. Esta propriedade contém o objeto da classe. O objeto da classe é o que chamamos para construir uma nova instância. Também podemos indexar o objeto da classe para recuperar métodos e propriedades da classe.
 
 ```yuescript
 b = BackPack!
 assert b.__class == BackPack
 
-print BackPack.size -- prints 10
+print BackPack.size -- imprime 10
 ```
 <YueDisplay>
 
@@ -223,45 +223,45 @@ print BackPack.size -- prints 10
 b = BackPack!
 assert b.__class == BackPack
 
-print BackPack.size -- prints 10
+print BackPack.size -- imprime 10
 ```
 
 </YueDisplay>
 
-## Class Objects
+## Objetos de classe
 
-The class object is what we create when we use a class statement. The class object is stored in a variable of the same name of the class.
+O objeto da classe é o que criamos quando usamos uma instrução class. O objeto da classe é armazenado em uma variável com o mesmo nome da classe.
 
-The class object can be called like a function in order to create new instances. That's how we created instances of classes in the examples above.
+O objeto da classe pode ser chamado como uma função para criar novas instâncias. É assim que criamos instâncias de classes nos exemplos acima.
 
-A class is made up of two tables. The class table itself, and the base table. The base is used as the metatable for all the instances. All properties listed in the class declaration are placed in the base.
+Uma classe é composta por duas tabelas. A própria tabela da classe e a tabela base. A base é usada como metatable para todas as instâncias. Todas as propriedades listadas na declaração da classe são colocadas na base.
 
-The class object's metatable reads properties from the base if they don't exist in the class object. This means we can access functions and properties directly from the class.
+A metatable do objeto da classe lê propriedades da base se não existirem no objeto da classe. Isso significa que podemos acessar funções e propriedades diretamente da classe.
 
-It is important to note that assigning to the class object does not assign into the base, so it's not a valid way to add new methods to instances. Instead the base must explicitly be changed. See the __base field below.
+É importante notar que atribuir ao objeto da classe não atribui à base, então não é uma forma válida de adicionar novos métodos às instâncias. Em vez disso, a base deve ser alterada explicitamente. Veja o campo __base abaixo.
 
-The class object has a couple special properties:
+O objeto da classe tem algumas propriedades especiais:
 
-The name of the class as when it was declared is stored as a string in the __name field of the class object.
+O nome da classe quando foi declarada é armazenado como string no campo __name do objeto da classe.
 
 ```yuescript
-print BackPack.__name -- prints Backpack
+print BackPack.__name -- imprime Backpack
 ```
 <YueDisplay>
 
 ```yue
-print BackPack.__name -- prints Backpack
+print BackPack.__name -- imprime Backpack
 ```
 
 </YueDisplay>
 
-The base object is stored in __base. We can modify this table to add functionality to instances that have already been created and ones that are yet to be created.
+O objeto base é armazenado em __base. Podemos modificar esta tabela para adicionar funcionalidade a instâncias que já foram criadas e às que ainda serão criadas.
 
-If the class extends from anything, the parent class object is stored in __parent.
+Se a classe estende de algo, o objeto da classe pai é armazenado em __parent.
 
-## Class Variables
+## Variáveis de classe
 
-We can create variables directly in the class object instead of in the base by using @ in the front of the property name in a class declaration.
+Podemos criar variáveis diretamente no objeto da classe em vez da base usando @ na frente do nome da propriedade em uma declaração de classe.
 
 ```yuescript
 class Things
@@ -269,7 +269,7 @@ class Things
 
 Things\some_func!
 
--- class variables not visible in instances
+-- variáveis de classe não visíveis em instâncias
 assert Things().some_func == nil
 ```
 <YueDisplay>
@@ -280,13 +280,13 @@ class Things
 
 Things\some_func!
 
--- class variables not visible in instances
+-- variáveis de classe não visíveis em instâncias
 assert Things().some_func == nil
 ```
 
 </YueDisplay>
 
-In expressions, we can use @@ to access a value that is stored in the __class of self. Thus, @@hello is shorthand for self.__class.hello.
+Em expressões, podemos usar @@ para acessar um valor armazenado no __class de self. Assim, @@hello é abreviação para self.__class.hello.
 
 ```yuescript
 class Counter
@@ -298,7 +298,7 @@ class Counter
 Counter!
 Counter!
 
-print Counter.count -- prints 2
+print Counter.count -- imprime 2
 ```
 <YueDisplay>
 
@@ -312,12 +312,12 @@ class Counter
 Counter!
 Counter!
 
-print Counter.count -- prints 2
+print Counter.count -- imprime 2
 ```
 
 </YueDisplay>
 
-The calling semantics of @@ are similar to @. Calling a @@ name will pass the class in as the first argument using Lua's colon syntax.
+A semântica de chamada de @@ é semelhante a @. Chamar um nome @@ passará a classe como primeiro argumento usando a sintaxe de dois pontos do Lua.
 
 ```yuescript
 @@hello 1,2,3,4
@@ -330,11 +330,11 @@ The calling semantics of @@ are similar to @. Calling a @@ name will pass the cl
 
 </YueDisplay>
 
-## Class Declaration Statements
+## Instruções de declaração de classe
 
-In the body of a class declaration, we can have normal expressions in addition to key/value pairs. In this context, self is equal to the class object.
+No corpo de uma declaração de classe, podemos ter expressões normais além de pares chave/valor. Neste contexto, self é igual ao objeto da classe.
 
-Here is an alternative way to create a class variable compared to what's described above:
+Aqui está uma forma alternativa de criar variável de classe comparada ao descrito acima:
 
 ```yuescript
 class Things
@@ -349,9 +349,9 @@ class Things
 
 </YueDisplay>
 
-These expressions are executed after all the properties have been added to the base.
+Estas expressões são executadas após todas as propriedades terem sido adicionadas à base.
 
-All variables declared in the body of the class are local to the classes properties. This is convenient for placing private values or helper functions that only the class methods can access:
+Todas as variáveis declaradas no corpo da classe são locais às propriedades da classe. Isso é conveniente para colocar valores privados ou funções auxiliares que apenas os métodos da classe podem acessar:
 
 ```yuescript
 class MoreThings
@@ -374,11 +374,11 @@ class MoreThings
 
 </YueDisplay>
 
-## @ and @@ Values
+## Valores @ e @@
 
-When @ and @@ are prefixed in front of a name they represent, respectively, that name accessed in self and self.__class.
+Quando @ e @@ são prefixados na frente de um nome, eles representam, respectivamente, esse nome acessado em self e self.__class.
 
-If they are used all by themselves, they are aliases for self and self.__class.
+Se forem usados sozinhos, são aliases para self e self.__class.
 
 ```yuescript
 assert @ == self
@@ -393,7 +393,7 @@ assert @@ == self.__class
 
 </YueDisplay>
 
-For example, a quick way to create a new instance of the same class from an instance method using @@:
+Por exemplo, uma forma rápida de criar uma nova instância da mesma classe a partir de um método de instância usando @@:
 
 ```yuescript
 some_instance_method = (...) => @@ ...
@@ -406,15 +406,15 @@ some_instance_method = (...) => @@ ...
 
 </YueDisplay>
 
-## Constructor Property Promotion
+## Promoção de propriedade no construtor
 
-To reduce the boilerplate code for definition of simple value objects. You can write a simple class like:
+Para reduzir o código repetitivo na definição de objetos de valor simples. Você pode escrever uma classe simples como:
 
 ```yuescript
 class Something
   new: (@foo, @bar, @@biz, @@baz) =>
 
--- Which is short for
+-- O que é abreviação para
 
 class Something
   new: (foo, bar, biz, baz) =>
@@ -429,7 +429,7 @@ class Something
 class Something
   new: (@foo, @bar, @@biz, @@baz) =>
 
--- Which is short for
+-- O que é abreviação para
 
 class Something
   new: (foo, bar, biz, baz) =>
@@ -441,7 +441,7 @@ class Something
 
 </YueDisplay>
 
-You can also use this syntax for a common function to initialize a object's fields.
+Você também pode usar esta sintaxe para uma função comum para inicializar os campos de um objeto.
 
 ```yuescript
 new = (@fieldA, @fieldB) => @
@@ -458,9 +458,9 @@ print obj
 
 </YueDisplay>
 
-## Class Expressions
+## Expressões de classe
 
-The class syntax can also be used as an expression which can be assigned to a variable or explicitly returned.
+A sintaxe de classe também pode ser usada como expressão que pode ser atribuída a uma variável ou retornada explicitamente.
 
 ```yuescript
 x = class Bucket
@@ -477,9 +477,9 @@ x = class Bucket
 
 </YueDisplay>
 
-## Anonymous classes
+## Classes anônimas
 
-The name can be left out when declaring a class. The __name attribute will be nil, unless the class expression is in an assignment. The name on the left hand side of the assignment is used instead of nil.
+O nome pode ser omitido ao declarar uma classe. O atributo __name será nil, a menos que a expressão da classe esteja em uma atribuição. O nome no lado esquerdo da atribuição é usado em vez de nil.
 
 ```yuescript
 BigBucket = class extends Bucket
@@ -498,7 +498,7 @@ assert Bucket.__name == "BigBucket"
 
 </YueDisplay>
 
-You can even leave off the body, meaning you can write a blank anonymous class like this:
+Você pode até omitir o corpo, significando que pode escrever uma classe anônima em branco assim:
 
 ```yuescript
 x = class
@@ -511,9 +511,9 @@ x = class
 
 </YueDisplay>
 
-## Class Mixing
+## Mistura de classes
 
-You can do mixing with keyword `using` to copy functions from either a plain table or a predefined class object into your new class. When doing mixing with a plain table, you can override the class indexing function (metamethod `__index`) to your customized implementation. When doing mixing with an existing class object, the class object's metamethods won't be copied.
+Você pode fazer mistura com a palavra-chave `using` para copiar funções de uma tabela simples ou de um objeto de classe predefinido para sua nova classe. Ao fazer mistura com uma tabela simples, você pode sobrescrever a função de indexação da classe (metamétodo `__index`) para sua implementação personalizada. Ao fazer mistura com um objeto de classe existente, os metamétodos do objeto da classe não serão copiados.
 
 ```yuescript
 MyIndex = __index: var: 1
@@ -530,7 +530,7 @@ class Y using X
 y = Y!
 y\func!
 
-assert y.__class.__parent ~= X -- X is not parent of Y
+assert y.__class.__parent ~= X -- X não é pai de Y
 ```
 <YueDisplay>
 
@@ -549,7 +549,7 @@ class Y using X
 y = Y!
 y\func!
 
-assert y.__class.__parent ~= X -- X is not parent of Y
+assert y.__class.__parent ~= X -- X não é pai de Y
 ```
 
 </YueDisplay>

@@ -1,6 +1,6 @@
 # Backcalls
 
-Backcalls are used for unnesting callbacks. They are defined using arrows pointed to the left as the last parameter by default filling in a function call. All the syntax is mostly the same as regular arrow functions except that it is just pointing the other way and the function body does not require indent.
+Backcalls são usados para desaninhar callbacks. Eles são definidos usando setas apontando para a esquerda como o último parâmetro, preenchendo por padrão uma chamada de função. Toda a sintaxe é basicamente a mesma das funções seta regulares, exceto que apenas aponta para o outro lado e o corpo da função não requer indentação.
 
 ```yuescript
 x <- f
@@ -15,7 +15,7 @@ print "hello" .. x
 
 </YueDisplay>
 
-Fat arrow functions are also available.
+Funções seta "fat" também estão disponíveis.
 
 ```yuescript
 <= f
@@ -30,7 +30,7 @@ print @value
 
 </YueDisplay>
 
-You can specify a placeholder for where you want the backcall function to go as a parameter.
+Você pode especificar um placeholder para onde deseja que a função backcall vá como parâmetro.
 
 ```yuescript
 (x) <- map _, [1, 2, 3]
@@ -45,7 +45,7 @@ x * 2
 
 </YueDisplay>
 
-If you wish to have further code after your backcalls, you can set them aside with a do statement. And the parentheses can be omitted with non-fat arrow functions.
+Se você desejar ter mais código após seus backcalls, pode colocá-los em uma instrução do. E os parênteses podem ser omitidos com funções seta não-fat.
 
 ```yuescript
 result, msg = do

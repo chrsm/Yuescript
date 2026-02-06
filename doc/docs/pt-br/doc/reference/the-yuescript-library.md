@@ -1,61 +1,61 @@
-# The YueScript Library
+# A biblioteca YueScript
 
-Access it by `local yue = require("yue")` in Lua.
+Acesse com `local yue = require("yue")` no Lua.
 
 ## yue
 
-**Description:**
+**Descrição:**
 
-The YueScript language library.
+A biblioteca da linguagem YueScript.
 
 ### version
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The YueScript version.
+A versão do YueScript.
 
-**Signature:**
+**Assinatura:**
 ```lua
 version: string
 ```
 
 ### dirsep
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The file separator for the current platform.
+O separador de arquivos da plataforma atual.
 
-**Signature:**
+**Assinatura:**
 ```lua
 dirsep: string
 ```
 
 ### yue_compiled
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The compiled module code cache.
+O cache de código de módulo compilado.
 
-**Signature:**
+**Assinatura:**
 ```lua
 yue_compiled: {string: string}
 ```
 
 ### to_lua
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-The YueScript compiling function. It compiles the YueScript code to Lua code.
+A função de compilação do YueScript. Compila o código YueScript para código Lua.
 
-**Signature:**
+**Assinatura:**
 ```lua
 to_lua: function(code: string, config?: Config):
     --[[codes]] string | nil,
@@ -63,682 +63,682 @@ to_lua: function(code: string, config?: Config):
     --[[globals]] {{string, integer, integer}} | nil
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| code | string | The YueScript code. |
-| config | Config | [Optional] The compiler options. |
+| code | string | O código YueScript. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| string \| nil | The compiled Lua code, or nil if the compilation failed. |
-| string \| nil | The error message, or nil if the compilation succeeded. |
-| {{string, integer, integer}} \| nil | The global variables appearing in the code (with name, row and column), or nil if the compiler option `lint_global` is false. |
+| string \| nil | O código Lua compilado, ou nil se a compilação falhou. |
+| string \| nil | A mensagem de erro, ou nil se a compilação foi bem-sucedida. |
+| {{string, integer, integer}} \| nil | As variáveis globais que aparecem no código (com nome, linha e coluna), ou nil se a opção do compilador `lint_global` for false. |
 
 ### file_exist
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-The source file existence checking function. Can be overridden to customize the behavior.
+Função de verificação de existência do arquivo fonte. Pode ser sobrescrita para personalizar o comportamento.
 
-**Signature:**
+**Assinatura:**
 ```lua
 file_exist: function(filename: string): boolean
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| filename | string | The file name. |
+| filename | string | O nome do arquivo. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| boolean | Whether the file exists. |
+| boolean | Se o arquivo existe. |
 
 ### read_file
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-The source file reading function. Can be overridden to customize the behavior.
+Função de leitura do arquivo fonte. Pode ser sobrescrita para personalizar o comportamento.
 
-**Signature:**
+**Assinatura:**
 ```lua
 read_file: function(filename: string): string
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| filename | string | The file name. |
+| filename | string | O nome do arquivo. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| string | The file content. |
+| string | O conteúdo do arquivo. |
 
 ### insert_loader
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Insert the YueScript loader to the package loaders (searchers).
+Insere o carregador YueScript nos carregadores de pacote (searchers).
 
-**Signature:**
+**Assinatura:**
 ```lua
 insert_loader: function(pos?: integer): boolean
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| pos | integer | [Optional] The position to insert the loader. Default is 3. |
+| pos | integer | [Opcional] A posição para inserir o carregador. Padrão é 3. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| boolean | Whether the loader is inserted successfully. It will fail if the loader is already inserted. |
+| boolean | Se o carregador foi inserido com sucesso. Falhará se o carregador já estiver inserido. |
 
 ### remove_loader
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Remove the YueScript loader from the package loaders (searchers).
+Remove o carregador YueScript dos carregadores de pacote (searchers).
 
-**Signature:**
+**Assinatura:**
 ```lua
 remove_loader: function(): boolean
 ```
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| boolean | Whether the loader is removed successfully. It will fail if the loader is not inserted. |
+| boolean | Se o carregador foi removido com sucesso. Falhará se o carregador não estiver inserido. |
 
 ### loadstring
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a string into a function.
+Carrega código YueScript de uma string em uma função.
 
-**Signature:**
+**Assinatura:**
 ```lua
 loadstring: function(input: string, chunkname: string, env: table, config?: Config):
     --[[loaded function]] nil | function(...: any): (any...),
     --[[error]] string | nil
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| input | string | The YueScript code. |
-| chunkname | string | The name of the code chunk. |
-| env | table | The environment table. |
-| config | Config | [Optional] The compiler options. |
+| input | string | O código YueScript. |
+| chunkname | string | O nome do chunk de código. |
+| env | table | A tabela de ambiente. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | A função carregada, ou nil se o carregamento falhou. |
+| string \| nil | A mensagem de erro, ou nil se o carregamento foi bem-sucedido. |
 
 ### loadstring
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a string into a function.
+Carrega código YueScript de uma string em uma função.
 
-**Signature:**
+**Assinatura:**
 ```lua
 loadstring: function(input: string, chunkname: string, config?: Config):
     --[[loaded function]] nil | function(...: any): (any...),
     --[[error]] string | nil
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| input | string | The YueScript code. |
-| chunkname | string | The name of the code chunk. |
-| config | Config | [Optional] The compiler options. |
+| input | string | O código YueScript. |
+| chunkname | string | O nome do chunk de código. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | A função carregada, ou nil se o carregamento falhou. |
+| string \| nil | A mensagem de erro, ou nil se o carregamento foi bem-sucedido. |
 
 ### loadstring
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a string into a function.
+Carrega código YueScript de uma string em uma função.
 
-**Signature:**
+**Assinatura:**
 ```lua
 loadstring: function(input: string, config?: Config):
     --[[loaded function]] nil | function(...: any): (any...),
     --[[error]] string | nil
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| input | string | The YueScript code. |
-| config | Config | [Optional] The compiler options. |
+| input | string | O código YueScript. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | A função carregada, ou nil se o carregamento falhou. |
+| string \| nil | A mensagem de erro, ou nil se o carregamento foi bem-sucedido. |
 
 ### loadfile
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a file into a function.
+Carrega código YueScript de um arquivo em uma função.
 
-**Signature:**
+**Assinatura:**
 ```lua
 loadfile: function(filename: string, env: table, config?: Config):
     nil | function(...: any): (any...),
     string | nil
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| filename | string | The file name. |
-| env | table | The environment table. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | O nome do arquivo. |
+| env | table | A tabela de ambiente. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | A função carregada, ou nil se o carregamento falhou. |
+| string \| nil | A mensagem de erro, ou nil se o carregamento foi bem-sucedido. |
 
 ### loadfile
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a file into a function.
+Carrega código YueScript de um arquivo em uma função.
 
-**Signature:**
+**Assinatura:**
 ```lua
 loadfile: function(filename: string, config?: Config):
     nil | function(...: any): (any...),
     string | nil
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| filename | string | The file name. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | O nome do arquivo. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | A função carregada, ou nil se o carregamento falhou. |
+| string \| nil | A mensagem de erro, ou nil se o carregamento foi bem-sucedido. |
 
 ### dofile
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a file into a function and executes it.
+Carrega código YueScript de um arquivo em uma função e o executa.
 
-**Signature:**
+**Assinatura:**
 ```lua
 dofile: function(filename: string, env: table, config?: Config): any...
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| filename | string | The file name. |
-| env | table | The environment table. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | O nome do arquivo. |
+| env | table | A tabela de ambiente. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| any... | The return values of the loaded function. |
+| any... | Os valores de retorno da função carregada. |
 
 ### dofile
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads YueScript code from a file into a function and executes it.
+Carrega código YueScript de um arquivo em uma função e o executa.
 
-**Signature:**
+**Assinatura:**
 ```lua
 dofile: function(filename: string, config?: Config): any...
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| filename | string | The file name. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | O nome do arquivo. |
+| config | Config | [Opcional] As opções do compilador. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| any... | The return values of the loaded function. |
+| any... | Os valores de retorno da função carregada. |
 
 ### find_modulepath
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Resolves the YueScript module name to the file path.
+Resolve o nome do módulo YueScript para o caminho do arquivo.
 
-**Signature:**
+**Assinatura:**
 ```lua
 find_modulepath: function(name: string): string
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| name | string | The module name. |
+| name | string | O nome do módulo. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| string | The file path. |
+| string | O caminho do arquivo. |
 
 ### pcall
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Calls a function in protected mode.
-Catches any errors and returns a status code and results or error object.
-Rewrites the error line number to the original line number in the YueScript code when errors occur.
+Chama uma função em modo protegido.
+Captura quaisquer erros e retorna um código de status e resultados ou objeto de erro.
+Reescreve o número da linha do erro para o número da linha original no código YueScript quando ocorrem erros.
 
-**Signature:**
+**Assinatura:**
 ```lua
 pcall: function(f: function, ...: any): boolean, any...
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| f | function | The function to call. |
-| ... | any | Arguments to pass to the function. |
+| f | function | A função a chamar. |
+| ... | any | Argumentos a passar para a função. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| boolean, ... | Status code and function results or error object. |
+| boolean, ... | Código de status e resultados da função ou objeto de erro. |
 
 ### require
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Loads a given module. Can be either a Lua module or a YueScript module.
-Rewrites the error line number to the original line number in the YueScript code if the module is a YueScript module and loading fails.
+Carrega um módulo dado. Pode ser um módulo Lua ou um módulo YueScript.
+Reescreve o número da linha do erro para o número da linha original no código YueScript se o módulo for um módulo YueScript e o carregamento falhar.
 
-**Signature:**
+**Assinatura:**
 ```lua
 require: function(name: string): any...
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| modname | string | The name of the module to load. |
+| modname | string | O nome do módulo a carregar. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| any | The value stored at package.loaded[modname] if the module is already loaded.Otherwise, tries to find a loader and returns the final value of package.loaded[modname] and a loader data as a second result. |
+| any | O valor armazenado em package.loaded[modname] se o módulo já estiver carregado. Caso contrário, tenta encontrar um carregador e retorna o valor final de package.loaded[modname] e os dados do carregador como segundo resultado. |
 
 ### p
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Inspects the structures of the passed values and prints string representations.
+Inspeciona as estruturas dos valores passados e imprime representações em string.
 
-**Signature:**
+**Assinatura:**
 ```lua
 p: function(...: any)
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| ... | any | The values to inspect. |
+| ... | any | Os valores a inspecionar. |
 
 ### options
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The current compiler options.
+As opções atuais do compilador.
 
-**Signature:**
+**Assinatura:**
 ```lua
 options: Config.Options
 ```
 
 ### traceback
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-The traceback function that rewrites the stack trace line numbers to the original line numbers in the YueScript code.
+A função traceback que reescreve os números das linhas do stack trace para os números das linhas originais no código YueScript.
 
-**Signature:**
+**Assinatura:**
 ```lua
 traceback: function(message: string): string
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| message | string | The traceback message. |
+| message | string | A mensagem de traceback. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| string | The rewritten traceback message. |
+| string | A mensagem de traceback reescrita. |
 
 ### is_ast
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Checks whether the code matches the specified AST.
+Verifica se o código corresponde ao AST especificado.
 
-**Signature:**
+**Assinatura:**
 ```lua
 is_ast: function(astName: string, code: string): boolean
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| astName | string | The AST name. |
-| code | string | The code. |
+| astName | string | O nome do AST. |
+| code | string | O código. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| boolean | Whether the code matches the AST. |
+| boolean | Se o código corresponde ao AST. |
 
 ### AST
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The AST type definition with name, row, column and sub nodes.
+A definição do tipo AST com nome, linha, coluna e subnós.
 
-**Signature:**
+**Assinatura:**
 ```lua
 type AST = {string, integer, integer, any}
 ```
 
 ### to_ast
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Converts the code to the AST.
+Converte o código para o AST.
 
-**Signature:**
+**Assinatura:**
 ```lua
 to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
     --[[AST]] AST | nil,
     --[[error]] nil | string
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| code | string | The code. |
-| flattenLevel | integer | [Optional] The flatten level. Higher level means more flattening. Default is 0. Maximum is 2. |
-| astName | string | [Optional] The AST name. Default is "File". |
-| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is false. |
+| code | string | O código. |
+| flattenLevel | integer | [Opcional] O nível de achatamento. Nível mais alto significa mais achatamento. Padrão é 0. Máximo é 2. |
+| astName | string | [Opcional] O nome do AST. Padrão é "File". |
+| reserveComment | boolean | [Opcional] Se deve preservar os comentários originais. Padrão é false. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| AST \| nil | The AST, or nil if the conversion failed. |
-| string \| nil | The error message, or nil if the conversion succeeded. |
+| AST \| nil | O AST, ou nil se a conversão falhou. |
+| string \| nil | A mensagem de erro, ou nil se a conversão foi bem-sucedida. |
 
 ### format
 
-**Type:** Function.
+**Tipo:** Função.
 
-**Description:**
+**Descrição:**
 
-Formats the YueScript code.
+Formata o código YueScript.
 
-**Signature:**
+**Assinatura:**
 ```lua
 format: function(code: string, tabSize?: number, reserveComment?: boolean): string
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| code | string | The code. |
-| tabSize | integer | [Optional] The tab size. Default is 4. |
-| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is true. |
+| code | string | O código. |
+| tabSize | integer | [Opcional] O tamanho da tabulação. Padrão é 4. |
+| reserveComment | boolean | [Opcional] Se deve preservar os comentários originais. Padrão é true. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| string | The formatted code. |
+| string | O código formatado. |
 
 ### __call
 
-**Type:** Metamethod.
+**Tipo:** Metamétodo.
 
-**Description:**
+**Descrição:**
 
-Requires the YueScript module.
-Rewrites the error line number to the original line number in the YueScript code when loading fails.
+Requer o módulo YueScript.
+Reescreve o número da linha do erro para o número da linha original no código YueScript quando o carregamento falha.
 
-**Signature:**
+**Assinatura:**
 ```lua
 metamethod __call: function(self: yue, module: string): any...
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Parameter | Type | Description |
+| Parâmetro | Tipo | Descrição |
 | --- | --- | --- |
-| module | string | The module name. |
+| module | string | O nome do módulo. |
 
-**Returns:**
+**Retorna:**
 
-| Return Type | Description |
+| Tipo de Retorno | Descrição |
 | --- | --- |
-| any | The module value. |
+| any | O valor do módulo. |
 
 ## Config
 
-**Description:**
+**Descrição:**
 
-The compiler compile options.
+As opções de compilação do compilador.
 
 ### lint_global
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler should collect the global variables appearing in the code.
+Se o compilador deve coletar as variáveis globais que aparecem no código.
 
-**Signature:**
+**Assinatura:**
 ```lua
 lint_global: boolean
 ```
 
 ### implicit_return_root
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler should do an implicit return for the root code block.
+Se o compilador deve fazer retorno implícito para o bloco de código raiz.
 
-**Signature:**
+**Assinatura:**
 ```lua
 implicit_return_root: boolean
 ```
 
 ### reserve_line_number
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler should reserve the original line number in the compiled code.
+Se o compilador deve preservar o número da linha original no código compilado.
 
-**Signature:**
+**Assinatura:**
 ```lua
 reserve_line_number: boolean
 ```
 
 ### reserve_comment
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler should reserve the original comments in the compiled code.
+Se o compilador deve preservar os comentários originais no código compilado.
 
-**Signature:**
+**Assinatura:**
 ```lua
 reserve_comment: boolean
 ```
 
 ### space_over_tab
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler should use the space character instead of the tab character in the compiled code.
+Se o compilador deve usar o caractere de espaço em vez do caractere de tabulação no código compilado.
 
-**Signature:**
+**Assinatura:**
 ```lua
 space_over_tab: boolean
 ```
 
 ### same_module
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler should treat the code to be compiled as the same currently being compiled module. For internal use only.
+Se o compilador deve tratar o código a ser compilado como o mesmo módulo que está sendo compilado atualmente. Apenas para uso interno.
 
-**Signature:**
+**Assinatura:**
 ```lua
 same_module: boolean
 ```
 
 ### line_offset
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether the compiler error message should include the line number offset. For internal use only.
+Se a mensagem de erro do compilador deve incluir o deslocamento do número da linha. Apenas para uso interno.
 
-**Signature:**
+**Assinatura:**
 ```lua
 line_offset: integer
 ```
 
 ### yue.Config.LuaTarget
 
-**Type:** Enumeration.
+**Tipo:** Enumeração.
 
-**Description:**
+**Descrição:**
 
-The target Lua version enumeration.
+A enumeração da versão alvo do Lua.
 
-**Signature:**
+**Assinatura:**
 ```lua
 enum LuaTarget
   "5.1"
@@ -751,71 +751,71 @@ end
 
 ### options
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The extra options to be passed to the compilation function.
+As opções extras a serem passadas para a função de compilação.
 
-**Signature:**
+**Assinatura:**
 ```lua
 options: Options
 ```
 
 ## Options
 
-**Description:**
+**Descrição:**
 
-The extra compiler options definition.
+A definição das opções extras do compilador.
 
 ### target
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The target Lua version for the compilation.
+A versão alvo do Lua para a compilação.
 
-**Signature:**
+**Assinatura:**
 ```lua
 target: LuaTarget
 ```
 
 ### path
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-The extra module search path.
+O caminho de busca de módulo extra.
 
-**Signature:**
+**Assinatura:**
 ```lua
 path: string
 ```
 
 ### dump_locals
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether to dump the local variables in the traceback error message. Default is false.
+Se deve incluir as variáveis locais na mensagem de erro do traceback. Padrão é false.
 
-**Signature:**
+**Assinatura:**
 ```lua
 dump_locals: boolean
 ```
 
 ### simplified
 
-**Type:** Field.
+**Tipo:** Campo.
 
-**Description:**
+**Descrição:**
 
-Whether to simplify the error message. Default is true.
+Se deve simplificar a mensagem de erro. Padrão é true.
 
-**Signature:**
+**Assinatura:**
 ```lua
 simplified: boolean
 ```

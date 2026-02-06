@@ -1,10 +1,10 @@
-# Whitespace
+# Espaço em branco
 
-YueScript is a whitespace significant language. You have to write some code block in the same indent with space **' '** or tab **'\t'** like function body, value list and some control blocks. And expressions containing different whitespaces might mean different things. Tab is treated like 4 space, but it's better not mix the use of spaces and tabs.
+YueScript é uma linguagem sensível a espaço em branco. Você precisa escrever blocos de código na mesma indentação com espaço **' '** ou tabulação **'\t'**, como corpo de função, lista de valores e alguns blocos de controle. E expressões contendo diferentes espaços em branco podem significar coisas diferentes. Tabulação é tratada como 4 espaços, mas é melhor não misturar o uso de espaços e tabulações.
 
-## Statement Separator
+## Separador de instrução
 
-A statement normally ends at a line break. You can also use a semicolon `;` to explicitly terminate a statement, which allows writing multiple statements on the same line:
+Uma instrução normalmente termina em uma quebra de linha. Você também pode usar ponto e vírgula `;` para terminar explicitamente uma instrução, o que permite escrever múltiplas instruções na mesma linha:
 
 ```yuescript
 a = 1; b = 2; print a + b
@@ -17,9 +17,9 @@ a = 1; b = 2; print a + b
 
 </YueDisplay>
 
-## Multiline Chaining
+## Encadeamento multilinha
 
-You can write multi-line chaining function calls with a same indent.
+Você pode escrever chamadas de função encadeadas em múltiplas linhas com a mesma indentação.
 
 ```yuescript
 Rx.Observable

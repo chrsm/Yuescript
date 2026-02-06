@@ -1,12 +1,12 @@
 # Do
 
-When used as a statement, do works just like it does in Lua.
+Quando usado como instrução, do funciona exatamente como no Lua.
 
 ```yuescript
 do
   var = "hello"
   print var
-print var -- nil here
+print var -- nil aqui
 ```
 <YueDisplay>
 
@@ -14,12 +14,12 @@ print var -- nil here
 do
   var = "hello"
   print var
-print var -- nil here
+print var -- nil aqui
 ```
 
 </YueDisplay>
 
-YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+O **do** do YueScript também pode ser usado como expressão. Permitindo combinar múltiplas linhas em uma. O resultado da expressão do é a última instrução em seu corpo.
 
 ```yuescript
 counter = do

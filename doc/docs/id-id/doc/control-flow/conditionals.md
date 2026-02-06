@@ -1,55 +1,55 @@
-# Conditionals
+# Kondisional
 
 ```yuescript
 have_coins = false
 if have_coins
-  print "Got coins"
+  print "Dapat koin"
 else
-  print "No coins"
+  print "Tidak ada koin"
 ```
 <YueDisplay>
 
 ```yue
 have_coins = false
 if have_coins
-  print "Got coins"
+  print "Dapat koin"
 else
-  print "No coins"
+  print "Tidak ada koin"
 ```
 
 </YueDisplay>
 
-A short syntax for single statements can also be used:
+Sintaks pendek untuk pernyataan tunggal juga bisa digunakan:
 
 ```yuescript
 have_coins = false
-if have_coins then print "Got coins" else print "No coins"
+if have_coins then print "Dapat koin" else print "Tidak ada koin"
 ```
 <YueDisplay>
 
 ```yue
 have_coins = false
-if have_coins then print "Got coins" else print "No coins"
+if have_coins then print "Dapat koin" else print "Tidak ada koin"
 ```
 
 </YueDisplay>
 
-Because if statements can be used as expressions, this can also be written as:
+Karena pernyataan if dapat digunakan sebagai ekspresi, ini juga bisa ditulis sebagai:
 
 ```yuescript
 have_coins = false
-print if have_coins then "Got coins" else "No coins"
+print if have_coins then "Dapat koin" else "Tidak ada koin"
 ```
 <YueDisplay>
 
 ```yue
 have_coins = false
-print if have_coins then "Got coins" else "No coins"
+print if have_coins then "Dapat koin" else "Tidak ada koin"
 ```
 
 </YueDisplay>
 
-Conditionals can also be used in return statements and assignments:
+Kondisional juga bisa digunakan di pernyataan return dan assignment:
 
 ```yuescript
 is_tall = (name) ->
@@ -59,11 +59,11 @@ is_tall = (name) ->
     false
 
 message = if is_tall "Rob"
-  "I am very tall"
+  "Saya sangat tinggi"
 else
-  "I am not so tall"
+  "Saya tidak terlalu tinggi"
 
-print message -- prints: I am very tall
+print message -- prints: Saya sangat tinggi
 ```
 <YueDisplay>
 
@@ -75,53 +75,53 @@ is_tall = (name) ->
     false
 
 message = if is_tall "Rob"
-  "I am very tall"
+  "Saya sangat tinggi"
 else
-  "I am not so tall"
+  "Saya tidak terlalu tinggi"
 
-print message -- prints: I am very tall
+print message -- prints: Saya sangat tinggi
 ```
 
 </YueDisplay>
 
-The opposite of if is unless:
+Kebalikan dari if adalah unless:
 
 ```yuescript
 unless os.date("%A") == "Monday"
-  print "it is not Monday!"
+  print "hari ini bukan Senin!"
 ```
 <YueDisplay>
 
 ```yue
 unless os.date("%A") == "Monday"
-  print "it is not Monday!"
+  print "hari ini bukan Senin!"
 ```
 
 </YueDisplay>
 
 ```yuescript
-print "You're lucky!" unless math.random! > 0.1
+print "Kamu beruntung!" unless math.random! > 0.1
 ```
 <YueDisplay>
 
 ```yue
-print "You're lucky!" unless math.random! > 0.1
+print "Kamu beruntung!" unless math.random! > 0.1
 ```
 
 </YueDisplay>
 
-## In Expression
+## Ekspresi In
 
-You can write range checking code with an `in-expression`.
+Anda dapat menulis kode pengecekan rentang dengan `ekspresi in`.
 
 ```yuescript
 a = 5
 
 if a in [1, 3, 5, 7]
-  print "checking equality with discrete values"
+  print "memeriksa kesamaan dengan nilai-nilai diskrit"
 
 if a in list
-  print "checking if `a` is in a list"
+  print "memeriksa apakah `a` ada di dalam daftar"
 ```
 <YueDisplay>
 
@@ -129,21 +129,10 @@ if a in list
 a = 5
 
 if a in [1, 3, 5, 7]
-  print "checking equality with discrete values"
+  print "memeriksa kesamaan dengan nilai-nilai diskrit"
 
 if a in list
-  print "checking if `a` is in a list"
-```
-
-</YueDisplay>
-
-```yuescript
-print "You're lucky!" unless math.random! > 0.1
-```
-<YueDisplay>
-
-```yue
-print "You're lucky!" unless math.random! > 0.1
+  print "memeriksa apakah `a` ada di dalam daftar"
 ```
 
 </YueDisplay>

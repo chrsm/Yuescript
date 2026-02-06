@@ -1,20 +1,20 @@
-# Usage
+# Uso
 
-## Lua Module
+## Módulo Lua
 
-Use YueScript module in Lua:
+Use o módulo YueScript em Lua:
 
-* **Case 1**
+* **Caso 1**
 
-	Require "your_yuescript_entry.yue" in Lua.
+	Use require em "your_yuescript_entry.yue" no Lua.
 	```Lua
 	require("yue")("your_yuescript_entry")
 	```
-	And this code still works when you compile "your_yuescript_entry.yue"  to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
+	E esse código continua funcionando quando você compila "your_yuescript_entry.yue" para "your_yuescript_entry.lua" no mesmo caminho. Nos demais arquivos YueScript, use normalmente o **require** ou **import**. Os números de linha nas mensagens de erro também serão tratados corretamente.
 
-* **Case 2**
+* **Caso 2**
 
-	Require YueScript module and rewite message by hand.
+	Requerer o módulo YueScript e reescrever a mensagem manualmente.
 
 	```lua
 	local yue = require("yue")
@@ -26,9 +26,9 @@ Use YueScript module in Lua:
 	end)
 	```
 
-* **Case 3**
+* **Caso 3**
 
-	Use the YueScript compiler function in Lua.
+	Usar a função compiladora do YueScript em Lua.
 
 	```lua
 	local yue = require("yue")
@@ -48,9 +48,9 @@ Use YueScript module in Lua:
 	})
 	```
 
-## YueScript Tool
+## Ferramenta YueScript
 
-Use YueScript tool with:
+Use a ferramenta YueScript com:
 
 ```shell
 > yue -h
@@ -60,52 +60,53 @@ Usage: yue
        yue -w [<directory>] [options]
        yue -
 
-Notes:
-   - '-' / '--' must be the first and only argument.
-   - '-o/--output' can not be used with multiple input files.
-   - '-w/--watch' can not be used with file input (directory only).
-   - with '-e/--execute', remaining tokens are treated as script args.
+Notas:
+   - '-' / '--' deve ser o primeiro e único argumento.
+   - '-o/--output' não pode ser usado com múltiplos arquivos de entrada.
+   - '-w/--watch' não pode ser usado com entrada de arquivo (apenas diretório).
+   - com '-e/--execute', os tokens restantes são tratados como argumentos do script.
 
-Options:
-   -h, --help                 Show this help message and exit.
-   -e <str>, --execute <str>  Execute a file or raw codes
-   -m, --minify               Generate minified codes
-   -r, --rewrite              Rewrite output to match original line numbers
+Opções:
+   -h, --help                 Mostrar esta mensagem de ajuda e sair.
+   -e <str>, --execute <str>  Executar um arquivo ou código bruto
+   -m, --minify               Gerar código minificado
+   -r, --rewrite              Reescrever saída para corresponder aos números de linha originais
    -t <output_to>, --output-to <output_to>
-                              Specify where to place compiled files
-   -o <file>, --output <file> Write output to file
-   -p, --print                Write output to standard out
-   -b, --benchmark            Dump compile time (doesn't write output)
-   -g, --globals              Dump global variables used in NAME LINE COLUMN
-   -s, --spaces               Use spaces in generated codes instead of tabs
-   -l, --line-numbers         Write line numbers from source codes
-   -j, --no-implicit-return   Disable implicit return at end of file
-   -c, --reserve-comments     Reserve comments before statement from source codes
+                              Especificar onde colocar os arquivos compilados
+   -o <file>, --output <file> Escrever saída em arquivo
+   -p, --print                Escrever saída na saída padrão
+   -b, --benchmark            Mostrar tempo de compilação (não grava saída)
+   -g, --globals              Listar variáveis globais usadas em NOME LINHA COLUNA
+   -s, --spaces               Usar espaços no código gerado em vez de tabulações
+   -l, --line-numbers         Escrever números de linha do código fonte
+   -j, --no-implicit-return   Desabilitar retorno implícito no final do arquivo
+   -c, --reserve-comments     Preservar comentários antes de instruções do código fonte
    -w [<dir>], --watch [<dir>]
-                              Watch changes and compile every file under directory
-   -v, --version              Print version
-   -                          Read from standard in, print to standard out
-                              (Must be first and only argument)
-   --                         Same as '-' (kept for backward compatibility)
+                              Observar alterações e compilar cada arquivo no diretório
+   -v, --version              Imprimir versão
+   -                          Ler da entrada padrão, imprimir na saída padrão
+                              (Deve ser o primeiro e único argumento)
+   --                         Igual a '-' (mantido para compatibilidade retroativa)
 
-   --target <version>         Specify the Lua version that codes will be generated to
-                              (version can only be 5.1 to 5.5)
-   --path <path_str>          Append an extra Lua search path string to package.path
-   --<key>=<value>            Pass compiler option in key=value form (existing behavior)
+   --target <version>         Especificar a versão do Lua para a qual o código será gerado
+                              (a versão pode ser apenas 5.1 a 5.5)
+   --path <path_str>          Adicionar um caminho de busca Lua extra ao package.path
+   --<key>=<value>            Passar opção do compilador no formato key=value (comportamento existente)
 
-   Execute without options to enter REPL, type symbol '$'
-   in a single line to start/stop multi-line mode
+   Execute sem opções para entrar no REPL, digite o símbolo '$'
+   em uma única linha para iniciar/parar o modo multilinha
 ```
-Use cases:
 
-Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
+Casos de uso:
 
-Compile and save results to a target path:  **yue -t /target/path/ .**
+Compilar recursivamente todos os arquivos YueScript com extensão **.yue** no caminho atual: **yue .**
 
-Compile and reserve debug info:  **yue -l .**
+Compilar e salvar resultados em um caminho de destino: **yue -t /target/path/ .**
 
-Compile and generate minified codes:  **yue -m .**
+Compilar e preservar informações de debug: **yue -l .**
 
-Execute raw codes:  **yue -e 'print 123'**
+Compilar e gerar código minificado: **yue -m .**
 
-Execute a YueScript file:  **yue -e main.yue**
+Executar código bruto: **yue -e 'print 123'**
+
+Executar um arquivo YueScript: **yue -e main.yue**

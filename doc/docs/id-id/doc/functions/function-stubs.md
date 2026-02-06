@@ -1,10 +1,10 @@
-# Function Stubs
+# Stub Fungsi
 
-It is common to pass a function from an object around as a value, for example, passing an instance method into a function as a callback. If the function expects the object it is operating on as the first argument then you must somehow bundle that object with the function so it can be called properly.
+Sering kali fungsi dari sebuah objek diteruskan sebagai nilai, misalnya meneruskan method instance ke fungsi lain sebagai callback. Jika fungsi mengharapkan objek yang dioperasikan sebagai argumen pertama, maka Anda harus menggabungkan objek tersebut dengan fungsi agar dapat dipanggil dengan benar.
 
-The function stub syntax is a shorthand for creating a new closure function that bundles both the object and function. This new function calls the wrapped function in the correct context of the object.
+Sintaks stub fungsi adalah singkatan untuk membuat fungsi closure baru yang menggabungkan objek dan fungsi. Fungsi baru ini memanggil fungsi yang dibungkus dalam konteks objek yang benar.
 
-Its syntax is the same as calling an instance method with the \ operator but with no argument list provided.
+Sintaksnya sama seperti memanggil method instance dengan operator `\`, tetapi tanpa menyediakan daftar argumen.
 
 ```yuescript
 my_object = {
@@ -16,12 +16,12 @@ run_callback = (func) ->
   print "running callback..."
   func!
 
--- this will not work:
--- the function has to no reference to my_object
+-- ini tidak akan berfungsi:
+-- fungsi tidak memiliki referensi ke my_object
 run_callback my_object.write
 
--- function stub syntax
--- lets us bundle the object into a new function
+-- sintaks stub fungsi
+-- memungkinkan kita membundel objek ke fungsi baru
 run_callback my_object\write
 ```
 <YueDisplay>
@@ -36,12 +36,12 @@ run_callback = (func) ->
   print "running callback..."
   func!
 
--- this will not work:
--- the function has to no reference to my_object
+-- ini tidak akan berfungsi:
+-- fungsi tidak memiliki referensi ke my_object
 run_callback my_object.write
 
--- function stub syntax
--- lets us bundle the object into a new function
+-- sintaks stub fungsi
+-- memungkinkan kita membundel objek ke fungsi baru
 run_callback my_object\write
 ```
 

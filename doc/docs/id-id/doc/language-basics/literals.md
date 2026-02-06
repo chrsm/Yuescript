@@ -1,15 +1,15 @@
-# Literals
+# Literal
 
-All of the primitive literals in Lua can be used. This applies to numbers, strings, booleans, and **nil**.
+Semua literal primitif di Lua dapat digunakan. Ini berlaku untuk angka, string, boolean, dan **nil**.
 
-Unlike Lua, Line breaks are allowed inside of single and double quote strings without an escape sequence:
+Berbeda dengan Lua, pemisah baris diizinkan di dalam string bertanda kutip tunggal maupun ganda tanpa urutan escape:
 
 ```yuescript
 some_string = "Here is a string
   that has a line break in it."
 
--- You can mix expressions into string literals using #{} syntax.
--- String interpolation is only available in double quoted strings.
+-- Anda dapat mencampur ekspresi ke dalam literal string dengan sintaks #{}.
+-- Interpolasi string hanya tersedia pada string dengan tanda kutip ganda.
 print "I am #{math.random! * 100}% sure."
 ```
 <YueDisplay>
@@ -18,16 +18,16 @@ print "I am #{math.random! * 100}% sure."
 some_string = "Here is a string
   that has a line break in it."
 
--- You can mix expressions into string literals using #{} syntax.
--- String interpolation is only available in double quoted strings.
+-- Anda dapat mencampur ekspresi ke dalam literal string dengan sintaks #{}.
+-- Interpolasi string hanya tersedia pada string dengan tanda kutip ganda.
 print "I am #{math.random! * 100}% sure."
 ```
 
 </YueDisplay>
 
-## Number Literals
+## Literal Angka
 
-You can use underscores in a number literal to increase readability.
+Anda bisa menggunakan garis bawah pada literal angka untuk meningkatkan keterbacaan.
 
 ```yuescript
 integer = 1_000_000
@@ -44,9 +44,9 @@ binary = 0B10011
 
 </YueDisplay>
 
-## YAML Multiline String
+## String Multibaris YAML
 
-The `|` prefix introduces a YAML-style multiline string literal:
+Prefiks `|` memperkenalkan literal string multibaris bergaya YAML:
 
 ```yuescript
 str = |
@@ -67,9 +67,9 @@ str = |
 
 </YueDisplay>
 
-This allows writing structured multiline text conveniently. All line breaks and indentation are preserved relative to the first non-empty line, and expressions inside `#{...}` are interpolated automatically as `tostring(expr)`.
+Ini memungkinkan penulisan teks multibaris terstruktur dengan mudah. Semua pemisah baris dan indentasi dipertahankan relatif terhadap baris non-kosong pertama, dan ekspresi di dalam `#{...}` diinterpolasi otomatis sebagai `tostring(expr)`.
 
-YAML Multiline String automatically detects the common leading whitespace prefix (minimum indentation across all non-empty lines) and removes it from all lines. This makes it easy to indent your code visually without affecting the resulting string content.
+String Multibaris YAML secara otomatis mendeteksi prefiks spasi awal yang sama (indentasi minimum di seluruh baris non-kosong) dan menghapusnya dari semua baris. Ini memudahkan untuk mengindentasi kode secara visual tanpa memengaruhi isi string yang dihasilkan.
 
 ```yuescript
 fn = ->
@@ -90,9 +90,9 @@ fn = ->
 
 </YueDisplay>
 
-Internal indentation is preserved relative to the removed common prefix, allowing clean nested structures.
+Indentasi internal dipertahankan relatif terhadap prefiks umum yang dihapus, sehingga struktur bertingkat tetap rapi.
 
-All special characters like quotes (`"`) and backslashes (`\`) in the YAMLMultiline block are automatically escaped so that the generated Lua string is syntactically valid and behaves as expected.
+Semua karakter khusus seperti tanda kutip (`"`) dan backslash (`\`) di dalam blok YAMLMultiline di-escape secara otomatis agar string Lua yang dihasilkan valid secara sintaks dan berperilaku sebagaimana mestinya.
 
 ```yuescript
 str = |

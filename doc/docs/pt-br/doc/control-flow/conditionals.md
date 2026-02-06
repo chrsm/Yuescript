@@ -1,55 +1,55 @@
-# Conditionals
+# Condicionais
 
 ```yuescript
 have_coins = false
 if have_coins
-  print "Got coins"
+  print "Tem moedas"
 else
-  print "No coins"
+  print "Sem moedas"
 ```
 <YueDisplay>
 
 ```yue
 have_coins = false
 if have_coins
-  print "Got coins"
+  print "Tem moedas"
 else
-  print "No coins"
+  print "Sem moedas"
 ```
 
 </YueDisplay>
 
-A short syntax for single statements can also be used:
+Uma sintaxe curta para instruções únicas também pode ser usada:
 
 ```yuescript
 have_coins = false
-if have_coins then print "Got coins" else print "No coins"
+if have_coins then print "Tem moedas" else print "Sem moedas"
 ```
 <YueDisplay>
 
 ```yue
 have_coins = false
-if have_coins then print "Got coins" else print "No coins"
+if have_coins then print "Tem moedas" else print "Sem moedas"
 ```
 
 </YueDisplay>
 
-Because if statements can be used as expressions, this can also be written as:
+Como instruções if podem ser usadas como expressões, isso também pode ser escrito como:
 
 ```yuescript
 have_coins = false
-print if have_coins then "Got coins" else "No coins"
+print if have_coins then "Tem moedas" else "Sem moedas"
 ```
 <YueDisplay>
 
 ```yue
 have_coins = false
-print if have_coins then "Got coins" else "No coins"
+print if have_coins then "Tem moedas" else "Sem moedas"
 ```
 
 </YueDisplay>
 
-Conditionals can also be used in return statements and assignments:
+Condicionais também podem ser usados em instruções de retorno e atribuições:
 
 ```yuescript
 is_tall = (name) ->
@@ -59,11 +59,11 @@ is_tall = (name) ->
     false
 
 message = if is_tall "Rob"
-  "I am very tall"
+  "Sou muito alto"
 else
-  "I am not so tall"
+  "Não sou tão alto"
 
-print message -- prints: I am very tall
+print message -- imprime: Sou muito alto
 ```
 <YueDisplay>
 
@@ -75,53 +75,53 @@ is_tall = (name) ->
     false
 
 message = if is_tall "Rob"
-  "I am very tall"
+  "Sou muito alto"
 else
-  "I am not so tall"
+  "Não sou tão alto"
 
-print message -- prints: I am very tall
+print message -- imprime: Sou muito alto
 ```
 
 </YueDisplay>
 
-The opposite of if is unless:
+O oposto de if é unless:
 
 ```yuescript
 unless os.date("%A") == "Monday"
-  print "it is not Monday!"
+  print "não é segunda-feira!"
 ```
 <YueDisplay>
 
 ```yue
 unless os.date("%A") == "Monday"
-  print "it is not Monday!"
+  print "não é segunda-feira!"
 ```
 
 </YueDisplay>
 
 ```yuescript
-print "You're lucky!" unless math.random! > 0.1
+print "Você tem sorte!" unless math.random! > 0.1
 ```
 <YueDisplay>
 
 ```yue
-print "You're lucky!" unless math.random! > 0.1
+print "Você tem sorte!" unless math.random! > 0.1
 ```
 
 </YueDisplay>
 
-## In Expression
+## Em expressão
 
-You can write range checking code with an `in-expression`.
+Você pode escrever código de verificação de intervalo com uma `in-expression`.
 
 ```yuescript
 a = 5
 
 if a in [1, 3, 5, 7]
-  print "checking equality with discrete values"
+  print "verificando igualdade com valores discretos"
 
 if a in list
-  print "checking if `a` is in a list"
+  print "verificando se `a` está na lista"
 ```
 <YueDisplay>
 
@@ -129,21 +129,10 @@ if a in list
 a = 5
 
 if a in [1, 3, 5, 7]
-  print "checking equality with discrete values"
+  print "verificando igualdade com valores discretos"
 
 if a in list
-  print "checking if `a` is in a list"
-```
-
-</YueDisplay>
-
-```yuescript
-print "You're lucky!" unless math.random! > 0.1
-```
-<YueDisplay>
-
-```yue
-print "You're lucky!" unless math.random! > 0.1
+  print "verificando se `a` está na lista"
 ```
 
 </YueDisplay>

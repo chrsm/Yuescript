@@ -1,6 +1,6 @@
-# Varargs Assignment
+# Penugasan Varargs
 
-You can assign the results returned from a function  to a varargs symbol `...`. And then access its content using the Lua way.
+Anda dapat meng-assign hasil yang dikembalikan dari sebuah fungsi ke simbol varargs `...`. Lalu akses isinya menggunakan cara Lua.
 
 ```yuescript
 list = [1, 2, 3, 4, 5]

@@ -93,7 +93,7 @@ funcB = function()
 	return "fail to assign to the Lua macro defined variable"
 end
 do
--- raw Lua codes insertion
+-- inserção de códigos Lua brutos
 if cond then
   print("output")
 end
@@ -132,7 +132,7 @@ funcB = function()
 	return "fail to assign to the Lua macro defined variable"
 end
 do
--- raw Lua codes insertion
+-- inserção de códigos Lua brutos
 if cond then
   print("output")
 end
@@ -2476,7 +2476,7 @@ x = x * 10
 x = x / 10
 x = x % 10
 local s = s .. "world"
-local arg = arg or "default value"
+local arg = arg or "valor padrão"
 local a = 0
 local b = 0
 local c = 0
@@ -2488,7 +2488,7 @@ local z = x
 do
 	local a = 1
 	local x, y, z
-	print("forward declare all variables as locals")
+	print("declarar antecipadamente todas as variáveis como locais")
 	x = function()
 		return 1 + y + z
 	end
@@ -2498,13 +2498,13 @@ end
 do
 	local X = 1
 	local B
-	print("only forward declare upper case variables")
+	print("declarar antecipadamente apenas variáveis em maiúsculas")
 	local a = 1
 	B = 2
 end
 do
 	a = 1
-	print("declare all variables as globals")
+	print("declarar todas as variáveis como globais")
 	x = function()
 		return 1 + y + z
 	end
@@ -2512,10 +2512,10 @@ do
 end
 do
 	X = 1
-	print("only declare upper case variables as globals")
+	print("declarar apenas variáveis em maiúsculas como globais")
 	local a = 1
 	B = 2
-	local Temp = "a local value"
+	local Temp = "um valor local"
 end
 local hello = "world"
 local a, b, c = 1, 2, 3
@@ -2527,7 +2527,7 @@ x = x * 10
 x = x / 10
 x = x % 10
 local s = s .. "world"
-local arg = arg or "default value"
+local arg = arg or "valor padrão"
 local a = 0
 local b = 0
 local c = 0
@@ -2539,7 +2539,7 @@ local z = x
 do
 	local a = 1
 	local x, y, z
-	print("forward declare all variables as locals")
+	print("declarar antecipadamente todas as variáveis como locais")
 	x = function()
 		return 1 + y + z
 	end
@@ -2549,13 +2549,13 @@ end
 do
 	local X = 1
 	local B
-	print("only forward declare upper case variables")
+	print("declarar antecipadamente apenas variáveis em maiúsculas")
 	local a = 1
 	B = 2
 end
 do
 	a = 1
-	print("declare all variables as globals")
+	print("declarar todas as variáveis como globais")
 	x = function()
 		return 1 + y + z
 	end
@@ -2563,10 +2563,10 @@ do
 end
 do
 	X = 1
-	print("only declare upper case variables as globals")
+	print("declarar apenas variáveis em maiúsculas como globais")
 	local a = 1
 	B = 2
-	local Temp = "a local value"
+	local Temp = "um valor local"
 end
 local list = {
 	1,
@@ -2608,18 +2608,18 @@ if user then
 end
 local hello = os.getenv("hello")
 if hello then
-	print("You have hello", hello)
+	print("Você tem hello", hello)
 else
 	local world = os.getenv("world")
 	if world then
-		print("you have world", world)
+		print("você tem world", world)
 	else
-		print("nothing :(")
+		print("nada :(")
 	end
 end
 do
 	local success, result = pcall(function()
-		return "get result without problems"
+		return "obter resultado sem problemas"
 	end)
 	if success then
 		print(result)
@@ -2640,18 +2640,18 @@ if user then
 end
 local hello = os.getenv("hello")
 if hello then
-	print("You have hello", hello)
+	print("Você tem hello", hello)
 else
 	local world = os.getenv("world")
 	if world then
-		print("you have world", world)
+		print("você tem world", world)
 	else
-		print("nothing :(")
+		print("nada :(")
 	end
 end
 do
 	local success, result = pcall(function()
-		return "get result without problems"
+		return "obter resultado sem problemas"
 	end)
 	if success then
 		print(result)
@@ -2707,10 +2707,10 @@ local name, job
 local _obj_0 = person
 name, job = _obj_0.name, _obj_0.job
 if name == nil then
-	name = "nameless"
+	name = "sem nome"
 end
 if job == nil then
-	job = "jobless"
+	job = "sem emprego"
 end
 local two, four
 local _obj_0 = items
@@ -2824,10 +2824,10 @@ local name, job
 local _obj_0 = person
 name, job = _obj_0.name, _obj_0.job
 if name == nil then
-	name = "nameless"
+	name = "sem nome"
 end
 if job == nil then
-	job = "jobless"
+	job = "sem emprego"
 end
 local two, four
 local _obj_0 = items
@@ -3031,7 +3031,7 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _u1f31b = "月之脚本"
+local _u1f31b = "Script da Lua"
 _module_0["🌛"] = _u1f31b
 return _module_0
 local _module_0 = { }
@@ -3109,27 +3109,27 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _u1f31b = "月之脚本"
+local _u1f31b = "Script da Lua"
 _module_0["🌛"] = _u1f31b
 return _module_0
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Tem moedas")
 else
-	print("No coins")
+	print("Sem moedas")
 end
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Tem moedas")
 else
-	print("No coins")
+	print("Sem moedas")
 end
 local have_coins = false
 print((function()
 	if have_coins then
-		return "Got coins"
+		return "Tem moedas"
 	else
-		return "No coins"
+		return "Sem moedas"
 	end
 end)())
 local is_tall
@@ -3142,20 +3142,20 @@ is_tall = function(name)
 end
 local message
 if is_tall("Rob") then
-	message = "I am very tall"
+	message = "Sou muito alto"
 else
-	message = "I am not so tall"
+	message = "Não sou tão alto"
 end
 print(message)
 if not (os.date("%A") == "Monday") then
-	print("it is not Monday!")
+	print("não é segunda-feira!")
 end
 if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("Você tem sorte!")
 end
 local a = 5
 if (1 == a or 3 == a or 5 == a or 7 == a) then
-	print("checking equality with discrete values")
+	print("verificando igualdade com valores discretos")
 end
 if (function()
 	local _check_0 = list
@@ -3166,29 +3166,26 @@ if (function()
 	end
 	return false
 end)() then
-	print("checking if `a` is in a list")
-end
-if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("verificando se `a` está na lista")
 end
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Tem moedas")
 else
-	print("No coins")
+	print("Sem moedas")
 end
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Tem moedas")
 else
-	print("No coins")
+	print("Sem moedas")
 end
 local have_coins = false
 print((function()
 	if have_coins then
-		return "Got coins"
+		return "Tem moedas"
 	else
-		return "No coins"
+		return "Sem moedas"
 	end
 end)())
 local is_tall
@@ -3201,20 +3198,20 @@ is_tall = function(name)
 end
 local message
 if is_tall("Rob") then
-	message = "I am very tall"
+	message = "Sou muito alto"
 else
-	message = "I am not so tall"
+	message = "Não sou tão alto"
 end
 print(message)
 if not (os.date("%A") == "Monday") then
-	print("it is not Monday!")
+	print("não é segunda-feira!")
 end
 if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("Você tem sorte!")
 end
 local a = 5
 if (1 == a or 3 == a or 5 == a or 7 == a) then
-	print("checking equality with discrete values")
+	print("verificando igualdade com valores discretos")
 end
 if (function()
 	local _check_0 = list
@@ -3225,10 +3222,7 @@ if (function()
 	end
 	return false
 end)() then
-	print("checking if `a` is in a list")
-end
-if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("verificando se `a` está na lista")
 end
 for i = 10, 20 do
 	print(i)
@@ -3420,11 +3414,11 @@ end
 odds = _accum_0
 local name = "Dan"
 if "Robert" == name then
-	print("You are Robert")
+	print("Você é Robert")
 elseif "Dan" == name or "Daniel" == name then
-	print("Your name, it's Dan")
+	print("Seu nome é Dan")
 else
-	print("I don't know about you with name " .. tostring(name))
+	print("Não sei quem você é com o nome " .. tostring(name))
 end
 local b = 1
 local next_number
@@ -3433,30 +3427,30 @@ if 1 == b then
 elseif 2 == b then
 	next_number = 3
 else
-	next_number = error("can't count that high!")
+	next_number = error("não consigo contar tão alto!")
 end
 local msg
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	msg = "you are lucky"
+	msg = "você tem sorte"
 elseif 2 == _exp_0 then
-	msg = "you are almost lucky"
+	msg = "você quase tem sorte"
 else
-	msg = "not so lucky"
+	msg = "não tão sortudo"
 end
 do
 	local _exp_0 = math.random(1, 5)
 	if 1 == _exp_0 then
-		print("you are lucky")
+		print("você tem sorte")
 	else
-		print("not so lucky")
+		print("não tão sortudo")
 	end
 end
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	print("you are lucky")
+	print("você tem sorte")
 else
-	print("not so lucky")
+	print("não tão sortudo")
 end
 local items = {
 	{
@@ -3486,7 +3480,7 @@ for _index_0 = 1, #items do
 			local width = item.width
 			local height = item.height
 			if width ~= nil and height ~= nil then
-				print("size " .. tostring(width) .. ", " .. tostring(height))
+				print("tamanho " .. tostring(width) .. ", " .. tostring(height))
 			end
 		end
 	end
@@ -3563,7 +3557,7 @@ if _tab_0 then
 	local result = _exp_0.result
 	if true == _exp_0.success and result ~= nil then
 		_match_0 = true
-		print("success", result)
+		print("sucesso", result)
 	end
 end
 if not _match_0 then
@@ -3571,11 +3565,11 @@ if not _match_0 then
 	if _tab_0 then
 		if false == _exp_0.success then
 			_match_1 = true
-			print("failed", result)
+			print("falhou", result)
 		end
 	end
 	if not _match_1 then
-		print("invalid")
+		print("inválido")
 	end
 end
 local _exp_0 = tb
@@ -3600,7 +3594,7 @@ if _tab_0 then
 	end
 	if "success" == _val_0 and content ~= nil then
 		_match_0 = true
-		print("success", content)
+		print("sucesso", content)
 	end
 end
 if not _match_0 then
@@ -3623,11 +3617,11 @@ if not _match_0 then
 		end
 		if "error" == _val_0 and content ~= nil then
 			_match_1 = true
-			print("failed", content)
+			print("erro", content)
 		end
 	end
 	if not _match_1 then
-		print("invalid")
+		print("inválido")
 	end
 end
 local _exp_0 = tb
@@ -3678,7 +3672,7 @@ if _tab_0 then
 		end
 	end
 	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
-		print("matched", fourth)
+		print("correspondido", fourth)
 	end
 end
 local segments = {
@@ -3705,18 +3699,18 @@ if _tab_0 then
 	local resource = segments[#segments - 1]
 	local action = segments[#segments]
 	if resource ~= nil and action ~= nil then
-		print("Group:", groups)
-		print("Resource:", resource)
-		print("Action:", action)
+		print("Grupo:", groups)
+		print("Recurso:", resource)
+		print("Ação:", action)
 	end
 end
 local name = "Dan"
 if "Robert" == name then
-	print("You are Robert")
+	print("Você é Robert")
 elseif "Dan" == name or "Daniel" == name then
-	print("Your name, it's Dan")
+	print("Seu nome é Dan")
 else
-	print("I don't know about you with name " .. tostring(name))
+	print("Não sei quem você é com o nome " .. tostring(name))
 end
 local b = 1
 local next_number
@@ -3725,30 +3719,30 @@ if 1 == b then
 elseif 2 == b then
 	next_number = 3
 else
-	next_number = error("can't count that high!")
+	next_number = error("não consigo contar tão alto!")
 end
 local msg
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	msg = "you are lucky"
+	msg = "você tem sorte"
 elseif 2 == _exp_0 then
-	msg = "you are almost lucky"
+	msg = "você quase tem sorte"
 else
-	msg = "not so lucky"
+	msg = "não tão sortudo"
 end
 do
 	local _exp_0 = math.random(1, 5)
 	if 1 == _exp_0 then
-		print("you are lucky")
+		print("você tem sorte")
 	else
-		print("not so lucky")
+		print("não tão sortudo")
 	end
 end
 local _exp_0 = math.random(1, 5)
 if 1 == _exp_0 then
-	print("you are lucky")
+	print("você tem sorte")
 else
-	print("not so lucky")
+	print("não tão sortudo")
 end
 local items = {
 	{
@@ -3778,7 +3772,7 @@ for _index_0 = 1, #items do
 			local width = item.width
 			local height = item.height
 			if width ~= nil and height ~= nil then
-				print("size " .. tostring(width) .. ", " .. tostring(height))
+				print("tamanho " .. tostring(width) .. ", " .. tostring(height))
 			end
 		end
 	end
@@ -3855,7 +3849,7 @@ if _tab_0 then
 	local result = _exp_0.result
 	if true == _exp_0.success and result ~= nil then
 		_match_0 = true
-		print("success", result)
+		print("sucesso", result)
 	end
 end
 if not _match_0 then
@@ -3863,11 +3857,11 @@ if not _match_0 then
 	if _tab_0 then
 		if false == _exp_0.success then
 			_match_1 = true
-			print("failed", result)
+			print("falhou", result)
 		end
 	end
 	if not _match_1 then
-		print("invalid")
+		print("inválido")
 	end
 end
 local _exp_0 = tb
@@ -3892,7 +3886,7 @@ if _tab_0 then
 	end
 	if "success" == _val_0 and content ~= nil then
 		_match_0 = true
-		print("success", content)
+		print("sucesso", content)
 	end
 end
 if not _match_0 then
@@ -3915,11 +3909,11 @@ if not _match_0 then
 		end
 		if "error" == _val_0 and content ~= nil then
 			_match_1 = true
-			print("failed", content)
+			print("erro", content)
 		end
 	end
 	if not _match_1 then
-		print("invalid")
+		print("inválido")
 	end
 end
 local _exp_0 = tb
@@ -3970,7 +3964,7 @@ if _tab_0 then
 		end
 	end
 	if 1 == _val_0 and 2 == _val_1 and 3 == _val_2 and 4 == _val_3 and 5 == _val_4 and 6 == _val_5 and fourth ~= nil then
-		print("matched", fourth)
+		print("correspondido", fourth)
 	end
 end
 local segments = {
@@ -3997,9 +3991,9 @@ if _tab_0 then
 	local resource = segments[#segments - 1]
 	local action = segments[#segments]
 	if resource ~= nil and action ~= nil then
-		print("Group:", groups)
-		print("Resource:", resource)
-		print("Action:", action)
+		print("Grupo:", groups)
+		print("Recurso:", resource)
+		print("Ação:", action)
 	end
 end
 local i = 10
@@ -4288,8 +4282,8 @@ f = function(...)
 		n = select("#", ...),
 		...
 	}
-	print("argument count:", t.n)
-	print("table length:", #t)
+	print("contagem de argumentos:", t.n)
+	print("comprimento da tabela:", #t)
 	for i = 1, t.n do
 		print(t[i])
 	end
@@ -4472,8 +4466,8 @@ f = function(...)
 		n = select("#", ...),
 		...
 	}
-	print("argument count:", t.n)
-	print("table length:", #t)
+	print("contagem de argumentos:", t.n)
+	print("comprimento da tabela:", #t)
 	for i = 1, t.n do
 		print(t[i])
 	end
@@ -4519,7 +4513,7 @@ func(3000, "192.168.1.1")
 local a <const> = 123
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("Out of scope.")
+		return print("Fora do escopo.")
 	end
 })
 local a, b, c, d
@@ -4529,7 +4523,7 @@ Constant = 123
 local a <const> = 123
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("Out of scope.")
+		return print("Fora do escopo.")
 	end
 })
 local a, b, c, d
@@ -4688,7 +4682,7 @@ local d = a + b + c
 print(d.value)
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("out of scope")
+		return print("fora do escopo")
 	end
 })
 local tb = setmetatable({ }, {
@@ -4981,7 +4975,7 @@ local d = a + b + c
 print(d.value)
 local _ <close> = setmetatable({ }, {
 	__close = function()
-		return print("out of scope")
+		return print("fora do escopo")
 	end
 })
 local tb = setmetatable({ }, {
@@ -5122,8 +5116,8 @@ local tb = {
 		}
 	}
 }
-local some_string = "Here is a string\n  that has a line break in it."
-print("I am " .. tostring(math.random() * 100) .. "% sure.")
+local some_string = "Aqui está uma string\n  que tem uma quebra de linha."
+print("Tenho " .. tostring(math.random() * 100) .. "% de certeza.")
 local integer = 1000000
 local hex = 0xEFBBBF
 local binary = 19
@@ -5133,9 +5127,9 @@ fn = function()
 	local str = "foo:\n  bar: baz"
 	return str
 end
-local str = "path: \"C:\\Program Files\\App\"\nnote: 'He said: \"" .. tostring(Hello) .. "!\"'"
-local some_string = "Here is a string\n  that has a line break in it."
-print("I am " .. tostring(math.random() * 100) .. "% sure.")
+local str = "path: \"C:\\Program Files\\App\"\nnote: 'Ele disse: \"" .. tostring(Hello) .. "!\"'"
+local some_string = "Aqui está uma string\n  que tem uma quebra de linha."
+print("Tenho " .. tostring(math.random() * 100) .. "% de certeza.")
 local integer = 1000000
 local hex = 0xEFBBBF
 local binary = 19
@@ -5145,4 +5139,4 @@ fn = function()
 	local str = "foo:\n  bar: baz"
 	return str
 end
-local str = "path: \"C:\\Program Files\\App\"\nnote: 'He said: \"" .. tostring(Hello) .. "!\"'"
+local str = "path: \"C:\\Program Files\\App\"\nnote: 'Ele disse: \"" .. tostring(Hello) .. "!\"'"

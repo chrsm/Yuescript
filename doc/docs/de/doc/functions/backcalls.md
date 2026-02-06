@@ -1,21 +1,21 @@
 # Backcalls
 
-Backcalls are used for unnesting callbacks. They are defined using arrows pointed to the left as the last parameter by default filling in a function call. All the syntax is mostly the same as regular arrow functions except that it is just pointing the other way and the function body does not require indent.
+Backcalls werden verwendet, um Callbacks zu entkoppeln (unnesting). Sie werden mit Pfeilen nach links definiert und füllen standardmäßig als letzter Parameter einen Funktionsaufruf. Die Syntax ist weitgehend wie bei normalen Pfeilfunktionen, nur dass der Pfeil in die andere Richtung zeigt und der Funktionskörper keine Einrückung benötigt.
 
 ```yuescript
 x <- f
-print "hello" .. x
+print "hallo" .. x
 ```
 <YueDisplay>
 
 ```yue
 x <- f
-print "hello" .. x
+print "hallo" .. x
 ```
 
 </YueDisplay>
 
-Fat arrow functions are also available.
+Fat-Arrow-Funktionen sind ebenfalls verfügbar.
 
 ```yuescript
 <= f
@@ -30,7 +30,7 @@ print @value
 
 </YueDisplay>
 
-You can specify a placeholder for where you want the backcall function to go as a parameter.
+Du kannst einen Platzhalter angeben, an welcher Stelle die Backcall-Funktion als Parameter eingesetzt werden soll.
 
 ```yuescript
 (x) <- map _, [1, 2, 3]
@@ -45,11 +45,11 @@ x * 2
 
 </YueDisplay>
 
-If you wish to have further code after your backcalls, you can set them aside with a do statement. And the parentheses can be omitted with non-fat arrow functions.
+Wenn du nach deinen Backcalls weiteren Code haben willst, kannst du sie mit einem `do`-Statement absetzen. Bei Nicht-Fat-Arrow-Funktionen können die Klammern weggelassen werden.
 
 ```yuescript
 result, msg = do
-  data <- readAsync "filename.txt"
+  data <- readAsync "dateiname.txt"
   print data
   info <- processAsync data
   check info
@@ -59,7 +59,7 @@ print result, msg
 
 ```yue
 result, msg = do
-  data <- readAsync "filename.txt"
+  data <- readAsync "dateiname.txt"
   print data
   info <- processAsync data
   check info

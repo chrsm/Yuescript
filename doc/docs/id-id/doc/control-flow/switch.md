@@ -1,6 +1,6 @@
-# Switch
+# Pernyataan Switch
 
-The switch statement is shorthand for writing a series of if statements that check against the same value. Note that the value is only evaluated once. Like if statements, switches can have an else block to handle no matches. Comparison is done with the == operator. In switch statement, you can also use assignment expression to store temporary variable value.
+Pernyataan switch adalah bentuk singkat untuk menulis serangkaian if yang membandingkan nilai yang sama. Perhatikan bahwa nilainya hanya dievaluasi sekali. Seperti if, switch bisa memiliki blok else untuk menangani tidak ada yang cocok. Perbandingan dilakukan dengan operator `==`. Di dalam switch, Anda juga bisa memakai ekspresi assignment untuk menyimpan nilai variabel sementara.
 
 ```yuescript
 switch name := "Dan"
@@ -25,9 +25,9 @@ switch name := "Dan"
 
 </YueDisplay>
 
-A switch when clause can match against multiple values by listing them out comma separated.
+Klausa when pada switch bisa mencocokkan beberapa nilai dengan menuliskannya dipisah koma.
 
-Switches can be used as expressions as well, here we can assign the result of the switch to a variable:
+Switch juga bisa dipakai sebagai ekspresi; di sini kita dapat menetapkan hasil switch ke sebuah variabel:
 
 ```yuescript
 b = 1
@@ -54,7 +54,7 @@ next_number = switch b
 
 </YueDisplay>
 
-We can use the then keyword to write a switch's when block on a single line. No extra keyword is needed to write the else block on a single line.
+Kita bisa memakai kata kunci `then` untuk menulis blok when switch pada satu baris. Tidak ada kata kunci tambahan yang dibutuhkan untuk menulis blok else pada satu baris.
 
 ```yuescript
 msg = switch math.random(1, 5)
@@ -73,7 +73,7 @@ msg = switch math.random(1, 5)
 
 </YueDisplay>
 
-If you want to write code with one less indent when writing a switch statement, you can put the first when clause on the statement start line, and then all other clauses can be written with one less indent.
+Jika Anda ingin menulis kode dengan satu indentasi lebih sedikit saat menulis switch, Anda bisa menaruh klausa when pertama pada baris awal pernyataan, lalu semua klausa lain dapat ditulis dengan satu indentasi lebih sedikit.
 
 ```yuescript
 switch math.random(1, 5)
@@ -104,11 +104,11 @@ else
 
 </YueDisplay>
 
-It is worth noting the order of the case comparison expression. The case's expression is on the left hand side. This can be useful if the case's expression wants to overwrite how the comparison is done by defining an eq metamethod.
+Perlu dicatat urutan ekspresi perbandingan kasus. Ekspresi kasus berada di sisi kiri. Ini bisa berguna jika ekspresi kasus ingin mengganti cara perbandingan dengan mendefinisikan metamethod `eq`.
 
-## Table Matching
+## Pencocokan Tabel
 
-You can do table matching in a switch when clause, if the table can be destructured by a specific structure and get non-nil values.
+Anda bisa melakukan pencocokan tabel dalam klausa when switch, jika tabel dapat didestrukturisasi oleh struktur tertentu dan mendapatkan nilai non-nil.
 
 ```yuescript
 items =
@@ -143,7 +143,7 @@ for item in *items
 
 </YueDisplay>
 
-You can use default values to optionally destructure the table for some fields.
+Anda dapat menggunakan nilai default untuk mendestrukturisasi tabel secara opsional pada beberapa field.
 
 ```yuescript
 item = {}
@@ -168,9 +168,9 @@ switch item
 
 </YueDisplay>
 
-You can also match against array elements, table fields, and even nested structures with array or table literals.
+Anda juga bisa mencocokkan elemen array, field tabel, dan bahkan struktur bertingkat dengan literal array atau tabel.
 
-Match against array elements.
+Cocokkan terhadap elemen array.
 
 ```yuescript
 switch tb
@@ -195,7 +195,7 @@ switch tb
 
 </YueDisplay>
 
-Match against table fields with destructuring.
+Cocokkan terhadap field tabel dengan destrukturisasi.
 
 ```yuescript
 switch tb
@@ -220,7 +220,7 @@ switch tb
 
 </YueDisplay>
 
-Match against nested table structures.
+Cocokkan terhadap struktur tabel bertingkat.
 
 ```yuescript
 switch tb
@@ -245,7 +245,7 @@ switch tb
 
 </YueDisplay>
 
-Match against array of tables.
+Cocokkan terhadap array dari tabel.
 
 ```yuescript
 switch tb
@@ -272,7 +272,7 @@ switch tb
 
 </YueDisplay>
 
-Match against a list and capture a range of elements.
+Cocokkan terhadap daftar dan tangkap rentang elemen.
 
 ```yuescript
 segments = ["admin", "users", "logs", "view"]

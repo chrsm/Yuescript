@@ -1,6 +1,6 @@
-# If Assignment
+# Atribuição em if
 
-`if` and `elseif` blocks can take an assignment in place of a conditional expression. Upon evaluating the conditional, the assignment will take place and the value that was assigned to will be used as the conditional expression. The assigned variable is only in scope for the body of the conditional, meaning it is never available if the value is not truthy. And you have to use "the walrus operator" `:=` instead of `=` to do assignment.
+Os blocos `if` e `elseif` podem receber uma atribuição no lugar de uma expressão condicional. Ao avaliar o condicional, a atribuição será realizada e o valor que foi atribuído será usado como expressão condicional. A variável atribuída está no escopo apenas para o corpo do condicional, ou seja, nunca está disponível se o valor não for truthy. E você precisa usar o "operador walrus" `:=` em vez de `=` para fazer a atribuição.
 
 ```yuescript
 if user := database.find_user "moon"
@@ -17,55 +17,55 @@ if user := database.find_user "moon"
 
 ```yuescript
 if hello := os.getenv "hello"
-  print "You have hello", hello
+  print "Você tem hello", hello
 elseif world := os.getenv "world"
-  print "you have world", world
+  print "você tem world", world
 else
-  print "nothing :("
+  print "nada :("
 ```
 <YueDisplay>
 
 ```yue
 if hello := os.getenv "hello"
-  print "You have hello", hello
+  print "Você tem hello", hello
 elseif world := os.getenv "world"
-  print "you have world", world
+  print "você tem world", world
 else
-  print "nothing :("
+  print "nada :("
 ```
 
 </YueDisplay>
 
-If assignment with multiple return values. Only the first value is getting checked, other values are scoped.
+Atribuição em if com múltiplos valores de retorno. Apenas o primeiro valor é verificado, os outros valores estão no escopo.
 ```yuescript
-if success, result := pcall -> "get result without problems"
-  print result -- variable result is scoped
+if success, result := pcall -> "obter resultado sem problemas"
+  print result -- variável result está no escopo
 print "OK"
 ```
 <YueDisplay>
 
 ```yue
-if success, result := pcall -> "get result without problems"
-  print result -- variable result is scoped
+if success, result := pcall -> "obter resultado sem problemas"
+  print result -- variável result está no escopo
 print "OK"
 ```
 
 </YueDisplay>
 
-## While Assignment
+## Atribuição em while
 
-You can also use if assignment in a while loop to get the value as the loop condition.
+Você também pode usar atribuição em if em um loop while para obter o valor como condição do loop.
 
 ```yuescript
 while byte := stream\read_one!
-  -- do something with the byte
+  -- fazer algo com o byte
   print byte
 ```
 <YueDisplay>
 
 ```yue
 while byte := stream\read_one!
-  -- do something with the byte
+  -- fazer algo com o byte
   print byte
 ```
 

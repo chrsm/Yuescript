@@ -3031,7 +3031,7 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _u1f31b = "月之脚本"
+local _u1f31b = "Script of Moon"
 _module_0["🌛"] = _u1f31b
 return _module_0
 local _module_0 = { }
@@ -3109,7 +3109,7 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _u1f31b = "月之脚本"
+local _u1f31b = "Script of Moon"
 _module_0["🌛"] = _u1f31b
 return _module_0
 local have_coins = false
@@ -3168,9 +3168,6 @@ if (function()
 end)() then
 	print("checking if `a` is in a list")
 end
-if not (math.random() > 0.1) then
-	print("You're lucky!")
-end
 local have_coins = false
 if have_coins then
 	print("Got coins")
@@ -3226,9 +3223,6 @@ if (function()
 	return false
 end)() then
 	print("checking if `a` is in a list")
-end
-if not (math.random() > 0.1) then
-	print("You're lucky!")
 end
 for i = 10, 20 do
 	print(i)

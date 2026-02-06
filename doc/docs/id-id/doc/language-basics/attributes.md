@@ -1,6 +1,6 @@
-# Attributes
+# Atribut
 
-Syntax support for Lua 5.4 attributes. And you can still use both the `const` and `close` declaration and get constant check and scoped callback working when targeting Lua versions below 5.4.
+Dukungan sintaks untuk atribut Lua 5.4. Anda juga masih bisa menggunakan deklarasi `const` dan `close` dan mendapatkan pemeriksaan konstanta serta callback berbatas-scope ketika menargetkan versi Lua di bawah 5.4.
 
 ```yuescript
 const a = 123
@@ -15,7 +15,7 @@ close _ = <close>: -> print "Out of scope."
 
 </YueDisplay>
 
-You can do desctructuring with variables attributed as constant.
+Anda dapat melakukan destrukturisasi dengan variabel yang diberi atribut sebagai konstanta.
 
 ```yuescript
 const {:a, :b, c, d} = tb
@@ -30,7 +30,7 @@ const {:a, :b, c, d} = tb
 
 </YueDisplay>
 
-You can also declare a global variable to be `const`.
+Anda juga bisa mendeklarasikan variabel global sebagai `const`.
 
 ```yuescript
 global const Constant = 123

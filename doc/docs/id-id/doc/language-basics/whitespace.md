@@ -1,10 +1,10 @@
-# Whitespace
+# Spasi Kosong
 
-YueScript is a whitespace significant language. You have to write some code block in the same indent with space **' '** or tab **'\t'** like function body, value list and some control blocks. And expressions containing different whitespaces might mean different things. Tab is treated like 4 space, but it's better not mix the use of spaces and tabs.
+YueScript adalah bahasa yang peka terhadap spasi. Anda harus menulis beberapa blok kode dengan indentasi yang sama menggunakan spasi **' '** atau tab **'\t'** seperti badan fungsi, daftar nilai, dan beberapa blok kontrol. Ekspresi yang mengandung spasi berbeda dapat bermakna berbeda. Tab diperlakukan seperti 4 spasi, tetapi sebaiknya jangan mencampur penggunaan spasi dan tab.
 
-## Statement Separator
+## Pemisah Pernyataan
 
-A statement normally ends at a line break. You can also use a semicolon `;` to explicitly terminate a statement, which allows writing multiple statements on the same line:
+Sebuah pernyataan biasanya berakhir pada pergantian baris. Anda juga bisa memakai titik koma `;` untuk mengakhiri pernyataan secara eksplisit, yang memungkinkan menulis beberapa pernyataan pada satu baris:
 
 ```yuescript
 a = 1; b = 2; print a + b
@@ -17,9 +17,9 @@ a = 1; b = 2; print a + b
 
 </YueDisplay>
 
-## Multiline Chaining
+## Rantai Multibaris
 
-You can write multi-line chaining function calls with a same indent.
+Anda bisa menulis pemanggilan fungsi berantai multi-baris dengan indentasi yang sama.
 
 ```yuescript
 Rx.Observable

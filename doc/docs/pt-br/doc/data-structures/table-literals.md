@@ -1,6 +1,6 @@
-# Table Literals
+# Literais de tabela
 
-Like in Lua, tables are delimited in curly braces.
+Como no Lua, as tabelas são delimitadas por chaves.
 
 ```yuescript
 some_values = [1, 2, 3, 4]
@@ -13,7 +13,7 @@ some_values = [1, 2, 3, 4]
 
 </YueDisplay>
 
-Unlike Lua, assigning a value to a key in a table is done with **:** (instead of **=**).
+Diferente do Lua, atribuir um valor a uma chave em uma tabela é feito com **:** (em vez de **=**).
 
 ```yuescript
 some_values = {
@@ -34,7 +34,7 @@ some_values = {
 
 </YueDisplay>
 
-The curly braces can be left off if a single table of key value pairs is being assigned.
+As chaves podem ser omitidas se uma única tabela de pares chave-valor está sendo atribuída.
 
 ```yuescript
 profile =
@@ -53,7 +53,7 @@ profile =
 
 </YueDisplay>
 
-Newlines can be used to delimit values instead of a comma (or both):
+Quebras de linha podem ser usadas para delimitar valores em vez de vírgula (ou ambos):
 
 ```yuescript
 values = {
@@ -76,7 +76,7 @@ values = {
 
 </YueDisplay>
 
-When creating a single line table literal, the curly braces can also be left off:
+Ao criar um literal de tabela em uma única linha, as chaves também podem ser omitidas:
 
 ```yuescript
 my_function dance: "Tango", partner: "none"
@@ -93,7 +93,7 @@ y = type: "dog", legs: 4, tails: 1
 
 </YueDisplay>
 
-The keys of a table literal can be language keywords without being escaped:
+As chaves de um literal de tabela podem ser palavras-chave da linguagem sem precisar escapar:
 
 ```yuescript
 tbl = {
@@ -112,7 +112,7 @@ tbl = {
 
 </YueDisplay>
 
-If you are constructing a table out of variables and wish the keys to be the same as the variable names, then the **:** prefix operator can be used:
+Se você está construindo uma tabela a partir de variáveis e deseja que as chaves sejam iguais aos nomes das variáveis, então o operador de prefixo **:** pode ser usado:
 
 ```yuescript
 hair = "golden"
@@ -133,7 +133,7 @@ print_table :hair, :height
 
 </YueDisplay>
 
-If you want the key of a field in the table to to be result of an expression, then you can wrap it in **[ ]**, just like in Lua. You can also use a string literal directly as a key, leaving out the square brackets. This is useful if your key has any special characters.
+Se você quiser que a chave de um campo na tabela seja o resultado de uma expressão, então pode envolvê-la em **[ ]**, assim como no Lua. Você também pode usar um literal de string diretamente como chave, omitindo os colchetes. Isso é útil se sua chave tiver caracteres especiais.
 
 ```yuescript
 t = {
@@ -152,7 +152,7 @@ t = {
 
 </YueDisplay>
 
-Lua tables have both an array part and a hash part, but sometimes you want to make a semantic distinction between array and hash usage when writing Lua tables. Then you can write Lua table with **[ ]** instead of **{ }** to represent an array table and writing any key value pair in a list table won't be allowed.
+As tabelas Lua têm tanto uma parte array quanto uma parte hash, mas às vezes você quer fazer uma distinção semântica entre uso de array e hash ao escrever tabelas Lua. Então você pode escrever tabela Lua com **[ ]** em vez de **{ }** para representar uma tabela array, e escrever qualquer par chave-valor em uma tabela lista não será permitido.
 
 ```yuescript
 some_values = [1, 2, 3, 4]

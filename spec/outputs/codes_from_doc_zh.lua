@@ -3168,9 +3168,6 @@ if (function()
 end)() then
 	print("检查`a`是否在列表中")
 end
-if not (math.random() > 0.1) then
-	print("你很幸运!")
-end
 local have_coins = false
 if have_coins then
 	print("有硬币")
@@ -3226,9 +3223,6 @@ if (function()
 	return false
 end)() then
 	print("检查`a`是否在列表中")
-end
-if not (math.random() > 0.1) then
-	print("你很幸运!")
 end
 for i = 10, 20 do
 	print(i)

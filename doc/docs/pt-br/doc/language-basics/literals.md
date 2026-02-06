@@ -1,33 +1,33 @@
-# Literals
+# Literais
 
-All of the primitive literals in Lua can be used. This applies to numbers, strings, booleans, and **nil**.
+Todos os literais primitivos do Lua podem ser usados. Isso se aplica a números, strings, booleanos e **nil**.
 
-Unlike Lua, Line breaks are allowed inside of single and double quote strings without an escape sequence:
+Diferente do Lua, quebras de linha são permitidas dentro de strings com aspas simples e duplas sem sequência de escape:
 
 ```yuescript
-some_string = "Here is a string
-  that has a line break in it."
+some_string = "Aqui está uma string
+  que tem uma quebra de linha."
 
--- You can mix expressions into string literals using #{} syntax.
--- String interpolation is only available in double quoted strings.
-print "I am #{math.random! * 100}% sure."
+-- Você pode misturar expressões em literais de string usando a sintaxe #{}.
+-- Interpolação de string está disponível apenas em strings com aspas duplas.
+print "Tenho #{math.random! * 100}% de certeza."
 ```
 <YueDisplay>
 
 ```yue
-some_string = "Here is a string
-  that has a line break in it."
+some_string = "Aqui está uma string
+  que tem uma quebra de linha."
 
--- You can mix expressions into string literals using #{} syntax.
--- String interpolation is only available in double quoted strings.
-print "I am #{math.random! * 100}% sure."
+-- Você pode misturar expressões em literais de string usando a sintaxe #{}.
+-- Interpolação de string está disponível apenas em strings com aspas duplas.
+print "Tenho #{math.random! * 100}% de certeza."
 ```
 
 </YueDisplay>
 
-## Number Literals
+## Literais numéricos
 
-You can use underscores in a number literal to increase readability.
+Você pode usar underscores em um literal numérico para aumentar a legibilidade.
 
 ```yuescript
 integer = 1_000_000
@@ -44,9 +44,9 @@ binary = 0B10011
 
 </YueDisplay>
 
-## YAML Multiline String
+## String multilinha estilo YAML
 
-The `|` prefix introduces a YAML-style multiline string literal:
+O prefixo `|` introduz um literal de string multilinha no estilo YAML:
 
 ```yuescript
 str = |
@@ -67,9 +67,9 @@ str = |
 
 </YueDisplay>
 
-This allows writing structured multiline text conveniently. All line breaks and indentation are preserved relative to the first non-empty line, and expressions inside `#{...}` are interpolated automatically as `tostring(expr)`.
+Isso permite escrever texto estruturado multilinha convenientemente. Todas as quebras de linha e indentação são preservadas em relação à primeira linha não vazia, e expressões dentro de `#{...}` são interpoladas automaticamente como `tostring(expr)`.
 
-YAML Multiline String automatically detects the common leading whitespace prefix (minimum indentation across all non-empty lines) and removes it from all lines. This makes it easy to indent your code visually without affecting the resulting string content.
+A string multilinha YAML detecta automaticamente o prefixo comum de espaço em branco à esquerda (indentação mínima em todas as linhas não vazias) e remove-o de todas as linhas. Isso facilita a indentação visual do seu código sem afetar o conteúdo da string resultante.
 
 ```yuescript
 fn = ->
@@ -90,21 +90,21 @@ fn = ->
 
 </YueDisplay>
 
-Internal indentation is preserved relative to the removed common prefix, allowing clean nested structures.
+A indentação interna é preservada em relação ao prefixo comum removido, permitindo estruturas aninhadas limpas.
 
-All special characters like quotes (`"`) and backslashes (`\`) in the YAMLMultiline block are automatically escaped so that the generated Lua string is syntactically valid and behaves as expected.
+Todos os caracteres especiais como aspas (`"`) e barras invertidas (`\`) no bloco YAML Multiline são escapados automaticamente para que a string Lua gerada seja sintaticamente válida e se comporte como esperado.
 
 ```yuescript
 str = |
   path: "C:\Program Files\App"
-  note: 'He said: "#{Hello}!"'
+  note: 'Ele disse: "#{Hello}!"'
 ```
 <YueDisplay>
 
 ```yue
 str = |
   path: "C:\Program Files\App"
-  note: 'He said: "#{Hello}!"'
+  note: 'Ele disse: "#{Hello}!"'
 ```
 
 </YueDisplay>

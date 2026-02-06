@@ -1,6 +1,6 @@
-# While Loop
+# Perulangan While
 
-The while loop also comes in four variations:
+Perulangan while juga memiliki empat variasi:
 
 ```yuescript
 i = 10
@@ -43,11 +43,11 @@ until running == false do my_function!
 
 </YueDisplay>
 
-Like for loops, the while loop can also be used an expression. Additionally, for a function to return the accumulated value of a while loop, the statement must be explicitly returned.
+Seperti loop for, loop while juga bisa digunakan sebagai ekspresi. Selain itu, agar sebuah fungsi mengembalikan nilai akumulasi dari loop while, pernyataannya harus di-return secara eksplisit.
 
 ## Repeat Loop
 
-The repeat loop comes from Lua:
+Loop repeat berasal dari Lua:
 
 ```yuescript
 i = 10

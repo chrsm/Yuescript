@@ -1,6 +1,6 @@
-# Line Decorators
+# Decoradores de linha
 
-For convenience, the for loop and if statement can be applied to single statements at the end of the line:
+Por conveniência, o loop for e a instrução if podem ser aplicados a instruções únicas no final da linha:
 
 ```yuescript
 print "hello world" if name == "Rob"
@@ -13,7 +13,7 @@ print "hello world" if name == "Rob"
 
 </YueDisplay>
 
-And with basic loops:
+E com loops básicos:
 
 ```yuescript
 print "item: ", item for item in *items
@@ -26,7 +26,7 @@ print "item: ", item for item in *items
 
 </YueDisplay>
 
-And with while loops:
+E com loops while:
 
 ```yuescript
 game\update! while game\isRunning!

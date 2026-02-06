@@ -1,6 +1,6 @@
-# While Loop
+# While-Schleife
 
-The while loop also comes in four variations:
+Die `while`-Schleife gibt es ebenfalls in vier Variationen:
 
 ```yuescript
 i = 10
@@ -43,11 +43,11 @@ until running == false do my_function!
 
 </YueDisplay>
 
-Like for loops, the while loop can also be used an expression. Additionally, for a function to return the accumulated value of a while loop, the statement must be explicitly returned.
+Wie bei `for`-Schleifen kann die `while`-Schleife auch als Ausdruck verwendet werden. Damit eine Funktion den akkumulierten Wert einer `while`-Schleife zurückgibt, muss die Anweisung explizit mit `return` zurückgegeben werden.
 
-## Repeat Loop
+## Repeat-Schleife
 
-The repeat loop comes from Lua:
+Die `repeat`-Schleife stammt aus Lua:
 
 ```yuescript
 i = 10

@@ -1,21 +1,21 @@
-# Attributes
+# Attribute
 
-Syntax support for Lua 5.4 attributes. And you can still use both the `const` and `close` declaration and get constant check and scoped callback working when targeting Lua versions below 5.4.
+Syntax-Unterstützung für Lua-5.4-Attribute. Du kannst weiterhin die Deklarationen `const` und `close` verwenden und erhältst Konstantenprüfung sowie Scoped-Callbacks, wenn du auf Lua-Versionen unter 5.4 zielst.
 
 ```yuescript
 const a = 123
-close _ = <close>: -> print "Out of scope."
+close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs."
 ```
 <YueDisplay>
 
 ```yue
 const a = 123
-close _ = <close>: -> print "Out of scope."
+close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs."
 ```
 
 </YueDisplay>
 
-You can do desctructuring with variables attributed as constant.
+Du kannst Destructuring mit als konstant markierten Variablen verwenden.
 
 ```yuescript
 const {:a, :b, c, d} = tb
@@ -30,7 +30,7 @@ const {:a, :b, c, d} = tb
 
 </YueDisplay>
 
-You can also declare a global variable to be `const`.
+Du kannst auch eine globale Variable als `const` deklarieren.
 
 ```yuescript
 global const Constant = 123

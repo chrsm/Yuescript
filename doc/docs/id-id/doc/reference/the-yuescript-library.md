@@ -1,20 +1,20 @@
-# The YueScript Library
+# Pustaka YueScript
 
-Access it by `local yue = require("yue")` in Lua.
+Akses dengan `local yue = require("yue")` di Lua.
 
 ## yue
 
-**Description:**
+**Deskripsi:**
 
-The YueScript language library.
+Pustaka bahasa YueScript.
 
 ### version
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The YueScript version.
+Versi YueScript.
 
 **Signature:**
 ```lua
@@ -23,11 +23,11 @@ version: string
 
 ### dirsep
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The file separator for the current platform.
+Pemisah file untuk platform saat ini.
 
 **Signature:**
 ```lua
@@ -36,11 +36,11 @@ dirsep: string
 
 ### yue_compiled
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The compiled module code cache.
+Cache kode modul yang telah dikompilasi.
 
 **Signature:**
 ```lua
@@ -49,11 +49,11 @@ yue_compiled: {string: string}
 
 ### to_lua
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-The YueScript compiling function. It compiles the YueScript code to Lua code.
+Fungsi kompilasi YueScript. Mengompilasi kode YueScript menjadi kode Lua.
 
 **Signature:**
 ```lua
@@ -63,122 +63,122 @@ to_lua: function(code: string, config?: Config):
     --[[globals]] {{string, integer, integer}} | nil
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| code | string | The YueScript code. |
-| config | Config | [Optional] The compiler options. |
+| code | string | Kode YueScript. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| string \| nil | The compiled Lua code, or nil if the compilation failed. |
-| string \| nil | The error message, or nil if the compilation succeeded. |
-| {{string, integer, integer}} \| nil | The global variables appearing in the code (with name, row and column), or nil if the compiler option `lint_global` is false. |
+| string \| nil | Kode Lua hasil kompilasi, atau nil jika kompilasi gagal. |
+| string \| nil | Pesan error, atau nil jika kompilasi berhasil. |
+| {{string, integer, integer}} \| nil | Variabel global yang muncul dalam kode (dengan nama, baris, dan kolom), atau nil jika opsi kompiler `lint_global` bernilai false. |
 
 ### file_exist
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-The source file existence checking function. Can be overridden to customize the behavior.
+Fungsi untuk memeriksa keberadaan file sumber. Dapat ditimpa untuk menyesuaikan perilaku.
 
 **Signature:**
 ```lua
 file_exist: function(filename: string): boolean
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| filename | string | The file name. |
+| filename | string | Nama file. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| boolean | Whether the file exists. |
+| boolean | Apakah file ada. |
 
 ### read_file
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-The source file reading function. Can be overridden to customize the behavior.
+Fungsi untuk membaca file sumber. Dapat ditimpa untuk menyesuaikan perilaku.
 
 **Signature:**
 ```lua
 read_file: function(filename: string): string
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| filename | string | The file name. |
+| filename | string | Nama file. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| string | The file content. |
+| string | Isi file. |
 
 ### insert_loader
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Insert the YueScript loader to the package loaders (searchers).
+Menyisipkan loader YueScript ke package loaders (searchers).
 
 **Signature:**
 ```lua
 insert_loader: function(pos?: integer): boolean
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| pos | integer | [Optional] The position to insert the loader. Default is 3. |
+| pos | integer | [Opsional] Posisi untuk menyisipkan loader. Default adalah 3. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| boolean | Whether the loader is inserted successfully. It will fail if the loader is already inserted. |
+| boolean | Apakah loader berhasil disisipkan. Akan gagal jika loader sudah disisipkan. |
 
 ### remove_loader
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Remove the YueScript loader from the package loaders (searchers).
+Menghapus loader YueScript dari package loaders (searchers).
 
 **Signature:**
 ```lua
 remove_loader: function(): boolean
 ```
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| boolean | Whether the loader is removed successfully. It will fail if the loader is not inserted. |
+| boolean | Apakah loader berhasil dihapus. Akan gagal jika loader belum disisipkan. |
 
 ### loadstring
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a string into a function.
+Memuat kode YueScript dari string menjadi fungsi.
 
 **Signature:**
 ```lua
@@ -187,29 +187,29 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
     --[[error]] string | nil
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| input | string | The YueScript code. |
-| chunkname | string | The name of the code chunk. |
-| env | table | The environment table. |
-| config | Config | [Optional] The compiler options. |
+| input | string | Kode YueScript. |
+| chunkname | string | Nama chunk kode. |
+| env | table | Tabel environment. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | Fungsi yang dimuat, atau nil jika pemuatan gagal. |
+| string \| nil | Pesan error, atau nil jika pemuatan berhasil. |
 
 ### loadstring
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a string into a function.
+Memuat kode YueScript dari string menjadi fungsi.
 
 **Signature:**
 ```lua
@@ -218,28 +218,28 @@ loadstring: function(input: string, chunkname: string, config?: Config):
     --[[error]] string | nil
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| input | string | The YueScript code. |
-| chunkname | string | The name of the code chunk. |
-| config | Config | [Optional] The compiler options. |
+| input | string | Kode YueScript. |
+| chunkname | string | Nama chunk kode. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | Fungsi yang dimuat, atau nil jika pemuatan gagal. |
+| string \| nil | Pesan error, atau nil jika pemuatan berhasil. |
 
 ### loadstring
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a string into a function.
+Memuat kode YueScript dari string menjadi fungsi.
 
 **Signature:**
 ```lua
@@ -248,27 +248,27 @@ loadstring: function(input: string, config?: Config):
     --[[error]] string | nil
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| input | string | The YueScript code. |
-| config | Config | [Optional] The compiler options. |
+| input | string | Kode YueScript. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | Fungsi yang dimuat, atau nil jika pemuatan gagal. |
+| string \| nil | Pesan error, atau nil jika pemuatan berhasil. |
 
 ### loadfile
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a file into a function.
+Memuat kode YueScript dari file menjadi fungsi.
 
 **Signature:**
 ```lua
@@ -277,28 +277,28 @@ loadfile: function(filename: string, env: table, config?: Config):
     string | nil
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| filename | string | The file name. |
-| env | table | The environment table. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | Nama file. |
+| env | table | Tabel environment. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | Fungsi yang dimuat, atau nil jika pemuatan gagal. |
+| string \| nil | Pesan error, atau nil jika pemuatan berhasil. |
 
 ### loadfile
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a file into a function.
+Memuat kode YueScript dari file menjadi fungsi.
 
 **Signature:**
 ```lua
@@ -307,178 +307,178 @@ loadfile: function(filename: string, config?: Config):
     string | nil
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| filename | string | The file name. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | Nama file. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| function \| nil | The loaded function, or nil if the loading failed. |
-| string \| nil | The error message, or nil if the loading succeeded. |
+| function \| nil | Fungsi yang dimuat, atau nil jika pemuatan gagal. |
+| string \| nil | Pesan error, atau nil jika pemuatan berhasil. |
 
 ### dofile
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a file into a function and executes it.
+Memuat kode YueScript dari file menjadi fungsi dan mengeksekusinya.
 
 **Signature:**
 ```lua
 dofile: function(filename: string, env: table, config?: Config): any...
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| filename | string | The file name. |
-| env | table | The environment table. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | Nama file. |
+| env | table | Tabel environment. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| any... | The return values of the loaded function. |
+| any... | Nilai return dari fungsi yang dimuat. |
 
 ### dofile
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads YueScript code from a file into a function and executes it.
+Memuat kode YueScript dari file menjadi fungsi dan mengeksekusinya.
 
 **Signature:**
 ```lua
 dofile: function(filename: string, config?: Config): any...
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| filename | string | The file name. |
-| config | Config | [Optional] The compiler options. |
+| filename | string | Nama file. |
+| config | Config | [Opsional] Opsi kompiler. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| any... | The return values of the loaded function. |
+| any... | Nilai return dari fungsi yang dimuat. |
 
 ### find_modulepath
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Resolves the YueScript module name to the file path.
+Menguraikan nama modul YueScript menjadi path file.
 
 **Signature:**
 ```lua
 find_modulepath: function(name: string): string
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| name | string | The module name. |
+| name | string | Nama modul. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| string | The file path. |
+| string | Path file. |
 
 ### pcall
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Calls a function in protected mode.
-Catches any errors and returns a status code and results or error object.
-Rewrites the error line number to the original line number in the YueScript code when errors occur.
+Memanggil fungsi dalam mode terlindungi.
+Menangkap error apa pun dan mengembalikan kode status beserta hasil atau objek error.
+Menulis ulang nomor baris error ke nomor baris asli di kode YueScript saat error terjadi.
 
 **Signature:**
 ```lua
 pcall: function(f: function, ...: any): boolean, any...
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| f | function | The function to call. |
-| ... | any | Arguments to pass to the function. |
+| f | function | Fungsi yang akan dipanggil. |
+| ... | any | Argumen yang diteruskan ke fungsi. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| boolean, ... | Status code and function results or error object. |
+| boolean, ... | Kode status dan hasil fungsi atau objek error. |
 
 ### require
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Loads a given module. Can be either a Lua module or a YueScript module.
-Rewrites the error line number to the original line number in the YueScript code if the module is a YueScript module and loading fails.
+Memuat modul tertentu. Bisa berupa modul Lua atau modul YueScript.
+Menulis ulang nomor baris error ke nomor baris asli di kode YueScript jika modul adalah modul YueScript dan pemuatan gagal.
 
 **Signature:**
 ```lua
 require: function(name: string): any...
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| modname | string | The name of the module to load. |
+| modname | string | Nama modul yang akan dimuat. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| any | The value stored at package.loaded[modname] if the module is already loaded.Otherwise, tries to find a loader and returns the final value of package.loaded[modname] and a loader data as a second result. |
+| any | Nilai yang disimpan di package.loaded[modname] jika modul sudah dimuat. Jika belum, mencoba mencari loader dan mengembalikan nilai akhir package.loaded[modname] serta data loader sebagai hasil kedua. |
 
 ### p
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Inspects the structures of the passed values and prints string representations.
+Memeriksa struktur nilai yang diteruskan dan mencetak representasi string.
 
 **Signature:**
 ```lua
 p: function(...: any)
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| ... | any | The values to inspect. |
+| ... | any | Nilai yang akan diperiksa. |
 
 ### options
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The current compiler options.
+Opsi kompiler saat ini.
 
 **Signature:**
 ```lua
@@ -487,62 +487,62 @@ options: Config.Options
 
 ### traceback
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-The traceback function that rewrites the stack trace line numbers to the original line numbers in the YueScript code.
+Fungsi traceback yang menulis ulang nomor baris stack trace ke nomor baris asli di kode YueScript.
 
 **Signature:**
 ```lua
 traceback: function(message: string): string
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| message | string | The traceback message. |
+| message | string | Pesan traceback. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| string | The rewritten traceback message. |
+| string | Pesan traceback yang telah ditulis ulang. |
 
 ### is_ast
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Checks whether the code matches the specified AST.
+Memeriksa apakah kode cocok dengan AST yang ditentukan.
 
 **Signature:**
 ```lua
 is_ast: function(astName: string, code: string): boolean
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| astName | string | The AST name. |
-| code | string | The code. |
+| astName | string | Nama AST. |
+| code | string | Kode. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| boolean | Whether the code matches the AST. |
+| boolean | Apakah kode cocok dengan AST. |
 
 ### AST
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The AST type definition with name, row, column and sub nodes.
+Definisi tipe AST dengan nama, baris, kolom, dan sub-node.
 
 **Signature:**
 ```lua
@@ -551,11 +551,11 @@ type AST = {string, integer, integer, any}
 
 ### to_ast
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Converts the code to the AST.
+Mengonversi kode menjadi AST.
 
 **Signature:**
 ```lua
@@ -564,88 +564,88 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveC
     --[[error]] nil | string
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| code | string | The code. |
-| flattenLevel | integer | [Optional] The flatten level. Higher level means more flattening. Default is 0. Maximum is 2. |
-| astName | string | [Optional] The AST name. Default is "File". |
-| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is false. |
+| code | string | Kode. |
+| flattenLevel | integer | [Opsional] Tingkat perataan. Semakin tinggi berarti semakin rata. Default 0. Maksimum 2. |
+| astName | string | [Opsional] Nama AST. Default "File". |
+| reserveComment | boolean | [Opsional] Apakah akan mempertahankan komentar asli. Default false. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| AST \| nil | The AST, or nil if the conversion failed. |
-| string \| nil | The error message, or nil if the conversion succeeded. |
+| AST \| nil | AST, atau nil jika konversi gagal. |
+| string \| nil | Pesan error, atau nil jika konversi berhasil. |
 
 ### format
 
-**Type:** Function.
+**Tipe:** Function.
 
-**Description:**
+**Deskripsi:**
 
-Formats the YueScript code.
+Memformat kode YueScript.
 
 **Signature:**
 ```lua
 format: function(code: string, tabSize?: number, reserveComment?: boolean): string
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| code | string | The code. |
-| tabSize | integer | [Optional] The tab size. Default is 4. |
-| reserveComment | boolean | [Optional] Whether to reserve the original comments. Default is true. |
+| code | string | Kode. |
+| tabSize | integer | [Opsional] Ukuran tab. Default 4. |
+| reserveComment | boolean | [Opsional] Apakah mempertahankan komentar asli. Default true. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| string | The formatted code. |
+| string | Kode yang telah diformat. |
 
 ### __call
 
-**Type:** Metamethod.
+**Tipe:** Metamethod.
 
-**Description:**
+**Deskripsi:**
 
-Requires the YueScript module.
-Rewrites the error line number to the original line number in the YueScript code when loading fails.
+Me-require modul YueScript.
+Menulis ulang nomor baris error ke nomor baris asli di kode YueScript saat pemuatan gagal.
 
 **Signature:**
 ```lua
 metamethod __call: function(self: yue, module: string): any...
 ```
 
-**Parameters:**
+**Parameter:**
 
-| Parameter | Type | Description |
+| Parameter | Tipe | Deskripsi |
 | --- | --- | --- |
-| module | string | The module name. |
+| module | string | Nama modul. |
 
-**Returns:**
+**Return:**
 
-| Return Type | Description |
+| Tipe Return | Deskripsi |
 | --- | --- |
-| any | The module value. |
+| any | Nilai modul. |
 
 ## Config
 
-**Description:**
+**Deskripsi:**
 
-The compiler compile options.
+Opsi kompilasi kompiler.
 
 ### lint_global
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler should collect the global variables appearing in the code.
+Apakah kompiler harus mengumpulkan variabel global yang muncul dalam kode.
 
 **Signature:**
 ```lua
@@ -654,11 +654,11 @@ lint_global: boolean
 
 ### implicit_return_root
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler should do an implicit return for the root code block.
+Apakah kompiler harus melakukan return implisit untuk blok kode root.
 
 **Signature:**
 ```lua
@@ -667,11 +667,11 @@ implicit_return_root: boolean
 
 ### reserve_line_number
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler should reserve the original line number in the compiled code.
+Apakah kompiler harus mempertahankan nomor baris asli di kode hasil kompilasi.
 
 **Signature:**
 ```lua
@@ -680,11 +680,11 @@ reserve_line_number: boolean
 
 ### reserve_comment
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler should reserve the original comments in the compiled code.
+Apakah kompiler harus mempertahankan komentar asli di kode hasil kompilasi.
 
 **Signature:**
 ```lua
@@ -693,11 +693,11 @@ reserve_comment: boolean
 
 ### space_over_tab
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler should use the space character instead of the tab character in the compiled code.
+Apakah kompiler harus menggunakan karakter spasi alih-alih tab di kode hasil kompilasi.
 
 **Signature:**
 ```lua
@@ -706,11 +706,11 @@ space_over_tab: boolean
 
 ### same_module
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler should treat the code to be compiled as the same currently being compiled module. For internal use only.
+Apakah kompiler harus memperlakukan kode yang akan dikompilasi sebagai modul yang sama dengan modul yang sedang dikompilasi. Untuk penggunaan internal saja.
 
 **Signature:**
 ```lua
@@ -719,11 +719,11 @@ same_module: boolean
 
 ### line_offset
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether the compiler error message should include the line number offset. For internal use only.
+Apakah pesan error kompiler harus menyertakan offset nomor baris. Untuk penggunaan internal saja.
 
 **Signature:**
 ```lua
@@ -732,11 +732,11 @@ line_offset: integer
 
 ### yue.Config.LuaTarget
 
-**Type:** Enumeration.
+**Tipe:** Enumeration.
 
-**Description:**
+**Deskripsi:**
 
-The target Lua version enumeration.
+Enumerasi versi Lua target.
 
 **Signature:**
 ```lua
@@ -751,11 +751,11 @@ end
 
 ### options
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The extra options to be passed to the compilation function.
+Opsi tambahan untuk diteruskan ke fungsi kompilasi.
 
 **Signature:**
 ```lua
@@ -764,17 +764,17 @@ options: Options
 
 ## Options
 
-**Description:**
+**Deskripsi:**
 
-The extra compiler options definition.
+Definisi opsi kompiler tambahan.
 
 ### target
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The target Lua version for the compilation.
+Versi Lua target untuk kompilasi.
 
 **Signature:**
 ```lua
@@ -783,11 +783,11 @@ target: LuaTarget
 
 ### path
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-The extra module search path.
+Path pencarian modul tambahan.
 
 **Signature:**
 ```lua
@@ -796,11 +796,11 @@ path: string
 
 ### dump_locals
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether to dump the local variables in the traceback error message. Default is false.
+Apakah akan menampilkan variabel local dalam pesan error traceback. Default false.
 
 **Signature:**
 ```lua
@@ -809,11 +809,11 @@ dump_locals: boolean
 
 ### simplified
 
-**Type:** Field.
+**Tipe:** Field.
 
-**Description:**
+**Deskripsi:**
 
-Whether to simplify the error message. Default is true.
+Apakah akan menyederhanakan pesan error. Default true.
 
 **Signature:**
 ```lua

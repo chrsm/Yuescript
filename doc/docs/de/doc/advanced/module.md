@@ -2,27 +2,27 @@
 
 ## Import
 
-The import statement is a syntax sugar for requiring a module or help extracting items from an imported module. The imported items are const by default.
+Die `import`-Anweisung ist syntaktischer Zucker für `require` und hilft beim Extrahieren von Einträgen aus importierten Modulen. Importierte Elemente sind standardmäßig `const`.
 
 ```yuescript
--- used as table destructuring
+-- als Tabellen-Destrukturierung
 do
   import insert, concat from table
-  -- report error when assigning to insert, concat
+  -- Fehler beim Zuweisen zu insert, concat
   import C, Ct, Cmt from require "lpeg"
-  -- shortcut for implicit requiring
+  -- Kurzform für implizites Require
   import x, y, z from 'mymodule'
-  -- import with Python style
+  -- Import im Python-Stil
   from 'module' import a, b, c
 
--- shortcut for requring a module
+-- Kurzform zum Laden eines Moduls
 do
   import 'module'
   import 'module_x'
   import "d-a-s-h-e-s"
   import "module.part"
 
--- requring module with aliasing or table destructuring
+-- Modul mit Alias oder Tabellen-Destrukturierung laden
 do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
@@ -31,24 +31,24 @@ do
 <YueDisplay>
 
 ```yue
--- used as table destructuring
+-- als Tabellen-Destrukturierung
 do
   import insert, concat from table
-  -- report error when assigning to insert, concat
+  -- Fehler beim Zuweisen zu insert, concat
   import C, Ct, Cmt from require "lpeg"
-  -- shortcut for implicit requiring
+  -- Kurzform für implizites Require
   import x, y, z from 'mymodule'
-  -- import with Python style
+  -- Import im Python-Stil
   from 'module' import a, b, c
 
--- shortcut for requring a module
+-- Kurzform zum Laden eines Moduls
 do
   import 'module'
   import 'module_x'
   import "d-a-s-h-e-s"
   import "module.part"
 
--- requring module with aliasing or table destructuring
+-- Modul mit Alias oder Tabellen-Destrukturierung laden
 do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
@@ -57,9 +57,9 @@ do
 
 </YueDisplay>
 
-## Import Global
+## Import von Globals
 
-You can import specific globals into local variables with `import`. When importing a chain of global variable accessings, the last field will be assigned to the local variable.
+Du kannst mit `import` bestimmte Globals in lokale Variablen importieren. Wenn du eine Kette von Globalzugriffen importierst, wird das letzte Feld der lokalen Variable zugewiesen.
 
 ```yuescript
 do
@@ -78,21 +78,21 @@ do
 
 </YueDisplay>
 
-### Automatic Global Variable Import
+### Automatischer Global-Import
 
-You can place `import global` at the top of a block to automatically import all names that have not been explicitly declared or assigned in the current scope as globals. These implicit imports are treated as local consts that reference the corresponding globals at the position of the statement.
+Du kannst `import global` am Anfang eines Blocks platzieren, um automatisch alle Namen zu importieren, die im aktuellen Scope nicht explizit deklariert oder zugewiesen sind. Diese impliziten Importe werden als lokale `const` behandelt, die an die entsprechenden Globals zum Zeitpunkt der Anweisung gebunden sind.
 
-Names that are explicitly declared as globals in the same scope will not be imported, so you can still assign to them.
+Namen, die im selben Scope explizit als `global` deklariert werden, werden nicht importiert, sodass du sie weiterhin zuweisen kannst.
 
 ```yuescript
 do
   import global
-  print "hello"
+  print "hallo"
   math.random 3
-  -- print = nil -- error: imported globals are const
+  -- print = nil -- Fehler: importierte Globals sind const
 
 do
-  -- explicit global variable will not be imported
+  -- explizite globale Variable wird nicht importiert
   import global
   global FLAG
   print FLAG
@@ -103,12 +103,12 @@ do
 ```yue
 do
   import global
-  print "hello"
+  print "hallo"
   math.random 3
-  -- print = nil -- error: imported globals are const
+  -- print = nil -- Fehler: importierte Globals sind const
 
 do
-  -- explicit global variable will not be imported
+  -- explizite globale Variable wird nicht importiert
   import global
   global FLAG
   print FLAG
@@ -119,15 +119,15 @@ do
 
 ## Export
 
-The export statement offers a concise way to define modules.
+Die `export`-Anweisung bietet eine knappe Möglichkeit, Module zu definieren.
 
-### Named Export
+### Benannter Export
 
-Named export will define a local variable as well as adding a field in the exported table.
+Benannter Export definiert eine lokale Variable und fügt ein Feld in die exportierte Tabelle ein.
 
 ```yuescript
 export a, b, c = 1, 2, 3
-export cool = "cat"
+export cool = "Katze"
 
 export What = if this
   "abc"
@@ -144,7 +144,7 @@ export class Something
 
 ```yue
 export a, b, c = 1, 2, 3
-export cool = "cat"
+export cool = "Katze"
 
 export What = if this
   "abc"
@@ -160,7 +160,7 @@ export class Something
 
 </YueDisplay>
 
-Doing named export with destructuring.
+Benannter Export mit Destructuring.
 
 ```yuescript
 export :loadstring, to_lua: tolua = yue
@@ -175,7 +175,7 @@ export {itemA: {:fieldA = 'default'}} = tb
 
 </YueDisplay>
 
-Export named items from module without creating local variables.
+Benannte Elemente aus dem Modul exportieren, ohne lokale Variablen zu erstellen.
 
 ```yuescript
 export.itemA = tb
@@ -192,9 +192,9 @@ export["a-b-c"] = 123
 
 </YueDisplay>
 
-### Unnamed Export
+### Unbenannter Export
 
-Unnamed export will add the target item into the array part of the exported table.
+Unbenannter Export fügt das Ziel-Element in den Array-Teil der exportierten Tabelle ein.
 
 ```yuescript
 d, e, f = 3, 2, 1
@@ -225,20 +225,20 @@ export with tmp
 
 </YueDisplay>
 
-### Default Export
+### Default-Export
 
-Using the **default** keyword in export statement to replace the exported table with any thing.
+Mit dem Schlüsselwort **default** in einer `export`-Anweisung wird die exportierte Tabelle durch ein beliebiges Objekt ersetzt.
 
 ```yuescript
 export default ->
-  print "hello"
+  print "hallo"
   123
 ```
 <YueDisplay>
 
 ```yue
 export default ->
-  print "hello"
+  print "hallo"
   123
 ```
 

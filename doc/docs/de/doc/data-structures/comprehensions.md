@@ -1,10 +1,10 @@
 # Comprehensions
 
-Comprehensions provide a convenient syntax for constructing a new table by iterating over some existing object and applying an expression to its values. There are two kinds of comprehensions: list comprehensions and table comprehensions. They both produce Lua tables; list comprehensions accumulate values into an array-like table, and table comprehensions let you set both the key and the value on each iteration.
+Comprehensions bieten eine bequeme Syntax, um eine neue Tabelle zu erzeugen, indem man über ein bestehendes Objekt iteriert und einen Ausdruck auf seine Werte anwendet. Es gibt zwei Arten: Listen-Comprehensions und Tabellen-Comprehensions. Beide erzeugen Lua-Tabellen; Listen-Comprehensions sammeln Werte in einer array-ähnlichen Tabelle, und Tabellen-Comprehensions erlauben es, Schlüssel und Wert pro Iteration zu setzen.
 
-## List Comprehensions
+## Listen-Comprehensions
 
-The following creates a copy of the items table but with all the values doubled.
+Das folgende Beispiel erstellt eine Kopie der `items`-Tabelle, aber mit verdoppelten Werten.
 
 ```yuescript
 items = [ 1, 2, 3, 4 ]
@@ -19,7 +19,7 @@ doubled = [item * 2 for i, item in ipairs items]
 
 </YueDisplay>
 
-The items included in the new table can be restricted with a when clause:
+Die Elemente in der neuen Tabelle können mit einer `when`-Klausel eingeschränkt werden:
 
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
@@ -32,7 +32,7 @@ slice = [item for i, item in ipairs items when i > 1 and i < 3]
 
 </YueDisplay>
 
-Because it is common to iterate over the values of a numerically indexed table, an **\*** operator is introduced. The doubled example can be rewritten as:
+Da es üblich ist, über die Werte einer numerisch indizierten Tabelle zu iterieren, gibt es den **\***-Operator. Das Verdopplungsbeispiel kann so umgeschrieben werden:
 
 ```yuescript
 doubled = [item * 2 for item in *items]
@@ -45,7 +45,7 @@ doubled = [item * 2 for item in *items]
 
 </YueDisplay>
 
-In list comprehensions, you can also use the spread operator `...` to flatten nested lists, achieving a flat map effect:
+In Listen-Comprehensions kannst du außerdem den Spread-Operator `...` verwenden, um verschachtelte Listen zu flatten und einen Flat-Map-Effekt zu erzielen:
 
 ```yuescript
 data =
@@ -53,7 +53,7 @@ data =
   b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
--- flat is now [1, 2, 3, 4, 5, 6]
+-- flat ist jetzt [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
 
@@ -63,14 +63,14 @@ data =
   b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
--- flat is now [1, 2, 3, 4, 5, 6]
+-- flat ist jetzt [1, 2, 3, 4, 5, 6]
 ```
 
 </YueDisplay>
 
-The for and when clauses can be chained as much as desired. The only requirement is that a comprehension has at least one for clause.
+Die `for`- und `when`-Klauseln können beliebig oft verkettet werden. Die einzige Anforderung ist, dass eine Comprehension mindestens eine `for`-Klausel enthält.
 
-Using multiple for clauses is the same as using nested loops:
+Mehrere `for`-Klauseln entsprechen verschachtelten Schleifen:
 
 ```yuescript
 x_coords = [4, 5, 6, 7]
@@ -91,7 +91,7 @@ for y in *y_coords]
 
 </YueDisplay>
 
-Numeric for loops can also be used in comprehensions:
+Numerische `for`-Schleifen können ebenfalls in Comprehensions verwendet werden:
 
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
@@ -104,16 +104,16 @@ evens = [i for i = 1, 100 when i % 2 == 0]
 
 </YueDisplay>
 
-## Table Comprehensions
+## Tabellen-Comprehensions
 
-The syntax for table comprehensions is very similar, only differing by using **{** and **}** and taking two values from each iteration.
+Die Syntax für Tabellen-Comprehensions ist sehr ähnlich, unterscheidet sich jedoch dadurch, dass **{** und **}** verwendet werden und pro Iteration zwei Werte erzeugt werden.
 
-This example makes a copy of the tablething:
+Dieses Beispiel erstellt eine Kopie von `thing`:
 
 ```yuescript
 thing = {
-  color: "red"
-  name: "fast"
+  color: "rot"
+  name: "schnell"
   width: 123
 }
 
@@ -123,8 +123,8 @@ thing_copy = {k, v for k, v in pairs thing}
 
 ```yue
 thing = {
-  color: "red"
-  name: "fast"
+  color: "rot"
+  name: "schnell"
   width: 123
 }
 
@@ -144,7 +144,7 @@ no_color = {k, v for k, v in pairs thing when k != "color"}
 
 </YueDisplay>
 
-The **\*** operator is also supported. Here we create a square root look up table for a few numbers.
+Der **\***-Operator wird ebenfalls unterstützt. Hier erstellen wir eine Nachschlagetabelle für Quadratwurzeln einiger Zahlen.
 
 ```yuescript
 numbers = [1, 2, 3, 4]
@@ -159,18 +159,18 @@ sqrts = {i, math.sqrt i for i in *numbers}
 
 </YueDisplay>
 
-The key-value tuple in a table comprehension can also come from a single expression, in which case the expression should return two values. The first is used as the key and the second is used as the value:
+Das Schlüssel-Wert-Tupel in einer Tabellen-Comprehension kann auch aus einem einzelnen Ausdruck stammen; der Ausdruck muss dann zwei Werte zurückgeben. Der erste wird als Schlüssel und der zweite als Wert verwendet:
 
-In this example we convert an array of pairs to a table where the first item in the pair is the key and the second is the value.
+In diesem Beispiel konvertieren wir ein Array von Paaren in eine Tabelle, wobei das erste Element des Paars der Schlüssel und das zweite der Wert ist.
 
 ```yuescript
-tuples = [ ["hello", "world"], ["foo", "bar"]]
+tuples = [ ["hallo", "Welt"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
 <YueDisplay>
 
 ```yue
-tuples = [ ["hello", "world"], ["foo", "bar"]]
+tuples = [ ["hallo", "Welt"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
 
@@ -178,9 +178,9 @@ tbl = {unpack tuple for tuple in *tuples}
 
 ## Slicing
 
-A special syntax is provided to restrict the items that are iterated over when using the **\*** operator. This is equivalent to setting the iteration bounds and a step size in a for loop.
+Eine spezielle Syntax erlaubt es, die iterierten Elemente bei Verwendung des **\***-Operators einzuschränken. Das ist äquivalent zum Setzen von Iterationsgrenzen und Schrittweite in einer `for`-Schleife.
 
-Here we can set the minimum and maximum bounds, taking all items with indexes between 1 and 5 inclusive:
+Hier setzen wir die minimalen und maximalen Grenzen und nehmen alle Elemente mit Indizes zwischen 1 und 5 (inklusive):
 
 ```yuescript
 slice = [item for item in *items[1, 5]]
@@ -193,7 +193,7 @@ slice = [item for item in *items[1, 5]]
 
 </YueDisplay>
 
-Any of the slice arguments can be left off to use a sensible default. In this example, if the max index is left off it defaults to the length of the table. This will take everything but the first element:
+Jedes der Slice-Argumente kann weggelassen werden, um einen sinnvollen Standard zu verwenden. Wenn der maximale Index weggelassen wird, entspricht er der Länge der Tabelle. Dieses Beispiel nimmt alles außer dem ersten Element:
 
 ```yuescript
 slice = [item for item in *items[2,]]
@@ -206,7 +206,7 @@ slice = [item for item in *items[2,]]
 
 </YueDisplay>
 
-If the minimum bound is left out, it defaults to 1. Here we only provide a step size and leave the other bounds blank. This takes all odd indexed items: (1, 3, 5, …)
+Wenn die Mindestgrenze weggelassen wird, ist sie standardmäßig 1. Hier geben wir nur die Schrittweite an und lassen die anderen Grenzen leer. Das nimmt alle ungerad indizierten Elemente (1, 3, 5, …):
 
 ```yuescript
 slice = [item for item in *items[,,2]]
@@ -219,22 +219,22 @@ slice = [item for item in *items[,,2]]
 
 </YueDisplay>
 
-Both the minimum and maximum bounds can be negative, which means that the bounds are counted from the end of the table.
+Sowohl die Mindest- als auch die Maximalgrenze können negativ sein; dann werden die Grenzen vom Ende der Tabelle gezählt.
 
 ```yuescript
--- take the last 4 items
+-- die letzten 4 Elemente nehmen
 slice = [item for item in *items[-4,-1]]
 ```
 <YueDisplay>
 
 ```yue
--- take the last 4 items
+-- die letzten 4 Elemente nehmen
 slice = [item for item in *items[-4,-1]]
 ```
 
 </YueDisplay>
 
-The step size can also be negative, which means that the items are taken in reverse order.
+Die Schrittweite kann ebenfalls negativ sein, wodurch die Elemente in umgekehrter Reihenfolge genommen werden.
 
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
@@ -247,24 +247,24 @@ reverse_slice = [item for item in *items[-1,1,-1]]
 
 </YueDisplay>
 
-### Slicing Expression
+### Slicing-Ausdruck
 
-Slicing can also be used as an expression. This is useful for getting a sub-list of a table.
+Slicing kann auch als Ausdruck verwendet werden. Das ist nützlich, um eine Teilliste einer Tabelle zu erhalten.
 
 ```yuescript
--- take the 2nd and 4th items as a new list
+-- das 2. und 4. Element als neue Liste nehmen
 sub_list = items[2, 4]
 
--- take the last 4 items
+-- die letzten 4 Elemente nehmen
 last_four_items = items[-4, -1]
 ```
 <YueDisplay>
 
 ```yue
--- take the 2nd and 4th items as a new list
+-- das 2. und 4. Element als neue Liste nehmen
 sub_list = items[2, 4]
 
--- take the last 4 items
+-- die letzten 4 Elemente nehmen
 last_four_items = items[-4, -1]
 ```
 

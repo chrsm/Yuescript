@@ -1,6 +1,6 @@
-# Operator
+# Operador
 
-All of Lua's binary and unary operators are available. Additionally **!=** is as an alias for **~=**, and either **\\** or **::** can be used to write a chaining function call like `tb\func!` or `tb::func!`. And Yuescipt offers some other special operators to write more expressive codes.
+Todos os operadores binários e unários do Lua estão disponíveis. Além disso, **!=** é um alias para **~=**, e **\\** ou **::** podem ser usados para escrever uma chamada de função encadeada como `tb\func!` ou `tb::func!`. E o YueScript oferece alguns outros operadores especiais para escrever códigos mais expressivos.
 
 ```yuescript
 tb\func! if tb ~= nil
@@ -15,32 +15,32 @@ tb::func! if tb != nil
 
 </YueDisplay>
 
-## Chaining Comparisons
+## Comparações encadeadas
 
-Comparisons can be arbitrarily chained:
+Comparações podem ser encadeadas arbitrariamente:
 
 ```yuescript
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
--- output: true
+-- saída: true
 
 a = 5
 print 1 <= a <= 10
--- output: true
+-- saída: true
 ```
 <YueDisplay>
 
 ```yue
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
--- output: true
+-- saída: true
 
 a = 5
 print 1 <= a <= 10
--- output: true
+-- saída: true
 ```
 
 </YueDisplay>
 
-Note the evaluation behavior of chained comparisons:
+Observe o comportamento de avaliação das comparações encadeadas:
 
 ```yuescript
 v = (x) ->
@@ -49,7 +49,7 @@ v = (x) ->
 
 print v(1) < v(2) <= v(3)
 --[[
-  output:
+  saída:
   2
   1
   3
@@ -58,7 +58,7 @@ print v(1) < v(2) <= v(3)
 
 print v(1) > v(2) <= v(3)
 --[[
-  output:
+  saída:
   2
   1
   false
@@ -73,7 +73,7 @@ v = (x) ->
 
 print v(1) < v(2) <= v(3)
 --[[
-  output:
+  saída:
   2
   1
   3
@@ -82,7 +82,7 @@ print v(1) < v(2) <= v(3)
 
 print v(1) > v(2) <= v(3)
 --[[
-  output:
+  saída:
   2
   1
   false
@@ -91,11 +91,11 @@ print v(1) > v(2) <= v(3)
 
 </YueDisplay>
 
-The middle expression is only evaluated once, rather than twice as it would be if the expression were written as `v(1) < v(2) and v(2) <= v(3)`. However, the order of evaluations in a chained comparison is undefined. It is strongly recommended not to use expressions with side effects (such as printing) in chained comparisons. If side effects are required, the short-circuit `and` operator should be used explicitly.
+A expressão do meio é avaliada apenas uma vez, em vez de duas vezes como seria se a expressão fosse escrita como `v(1) < v(2) and v(2) <= v(3)`. No entanto, a ordem das avaliações em uma comparação encadeada é indefinida. É fortemente recomendado não usar expressões com efeitos colaterais (como impressão) em comparações encadeadas. Se efeitos colaterais forem necessários, o operador de curto-circuito `and` deve ser usado explicitamente.
 
-## Table Appending
+## Anexar à tabela
 
-The **[] =** operator is used to append values to tables.
+O operador **[] =** é usado para anexar valores a tabelas.
 
 ```yuescript
 tab = []
@@ -110,13 +110,13 @@ tab[] = "Value"
 
 </YueDisplay>
 
-You can also use the spread operator `...` to append all elements from one list to another:
+Você também pode usar o operador spread `...` para anexar todos os elementos de uma lista a outra:
 
 ```yuescript
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
--- tbA is now [1, 2, 3, 4, 5, 6]
+-- tbA agora é [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
 
@@ -124,14 +124,14 @@ tbA[] = ...tbB
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
--- tbA is now [1, 2, 3, 4, 5, 6]
+-- tbA agora é [1, 2, 3, 4, 5, 6]
 ```
 
 </YueDisplay>
 
-## Table Spreading
+## Spread de tabela
 
-You can concatenate array tables or hash tables using spread operator `...` before expressions in table literals.
+Você pode concatenar tabelas de array ou tabelas hash usando o operador spread `...` antes de expressões em literais de tabela.
 
 ```yuescript
 parts =
@@ -170,9 +170,9 @@ merge = {...a, ...b}
 
 </YueDisplay>
 
-## Table Reversed Indexing
+## Indexação reversa de tabela
 
-You can use the **#** operator to get the last elements of a table.
+Você pode usar o operador **#** para obter os últimos elementos de uma tabela.
 
 ```yuescript
 last = data.items[#]
@@ -191,11 +191,11 @@ data.items[#] = 1
 
 ## Metatable
 
-The **<>** operator can be used as a shortcut for metatable manipulation.
+O operador **<>** pode ser usado como atalho para manipulação de metatable.
 
-### Metatable Creation
+### Criação de metatable
 
-Create normal table with empty bracekets **<>** or metamethod key which is surrounded by **<>**.
+Crie tabela normal com chaves vazias **<>** ou chave de metamétodo cercada por **<>**.
 
 ```yuescript
 mt = {}
@@ -203,14 +203,14 @@ add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
 a = <>: mt, value: 1
- -- set field with variable of the same name
+ -- definir campo com variável de mesmo nome
 b = :<add>, value: 2
 c = <add>: mt.__add, value: 3
 
 d = a + b + c
 print d.value
 
-close _ = <close>: -> print "out of scope"
+close _ = <close>: -> print "fora do escopo"
 ```
 <YueDisplay>
 
@@ -220,24 +220,24 @@ add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
 a = <>: mt, value: 1
- -- set field with variable of the same name
+ -- definir campo com variável de mesmo nome
 b = :<add>, value: 2
 c = <add>: mt.__add, value: 3
 
 d = a + b + c
 print d.value
 
-close _ = <close>: -> print "out of scope"
+close _ = <close>: -> print "fora do escopo"
 ```
 
 </YueDisplay>
 
-### Metatable Accessing
+### Acesso à metatable
 
-Accessing metatable with **<>** or metamethod name surrounded by **<>** or writing some expression in **<>**.
+Acesse a metatable com **<>** ou nome do metamétodo cercado por **<>** ou escrevendo alguma expressão em **<>**.
 
 ```yuescript
--- create with metatable containing field "value"
+-- criar com metatable contendo campo "value"
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
@@ -248,7 +248,7 @@ print tb.item
 <YueDisplay>
 
 ```yue
--- create with metatable containing field "value"
+-- criar com metatable contendo campo "value"
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
@@ -258,9 +258,9 @@ print tb.item
 
 </YueDisplay>
 
-### Metatable Destructure
+### Desestruturação de metatable
 
-Destruct metatable with metamethod key surrounded by **<>**.
+Desestruture a metatable com chave de metamétodo cercada por **<>**.
 
 ```yuescript
 {item, :new, :<close>, <index>: getter} = tb
@@ -275,9 +275,9 @@ print item, new, close, getter
 
 </YueDisplay>
 
-## Existence
+## Existência
 
-The **?** operator can be used in a variety of contexts to check for existence.
+O operador **?** pode ser usado em diversos contextos para verificar existência.
 
 ```yuescript
 func?!
@@ -312,16 +312,16 @@ with? io.open "test.txt", "w"
 
 </YueDisplay>
 
-## Piping
+## Pipe
 
-Instead of a series of nested function calls, you can pipe values with operator **|>**.
+Em vez de uma série de chamadas de função aninhadas, você pode encaminhar valores com o operador **|>**.
 
 ```yuescript
 "hello" |> print
-1 |> print 2 -- insert pipe item as the first argument
-2 |> print 1, _, 3 -- pipe with a placeholder
+1 |> print 2 -- insere o item do pipe como primeiro argumento
+2 |> print 1, _, 3 -- pipe com um placeholder
 
--- pipe expression in multiline
+-- expressão pipe em multilinha
 readFile "example.txt"
   |> extract language, {}
   |> parse language
@@ -333,9 +333,9 @@ readFile "example.txt"
 
 ```yue
 "hello" |> print
-1 |> print 2 -- insert pipe item as the first argument
-2 |> print 1, _, 3 -- pipe with a placeholder
--- pipe expression in multiline
+1 |> print 2 -- insere o item do pipe como primeiro argumento
+2 |> print 1, _, 3 -- pipe com um placeholder
+-- expressão pipe em multilinha
 readFile "example.txt"
   |> extract language, {}
   |> parse language
@@ -346,9 +346,9 @@ readFile "example.txt"
 
 </YueDisplay>
 
-## Nil Coalescing
+## Coalescência de nil
 
-The nil-coalescing operator **??** returns the value of its left-hand operand if it isn't **nil**; otherwise, it evaluates the right-hand operand and returns its result. The **??** operator doesn't evaluate its right-hand operand if the left-hand operand evaluates to non-nil.
+O operador de coalescência de nil **??** retorna o valor do operando esquerdo se não for **nil**; caso contrário, avalia o operando direito e retorna seu resultado. O operador **??** não avalia seu operando direito se o operando esquerdo avaliar para não-nil.
 ```yuescript
 local a, b, c, d
 a = b ?? c ?? d
@@ -367,31 +367,31 @@ a ??= false
 
 </YueDisplay>
 
-## Implicit Object
+## Objeto implícito
 
-You can write a list of implicit structures that starts with the symbol **\*** or **-** inside a table block. If you are creating implicit object, the fields of the object must be with the same indent.
+Você pode escrever uma lista de estruturas implícitas que começa com o símbolo **\*** ou **-** dentro de um bloco de tabela. Se você está criando objeto implícito, os campos do objeto devem estar com a mesma indentação.
 
 ```yuescript
--- assignment with implicit object
+-- atribuição com objeto implícito
 list =
   * 1
   * 2
   * 3
 
--- function call with implicit object
+-- chamada de função com objeto implícito
 func
   * 1
   * 2
   * 3
 
--- return with implicit object
+-- retorno com objeto implícito
 f = ->
   return
     * 1
     * 2
     * 3
 
--- table with implicit object
+-- tabela com objeto implícito
 tb =
   name: "abc"
 
@@ -416,26 +416,26 @@ tb =
 <YueDisplay>
 
 ```yue
--- assignment with implicit object
+-- atribuição com objeto implícito
 list =
   * 1
   * 2
   * 3
 
--- function call with implicit object
+-- chamada de função com objeto implícito
 func
   * 1
   * 2
   * 3
 
--- return with implicit object
+-- retorno com objeto implícito
 f = ->
   return
     * 1
     * 2
     * 3
 
--- table with implicit object
+-- tabela com objeto implícito
 tb =
   name: "abc"
 

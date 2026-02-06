@@ -1,23 +1,22 @@
-# License: MIT
+# Lisensi: MIT
 
-Copyright (c) 2017-2026 Li Jin \<dragon-fly@qq.com\>
+Copyright (c) 2017-2026 Li Jin <dragon-fly@qq.com>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Izin dengan ini diberikan, tanpa biaya, kepada siapa pun yang memperoleh salinan
+perangkat lunak ini beserta file dokumentasi terkait ("Perangkat Lunak"), untuk
+berurusan dengan Perangkat Lunak tanpa pembatasan, termasuk tanpa batasan hak
+untuk menggunakan, menyalin, memodifikasi, menggabungkan, menerbitkan,
+mendistribusikan, mensublisensikan, dan/atau menjual salinan Perangkat Lunak,
+dan untuk mengizinkan orang yang menerima Perangkat Lunak untuk melakukannya,
+dengan syarat-syarat berikut:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+semua salinan atau bagian substansial dari Perangkat Lunak.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-<CompilerModal />
+PERANGKAT LUNAK DISEDIAKAN "APA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT
+MAUPUN TERSIRAT, TERMASUK NAMUN TIDAK TERBATAS PADA JAMINAN KELAYAKAN
+DIPERDAGANGKAN, KESESUAIAN UNTUK TUJUAN TERTENTU, DAN TIDAK MELANGGAR HAK.
+DALAM KEADAAN APA PUN, PENULIS ATAU PEMEGANG HAK CIPTA TIDAK BERTANGGUNG JAWAB
+ATAS KLAIM, KERUSAKAN, ATAU KEWAJIBAN LAINNYA, BAIK DALAM TINDAKAN KONTRAK,
+PERBUATAN MELAWAN HUKUM, ATAU LAINNYA, YANG TIMBUL DARI, DI LUAR, ATAU TERKAIT
+DENGAN PERANGKAT LUNAK ATAU PENGGUNAAN ATAU URUSAN LAIN DALAM PERANGKAT LUNAK.

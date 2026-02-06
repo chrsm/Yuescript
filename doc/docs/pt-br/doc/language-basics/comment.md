@@ -1,13 +1,13 @@
-# Comment
+# Comentário
 
 ```yuescript
--- I am a comment
+-- Eu sou um comentário
 
 str = --[[
-This is a multi-line comment.
-It's OK.
-]] strA \ -- comment 1
-  .. strB \ -- comment 2
+Este é um comentário multilinha.
+Está OK.
+]] strA \ -- comentário 1
+  .. strB \ -- comentário 2
   .. strC
 
 func --[[port]] 3000, --[[ip]] "192.168.1.1"
@@ -15,13 +15,13 @@ func --[[port]] 3000, --[[ip]] "192.168.1.1"
 <YueDisplay>
 
 ```yue
--- I am a comment
+-- Eu sou um comentário
 
 str = --[[
-This is a multi-line comment.
-It's OK.
-]] strA \ -- comment 1
-  .. strB \ -- comment 2
+Este é um comentário multilinha.
+Está OK.
+]] strA \ -- comentário 1
+  .. strB \ -- comentário 2
   .. strC
 
 func --[[port]] 3000, --[[ip]] "192.168.1.1"

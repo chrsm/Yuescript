@@ -1,10 +1,10 @@
-# Function Stubs
+# Stubs de função
 
-It is common to pass a function from an object around as a value, for example, passing an instance method into a function as a callback. If the function expects the object it is operating on as the first argument then you must somehow bundle that object with the function so it can be called properly.
+É comum passar uma função de um objeto como valor, por exemplo, passando um método de instância para uma função como callback. Se a função espera o objeto em que está operando como primeiro argumento, então você deve de alguma forma empacotar esse objeto com a função para que ela possa ser chamada corretamente.
 
-The function stub syntax is a shorthand for creating a new closure function that bundles both the object and function. This new function calls the wrapped function in the correct context of the object.
+A sintaxe de function stub é uma forma abreviada de criar uma nova função closure que empacota tanto o objeto quanto a função. Esta nova função chama a função empacotada no contexto correto do objeto.
 
-Its syntax is the same as calling an instance method with the \ operator but with no argument list provided.
+Sua sintaxe é a mesma que chamar um método de instância com o operador \, mas sem lista de argumentos fornecida.
 
 ```yuescript
 my_object = {
@@ -16,12 +16,12 @@ run_callback = (func) ->
   print "running callback..."
   func!
 
--- this will not work:
--- the function has to no reference to my_object
+-- isso não funcionará:
+-- a função não tem referência a my_object
 run_callback my_object.write
 
--- function stub syntax
--- lets us bundle the object into a new function
+-- sintaxe de function stub
+-- nos permite empacotar o objeto em uma nova função
 run_callback my_object\write
 ```
 <YueDisplay>
@@ -36,12 +36,12 @@ run_callback = (func) ->
   print "running callback..."
   func!
 
--- this will not work:
--- the function has to no reference to my_object
+-- isso não funcionará:
+-- a função não tem referência a my_object
 run_callback my_object.write
 
--- function stub syntax
--- lets us bundle the object into a new function
+-- sintaxe de function stub
+-- nos permite empacotar o objeto em uma nova função
 run_callback my_object\write
 ```
 

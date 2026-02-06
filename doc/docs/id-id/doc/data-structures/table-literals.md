@@ -1,6 +1,6 @@
-# Table Literals
+# Literal Tabel
 
-Like in Lua, tables are delimited in curly braces.
+Seperti di Lua, tabel dibatasi dengan kurung kurawal.
 
 ```yuescript
 some_values = [1, 2, 3, 4]
@@ -13,7 +13,7 @@ some_values = [1, 2, 3, 4]
 
 </YueDisplay>
 
-Unlike Lua, assigning a value to a key in a table is done with **:** (instead of **=**).
+Berbeda dengan Lua, assignment nilai ke sebuah kunci di tabel dilakukan dengan **:** (bukan **=**).
 
 ```yuescript
 some_values = {
@@ -34,7 +34,7 @@ some_values = {
 
 </YueDisplay>
 
-The curly braces can be left off if a single table of key value pairs is being assigned.
+Kurung kurawal dapat dihilangkan jika hanya satu tabel pasangan key-value yang di-assign.
 
 ```yuescript
 profile =
@@ -53,7 +53,7 @@ profile =
 
 </YueDisplay>
 
-Newlines can be used to delimit values instead of a comma (or both):
+Baris baru dapat digunakan untuk memisahkan nilai sebagai ganti koma (atau keduanya):
 
 ```yuescript
 values = {
@@ -76,7 +76,7 @@ values = {
 
 </YueDisplay>
 
-When creating a single line table literal, the curly braces can also be left off:
+Saat membuat literal tabel satu baris, kurung kurawal juga bisa dihilangkan:
 
 ```yuescript
 my_function dance: "Tango", partner: "none"
@@ -93,7 +93,7 @@ y = type: "dog", legs: 4, tails: 1
 
 </YueDisplay>
 
-The keys of a table literal can be language keywords without being escaped:
+Kunci literal tabel dapat berupa kata kunci bahasa tanpa perlu di-escape:
 
 ```yuescript
 tbl = {
@@ -112,7 +112,7 @@ tbl = {
 
 </YueDisplay>
 
-If you are constructing a table out of variables and wish the keys to be the same as the variable names, then the **:** prefix operator can be used:
+Jika Anda membangun tabel dari variabel dan ingin kunci sama dengan nama variabel, maka operator prefiks **:** dapat digunakan:
 
 ```yuescript
 hair = "golden"
@@ -133,7 +133,7 @@ print_table :hair, :height
 
 </YueDisplay>
 
-If you want the key of a field in the table to to be result of an expression, then you can wrap it in **[ ]**, just like in Lua. You can also use a string literal directly as a key, leaving out the square brackets. This is useful if your key has any special characters.
+Jika Anda ingin kunci field dalam tabel menjadi hasil suatu ekspresi, Anda dapat membungkusnya dengan **[ ]**, seperti di Lua. Anda juga bisa menggunakan literal string langsung sebagai kunci tanpa tanda kurung siku. Ini berguna jika kunci memiliki karakter khusus.
 
 ```yuescript
 t = {
@@ -152,7 +152,7 @@ t = {
 
 </YueDisplay>
 
-Lua tables have both an array part and a hash part, but sometimes you want to make a semantic distinction between array and hash usage when writing Lua tables. Then you can write Lua table with **[ ]** instead of **{ }** to represent an array table and writing any key value pair in a list table won't be allowed.
+Tabel Lua memiliki bagian array dan bagian hash, tetapi terkadang Anda ingin membedakan penggunaan array dan hash secara semantik saat menulis tabel Lua. Maka Anda bisa menulis tabel Lua dengan **[ ]** alih-alih **{ }** untuk merepresentasikan tabel array, dan menuliskan pasangan key-value di tabel list tidak akan diizinkan.
 
 ```yuescript
 some_values = [1, 2, 3, 4]

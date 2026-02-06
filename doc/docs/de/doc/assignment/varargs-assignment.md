@@ -1,6 +1,6 @@
-# Varargs Assignment
+# Varargs-Zuweisung
 
-You can assign the results returned from a function  to a varargs symbol `...`. And then access its content using the Lua way.
+Du kannst Rückgabewerte einer Funktion dem Varargs-Symbol `...` zuweisen und dann den Inhalt auf die Lua-Weise auslesen.
 
 ```yuescript
 list = [1, 2, 3, 4, 5]

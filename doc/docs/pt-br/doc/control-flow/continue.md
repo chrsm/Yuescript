@@ -1,6 +1,6 @@
 # Continue
 
-A continue statement can be used to skip the current iteration in a loop.
+Uma instrução continue pode ser usada para pular a iteração atual em um loop.
 
 ```yuescript
 i = 0
@@ -21,7 +21,7 @@ while i < 10
 
 </YueDisplay>
 
-continue can also be used with loop expressions to prevent that iteration from accumulating into the result. This examples filters the array table into just even numbers:
+continue também pode ser usado com expressões de loop para impedir que essa iteração seja acumulada no resultado. Este exemplo filtra a tabela array para apenas números pares:
 
 ```yuescript
 my_numbers = [1, 2, 3, 4, 5, 6]

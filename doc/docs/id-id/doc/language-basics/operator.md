@@ -1,6 +1,6 @@
 # Operator
 
-All of Lua's binary and unary operators are available. Additionally **!=** is as an alias for **~=**, and either **\\** or **::** can be used to write a chaining function call like `tb\func!` or `tb::func!`. And Yuescipt offers some other special operators to write more expressive codes.
+Semua operator biner dan unari Lua tersedia. Selain itu **!=** adalah alias untuk **~=**, dan **\\** atau **::** bisa digunakan untuk menulis pemanggilan fungsi berantai seperti `tb\func!` atau `tb::func!`. YueScript juga menawarkan beberapa operator khusus lain untuk menulis kode yang lebih ekspresif.
 
 ```yuescript
 tb\func! if tb ~= nil
@@ -15,9 +15,9 @@ tb::func! if tb != nil
 
 </YueDisplay>
 
-## Chaining Comparisons
+## Perbandingan Berantai
 
-Comparisons can be arbitrarily chained:
+Perbandingan bisa dirantai secara bebas:
 
 ```yuescript
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
@@ -40,7 +40,7 @@ print 1 <= a <= 10
 
 </YueDisplay>
 
-Note the evaluation behavior of chained comparisons:
+Perhatikan perilaku evaluasi perbandingan berantai:
 
 ```yuescript
 v = (x) ->
@@ -91,11 +91,11 @@ print v(1) > v(2) <= v(3)
 
 </YueDisplay>
 
-The middle expression is only evaluated once, rather than twice as it would be if the expression were written as `v(1) < v(2) and v(2) <= v(3)`. However, the order of evaluations in a chained comparison is undefined. It is strongly recommended not to use expressions with side effects (such as printing) in chained comparisons. If side effects are required, the short-circuit `and` operator should be used explicitly.
+Ekspresi tengah hanya dievaluasi sekali, bukan dua kali seperti jika ekspresi ditulis sebagai `v(1) < v(2) and v(2) <= v(3)`. Namun, urutan evaluasi pada perbandingan berantai tidak didefinisikan. Sangat disarankan untuk tidak menggunakan ekspresi dengan efek samping (seperti `print`) di perbandingan berantai. Jika efek samping diperlukan, operator short-circuit `and` sebaiknya digunakan secara eksplisit.
 
-## Table Appending
+## Menambahkan ke Tabel
 
-The **[] =** operator is used to append values to tables.
+Operator **[] =** digunakan untuk menambahkan nilai ke tabel.
 
 ```yuescript
 tab = []
@@ -110,13 +110,13 @@ tab[] = "Value"
 
 </YueDisplay>
 
-You can also use the spread operator `...` to append all elements from one list to another:
+Anda juga bisa memakai operator spread `...` untuk menambahkan semua elemen dari satu list ke list lain:
 
 ```yuescript
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
--- tbA is now [1, 2, 3, 4, 5, 6]
+-- tbA sekarang [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
 
@@ -124,14 +124,14 @@ tbA[] = ...tbB
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
--- tbA is now [1, 2, 3, 4, 5, 6]
+-- tbA sekarang [1, 2, 3, 4, 5, 6]
 ```
 
 </YueDisplay>
 
-## Table Spreading
+## Penyebaran Tabel
 
-You can concatenate array tables or hash tables using spread operator `...` before expressions in table literals.
+Anda bisa menggabungkan tabel array atau tabel hash menggunakan operator spread `...` sebelum ekspresi di literal tabel.
 
 ```yuescript
 parts =
@@ -170,9 +170,9 @@ merge = {...a, ...b}
 
 </YueDisplay>
 
-## Table Reversed Indexing
+## Indeks Balik Tabel
 
-You can use the **#** operator to get the last elements of a table.
+Anda dapat menggunakan operator **#** untuk mendapatkan elemen terakhir dari tabel.
 
 ```yuescript
 last = data.items[#]
@@ -191,11 +191,11 @@ data.items[#] = 1
 
 ## Metatable
 
-The **<>** operator can be used as a shortcut for metatable manipulation.
+Operator **<>** dapat digunakan sebagai pintasan untuk manipulasi metatable.
 
-### Metatable Creation
+### Pembuatan Metatable
 
-Create normal table with empty bracekets **<>** or metamethod key which is surrounded by **<>**.
+Buat tabel normal dengan tanda kurung siku kosong **<>** atau kunci metamethod yang dikelilingi oleh **<>**.
 
 ```yuescript
 mt = {}
@@ -203,7 +203,7 @@ add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
 a = <>: mt, value: 1
- -- set field with variable of the same name
+ -- set field dengan variabel bernama sama
 b = :<add>, value: 2
 c = <add>: mt.__add, value: 3
 
@@ -220,7 +220,7 @@ add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
 a = <>: mt, value: 1
- -- set field with variable of the same name
+ -- set field dengan variabel bernama sama
 b = :<add>, value: 2
 c = <add>: mt.__add, value: 3
 
@@ -232,12 +232,12 @@ close _ = <close>: -> print "out of scope"
 
 </YueDisplay>
 
-### Metatable Accessing
+### Mengakses Metatable
 
-Accessing metatable with **<>** or metamethod name surrounded by **<>** or writing some expression in **<>**.
+Akses metatable dengan **<>**, nama metamethod yang dikelilingi **<>**, atau menulis ekspresi di dalam **<>**.
 
 ```yuescript
--- create with metatable containing field "value"
+-- dibuat dengan metatable yang berisi field "value"
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
@@ -248,7 +248,7 @@ print tb.item
 <YueDisplay>
 
 ```yue
--- create with metatable containing field "value"
+-- dibuat dengan metatable yang berisi field "value"
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
@@ -258,9 +258,9 @@ print tb.item
 
 </YueDisplay>
 
-### Metatable Destructure
+### Destrukturisasi Metatable
 
-Destruct metatable with metamethod key surrounded by **<>**.
+Destrukturisasi metatable dengan kunci metamethod yang dikelilingi **<>**.
 
 ```yuescript
 {item, :new, :<close>, <index>: getter} = tb
@@ -275,9 +275,9 @@ print item, new, close, getter
 
 </YueDisplay>
 
-## Existence
+## Keberadaan
 
-The **?** operator can be used in a variety of contexts to check for existence.
+Operator **?** dapat digunakan dalam berbagai konteks untuk memeriksa keberadaan.
 
 ```yuescript
 func?!
@@ -314,14 +314,14 @@ with? io.open "test.txt", "w"
 
 ## Piping
 
-Instead of a series of nested function calls, you can pipe values with operator **|>**.
+Sebagai ganti serangkaian pemanggilan fungsi bersarang, Anda bisa mengalirkan nilai dengan operator **|>**.
 
 ```yuescript
 "hello" |> print
-1 |> print 2 -- insert pipe item as the first argument
-2 |> print 1, _, 3 -- pipe with a placeholder
+1 |> print 2 -- sisipkan nilai pipe sebagai argumen pertama
+2 |> print 1, _, 3 -- pipe dengan placeholder
 
--- pipe expression in multiline
+-- ekspresi pipe multi-baris
 readFile "example.txt"
   |> extract language, {}
   |> parse language
@@ -333,9 +333,9 @@ readFile "example.txt"
 
 ```yue
 "hello" |> print
-1 |> print 2 -- insert pipe item as the first argument
-2 |> print 1, _, 3 -- pipe with a placeholder
--- pipe expression in multiline
+1 |> print 2 -- sisipkan nilai pipe sebagai argumen pertama
+2 |> print 1, _, 3 -- pipe dengan placeholder
+-- ekspresi pipe multi-baris
 readFile "example.txt"
   |> extract language, {}
   |> parse language
@@ -348,7 +348,7 @@ readFile "example.txt"
 
 ## Nil Coalescing
 
-The nil-coalescing operator **??** returns the value of its left-hand operand if it isn't **nil**; otherwise, it evaluates the right-hand operand and returns its result. The **??** operator doesn't evaluate its right-hand operand if the left-hand operand evaluates to non-nil.
+Operator nil-coalescing **??** mengembalikan nilai dari operan kiri jika bukan **nil**; jika tidak, operator mengevaluasi operan kanan dan mengembalikan hasilnya. Operator **??** tidak mengevaluasi operan kanan jika operan kiri bernilai non-nil.
 ```yuescript
 local a, b, c, d
 a = b ?? c ?? d
@@ -367,31 +367,31 @@ a ??= false
 
 </YueDisplay>
 
-## Implicit Object
+## Objek Implisit
 
-You can write a list of implicit structures that starts with the symbol **\*** or **-** inside a table block. If you are creating implicit object, the fields of the object must be with the same indent.
+Anda dapat menulis daftar struktur implisit yang diawali simbol **\*** atau **-** di dalam blok tabel. Jika Anda membuat objek implisit, field objek harus berada pada indentasi yang sama.
 
 ```yuescript
--- assignment with implicit object
+-- assignment dengan objek implisit
 list =
   * 1
   * 2
   * 3
 
--- function call with implicit object
+-- pemanggilan fungsi dengan objek implisit
 func
   * 1
   * 2
   * 3
 
--- return with implicit object
+-- return dengan objek implisit
 f = ->
   return
     * 1
     * 2
     * 3
 
--- table with implicit object
+-- tabel dengan objek implisit
 tb =
   name: "abc"
 
@@ -416,26 +416,26 @@ tb =
 <YueDisplay>
 
 ```yue
--- assignment with implicit object
+-- assignment dengan objek implisit
 list =
   * 1
   * 2
   * 3
 
--- function call with implicit object
+-- pemanggilan fungsi dengan objek implisit
 func
   * 1
   * 2
   * 3
 
--- return with implicit object
+-- return dengan objek implisit
 f = ->
   return
     * 1
     * 2
     * 3
 
--- table with implicit object
+-- tabel dengan objek implisit
 tb =
   name: "abc"
 

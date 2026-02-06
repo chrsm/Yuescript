@@ -1,20 +1,20 @@
-# Usage
+# Penggunaan
 
-## Lua Module
+## Modul Lua
 
-Use YueScript module in Lua:
+Gunakan modul YueScript di Lua:
 
-* **Case 1**
+* **Kasus 1**
 
-	Require "your_yuescript_entry.yue" in Lua.
+	Require "your_yuescript_entry.yue" di Lua.
 	```Lua
 	require("yue")("your_yuescript_entry")
 	```
-	And this code still works when you compile "your_yuescript_entry.yue"  to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
+	Dan kode ini tetap bekerja ketika Anda mengompilasi "your_yuescript_entry.yue" menjadi "your_yuescript_entry.lua" di path yang sama. Pada file YueScript lainnya cukup gunakan **require** atau **import** biasa. Nomor baris pada pesan error juga akan ditangani dengan benar.
 
-* **Case 2**
+* **Kasus 2**
 
-	Require YueScript module and rewite message by hand.
+	Require modul YueScript dan tulis ulang pesan secara manual.
 
 	```lua
 	local yue = require("yue")
@@ -26,9 +26,9 @@ Use YueScript module in Lua:
 	end)
 	```
 
-* **Case 3**
+* **Kasus 3**
 
-	Use the YueScript compiler function in Lua.
+	Gunakan fungsi kompiler YueScript di Lua.
 
 	```lua
 	local yue = require("yue")
@@ -48,64 +48,65 @@ Use YueScript module in Lua:
 	})
 	```
 
-## YueScript Tool
+## Tool YueScript
 
-Use YueScript tool with:
+Gunakan tool YueScript dengan:
 
 ```shell
 > yue -h
-Usage: yue
-       [options] [<file/directory>] ...
-       yue -e <code_or_file> [args...]
-       yue -w [<directory>] [options]
-       yue -
+Penggunaan: yue
+           [opsi] [<file/direktori>] ...
+           yue -e <kode_atau_file> [argumen...]
+           yue -w [<direktori>] [opsi]
+           yue -
 
-Notes:
-   - '-' / '--' must be the first and only argument.
-   - '-o/--output' can not be used with multiple input files.
-   - '-w/--watch' can not be used with file input (directory only).
-   - with '-e/--execute', remaining tokens are treated as script args.
+Catatan:
+   - '-' / '--' harus menjadi argumen pertama dan satu-satunya.
+   - '-o/--output' tidak dapat digunakan dengan beberapa file input.
+   - '-w/--watch' tidak dapat digunakan dengan file input (khusus direktori).
+   - dengan '-e/--execute', token sisanya dianggap sebagai argumen skrip.
 
-Options:
-   -h, --help                 Show this help message and exit.
-   -e <str>, --execute <str>  Execute a file or raw codes
-   -m, --minify               Generate minified codes
-   -r, --rewrite              Rewrite output to match original line numbers
+Opsi:
+   -h, --help                 Tampilkan pesan bantuan ini dan keluar.
+   -e <str>, --execute <str>  Eksekusi file atau kode mentah
+   -m, --minify               Menghasilkan kode yang sudah diminimasi
+   -r, --rewrite              Tulis ulang output agar sesuai dengan nomor baris asal
    -t <output_to>, --output-to <output_to>
-                              Specify where to place compiled files
-   -o <file>, --output <file> Write output to file
-   -p, --print                Write output to standard out
-   -b, --benchmark            Dump compile time (doesn't write output)
-   -g, --globals              Dump global variables used in NAME LINE COLUMN
-   -s, --spaces               Use spaces in generated codes instead of tabs
-   -l, --line-numbers         Write line numbers from source codes
-   -j, --no-implicit-return   Disable implicit return at end of file
-   -c, --reserve-comments     Reserve comments before statement from source codes
+                              Tentukan lokasi untuk menaruh file hasil kompilasi
+   -o <file>, --output <file> Tulis output ke file
+   -p, --print                Tulis output ke standar output
+   -b, --benchmark            Tampilkan waktu kompilasi (tanpa menulis output)
+   -g, --globals              Tampilkan variabel global yang digunakan dalam FORMAT NAMA BARIS KOLOM
+   -s, --spaces               Pakai spasi di kode hasil kompilasi (bukan tab)
+   -l, --line-numbers         Tulis nomor baris dari kode sumber
+   -j, --no-implicit-return   Nonaktifkan return implisit di akhir file
+   -c, --reserve-comments     Pertahankan komentar sebelum pernyataan dari kode sumber
    -w [<dir>], --watch [<dir>]
-                              Watch changes and compile every file under directory
-   -v, --version              Print version
-   -                          Read from standard in, print to standard out
-                              (Must be first and only argument)
-   --                         Same as '-' (kept for backward compatibility)
+                              Pantau perubahan dan kompilasi setiap file di bawah direktori
+   -v, --version              Tampilkan versi
+   -                          Baca dari standar input, tulis ke standar output
+                              (harus menjadi argumen pertama dan satu-satunya)
+   --                         Sama dengan '-', dipertahankan untuk kompatibilitas lama
 
-   --target <version>         Specify the Lua version that codes will be generated to
-                              (version can only be 5.1 to 5.5)
-   --path <path_str>          Append an extra Lua search path string to package.path
-   --<key>=<value>            Pass compiler option in key=value form (existing behavior)
+   --target <versi>           Tentukan versi Lua yang akan dihasilkan kodenya
+                              (versi hanya bisa dari 5.1 sampai 5.5)
+   --path <path_str>          Tambahkan path pencarian Lua tambahan ke package.path
+   --<key>=<value>            Kirim opsi kompilasi dalam bentuk key=value (perilaku standar)
 
-   Execute without options to enter REPL, type symbol '$'
-   in a single line to start/stop multi-line mode
+   Jalankan tanpa opsi untuk masuk ke REPL, ketik simbol '$'
+   dalam satu baris untuk memulai/mengakhiri mode multi-baris
 ```
-Use cases:
 
-Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
+Gunakan kasus:
 
-Compile and save results to a target path:  **yue -t /target/path/ .**
+Kompilasi semua file YueScript dengan ekstensi **.yue** secara rekursif di bawah path saat ini:  **yue .**
 
-Compile and reserve debug info:  **yue -l .**
+Kompilasi dan simpan hasil ke path target:  **yue -t /target/path/ .**
 
-Compile and generate minified codes:  **yue -m .**
+Kompilasi dan pertahankan info debug:  **yue -l .**
 
-Execute raw codes:  **yue -e 'print 123'**
+Kompilasi dan hasilkan kode yang diminisasi:  **yue -m .**
 
-Execute a YueScript file:  **yue -e main.yue**
+Eksekusi kode mentah:  **yue -e 'print 123'**
+
+Eksekusi file YueScript:  **yue -e main.yue**

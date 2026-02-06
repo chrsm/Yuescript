@@ -1,28 +1,28 @@
-# Module
+# Módulo
 
 ## Import
 
-The import statement is a syntax sugar for requiring a module or help extracting items from an imported module. The imported items are const by default.
+A instrução import é um açúcar sintático para requerer um módulo ou ajudar a extrair itens de um módulo importado. Os itens importados são const por padrão.
 
 ```yuescript
--- used as table destructuring
+-- usado como desestruturação de tabela
 do
   import insert, concat from table
-  -- report error when assigning to insert, concat
+  -- reporta erro ao atribuir a insert, concat
   import C, Ct, Cmt from require "lpeg"
-  -- shortcut for implicit requiring
+  -- atalho para require implícito
   import x, y, z from 'mymodule'
-  -- import with Python style
+  -- import com estilo Python
   from 'module' import a, b, c
 
--- shortcut for requring a module
+-- atalho para requerer um módulo
 do
   import 'module'
   import 'module_x'
   import "d-a-s-h-e-s"
   import "module.part"
 
--- requring module with aliasing or table destructuring
+-- requerer módulo com aliasing ou desestruturação de tabela
 do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
@@ -31,24 +31,24 @@ do
 <YueDisplay>
 
 ```yue
--- used as table destructuring
+-- usado como desestruturação de tabela
 do
   import insert, concat from table
-  -- report error when assigning to insert, concat
+  -- reporta erro ao atribuir a insert, concat
   import C, Ct, Cmt from require "lpeg"
-  -- shortcut for implicit requiring
+  -- atalho para require implícito
   import x, y, z from 'mymodule'
-  -- import with Python style
+  -- import com estilo Python
   from 'module' import a, b, c
 
--- shortcut for requring a module
+-- atalho para requerer um módulo
 do
   import 'module'
   import 'module_x'
   import "d-a-s-h-e-s"
   import "module.part"
 
--- requring module with aliasing or table destructuring
+-- requerer módulo com aliasing ou desestruturação de tabela
 do
   import "player" as PlayerModule
   import "lpeg" as :C, :Ct, :Cmt
@@ -59,7 +59,7 @@ do
 
 ## Import Global
 
-You can import specific globals into local variables with `import`. When importing a chain of global variable accessings, the last field will be assigned to the local variable.
+Você pode importar globais específicos para variáveis locais com `import`. Ao importar uma cadeia de acessos a variáveis globais, o último campo será atribuído à variável local.
 
 ```yuescript
 do
@@ -78,21 +78,21 @@ do
 
 </YueDisplay>
 
-### Automatic Global Variable Import
+### Importação automática de variável global
 
-You can place `import global` at the top of a block to automatically import all names that have not been explicitly declared or assigned in the current scope as globals. These implicit imports are treated as local consts that reference the corresponding globals at the position of the statement.
+Você pode colocar `import global` no topo de um bloco para importar automaticamente todos os nomes que não foram explicitamente declarados ou atribuídos no escopo atual como globais. Essas importações implícitas são tratadas como consts locais que referenciam os globais correspondentes na posição da instrução.
 
-Names that are explicitly declared as globals in the same scope will not be imported, so you can still assign to them.
+Nomes que foram explicitamente declarados como globais no mesmo escopo não serão importados, então você ainda pode atribuir a eles.
 
 ```yuescript
 do
   import global
   print "hello"
   math.random 3
-  -- print = nil -- error: imported globals are const
+  -- print = nil -- erro: globais importados são const
 
 do
-  -- explicit global variable will not be imported
+  -- variável global explícita não será importada
   import global
   global FLAG
   print FLAG
@@ -105,10 +105,10 @@ do
   import global
   print "hello"
   math.random 3
-  -- print = nil -- error: imported globals are const
+  -- print = nil -- erro: globais importados são const
 
 do
-  -- explicit global variable will not be imported
+  -- variável global explícita não será importada
   import global
   global FLAG
   print FLAG
@@ -119,11 +119,11 @@ do
 
 ## Export
 
-The export statement offers a concise way to define modules.
+A instrução export oferece uma forma concisa de definir módulos.
 
-### Named Export
+### Export nomeado
 
-Named export will define a local variable as well as adding a field in the exported table.
+Export nomeado definirá uma variável local e também adicionará um campo na tabela exportada.
 
 ```yuescript
 export a, b, c = 1, 2, 3
@@ -160,7 +160,7 @@ export class Something
 
 </YueDisplay>
 
-Doing named export with destructuring.
+Fazendo export nomeado com desestruturação.
 
 ```yuescript
 export :loadstring, to_lua: tolua = yue
@@ -175,7 +175,7 @@ export {itemA: {:fieldA = 'default'}} = tb
 
 </YueDisplay>
 
-Export named items from module without creating local variables.
+Exportar itens nomeados do módulo sem criar variáveis locais.
 
 ```yuescript
 export.itemA = tb
@@ -192,9 +192,9 @@ export["a-b-c"] = 123
 
 </YueDisplay>
 
-### Unnamed Export
+### Export sem nome
 
-Unnamed export will add the target item into the array part of the exported table.
+Export sem nome adicionará o item alvo na parte array da tabela exportada.
 
 ```yuescript
 d, e, f = 3, 2, 1
@@ -225,9 +225,9 @@ export with tmp
 
 </YueDisplay>
 
-### Default Export
+### Export padrão
 
-Using the **default** keyword in export statement to replace the exported table with any thing.
+Usar a palavra-chave **default** na instrução export para substituir a tabela exportada por qualquer coisa.
 
 ```yuescript
 export default ->

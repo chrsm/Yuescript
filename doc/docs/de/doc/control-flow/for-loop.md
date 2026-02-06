@@ -1,12 +1,12 @@
-# For Loop
+# For-Schleife
 
-There are two for loop forms, just like in Lua. A numeric one and a generic one:
+Es gibt zwei Formen der `for`-Schleife, genau wie in Lua: eine numerische und eine generische.
 
 ```yuescript
 for i = 10, 20
   print i
 
-for k = 1, 15, 2 -- an optional step provided
+for k = 1, 15, 2 -- ein optionaler Schritt
   print k
 
 for key, value in pairs object
@@ -18,7 +18,7 @@ for key, value in pairs object
 for i = 10, 20
   print i
 
-for k = 1, 15, 2 -- an optional step provided
+for k = 1, 15, 2 -- ein optionaler Schritt
   print k
 
 for key, value in pairs object
@@ -27,7 +27,7 @@ for key, value in pairs object
 
 </YueDisplay>
 
-The slicing and **\*** operators can be used, just like with comprehensions:
+Die Slicing- und **\***-Operatoren können verwendet werden, genau wie bei Comprehensions:
 
 ```yuescript
 for item in *items[2, 4]
@@ -42,7 +42,7 @@ for item in *items[2, 4]
 
 </YueDisplay>
 
-A shorter syntax is also available for all variations when the body is only a single line:
+Eine kürzere Syntax ist für alle Varianten verfügbar, wenn der Rumpf nur eine Zeile hat:
 
 ```yuescript
 for item in *items do print item
@@ -59,9 +59,9 @@ for j = 1, 10, 3 do print j
 
 </YueDisplay>
 
-A for loop can also be used as an expression. The last statement in the body of the for loop is coerced into an expression and appended to an accumulating array table.
+Eine `for`-Schleife kann auch als Ausdruck verwendet werden. Die letzte Anweisung im Schleifenrumpf wird in einen Ausdruck umgewandelt und an eine wachsende Array-Tabelle angehängt.
 
-Doubling every even number:
+Alle geraden Zahlen verdoppeln:
 
 ```yuescript
 doubled_evens = for i = 1, 20
@@ -82,9 +82,9 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-In addition, for loops support break with a return value, allowing the loop itself to be used as an expression that exits early with a meaningful result.
+Zusätzlich unterstützen `for`-Schleifen `break` mit Rückgabewert, sodass die Schleife selbst als Ausdruck verwendet werden kann, der früh mit einem sinnvollen Ergebnis endet.
 
-For example, to find the first number greater than 10:
+Beispiel: die erste Zahl größer als 10 finden:
 
 ```yuescript
 first_large = for n in *numbers
@@ -99,18 +99,18 @@ first_large = for n in *numbers
 
 </YueDisplay>
 
-This break-with-value syntax enables concise and expressive search or early-exit patterns directly within loop expressions.
+Diese `break`-mit-Wert-Syntax ermöglicht knappe und ausdrucksstarke Such- bzw. Early-Exit-Muster direkt in Schleifenausdrücken.
 
-You can also filter values by combining the for loop expression with the continue statement.
+Du kannst Werte auch filtern, indem du den `for`-Ausdruck mit `continue` kombinierst.
 
-For loops at the end of a function body are not accumulated into a table for a return value (Instead the function will return nil). Either an explicit return statement can be used, or the loop can be converted into a list comprehension.
+`for`-Schleifen am Ende eines Funktionsrumpfs werden nicht in eine Tabelle für einen Rückgabewert gesammelt (stattdessen gibt die Funktion `nil` zurück). Du kannst entweder explizit `return` verwenden oder die Schleife in eine Listen-Comprehension umwandeln.
 
 ```yuescript
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
 
-print func_a! -- prints nil
-print func_b! -- prints table object
+print func_a! -- gibt nil aus
+print func_b! -- gibt Tabellenobjekt aus
 ```
 <YueDisplay>
 
@@ -118,10 +118,10 @@ print func_b! -- prints table object
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
 
-print func_a! -- prints nil
-print func_b! -- prints table object
+print func_a! -- gibt nil aus
+print func_b! -- gibt Tabellenobjekt aus
 ```
 
 </YueDisplay>
 
-This is done to avoid the needless creation of tables for functions that don't need to return the results of the loop.
+Das verhindert die unnötige Erstellung von Tabellen in Funktionen, die die Ergebnisse der Schleife nicht zurückgeben müssen.

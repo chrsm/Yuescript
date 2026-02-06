@@ -1,6 +1,6 @@
 # Try
 
-The syntax for Lua error handling in a common form.
+Sintaks untuk penanganan error Lua dalam bentuk umum.
 
 ```yuescript
 try
@@ -23,7 +23,7 @@ try
   print "trying"
   func 1, 2, 3
 
--- working with if assignment pattern
+-- bekerja dengan pola if assignment
 if success, result := try func 1, 2, 3
 catch err
     print yue.traceback err
@@ -52,7 +52,7 @@ try
   print "trying"
   func 1, 2, 3
 
--- working with if assignment pattern
+-- bekerja dengan pola if assignment
 if success, result := try func 1, 2, 3
 catch err
     print yue.traceback err
@@ -63,18 +63,18 @@ catch err
 
 ## Try?
 
-`try?` is a simplified use for error handling syntax that omit the boolean status from the `try` statement, and it will return the result from the try block when success, return nil instead of error object otherwise.
+`try?` adalah bentuk sederhana untuk penanganan error yang menghilangkan status boolean dari pernyataan `try`, dan akan mengembalikan hasil dari blok try ketika berhasil, atau mengembalikan nil alih-alih objek error bila gagal.
 
 ```yuescript
 a, b, c = try? func!
 
--- with nil coalescing operator
+-- dengan operator nil coalescing
 a = (try? func!) ?? "default"
 
--- as function argument
+-- sebagai argumen fungsi
 f try? func!
 
--- with catch block
+-- dengan blok catch
 f try?
   print 123
   func!
@@ -87,13 +87,13 @@ catch e
 ```yue
 a, b, c = try? func!
 
--- with nil coalescing operator
+-- dengan operator nil coalescing
 a = (try? func!) ?? "default"
 
--- as function argument
+-- sebagai argumen fungsi
 f try? func!
 
--- with catch block
+-- dengan blok catch
 f try?
   print 123
   func!

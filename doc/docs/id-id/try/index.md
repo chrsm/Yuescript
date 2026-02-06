@@ -4,9 +4,9 @@ prev: false
 next: false
 ---
 
-# YueScript Online Compiler
+# Kompiler Online YueScript
 ---
 
-Try YueScript in the browser with WASM.
+Coba YueScript di browser dengan WASM.
 
 <YueCompiler />

@@ -1,33 +1,33 @@
 # Switch
 
-The switch statement is shorthand for writing a series of if statements that check against the same value. Note that the value is only evaluated once. Like if statements, switches can have an else block to handle no matches. Comparison is done with the == operator. In switch statement, you can also use assignment expression to store temporary variable value.
+Die `switch`-Anweisung ist eine Kurzform für eine Reihe von `if`-Anweisungen, die gegen denselben Wert prüfen. Der Wert wird nur einmal ausgewertet. Wie bei `if` kann `switch` einen `else`-Block haben, wenn keine Übereinstimmung gefunden wird. Verglichen wird mit dem Operator `==`. In einer `switch`-Anweisung kannst du auch eine Zuweisung verwenden, um den temporären Wert zu speichern.
 
 ```yuescript
 switch name := "Dan"
   when "Robert"
-    print "You are Robert"
+    print "Du bist Robert"
   when "Dan", "Daniel"
-    print "Your name, it's Dan"
+    print "Dein Name ist Dan"
   else
-    print "I don't know about you with name #{name}"
+    print "Ich kenne dich nicht mit dem Namen #{name}"
 ```
 <YueDisplay>
 
 ```yue
 switch name := "Dan"
   when "Robert"
-    print "You are Robert"
+    print "Du bist Robert"
   when "Dan", "Daniel"
-    print "Your name, it's Dan"
+    print "Dein Name ist Dan"
   else
-    print "I don't know about you with name #{name}"
+    print "Ich kenne dich nicht mit dem Namen #{name}"
 ```
 
 </YueDisplay>
 
-A switch when clause can match against multiple values by listing them out comma separated.
+Eine `when`-Klausel kann mehrere Werte prüfen, indem sie kommasepariert aufgelistet werden.
 
-Switches can be used as expressions as well, here we can assign the result of the switch to a variable:
+`switch` kann auch als Ausdruck verwendet werden. Hier wird das Ergebnis der `switch`-Anweisung einer Variable zugewiesen:
 
 ```yuescript
 b = 1
@@ -37,7 +37,7 @@ next_number = switch b
   when 2
     3
   else
-    error "can't count that high!"
+    error "so hoch kann ich nicht zählen!"
 ```
 <YueDisplay>
 
@@ -49,66 +49,66 @@ next_number = switch b
   when 2
     3
   else
-    error "can't count that high!"
+    error "so hoch kann ich nicht zählen!"
 ```
 
 </YueDisplay>
 
-We can use the then keyword to write a switch's when block on a single line. No extra keyword is needed to write the else block on a single line.
+Du kannst das Schlüsselwort `then` verwenden, um einen `when`-Block in einer Zeile zu schreiben. Für den `else`-Block braucht es kein zusätzliches Schlüsselwort.
 
 ```yuescript
 msg = switch math.random(1, 5)
-  when 1 then "you are lucky"
-  when 2 then "you are almost lucky"
-  else "not so lucky"
+  when 1 then "Du hast Glück"
+  when 2 then "Du hast fast Glück"
+  else "nicht so viel Glück"
 ```
 <YueDisplay>
 
 ```yue
 msg = switch math.random(1, 5)
-  when 1 then "you are lucky"
-  when 2 then "you are almost lucky"
-  else "not so lucky"
+  when 1 then "Du hast Glück"
+  when 2 then "Du hast fast Glück"
+  else "nicht so viel Glück"
 ```
 
 </YueDisplay>
 
-If you want to write code with one less indent when writing a switch statement, you can put the first when clause on the statement start line, and then all other clauses can be written with one less indent.
+Wenn du eine Einrückung weniger möchtest, kannst du die erste `when`-Klausel in die Startzeile der Anweisung setzen und alle weiteren Klauseln mit einer Einrückung weniger schreiben.
 
 ```yuescript
 switch math.random(1, 5)
   when 1
-    print "you are lucky" -- two indents
+    print "Du hast Glück" -- zwei Einrückungen
   else
-    print "not so lucky"
+    print "nicht so viel Glück"
 
 switch math.random(1, 5) when 1
-  print "you are lucky" -- one indent
+  print "Du hast Glück" -- eine Einrückung
 else
-  print "not so lucky"
+  print "nicht so viel Glück"
 ```
 <YueDisplay>
 
 ```yue
 switch math.random(1, 5)
   when 1
-    print "you are lucky" -- two indents
+    print "Du hast Glück" -- zwei Einrückungen
   else
-    print "not so lucky"
+    print "nicht so viel Glück"
 
 switch math.random(1, 5) when 1
-  print "you are lucky" -- one indent
+  print "Du hast Glück" -- eine Einrückung
 else
-  print "not so lucky"
+  print "nicht so viel Glück"
 ```
 
 </YueDisplay>
 
-It is worth noting the order of the case comparison expression. The case's expression is on the left hand side. This can be useful if the case's expression wants to overwrite how the comparison is done by defining an eq metamethod.
+Beachte die Reihenfolge des Case-Vergleichsausdrucks. Der Case-Ausdruck steht auf der linken Seite. Das kann nützlich sein, wenn der Case-Ausdruck die Vergleichslogik über eine `__eq`-Metamethod selbst definiert.
 
-## Table Matching
+## Tabellen-Matching
 
-You can do table matching in a switch when clause, if the table can be destructured by a specific structure and get non-nil values.
+Du kannst in einer `switch`-`when`-Klausel Tabellen-Matching verwenden, wenn die Tabelle durch eine bestimmte Struktur destrukturiert werden kann und dabei nicht-`nil`-Werte liefert.
 
 ```yuescript
 items =
@@ -122,7 +122,7 @@ for item in *items
     when :x, :y
       print "Vec2 #{x}, #{y}"
     when :width, :height
-      print "size #{width}, #{height}"
+      print "Größe #{width}, #{height}"
 ```
 <YueDisplay>
 
@@ -138,39 +138,39 @@ for item in *items
     when :x, :y
       print "Vec2 #{x}, #{y}"
     when :width, :height
-      print "size #{width}, #{height}"
+      print "Größe #{width}, #{height}"
 ```
 
 </YueDisplay>
 
-You can use default values to optionally destructure the table for some fields.
+Du kannst Standardwerte verwenden, um bestimmte Felder optional zu destrukturieren.
 
 ```yuescript
 item = {}
 
-{pos: {:x = 50, :y = 200}} = item -- get error: attempt to index a nil value (field 'pos')
+{pos: {:x = 50, :y = 200}} = item -- Fehler: Versuch, einen nil-Wert zu indexieren (Feld 'pos')
 
 switch item
   when {pos: {:x = 50, :y = 200}}
-    print "Vec2 #{x}, #{y}" -- table destructuring will still pass
+    print "Vec2 #{x}, #{y}" -- Tabellen-Destrukturierung greift trotzdem
 ```
 <YueDisplay>
 
 ```yue
 item = {}
 
-{pos: {:x = 50, :y = 200}} = item -- get error: attempt to index a nil value (field 'pos')
+{pos: {:x = 50, :y = 200}} = item -- Fehler: Versuch, einen nil-Wert zu indexieren (Feld 'pos')
 
 switch item
   when {pos: {:x = 50, :y = 200}}
-    print "Vec2 #{x}, #{y}" -- table destructuring will still pass
+    print "Vec2 #{x}, #{y}" -- Tabellen-Destrukturierung greift trotzdem
 ```
 
 </YueDisplay>
 
-You can also match against array elements, table fields, and even nested structures with array or table literals.
+Du kannst auch gegen Array-Elemente, Tabellenfelder und sogar verschachtelte Strukturen mit Array- oder Tabellenliteralen matchen.
 
-Match against array elements.
+Matchen gegen Array-Elemente.
 
 ```yuescript
 switch tb
@@ -178,7 +178,7 @@ switch tb
     print "1, 2, 3"
   when [1, b, 3]
     print "1, #{b}, 3"
-  when [1, 2, b = 3] -- b has a default value
+  when [1, 2, b = 3] -- b hat einen Standardwert
     print "1, 2, #{b}"
 ```
 <YueDisplay>
@@ -189,63 +189,63 @@ switch tb
     print "1, 2, 3"
   when [1, b, 3]
     print "1, #{b}, 3"
-  when [1, 2, b = 3] -- b has a default value
+  when [1, 2, b = 3] -- b hat einen Standardwert
     print "1, 2, #{b}"
 ```
 
 </YueDisplay>
 
-Match against table fields with destructuring.
+Matchen gegen Tabellenfelder mit Destructuring.
 
 ```yuescript
 switch tb
   when success: true, :result
-    print "success", result
+    print "Erfolg", result
   when success: false
-    print "failed", result
+    print "fehlgeschlagen", result
   else
-    print "invalid"
+    print "ungültig"
 ```
 <YueDisplay>
 
 ```yue
 switch tb
   when success: true, :result
-    print "success", result
+    print "Erfolg", result
   when success: false
-    print "failed", result
+    print "fehlgeschlagen", result
   else
-    print "invalid"
+    print "ungültig"
 ```
 
 </YueDisplay>
 
-Match against nested table structures.
+Matchen gegen verschachtelte Tabellenstrukturen.
 
 ```yuescript
 switch tb
   when data: {type: "success", :content}
-    print "success", content
+    print "Erfolg", content
   when data: {type: "error", :content}
-    print "failed", content
+    print "fehlgeschlagen", content
   else
-    print "invalid"
+    print "ungültig"
 ```
 <YueDisplay>
 
 ```yue
 switch tb
   when data: {type: "success", :content}
-    print "success", content
+    print "Erfolg", content
   when data: {type: "error", :content}
-    print "failed", content
+    print "fehlgeschlagen", content
   else
-    print "invalid"
+    print "ungültig"
 ```
 
 </YueDisplay>
 
-Match against array of tables.
+Matchen gegen Array von Tabellen.
 
 ```yuescript
 switch tb
@@ -255,7 +255,7 @@ switch tb
       {a: 5, b: 6}
       fourth
     ]
-    print "matched", fourth
+    print "getroffen", fourth
 ```
 <YueDisplay>
 
@@ -267,20 +267,20 @@ switch tb
       {a: 5, b: 6}
       fourth
     ]
-    print "matched", fourth
+    print "getroffen", fourth
 ```
 
 </YueDisplay>
 
-Match against a list and capture a range of elements.
+Matchen gegen eine Liste und einen Bereich von Elementen erfassen.
 
 ```yuescript
 segments = ["admin", "users", "logs", "view"]
 switch segments
   when [...groups, resource, action]
-    print "Group:", groups -- prints: {"admin", "users"}
-    print "Resource:", resource -- prints: "logs"
-    print "Action:", action -- prints: "view"
+    print "Gruppe:", groups -- gibt aus: {"admin", "users"}
+    print "Ressource:", resource -- gibt aus: "logs"
+    print "Aktion:", action -- gibt aus: "view"
 ```
 <YueDisplay>
 
@@ -288,9 +288,9 @@ switch segments
 segments = ["admin", "users", "logs", "view"]
 switch segments
   when [...groups, resource, action]
-    print "Group:", groups -- prints: {"admin", "users"}
-    print "Resource:", resource -- prints: "logs"
-    print "Action:", action -- prints: "view"
+    print "Gruppe:", groups -- gibt aus: {"admin", "users"}
+    print "Ressource:", resource -- gibt aus: "logs"
+    print "Aktion:", action -- gibt aus: "view"
 ```
 
 </YueDisplay>

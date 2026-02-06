@@ -83,17 +83,17 @@ do
 end
 local funcA
 funcA = function()
-	return "fail to assign to the Yue macro defined variable"
+	return "gagal meng-assign ke variabel yang didefinisikan oleh macro Yue"
 end
 do
 local function funcB() end
 end
 local funcB
 funcB = function()
-	return "fail to assign to the Lua macro defined variable"
+	return "gagal meng-assign ke variabel yang didefinisikan oleh macro Lua"
 end
 do
--- raw Lua codes insertion
+-- penyisipan kode Lua mentah
 if cond then
   print("output")
 end
@@ -122,17 +122,17 @@ do
 end
 local funcA
 funcA = function()
-	return "fail to assign to the Yue macro defined variable"
+	return "gagal meng-assign ke variabel yang didefinisikan oleh macro Yue"
 end
 do
 local function funcB() end
 end
 local funcB
 funcB = function()
-	return "fail to assign to the Lua macro defined variable"
+	return "gagal meng-assign ke variabel yang didefinisikan oleh macro Lua"
 end
 do
--- raw Lua codes insertion
+-- penyisipan kode Lua mentah
 if cond then
   print("output")
 end
@@ -2488,7 +2488,7 @@ local z = x
 do
 	local a = 1
 	local x, y, z
-	print("forward declare all variables as locals")
+	print("deklarasikan semua variabel sebagai local di awal")
 	x = function()
 		return 1 + y + z
 	end
@@ -2498,13 +2498,13 @@ end
 do
 	local X = 1
 	local B
-	print("only forward declare upper case variables")
+	print("hanya deklarasikan variabel huruf besar sebagai local di awal")
 	local a = 1
 	B = 2
 end
 do
 	a = 1
-	print("declare all variables as globals")
+	print("deklarasikan semua variabel sebagai global")
 	x = function()
 		return 1 + y + z
 	end
@@ -2512,7 +2512,7 @@ do
 end
 do
 	X = 1
-	print("only declare upper case variables as globals")
+	print("hanya deklarasikan variabel huruf besar sebagai global")
 	local a = 1
 	B = 2
 	local Temp = "a local value"
@@ -2539,7 +2539,7 @@ local z = x
 do
 	local a = 1
 	local x, y, z
-	print("forward declare all variables as locals")
+	print("deklarasikan semua variabel sebagai local di awal")
 	x = function()
 		return 1 + y + z
 	end
@@ -2549,13 +2549,13 @@ end
 do
 	local X = 1
 	local B
-	print("only forward declare upper case variables")
+	print("hanya deklarasikan variabel huruf besar sebagai local di awal")
 	local a = 1
 	B = 2
 end
 do
 	a = 1
-	print("declare all variables as globals")
+	print("deklarasikan semua variabel sebagai global")
 	x = function()
 		return 1 + y + z
 	end
@@ -2563,7 +2563,7 @@ do
 end
 do
 	X = 1
-	print("only declare upper case variables as globals")
+	print("hanya deklarasikan variabel huruf besar sebagai global")
 	local a = 1
 	B = 2
 	local Temp = "a local value"
@@ -3031,7 +3031,7 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _u1f31b = "月之脚本"
+local _u1f31b = "Skrip Bulan"
 _module_0["🌛"] = _u1f31b
 return _module_0
 local _module_0 = { }
@@ -3109,27 +3109,27 @@ local apple = setmetatable({
 if (getmetatable(apple) ~= nil) then
 	p(apple.size, apple.color, getmetatable(apple).__index)
 end
-local _u1f31b = "月之脚本"
+local _u1f31b = "Skrip Bulan"
 _module_0["🌛"] = _u1f31b
 return _module_0
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Dapat koin")
 else
-	print("No coins")
+	print("Tidak ada koin")
 end
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Dapat koin")
 else
-	print("No coins")
+	print("Tidak ada koin")
 end
 local have_coins = false
 print((function()
 	if have_coins then
-		return "Got coins"
+		return "Dapat koin"
 	else
-		return "No coins"
+		return "Tidak ada koin"
 	end
 end)())
 local is_tall
@@ -3142,20 +3142,20 @@ is_tall = function(name)
 end
 local message
 if is_tall("Rob") then
-	message = "I am very tall"
+	message = "Saya sangat tinggi"
 else
-	message = "I am not so tall"
+	message = "Saya tidak terlalu tinggi"
 end
 print(message)
 if not (os.date("%A") == "Monday") then
-	print("it is not Monday!")
+	print("hari ini bukan Senin!")
 end
 if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("Kamu beruntung!")
 end
 local a = 5
 if (1 == a or 3 == a or 5 == a or 7 == a) then
-	print("checking equality with discrete values")
+	print("memeriksa kesamaan dengan nilai-nilai diskrit")
 end
 if (function()
 	local _check_0 = list
@@ -3166,29 +3166,26 @@ if (function()
 	end
 	return false
 end)() then
-	print("checking if `a` is in a list")
-end
-if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("memeriksa apakah `a` ada di dalam daftar")
 end
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Dapat koin")
 else
-	print("No coins")
+	print("Tidak ada koin")
 end
 local have_coins = false
 if have_coins then
-	print("Got coins")
+	print("Dapat koin")
 else
-	print("No coins")
+	print("Tidak ada koin")
 end
 local have_coins = false
 print((function()
 	if have_coins then
-		return "Got coins"
+		return "Dapat koin"
 	else
-		return "No coins"
+		return "Tidak ada koin"
 	end
 end)())
 local is_tall
@@ -3201,20 +3198,20 @@ is_tall = function(name)
 end
 local message
 if is_tall("Rob") then
-	message = "I am very tall"
+	message = "Saya sangat tinggi"
 else
-	message = "I am not so tall"
+	message = "Saya tidak terlalu tinggi"
 end
 print(message)
 if not (os.date("%A") == "Monday") then
-	print("it is not Monday!")
+	print("hari ini bukan Senin!")
 end
 if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("Kamu beruntung!")
 end
 local a = 5
 if (1 == a or 3 == a or 5 == a or 7 == a) then
-	print("checking equality with discrete values")
+	print("memeriksa kesamaan dengan nilai-nilai diskrit")
 end
 if (function()
 	local _check_0 = list
@@ -3225,10 +3222,7 @@ if (function()
 	end
 	return false
 end)() then
-	print("checking if `a` is in a list")
-end
-if not (math.random() > 0.1) then
-	print("You're lucky!")
+	print("memeriksa apakah `a` ada di dalam daftar")
 end
 for i = 10, 20 do
 	print(i)

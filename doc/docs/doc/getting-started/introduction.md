@@ -48,7 +48,7 @@ with apple
   p .size, .color, .<index> if .<>?
 
 -- js-like export syntax
-export 🌛 = "月之脚本"
+export 🌛 = "Script of Moon"
 ```
 
 <YueDisplay>
@@ -95,7 +95,7 @@ with apple
   p .size, .color, .<index> if .<>?
 
 -- js-like export syntax
-export 🌛 = "月之脚本"
+export 🌛 = "Script of Moon"
 ```
 
 </YueDisplay>

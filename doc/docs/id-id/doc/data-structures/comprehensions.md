@@ -1,10 +1,10 @@
-# Comprehensions
+# Komprehensi
 
-Comprehensions provide a convenient syntax for constructing a new table by iterating over some existing object and applying an expression to its values. There are two kinds of comprehensions: list comprehensions and table comprehensions. They both produce Lua tables; list comprehensions accumulate values into an array-like table, and table comprehensions let you set both the key and the value on each iteration.
+Komprehensi menyediakan sintaks yang nyaman untuk membangun tabel baru dengan mengiterasi objek yang ada dan menerapkan ekspresi pada nilainya. Ada dua jenis komprehensi: komprehensi list dan komprehensi tabel. Keduanya menghasilkan tabel Lua; komprehensi list mengakumulasi nilai ke tabel mirip array, dan komprehensi tabel memungkinkan Anda menetapkan kunci dan nilai pada setiap iterasi.
 
-## List Comprehensions
+## Komprehensi List
 
-The following creates a copy of the items table but with all the values doubled.
+Berikut membuat salinan tabel `items` tetapi semua nilainya digandakan.
 
 ```yuescript
 items = [ 1, 2, 3, 4 ]
@@ -19,7 +19,7 @@ doubled = [item * 2 for i, item in ipairs items]
 
 </YueDisplay>
 
-The items included in the new table can be restricted with a when clause:
+Item yang disertakan dalam tabel baru bisa dibatasi dengan klausa `when`:
 
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
@@ -32,7 +32,7 @@ slice = [item for i, item in ipairs items when i > 1 and i < 3]
 
 </YueDisplay>
 
-Because it is common to iterate over the values of a numerically indexed table, an **\*** operator is introduced. The doubled example can be rewritten as:
+Karena umum untuk mengiterasi nilai dari tabel berindeks numerik, operator **\*** diperkenalkan. Contoh `doubled` bisa ditulis ulang sebagai:
 
 ```yuescript
 doubled = [item * 2 for item in *items]
@@ -45,7 +45,7 @@ doubled = [item * 2 for item in *items]
 
 </YueDisplay>
 
-In list comprehensions, you can also use the spread operator `...` to flatten nested lists, achieving a flat map effect:
+Dalam komprehensi list, Anda juga bisa menggunakan operator spread `...` untuk meratakan list bertingkat, menghasilkan efek flat map:
 
 ```yuescript
 data =
@@ -53,7 +53,7 @@ data =
   b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
--- flat is now [1, 2, 3, 4, 5, 6]
+-- flat sekarang [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
 
@@ -63,14 +63,14 @@ data =
   b: [4, 5, 6]
 
 flat = [...v for k,v in pairs data]
--- flat is now [1, 2, 3, 4, 5, 6]
+-- flat sekarang [1, 2, 3, 4, 5, 6]
 ```
 
 </YueDisplay>
 
-The for and when clauses can be chained as much as desired. The only requirement is that a comprehension has at least one for clause.
+Klausa `for` dan `when` dapat dirantai sebanyak yang diinginkan. Satu-satunya syarat adalah komprehensi memiliki setidaknya satu klausa `for`.
 
-Using multiple for clauses is the same as using nested loops:
+Menggunakan beberapa klausa `for` sama seperti menggunakan loop bertingkat:
 
 ```yuescript
 x_coords = [4, 5, 6, 7]
@@ -91,7 +91,7 @@ for y in *y_coords]
 
 </YueDisplay>
 
-Numeric for loops can also be used in comprehensions:
+Perulangan for numerik juga bisa digunakan dalam komprehensi:
 
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
@@ -104,11 +104,11 @@ evens = [i for i = 1, 100 when i % 2 == 0]
 
 </YueDisplay>
 
-## Table Comprehensions
+## Komprehensi Tabel
 
-The syntax for table comprehensions is very similar, only differing by using **{** and **}** and taking two values from each iteration.
+Sintaks untuk komprehensi tabel sangat mirip, hanya berbeda dengan penggunaan **{** dan **}** serta mengambil dua nilai dari setiap iterasi.
 
-This example makes a copy of the tablething:
+Contoh ini membuat salinan tabel `thing`:
 
 ```yuescript
 thing = {
@@ -144,7 +144,7 @@ no_color = {k, v for k, v in pairs thing when k != "color"}
 
 </YueDisplay>
 
-The **\*** operator is also supported. Here we create a square root look up table for a few numbers.
+Operator **\*** juga didukung. Di sini kita membuat tabel lookup akar kuadrat untuk beberapa angka.
 
 ```yuescript
 numbers = [1, 2, 3, 4]
@@ -159,9 +159,9 @@ sqrts = {i, math.sqrt i for i in *numbers}
 
 </YueDisplay>
 
-The key-value tuple in a table comprehension can also come from a single expression, in which case the expression should return two values. The first is used as the key and the second is used as the value:
+Tuple key-value dalam komprehensi tabel juga bisa berasal dari satu ekspresi, yang berarti ekspresi tersebut harus mengembalikan dua nilai. Nilai pertama digunakan sebagai kunci dan nilai kedua digunakan sebagai nilai:
 
-In this example we convert an array of pairs to a table where the first item in the pair is the key and the second is the value.
+Dalam contoh ini kita mengonversi array pasangan menjadi tabel di mana item pertama dalam pasangan menjadi kunci dan item kedua menjadi nilai.
 
 ```yuescript
 tuples = [ ["hello", "world"], ["foo", "bar"]]
@@ -178,9 +178,9 @@ tbl = {unpack tuple for tuple in *tuples}
 
 ## Slicing
 
-A special syntax is provided to restrict the items that are iterated over when using the **\*** operator. This is equivalent to setting the iteration bounds and a step size in a for loop.
+Sintaks khusus disediakan untuk membatasi item yang diiterasi saat menggunakan operator **\***. Ini setara dengan mengatur batas iterasi dan ukuran langkah pada loop for.
 
-Here we can set the minimum and maximum bounds, taking all items with indexes between 1 and 5 inclusive:
+Di sini kita bisa menetapkan batas minimum dan maksimum, mengambil semua item dengan indeks antara 1 dan 5 (inklusif):
 
 ```yuescript
 slice = [item for item in *items[1, 5]]
@@ -193,7 +193,7 @@ slice = [item for item in *items[1, 5]]
 
 </YueDisplay>
 
-Any of the slice arguments can be left off to use a sensible default. In this example, if the max index is left off it defaults to the length of the table. This will take everything but the first element:
+Salah satu argumen slice boleh dikosongkan untuk menggunakan default yang masuk akal. Pada contoh ini, jika indeks maksimum dikosongkan, defaultnya adalah panjang tabel. Ini akan mengambil semua item kecuali elemen pertama:
 
 ```yuescript
 slice = [item for item in *items[2,]]
@@ -206,7 +206,7 @@ slice = [item for item in *items[2,]]
 
 </YueDisplay>
 
-If the minimum bound is left out, it defaults to 1. Here we only provide a step size and leave the other bounds blank. This takes all odd indexed items: (1, 3, 5, …)
+Jika batas minimum dikosongkan, defaultnya adalah 1. Di sini kita hanya memberikan ukuran langkah dan membiarkan batas lainnya kosong. Ini akan mengambil semua item berindeks ganjil: (1, 3, 5, …)
 
 ```yuescript
 slice = [item for item in *items[,,2]]
@@ -219,22 +219,22 @@ slice = [item for item in *items[,,2]]
 
 </YueDisplay>
 
-Both the minimum and maximum bounds can be negative, which means that the bounds are counted from the end of the table.
+Batas minimum dan maksimum bisa bernilai negatif, yang berarti batas dihitung dari akhir tabel.
 
 ```yuescript
--- take the last 4 items
+-- ambil 4 item terakhir
 slice = [item for item in *items[-4,-1]]
 ```
 <YueDisplay>
 
 ```yue
--- take the last 4 items
+-- ambil 4 item terakhir
 slice = [item for item in *items[-4,-1]]
 ```
 
 </YueDisplay>
 
-The step size can also be negative, which means that the items are taken in reverse order.
+Ukuran langkah juga bisa negatif, yang berarti item diambil dalam urutan terbalik.
 
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
@@ -247,24 +247,24 @@ reverse_slice = [item for item in *items[-1,1,-1]]
 
 </YueDisplay>
 
-### Slicing Expression
+### Ekspresi Slicing
 
-Slicing can also be used as an expression. This is useful for getting a sub-list of a table.
+Slicing juga bisa digunakan sebagai ekspresi. Ini berguna untuk mendapatkan sub-list dari sebuah tabel.
 
 ```yuescript
--- take the 2nd and 4th items as a new list
+-- ambil item ke-2 dan ke-4 sebagai list baru
 sub_list = items[2, 4]
 
--- take the last 4 items
+-- ambil 4 item terakhir
 last_four_items = items[-4, -1]
 ```
 <YueDisplay>
 
 ```yue
--- take the 2nd and 4th items as a new list
+-- ambil item ke-2 dan ke-4 sebagai list baru
 sub_list = items[2, 4]
 
--- take the last 4 items
+-- ambil 4 item terakhir
 last_four_items = items[-4, -1]
 ```
 

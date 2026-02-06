@@ -1,11 +1,11 @@
-# The Using Clause; Controlling Destructive Assignment
+# Klausa Using; Mengendalikan Penugasan Destruktif
 
-While lexical scoping can be a great help in reducing the complexity of the code we write, things can get unwieldy as the code size increases. Consider the following snippet:
+Meskipun scope leksikal sangat membantu mengurangi kompleksitas kode yang kita tulis, hal ini bisa menjadi sulit ketika ukuran kode membesar. Pertimbangkan cuplikan berikut:
 
 ```yuescript
 i = 100
 
--- many lines of code...
+-- banyak baris kode...
 
 my_func = ->
   i = 10
@@ -15,14 +15,14 @@ my_func = ->
 
 my_func!
 
-print i -- will print 0
+print i -- akan mencetak 0
 ```
 <YueDisplay>
 
 ```yue
 i = 100
 
--- many lines of code...
+-- banyak baris kode...
 
 my_func = ->
   i = 10
@@ -32,25 +32,25 @@ my_func = ->
 
 my_func!
 
-print i -- will print 0
+print i -- akan mencetak 0
 ```
 
 </YueDisplay>
 
-In my_func, we've overwritten the value of i mistakenly. In this example it is quite obvious, but consider a large, or foreign code base where it isn't clear what names have already been declared.
+Di `my_func`, kita tanpa sengaja menimpa nilai `i`. Dalam contoh ini halnya cukup jelas, tetapi bayangkan kode besar atau basis kode asing di mana tidak jelas nama apa saja yang sudah dideklarasikan.
 
-It would be helpful to say which variables from the enclosing scope we intend on change, in order to prevent us from changing others by accident.
+Akan sangat membantu jika kita dapat menyatakan variabel mana dari scope luar yang memang ingin kita ubah, agar mencegah mengubah yang lain secara tidak sengaja.
 
-The using keyword lets us do that. using nil makes sure that no closed variables are overwritten in assignment. The using clause is placed after the argument list in a function, or in place of it if there are no arguments.
+Kata kunci `using` memungkinkan kita melakukan itu. `using nil` memastikan bahwa tidak ada variabel tertutup yang ditimpa dalam assignment. Klausa `using` ditempatkan setelah daftar argumen pada fungsi, atau menggantikannya jika tidak ada argumen.
 
 ```yuescript
 i = 100
 
 my_func = (using nil) ->
-  i = "hello" -- a new local variable is created here
+  i = "hello" -- variabel local baru dibuat di sini
 
 my_func!
-print i -- prints 100, i is unaffected
+print i -- mencetak 100, i tidak terpengaruh
 ```
 <YueDisplay>
 
@@ -58,27 +58,27 @@ print i -- prints 100, i is unaffected
 i = 100
 
 my_func = (using nil) ->
-  i = "hello" -- a new local variable is created here
+  i = "hello" -- variabel local baru dibuat di sini
 
 my_func!
-print i -- prints 100, i is unaffected
+print i -- mencetak 100, i tidak terpengaruh
 ```
 
 </YueDisplay>
 
-Multiple names can be separated by commas. Closure values can still be accessed, they just cant be modified:
+Beberapa nama dapat dipisahkan dengan koma. Nilai closure tetap bisa diakses, hanya saja tidak dapat dimodifikasi:
 
 ```yuescript
 tmp = 1213
 i, k = 100, 50
 
 my_func = (add using k, i) ->
-  tmp = tmp + add -- a new local tmp is created
+  tmp = tmp + add -- tmp local baru dibuat
   i += tmp
   k += tmp
 
 my_func(22)
-print i, k -- these have been updated
+print i, k -- ini telah diperbarui
 ```
 <YueDisplay>
 
@@ -87,12 +87,12 @@ tmp = 1213
 i, k = 100, 50
 
 my_func = (add using k, i) ->
-  tmp = tmp + add -- a new local tmp is created
+  tmp = tmp + add -- tmp local baru dibuat
   i += tmp
   k += tmp
 
 my_func(22)
-print i, k -- these have been updated
+print i, k -- ini telah diperbarui
 ```
 
 </YueDisplay>

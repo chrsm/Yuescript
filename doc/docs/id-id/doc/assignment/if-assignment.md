@@ -1,6 +1,6 @@
-# If Assignment
+# Penugasan pada If
 
-`if` and `elseif` blocks can take an assignment in place of a conditional expression. Upon evaluating the conditional, the assignment will take place and the value that was assigned to will be used as the conditional expression. The assigned variable is only in scope for the body of the conditional, meaning it is never available if the value is not truthy. And you have to use "the walrus operator" `:=` instead of `=` to do assignment.
+Blok `if` dan `elseif` dapat menerima assignment sebagai ganti ekspresi kondisional. Saat kondisi dievaluasi, assignment akan dilakukan dan nilai yang di-assign akan digunakan sebagai ekspresi kondisional. Variabel yang di-assign hanya berada dalam scope badan kondisional, artinya tidak pernah tersedia jika nilai tidak truthy. Dan Anda harus menggunakan "walrus operator" `:=` sebagai ganti `=` untuk melakukan assignment.
 
 ```yuescript
 if user := database.find_user "moon"
@@ -36,36 +36,36 @@ else
 
 </YueDisplay>
 
-If assignment with multiple return values. Only the first value is getting checked, other values are scoped.
+Assignment if dengan beberapa nilai return. Hanya nilai pertama yang dicek, nilai lainnya tetap berada dalam scope.
 ```yuescript
 if success, result := pcall -> "get result without problems"
-  print result -- variable result is scoped
+  print result -- variabel result berada dalam scope
 print "OK"
 ```
 <YueDisplay>
 
 ```yue
 if success, result := pcall -> "get result without problems"
-  print result -- variable result is scoped
+  print result -- variabel result berada dalam scope
 print "OK"
 ```
 
 </YueDisplay>
 
-## While Assignment
+## Assignment pada While
 
-You can also use if assignment in a while loop to get the value as the loop condition.
+Anda juga bisa menggunakan assignment if di loop while untuk mendapatkan nilai sebagai kondisi loop.
 
 ```yuescript
 while byte := stream\read_one!
-  -- do something with the byte
+  -- lakukan sesuatu dengan byte
   print byte
 ```
 <YueDisplay>
 
 ```yue
 while byte := stream\read_one!
-  -- do something with the byte
+  -- lakukan sesuatu dengan byte
   print byte
 ```
 

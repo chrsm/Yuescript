@@ -1,6 +1,6 @@
-# Operator
+# Operatoren
 
-All of Lua's binary and unary operators are available. Additionally **!=** is as an alias for **~=**, and either **\\** or **::** can be used to write a chaining function call like `tb\func!` or `tb::func!`. And Yuescipt offers some other special operators to write more expressive codes.
+Alle binären und unären Operatoren von Lua sind verfügbar. Zusätzlich ist **!=** ein Alias für **~=**, und entweder **\** oder **::** kann für verkettete Funktionsaufrufe wie `tb\func!` oder `tb::func!` verwendet werden. Außerdem bietet YueScript einige spezielle Operatoren für ausdrucksstärkeren Code.
 
 ```yuescript
 tb\func! if tb ~= nil
@@ -15,32 +15,32 @@ tb::func! if tb != nil
 
 </YueDisplay>
 
-## Chaining Comparisons
+## Verkettete Vergleiche
 
-Comparisons can be arbitrarily chained:
+Vergleiche können beliebig verkettet werden:
 
 ```yuescript
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
--- output: true
+-- Ausgabe: true
 
 a = 5
 print 1 <= a <= 10
--- output: true
+-- Ausgabe: true
 ```
 <YueDisplay>
 
 ```yue
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
--- output: true
+-- Ausgabe: true
 
 a = 5
 print 1 <= a <= 10
--- output: true
+-- Ausgabe: true
 ```
 
 </YueDisplay>
 
-Note the evaluation behavior of chained comparisons:
+Beachte das Auswertungsverhalten verketteter Vergleiche:
 
 ```yuescript
 v = (x) ->
@@ -49,7 +49,7 @@ v = (x) ->
 
 print v(1) < v(2) <= v(3)
 --[[
-  output:
+  Ausgabe:
   2
   1
   3
@@ -58,7 +58,7 @@ print v(1) < v(2) <= v(3)
 
 print v(1) > v(2) <= v(3)
 --[[
-  output:
+  Ausgabe:
   2
   1
   false
@@ -73,7 +73,7 @@ v = (x) ->
 
 print v(1) < v(2) <= v(3)
 --[[
-  output:
+  Ausgabe:
   2
   1
   3
@@ -82,7 +82,7 @@ print v(1) < v(2) <= v(3)
 
 print v(1) > v(2) <= v(3)
 --[[
-  output:
+  Ausgabe:
   2
   1
   false
@@ -91,32 +91,32 @@ print v(1) > v(2) <= v(3)
 
 </YueDisplay>
 
-The middle expression is only evaluated once, rather than twice as it would be if the expression were written as `v(1) < v(2) and v(2) <= v(3)`. However, the order of evaluations in a chained comparison is undefined. It is strongly recommended not to use expressions with side effects (such as printing) in chained comparisons. If side effects are required, the short-circuit `and` operator should be used explicitly.
+Der mittlere Ausdruck wird nur einmal ausgewertet, nicht zweimal wie bei `v(1) < v(2) and v(2) <= v(3)`. Die Auswertungsreihenfolge in verketteten Vergleichen ist jedoch undefiniert. Es wird dringend empfohlen, in verketteten Vergleichen keine Ausdrücke mit Seiteneffekten (z. B. `print`) zu verwenden. Wenn Seiteneffekte nötig sind, sollte der Short-Circuit-Operator `and` explizit verwendet werden.
 
-## Table Appending
+## Tabellenerweiterung
 
-The **[] =** operator is used to append values to tables.
+Der Operator **[] =** wird verwendet, um Werte an Tabellen anzuhängen.
 
 ```yuescript
 tab = []
-tab[] = "Value"
+tab[] = "Wert"
 ```
 <YueDisplay>
 
 ```yue
 tab = []
-tab[] = "Value"
+tab[] = "Wert"
 ```
 
 </YueDisplay>
 
-You can also use the spread operator `...` to append all elements from one list to another:
+Du kannst auch den Spread-Operator `...` verwenden, um alle Elemente einer Liste an eine andere anzuhängen:
 
 ```yuescript
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
--- tbA is now [1, 2, 3, 4, 5, 6]
+-- tbA ist jetzt [1, 2, 3, 4, 5, 6]
 ```
 <YueDisplay>
 
@@ -124,24 +124,24 @@ tbA[] = ...tbB
 tbA = [1, 2, 3]
 tbB = [4, 5, 6]
 tbA[] = ...tbB
--- tbA is now [1, 2, 3, 4, 5, 6]
+-- tbA ist jetzt [1, 2, 3, 4, 5, 6]
 ```
 
 </YueDisplay>
 
-## Table Spreading
+## Tabellen-Spread
 
-You can concatenate array tables or hash tables using spread operator `...` before expressions in table literals.
+Du kannst Array-Tabellen oder Hash-Tabellen mit dem Spread-Operator `...` vor Ausdrücken in Tabellenliteralen zusammenführen.
 
 ```yuescript
 parts =
-  * "shoulders"
-  * "knees"
+  * "Schultern"
+  * "Knie"
 lyrics =
-  * "head"
+  * "Kopf"
   * ...parts
-  * "and"
-  * "toes"
+  * "und"
+  * "Zehen"
 
 copy = {...other}
 
@@ -153,13 +153,13 @@ merge = {...a, ...b}
 
 ```yue
 parts =
-  * "shoulders"
-  * "knees"
+  * "Schultern"
+  * "Knie"
 lyrics =
-  * "head"
+  * "Kopf"
   * ...parts
-  * "and"
-  * "toes"
+  * "und"
+  * "Zehen"
 
 copy = {...other}
 
@@ -170,9 +170,9 @@ merge = {...a, ...b}
 
 </YueDisplay>
 
-## Table Reversed Indexing
+## Umgekehrter Tabellenindex
 
-You can use the **#** operator to get the last elements of a table.
+Mit dem Operator **#** kannst du auf die letzten Elemente einer Tabelle zugreifen.
 
 ```yuescript
 last = data.items[#]
@@ -191,11 +191,11 @@ data.items[#] = 1
 
 ## Metatable
 
-The **<>** operator can be used as a shortcut for metatable manipulation.
+Der Operator **<>** kann als Abkürzung für Metatable-Manipulation verwendet werden.
 
-### Metatable Creation
+### Metatable erstellen
 
-Create normal table with empty bracekets **<>** or metamethod key which is surrounded by **<>**.
+Erzeuge eine normale Tabelle mit leeren Klammern **<>** oder einem Metamethod-Schlüssel, der von **<>** umschlossen ist.
 
 ```yuescript
 mt = {}
@@ -203,14 +203,14 @@ add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
 a = <>: mt, value: 1
- -- set field with variable of the same name
+ -- Feld mit gleichnamiger Variable setzen
 b = :<add>, value: 2
 c = <add>: mt.__add, value: 3
 
 d = a + b + c
 print d.value
 
-close _ = <close>: -> print "out of scope"
+close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs"
 ```
 <YueDisplay>
 
@@ -220,47 +220,47 @@ add = (right) => <>: mt, value: @value + right.value
 mt.__add = add
 
 a = <>: mt, value: 1
- -- set field with variable of the same name
+ -- Feld mit gleichnamiger Variable setzen
 b = :<add>, value: 2
 c = <add>: mt.__add, value: 3
 
 d = a + b + c
 print d.value
 
-close _ = <close>: -> print "out of scope"
+close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs"
 ```
 
 </YueDisplay>
 
-### Metatable Accessing
+### Metatable-Zugriff
 
-Accessing metatable with **<>** or metamethod name surrounded by **<>** or writing some expression in **<>**.
+Metatable mit **<>** oder einem von **<>** umschlossenen Metamethod-Namen aufrufen oder einen Ausdruck in **<>** schreiben.
 
 ```yuescript
--- create with metatable containing field "value"
+-- erstellen mit Metatable, das das Feld "value" enthält
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
 
-tb.<> = __index: {item: "hello"}
+tb.<> = __index: {item: "hallo"}
 print tb.item
 ```
 <YueDisplay>
 
 ```yue
--- create with metatable containing field "value"
+-- erstellen mit Metatable, das das Feld "value" enthält
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
-tb.<> = __index: {item: "hello"}
+tb.<> = __index: {item: "hallo"}
 print tb.item
 ```
 
 </YueDisplay>
 
-### Metatable Destructure
+### Metatable-Destrukturierung
 
-Destruct metatable with metamethod key surrounded by **<>**.
+Destrukturiere Metatable mit Metamethoden-Schlüssel, der von **<>** umschlossen ist.
 
 ```yuescript
 {item, :new, :<close>, <index>: getter} = tb
@@ -275,9 +275,9 @@ print item, new, close, getter
 
 </YueDisplay>
 
-## Existence
+## Existenz
 
-The **?** operator can be used in a variety of contexts to check for existence.
+Der Operator **?** kann in verschiedenen Kontexten verwendet werden, um die Existenz zu prüfen.
 
 ```yuescript
 func?!
@@ -314,14 +314,14 @@ with? io.open "test.txt", "w"
 
 ## Piping
 
-Instead of a series of nested function calls, you can pipe values with operator **|>**.
+Anstelle einer Reihe verschachtelter Funktionsaufrufe kannst du Werte mit dem Operator **|>** weiterleiten.
 
 ```yuescript
 "hello" |> print
-1 |> print 2 -- insert pipe item as the first argument
-2 |> print 1, _, 3 -- pipe with a placeholder
+1 |> print 2 -- Pipe-Element als erstes Argument einfügen
+2 |> print 1, _, 3 -- Pipe mit Platzhalter
 
--- pipe expression in multiline
+-- Pipe-Ausdruck über mehrere Zeilen
 readFile "example.txt"
   |> extract language, {}
   |> parse language
@@ -333,9 +333,9 @@ readFile "example.txt"
 
 ```yue
 "hello" |> print
-1 |> print 2 -- insert pipe item as the first argument
-2 |> print 1, _, 3 -- pipe with a placeholder
--- pipe expression in multiline
+1 |> print 2 -- Pipe-Element als erstes Argument einfügen
+2 |> print 1, _, 3 -- Pipe mit Platzhalter
+-- Pipe-Ausdruck über mehrere Zeilen
 readFile "example.txt"
   |> extract language, {}
   |> parse language
@@ -346,9 +346,10 @@ readFile "example.txt"
 
 </YueDisplay>
 
-## Nil Coalescing
+## Nil-Coalescing
 
-The nil-coalescing operator **??** returns the value of its left-hand operand if it isn't **nil**; otherwise, it evaluates the right-hand operand and returns its result. The **??** operator doesn't evaluate its right-hand operand if the left-hand operand evaluates to non-nil.
+Der Nil-Coalescing-Operator **??** gibt den Wert des linken Operanden zurück, wenn er nicht **nil** ist; andernfalls wird der rechte Operand ausgewertet und sein Ergebnis zurückgegeben. Der **??**-Operator wertet seinen rechten Operanden nicht aus, wenn der linke Operand nicht nil ergibt.
+
 ```yuescript
 local a, b, c, d
 a = b ?? c ?? d
@@ -367,31 +368,31 @@ a ??= false
 
 </YueDisplay>
 
-## Implicit Object
+## Implizites Objekt
 
-You can write a list of implicit structures that starts with the symbol **\*** or **-** inside a table block. If you are creating implicit object, the fields of the object must be with the same indent.
+Du kannst innerhalb eines Tabellenblocks eine Liste impliziter Strukturen schreiben, die mit dem Symbol **\*** oder **-** beginnt. Beim Erstellen eines impliziten Objekts müssen die Felder des Objekts dieselbe Einrückung haben.
 
 ```yuescript
--- assignment with implicit object
+-- Zuweisung mit implizitem Objekt
 list =
   * 1
   * 2
   * 3
 
--- function call with implicit object
+-- Funktionsaufruf mit implizitem Objekt
 func
   * 1
   * 2
   * 3
 
--- return with implicit object
+-- Rückgabe mit implizitem Objekt
 f = ->
   return
     * 1
     * 2
     * 3
 
--- table with implicit object
+-- Tabelle mit implizitem Objekt
 tb =
   name: "abc"
 
@@ -416,26 +417,26 @@ tb =
 <YueDisplay>
 
 ```yue
--- assignment with implicit object
+-- Zuweisung mit implizitem Objekt
 list =
   * 1
   * 2
   * 3
 
--- function call with implicit object
+-- Funktionsaufruf mit implizitem Objekt
 func
   * 1
   * 2
   * 3
 
--- return with implicit object
+-- Rückgabe mit implizitem Objekt
 f = ->
   return
     * 1
     * 2
     * 3
 
--- table with implicit object
+-- Tabelle mit implizitem Objekt
 tb =
   name: "abc"
 

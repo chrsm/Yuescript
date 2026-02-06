@@ -1,33 +1,33 @@
-# Literals
+# Literale
 
-All of the primitive literals in Lua can be used. This applies to numbers, strings, booleans, and **nil**.
+Alle primitiven Literale in Lua können verwendet werden. Das gilt für Zahlen, Strings, Booleans und **nil**.
 
-Unlike Lua, Line breaks are allowed inside of single and double quote strings without an escape sequence:
+Anders als in Lua sind Zeilenumbrüche innerhalb einfacher und doppelter Anführungszeichen ohne Escape-Sequenz erlaubt:
 
 ```yuescript
-some_string = "Here is a string
-  that has a line break in it."
+some_string = "Hier ist ein String
+  mit einem Zeilenumbruch."
 
--- You can mix expressions into string literals using #{} syntax.
--- String interpolation is only available in double quoted strings.
-print "I am #{math.random! * 100}% sure."
+-- Mit der #{}-Syntax kannst du Ausdrücke in String-Literale einbinden.
+-- String-Interpolation gibt es nur in doppelt angeführten Strings.
+print "Ich bin mir zu #{math.random! * 100}% sicher."
 ```
 <YueDisplay>
 
 ```yue
-some_string = "Here is a string
-  that has a line break in it."
+some_string = "Hier ist ein String
+  mit einem Zeilenumbruch."
 
--- You can mix expressions into string literals using #{} syntax.
--- String interpolation is only available in double quoted strings.
-print "I am #{math.random! * 100}% sure."
+-- Mit der #{}-Syntax kannst du Ausdrücke in String-Literale einbinden.
+-- String-Interpolation gibt es nur in doppelt angeführten Strings.
+print "Ich bin mir zu #{math.random! * 100}% sicher."
 ```
 
 </YueDisplay>
 
-## Number Literals
+## Zahlenliterale
 
-You can use underscores in a number literal to increase readability.
+Du kannst Unterstriche in Zahlenliteralen verwenden, um die Lesbarkeit zu erhöhen.
 
 ```yuescript
 integer = 1_000_000
@@ -44,9 +44,9 @@ binary = 0B10011
 
 </YueDisplay>
 
-## YAML Multiline String
+## YAML-Mehrzeilen-String
 
-The `|` prefix introduces a YAML-style multiline string literal:
+Das Präfix `|` führt ein mehrzeiliges String-Literal im YAML-Stil ein:
 
 ```yuescript
 str = |
@@ -67,9 +67,9 @@ str = |
 
 </YueDisplay>
 
-This allows writing structured multiline text conveniently. All line breaks and indentation are preserved relative to the first non-empty line, and expressions inside `#{...}` are interpolated automatically as `tostring(expr)`.
+Damit lässt sich strukturierter, mehrzeiliger Text bequem schreiben. Alle Zeilenumbrüche und Einrückungen bleiben relativ zur ersten nicht-leeren Zeile erhalten, und Ausdrücke innerhalb von `#{...}` werden automatisch als `tostring(expr)` interpoliert.
 
-YAML Multiline String automatically detects the common leading whitespace prefix (minimum indentation across all non-empty lines) and removes it from all lines. This makes it easy to indent your code visually without affecting the resulting string content.
+Der YAML-Mehrzeilen-String erkennt automatisch das gemeinsame führende Leerraumpräfix (minimale Einrückung über alle nicht-leeren Zeilen) und entfernt es aus allen Zeilen. So kannst du deinen Code optisch einrücken, ohne den resultierenden String zu verändern.
 
 ```yuescript
 fn = ->
@@ -90,9 +90,9 @@ fn = ->
 
 </YueDisplay>
 
-Internal indentation is preserved relative to the removed common prefix, allowing clean nested structures.
+Die interne Einrückung bleibt relativ zum entfernten gemeinsamen Präfix erhalten, wodurch saubere, verschachtelte Strukturen möglich sind.
 
-All special characters like quotes (`"`) and backslashes (`\`) in the YAMLMultiline block are automatically escaped so that the generated Lua string is syntactically valid and behaves as expected.
+Alle Sonderzeichen wie Anführungszeichen (`"`) und Backslashes (`\`) im YAML-Mehrzeilen-Block werden automatisch escaped, sodass der erzeugte Lua-String syntaktisch korrekt ist und wie erwartet funktioniert.
 
 ```yuescript
 str = |

@@ -1,25 +1,25 @@
-# Assignment
+# Atribuição
 
-The variable is dynamic typed and is defined as local by default. But you can change the scope of declaration by **local** and **global** statement.
+A variável é tipada dinamicamente e é definida como local por padrão. Mas você pode alterar o escopo da declaração pelas instruções **local** e **global**.
 
 ```yuescript
 hello = "world"
 a, b, c = 1, 2, 3
-hello = 123 -- uses the existing variable
+hello = 123 -- usa a variável existente
 ```
 <YueDisplay>
 
 ```yue
 hello = "world"
 a, b, c = 1, 2, 3
-hello = 123 -- uses the existing variable
+hello = 123 -- usa a variável existente
 ```
 
 </YueDisplay>
 
-## Perform Update
+## Atualização
 
-You can perform update assignment with many binary operators.
+Você pode realizar atribuição de atualização com muitos operadores binários.
 ```yuescript
 x = 1
 x += 1
@@ -27,8 +27,8 @@ x -= 1
 x *= 10
 x /= 10
 x %= 10
-s ..= "world" -- will add a new local if local variable is not exist
-arg or= "default value"
+s ..= "world" -- adiciona um novo local se a variável local não existir
+arg or= "valor padrão"
 ```
 <YueDisplay>
 
@@ -39,15 +39,15 @@ x -= 1
 x *= 10
 x /= 10
 x %= 10
-s ..= "world" -- will add a new local if local variable is not exist
-arg or= "default value"
+s ..= "world" -- adiciona um novo local se a variável local não existir
+arg or= "valor padrão"
 ```
 
 </YueDisplay>
 
-## Chaining Assignment
+## Atribuição encadeada
 
-You can do chaining assignment to assign multiple items to hold the same value.
+Você pode fazer atribuição encadeada para atribuir múltiplos itens ao mesmo valor.
 ```yuescript
 a = b = c = d = e = 0
 x = y = z = f!
@@ -61,12 +61,12 @@ x = y = z = f!
 
 </YueDisplay>
 
-## Explicit Locals
+## Locais explícitos
 ```yuescript
 do
   local a = 1
   local *
-  print "forward declare all variables as locals"
+  print "declarar antecipadamente todas as variáveis como locais"
   x = -> 1 + y + z
   y, z = 2, 3
   global instance = Item\new!
@@ -74,7 +74,7 @@ do
 do
   local X = 1
   local ^
-  print "only forward declare upper case variables"
+  print "declarar antecipadamente apenas variáveis em maiúsculas"
   a = 1
   B = 2
 ```
@@ -84,7 +84,7 @@ do
 do
   local a = 1
   local *
-  print "forward declare all variables as locals"
+  print "declarar antecipadamente todas as variáveis como locais"
   x = -> 1 + y + z
   y, z = 2, 3
   global instance = Item\new!
@@ -92,29 +92,29 @@ do
 do
   local X = 1
   local ^
-  print "only forward declare upper case variables"
+  print "declarar antecipadamente apenas variáveis em maiúsculas"
   a = 1
   B = 2
 ```
 
 </YueDisplay>
 
-## Explicit Globals
+## Globais explícitos
 ```yuescript
 do
   global a = 1
   global *
-  print "declare all variables as globals"
+  print "declarar todas as variáveis como globais"
   x = -> 1 + y + z
   y, z = 2, 3
 
 do
   global X = 1
   global ^
-  print "only declare upper case variables as globals"
+  print "declarar apenas variáveis em maiúsculas como globais"
   a = 1
   B = 2
-  local Temp = "a local value"
+  local Temp = "um valor local"
 ```
 <YueDisplay>
 
@@ -122,17 +122,17 @@ do
 do
   global a = 1
   global *
-  print "declare all variables as globals"
+  print "declarar todas as variáveis como globais"
   x = -> 1 + y + z
   y, z = 2, 3
 
 do
   global X = 1
   global ^
-  print "only declare upper case variables as globals"
+  print "declarar apenas variáveis em maiúsculas como globais"
   a = 1
   B = 2
-  local Temp = "a local value"
+  local Temp = "um valor local"
 ```
 
 </YueDisplay>

@@ -1,16 +1,16 @@
-# Introduction
+# Introdução
 
-YueScript is a dynamic language that compiles to Lua. And it's a [MoonScript](https://github.com/leafo/moonscript) dialect. The codes written in YueScript are expressive and extremely concise. And it is suitable for writing some changing application logic with more maintainable codes and runs in a Lua embeded environment such as games or website servers.
+YueScript é uma linguagem dinâmica que compila para Lua. É um dialeto do [MoonScript](https://github.com/leafo/moonscript). O código escrito em YueScript é expressivo e extremamente conciso. É adequado para escrever lógica de aplicação variável com código mais manutenível e roda em ambientes Lua embutidos, como jogos ou servidores web.
 
-Yue (月) is the name of moon in Chinese and it's pronounced as [jyɛ].
+Yue (月) é o nome da lua em chinês e é pronunciado como [jyɛ].
 
-## An Overview of YueScript
+## Uma visão geral do YueScript
 
 ```yuescript
--- import syntax
+-- sintaxe de importação
 import p, to_lua from "yue"
 
--- object literals
+-- literais de objeto
 inventory =
   equipment:
     - "sword"
@@ -21,7 +21,7 @@ inventory =
     - name: "bread"
       count: 3
 
--- list comprehension
+-- compreensão de lista
 map = (arr, action) ->
   [action item for item in *arr]
 
@@ -31,14 +31,14 @@ filter = (arr, cond) ->
 reduce = (arr, init, action): init ->
   init = action init, item for item in *arr
 
--- pipe operator
+-- operador pipe
 [1, 2, 3]
   |> map (x) -> x * 2
   |> filter (x) -> x > 4
   |> reduce 0, (a, b) -> a + b
   |> print
 
--- metatable manipulation
+-- manipulação de metatable
 apple =
   size: 15
   <index>:
@@ -47,17 +47,17 @@ apple =
 with apple
   p .size, .color, .<index> if .<>?
 
--- js-like export syntax
-export 🌛 = "月之脚本"
+-- sintaxe de exportação estilo js
+export 🌛 = "Script da Lua"
 ```
 
 <YueDisplay>
 
 ```yue
--- import syntax
+-- sintaxe de importação
 import p, to_lua from "yue"
 
--- object literals
+-- literais de objeto
 inventory =
   equipment:
     - "sword"
@@ -68,7 +68,7 @@ inventory =
     - name: "bread"
       count: 3
 
--- list comprehension
+-- compreensão de lista
 map = (arr, action) ->
   [action item for item in *arr]
 
@@ -78,14 +78,14 @@ filter = (arr, cond) ->
 reduce = (arr, init, action): init ->
   init = action init, item for item in *arr
 
--- pipe operator
+-- operador pipe
 [1, 2, 3]
   |> map (x) -> x * 2
   |> filter (x) -> x > 4
   |> reduce 0, (a, b) -> a + b
   |> print
 
--- metatable manipulation
+-- manipulação de metatable
 apple =
   size: 15
   <index>:
@@ -94,12 +94,12 @@ apple =
 with apple
   p .size, .color, .<index> if .<>?
 
--- js-like export syntax
-export 🌛 = "月之脚本"
+-- sintaxe de exportação estilo js
+export 🌛 = "Script da Lua"
 ```
 
 </YueDisplay>
 
-## About Dora SSR
+## Sobre o Dora SSR
 
-YueScript is being developed and maintained alongside the open-source game engine [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). It has been used to create engine tools, game demos and prototypes, validating its capabilities in real-world scenarios while enhancing the Dora SSR development experience.
+O YueScript está sendo desenvolvido e mantido em conjunto com o motor de jogo open-source [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). Tem sido usado para criar ferramentas do motor, demonstrações de jogos e protótipos, validando suas capacidades em cenários do mundo real e aprimorando a experiência de desenvolvimento do Dora SSR.

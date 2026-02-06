@@ -1,6 +1,6 @@
 # Try
 
-The syntax for Lua error handling in a common form.
+Die Syntax für Fehlerbehandlung in Lua in einer gängigen Form.
 
 ```yuescript
 try
@@ -20,10 +20,10 @@ catch err
 success, result = try func 1, 2, 3
 
 try
-  print "trying"
+  print "Versuche"
   func 1, 2, 3
 
--- working with if assignment pattern
+-- Verwendung mit if-Zuweisungsmuster
 if success, result := try func 1, 2, 3
 catch err
     print yue.traceback err
@@ -49,10 +49,10 @@ catch err
 success, result = try func 1, 2, 3
 
 try
-  print "trying"
+  print "Versuche"
   func 1, 2, 3
 
--- working with if assignment pattern
+-- Verwendung mit if-Zuweisungsmuster
 if success, result := try func 1, 2, 3
 catch err
     print yue.traceback err
@@ -63,18 +63,18 @@ catch err
 
 ## Try?
 
-`try?` is a simplified use for error handling syntax that omit the boolean status from the `try` statement, and it will return the result from the try block when success, return nil instead of error object otherwise.
+`try?` ist eine vereinfachte Fehlerbehandlungs-Syntax, die den booleschen Status aus dem `try`-Statement weglässt. Bei Erfolg gibt sie das Ergebnis des `try`-Blocks zurück, ansonsten `nil` statt eines Fehlerobjekts.
 
 ```yuescript
 a, b, c = try? func!
 
--- with nil coalescing operator
-a = (try? func!) ?? "default"
+-- mit Nil-Verschmelzungs-Operator
+a = (try? func!) ?? "Standardwert"
 
--- as function argument
+-- als Funktionsargument
 f try? func!
 
--- with catch block
+-- mit catch-Block
 f try?
   print 123
   func!
@@ -87,13 +87,13 @@ catch e
 ```yue
 a, b, c = try? func!
 
--- with nil coalescing operator
-a = (try? func!) ?? "default"
+-- mit Nil-Verschmelzungs-Operator
+a = (try? func!) ?? "Standardwert"
 
--- as function argument
+-- als Funktionsargument
 f try? func!
 
--- with catch block
+-- mit catch-Block
 f try?
   print 123
   func!
