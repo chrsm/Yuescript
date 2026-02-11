@@ -201,16 +201,12 @@ return describe("with statement", function()
 		local result
 		do
 			local _with_0 = nil
-			do
-				local _accum_0 = { }
-				repeat
-					if _with_0 ~= nil then
-						result = _with_0.value
-						break
-					end
-				until true
-				result = _accum_0
-			end
+			repeat
+				if _with_0 ~= nil then
+					result = _with_0.value
+					break
+				end
+			until true
 		end
 		return assert.same(result, nil)
 	end)

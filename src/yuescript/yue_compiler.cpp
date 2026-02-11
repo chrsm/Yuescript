@@ -10391,6 +10391,10 @@ private:
 			if (breakWithVar.empty()) {
 				transformIf(ifNode, temp, ExpUsage::Common);
 			} else {
+				if (extraBreakVar) {
+					addToScope(breakWithVar);
+					temp.push_back(indent() + "local "s + breakWithVar + nl(with));
+				}
 				auto simpleValue = x->new_ptr<SimpleValue_t>();
 				simpleValue->value.set(ifNode);
 				auto exp = newExp(simpleValue, x);
@@ -10404,10 +10408,7 @@ private:
 				auto block = x->new_ptr<Block_t>();
 				block->statementOrComments.push_back(stmt);
 				repeatNode->body.set(block);
-				auto sVal = x->new_ptr<SimpleValue_t>();
-				sVal->value.set(repeatNode);
-				auto asmt = assignmentFrom(toAst<Exp_t>(breakWithVar, x), newExp(sVal, x), x);
-				transformAssignment(asmt, temp);
+				transformRepeat(repeatNode, temp);
 			}
 		} else {
 			bool transformed = false;

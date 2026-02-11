@@ -212,14 +212,12 @@ do
 	local _val_0
 	while true do
 		local _with_0 = tb
-		local _accum_0 = { }
 		repeat
 			if _with_0 ~= nil then
 				_val_0 = 1
 				break
 			end
 		until true
-		_val_0 = _accum_0
 		break
 	end
 	a = _val_0
