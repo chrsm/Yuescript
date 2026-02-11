@@ -191,62 +191,52 @@ do
 	f((function()
 		local _with_0 = item
 		local _val_0
-		do
-			local _accum_0
-			repeat
-				if _with_0.id > 0 then
-					_accum_0 = _with_0.content
-					break
-				end
-			until true
-			_val_0 = _accum_0
-		end
+		repeat
+			if _with_0.id > 0 then
+				_val_0 = _with_0.content
+				break
+			end
+		until true
 		return _val_0
 	end)())
 	local a
 	do
 		local _with_0 = tb
-		do
-			local _accum_0
-			repeat
-				if _with_0.v then
-					_accum_0 = _with_0.a
-					break
-				end
-			until true
-			a = _accum_0
-		end
-	end
-	local _accum_0
-	while true do
-		local _with_0 = tb
-		local _accum_1
 		repeat
-			if _with_0 ~= nil then
-				_accum_1 = 1
+			if _with_0.v then
+				a = _with_0.a
 				break
 			end
 		until true
-		_accum_0 = _accum_1
+	end
+	local _val_0
+	while true do
+		local _with_0 = tb
+		local _accum_0 = { }
+		repeat
+			if _with_0 ~= nil then
+				_val_0 = 1
+				break
+			end
+		until true
+		_val_0 = _accum_0
 		break
 	end
-	a = _accum_0
+	a = _val_0
 end
 do
 	local a
-	local _accum_0
 	for i = 1, 100 do
 		local x = tb[i]
 		if x ~= nil then
 			local _des_0 = 1
 			if _des_0 then
 				x.id = _des_0
-				_accum_0 = x
+				a = x
 				break
 			end
 		end
 	end
-	a = _accum_0
 end
 do
 	local tb = {
@@ -254,11 +244,9 @@ do
 		y = 2
 	}
 	local a
-	local _accum_0
 	repeat
-		_accum_0 = tb.x + tb.y
+		a = tb.x + tb.y
 		break
 	until true
-	a = _accum_0
 end
 return nil

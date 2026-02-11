@@ -104,12 +104,10 @@ return describe("do statement", function()
 		}
 		local result
 		do
-			local _accum_0
 			repeat
-				_accum_0 = obj:double()
+				result = obj:double()
 				break
 			until true
-			result = _accum_0
 		end
 		return assert.same(result, 20)
 	end)

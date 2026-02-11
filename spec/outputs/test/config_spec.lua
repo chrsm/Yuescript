@@ -114,14 +114,10 @@ return describe("config", function()
 			y = 20
 		}
 		local result
-		do
-			local _accum_0
-			repeat
-				_accum_0 = obj.x + obj.y
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			result = obj.x + obj.y
+			break
+		until true
 		return assert.same(result, 30)
 	end)
 	it("should handle existential operators", function()

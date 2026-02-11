@@ -499,25 +499,21 @@ local _anon_func_0 = function(i, tb)
 end
 do
 	local index
-	do
-		local _accum_0
-		for i = 1, #tb do
-			if tb[i] then
-				_accum_0 = i
-				break
-			end
+	for i = 1, #tb do
+		if tb[i] then
+			index = i
+			break
 		end
-		index = _accum_0
 	end
 	f((function()
-		local _accum_0
+		local _val_0
 		for i = 1, #tb do
 			if tb[i] then
-				_accum_0 = i
+				_val_0 = i
 				break
 			end
 		end
-		return _accum_0
+		return _val_0
 	end)())
 	f((function()
 		local _accum_0 = { }
@@ -545,13 +541,13 @@ do
 	i = 1
 	local idx
 	do
-		local _accum_0
+		local _val_0
 		while tb[i] do
 			i = i + 1
-			_accum_0 = i - 1
+			_val_0 = i - 1
 			break
 		end
-		idx = _accum_0
+		idx = _val_0
 	end
 	local f1
 	f1 = function()
@@ -560,13 +556,13 @@ do
 	end
 	i = 1
 	f((function()
-		local _accum_0
+		local _val_0
 		while tb[i] do
 			i = i + 1
-			_accum_0 = i - 1
+			_val_0 = i - 1
 			break
 		end
-		return _accum_0
+		return _val_0
 	end)())
 	local _accum_0 = { }
 	local _len_0 = 1
@@ -592,13 +588,13 @@ do
 		print(1)
 	until true
 	do
-		local _accum_0
+		local _val_0
 		repeat
 			a = func()
-			_accum_0 = a.x
+			_val_0 = a.x
 			break
 		until a.v
-		x = _accum_0
+		x = _val_0
 	end
 	local items
 	local _accum_0 = { }

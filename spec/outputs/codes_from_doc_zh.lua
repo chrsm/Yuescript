@@ -3260,16 +3260,14 @@ for i = 1, 20 do
 end
 doubled_evens = _accum_0
 local first_large
-local _accum_0
 local _list_0 = numbers
 for _index_0 = 1, #_list_0 do
 	local n = _list_0[_index_0]
 	if n > 10 then
-		_accum_0 = n
+		first_large = n
 		break
 	end
 end
-first_large = _accum_0
 local func_a
 func_a = function()
 	for i = 1, 10 do
@@ -3324,16 +3322,14 @@ for i = 1, 20 do
 end
 doubled_evens = _accum_0
 local first_large
-local _accum_0
 local _list_0 = numbers
 for _index_0 = 1, #_list_0 do
 	local n = _list_0[_index_0]
 	if n > 10 then
-		_accum_0 = n
+		first_large = n
 		break
 	end
 end
-first_large = _accum_0
 local func_a
 func_a = function()
 	for i = 1, 10 do

@@ -53,14 +53,10 @@ return describe("with statement", function()
 			value = 5
 		}
 		local result
-		do
-			local _accum_0
-			repeat
-				_accum_0 = obj.value * 2
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			result = obj.value * 2
+			break
+		until true
 		return assert.same(result, 10)
 	end)
 	it("should support multiple statements", function()
@@ -125,27 +121,19 @@ return describe("with statement", function()
 			y = 10
 		}
 		local result
-		do
-			local _accum_0
-			repeat
-				_accum_0 = obj.x + obj.y
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			result = obj.x + obj.y
+			break
+		until true
 		return assert.same(result, 15)
 	end)
 	it("should work with string methods", function()
 		local s = "hello"
 		local result
-		do
-			local _accum_0
-			repeat
-				_accum_0 = s:upper()
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			result = s:upper()
+			break
+		until true
 		return assert.same(result, "HELLO")
 	end)
 	it("should handle metatable access", function()
@@ -169,12 +157,10 @@ return describe("with statement", function()
 				x = 10
 			}
 			local _val_0
-			local _accum_0
 			repeat
-				_accum_0 = obj.x * 2
+				_val_0 = obj.x * 2
 				break
 			until true
-			_val_0 = _accum_0
 			return _val_0
 		end
 		local result = fn()
@@ -187,12 +173,10 @@ return describe("with statement", function()
 				value = 42
 			}
 			local _val_0
-			local _accum_0
 			repeat
-				_accum_0 = obj.value
+				_val_0 = obj.value
 				break
 			until true
-			_val_0 = _accum_0
 			return _val_0
 		end
 		return assert.same(get_value(), 42)
@@ -202,19 +186,15 @@ return describe("with statement", function()
 			value = 10
 		}
 		local result
-		do
-			local _accum_0
-			repeat
-				local _exp_0 = obj.value
-				if _exp_0 ~= nil then
-					_accum_0 = _exp_0
-				else
-					_accum_0 = 0
-				end
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			local _exp_0 = obj.value
+			if _exp_0 ~= nil then
+				result = _exp_0
+			else
+				result = 0
+			end
+			break
+		until true
 		return assert.same(result, 10)
 	end)
 	it("should handle nil object safely", function()
@@ -222,10 +202,10 @@ return describe("with statement", function()
 		do
 			local _with_0 = nil
 			do
-				local _accum_0
+				local _accum_0 = { }
 				repeat
 					if _with_0 ~= nil then
-						_accum_0 = _with_0.value
+						result = _with_0.value
 						break
 					end
 				until true
@@ -245,16 +225,12 @@ return describe("with statement", function()
 			end
 		}
 		local result
-		do
-			local _accum_0
-			repeat
-				obj:add(10)
-				obj:add(5)
-				_accum_0 = obj:get()
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			obj:add(10)
+			obj:add(5)
+			result = obj:get()
+			break
+		until true
 		return assert.same(result, 20)
 	end)
 	return it("should support nested property access", function()
@@ -266,14 +242,10 @@ return describe("with statement", function()
 			}
 		}
 		local result
-		do
-			local _accum_0
-			repeat
-				_accum_0 = obj.level1.level2.level3
-				break
-			until true
-			result = _accum_0
-		end
+		repeat
+			result = obj.level1.level2.level3
+			break
+		until true
 		return assert.same(result, "deep")
 	end)
 end)
