@@ -21,6 +21,15 @@ const yuescriptLanguage = {
   aliases: ["yue"],
 };
 
+const docsBase = process.env.DOCS_BASE ?? "/";
+
+function withBase(path: string) {
+  if (!path.startsWith("/") || docsBase === "/") {
+    return path;
+  }
+  return `${docsBase.replace(/\/$/, "")}${path}`;
+}
+
 const sidebarText = {
   de: {
     introduction: "Einführung",
@@ -415,7 +424,7 @@ function createSidebar(basePath: string, locale: SidebarLocale) {
 export default defineConfig({
   title: "YueScript",
   description: "A language that compiles to Lua",
-  base: "/",
+  base: docsBase,
   head: [
     ["meta", { name: "theme-color", content: "#b4ac8f" }],
     ["meta", { name: "apple-mobile-web-app-capable", content: "yes" }],
@@ -432,10 +441,13 @@ export default defineConfig({
       },
     ],
     ["meta", { property: "og:type", content: "website" }],
-    ["meta", { property: "og:image", content: "/image/yuescript.png" }],
+    ["meta", { property: "og:image", content: withBase("/image/yuescript.png") }],
     [
       "meta",
-      { property: "og:image:secure_url", content: "/image/yuescript.png" },
+      {
+        property: "og:image:secure_url",
+        content: withBase("/image/yuescript.png"),
+      },
     ],
     ["meta", { property: "og:image:type", content: "image/png" }],
     ["meta", { property: "og:image:width", content: "1200" }],
@@ -444,7 +456,7 @@ export default defineConfig({
       "link",
       {
         rel: "icon",
-        href: "/image/favicon/favicon-16x16.png",
+        href: withBase("/image/favicon/favicon-16x16.png"),
         sizes: "16x16",
         type: "image/png",
       },
@@ -453,7 +465,7 @@ export default defineConfig({
       "link",
       {
         rel: "icon",
-        href: "/image/favicon/favicon-32x32.png",
+        href: withBase("/image/favicon/favicon-32x32.png"),
         sizes: "32x32",
         type: "image/png",
       },
@@ -462,7 +474,7 @@ export default defineConfig({
       "link",
       {
         rel: "apple-touch-icon",
-        href: "/image/favicon/apple-touch-icon.png",
+        href: withBase("/image/favicon/apple-touch-icon.png"),
         sizes: "180x180",
         type: "image/png",
       },
@@ -471,7 +483,7 @@ export default defineConfig({
       "link",
       {
         rel: "android-chrome",
-        href: "/image/favicon/android-chrome-192x192.png",
+        href: withBase("/image/favicon/android-chrome-192x192.png"),
         sizes: "192x192",
         type: "image/png",
       },
@@ -480,7 +492,7 @@ export default defineConfig({
       "link",
       {
         rel: "android-chrome",
-        href: "/image/favicon/android-chrome-512x512.png",
+        href: withBase("/image/favicon/android-chrome-512x512.png"),
         sizes: "512x512",
         type: "image/png",
       },
@@ -505,7 +517,7 @@ export default defineConfig({
     window.dispatchEvent(new Event('yue:ready'));
   }
   var s = document.createElement('script');
-  s.src = '/js/yuescript.js';
+  s.src = '${withBase("/js/yuescript.js")}';
   s.async = true;
   document.head.appendChild(s);
 })();`,

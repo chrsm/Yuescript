@@ -12,6 +12,19 @@ import YueCompiler from "./components/YueCompiler.vue";
 // @ts-ignore
 import YueDisplay from "./components/YueDisplay.vue";
 
+function applyShikiInlineColorFallback() {
+  if (typeof document === "undefined") return;
+  const isDark = document.documentElement.classList.contains("dark");
+  const varName = isDark ? "--shiki-dark" : "--shiki-light";
+  const spans = document.querySelectorAll<HTMLElement>(".vp-code span");
+  spans.forEach((span) => {
+    const color = span.style.getPropertyValue(varName).trim();
+    if (color) {
+      span.style.color = color;
+    }
+  });
+}
+
 const theme: Theme = {
   extends: DefaultTheme,
   Layout: () =>
@@ -22,6 +35,18 @@ const theme: Theme = {
     app.component("CompilerModal", CompilerModal);
     app.component("YueCompiler", YueCompiler);
     app.component("YueDisplay", YueDisplay);
+
+    if (typeof window !== "undefined") {
+      const run = () => requestAnimationFrame(applyShikiInlineColorFallback);
+      window.addEventListener("DOMContentLoaded", run, { once: true });
+      window.addEventListener("load", run, { once: true });
+
+      const observer = new MutationObserver(run);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
   },
 };
 

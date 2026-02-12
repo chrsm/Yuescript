@@ -2,7 +2,8 @@ import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const distRoot = "docs/.vitepress/dist";
-const cssRelPattern = /rel="preload stylesheet"/g;
+const preloadStylesheetRelPattern = /rel="preload stylesheet"/g;
+const stylesheetAsPattern = /(<link[^>]*rel="stylesheet"[^>]*?)\s+as="style"/g;
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {
@@ -20,7 +21,8 @@ function walk(dir, files = []) {
 let updated = 0;
 for (const filePath of walk(distRoot)) {
   const original = readFileSync(filePath, "utf8");
-  const fixed = original.replace(cssRelPattern, 'rel="stylesheet"');
+  let fixed = original.replace(preloadStylesheetRelPattern, 'rel="stylesheet"');
+  fixed = fixed.replace(stylesheetAsPattern, "$1");
   if (fixed !== original) {
     writeFileSync(filePath, fixed, "utf8");
     updated += 1;
