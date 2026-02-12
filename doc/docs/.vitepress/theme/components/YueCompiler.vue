@@ -24,9 +24,9 @@
 </template>
 
 <script>
+import "./prism-manual.js";
 import pkg from "prismjs/components/prism-core.js";
 const { highlight, languages } = pkg;
-import "prismjs/components/prism-moonscript";
 import "prismjs/components/prism-lua";
 import { EditorState, Compartment } from "@codemirror/state";
 import { EditorView, keymap, lineNumbers } from "@codemirror/view";
