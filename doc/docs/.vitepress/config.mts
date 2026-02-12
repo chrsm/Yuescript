@@ -510,11 +510,6 @@ export default defineConfig({
   document.head.appendChild(s);
 })();`,
     ],
-    [
-      "style",
-      {},
-      ".dark .vp-code span{color:var(--shiki-dark,inherit)}html:not(.dark) .vp-code span{color:var(--shiki-light,inherit)}",
-    ],
   ],
   vite: {
     publicDir: resolve(__dirname, "public"),
