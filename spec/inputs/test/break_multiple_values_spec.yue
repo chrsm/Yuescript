@@ -838,3 +838,22 @@ describe "break with multiple values", ->
 				break
 		assert.same x, 5
 		assert.same y, 15
+
+	it "should allow nesting do and for", ->
+		x, y = do
+			min, max = 1, 10
+			if max > min
+				break for j = min, max
+					break j, j * 10 if j > 5
+			break 0, 0
+		assert.same x, 6
+		assert.same y, 60
+
+	it "should allow nesting do and with", ->
+		x = with a: 123, b: true
+			do
+				if .b
+					break with a: .a, b: .b, c: "ok"
+						if .b and .c == "ok"
+							break .a
+		assert.same x, 123

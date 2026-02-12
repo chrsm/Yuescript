@@ -113,6 +113,7 @@ files = [
 	"spec/inputs/test/loops_spec.yue"
 	"spec/inputs/test/if_assignment_spec.yue"
 	"spec/inputs/test/tables_advanced_spec.yue"
+	"spec/inputs/test/break_multiple_values_spec.yue"
 	"spec/inputs/unicode/macro_export.yue"
 	"spec/inputs/unicode/attrib.yue"
 	"spec/inputs/unicode/macro.yue"
@@ -179,11 +180,13 @@ for file in *files
 	code = f\read "a*"
 	f\close!
 
-	original_ast = yue.to_ast code
+	original_ast, err = yue.to_ast code
+	assert.is_nil err
 	assert.is_not_nil original_ast
 	rewriteLineCol original_ast
 	formated = yue.format code, 0, true
-	ast = yue.to_ast formated
+	ast, err = yue.to_ast formated
+	assert.is_nil err
 	assert.is_not_nil ast
 	rewriteLineCol ast
 	assert.same original_ast, ast

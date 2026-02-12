@@ -113,6 +113,7 @@ local files = {
 	"spec/inputs/test/loops_spec.yue",
 	"spec/inputs/test/if_assignment_spec.yue",
 	"spec/inputs/test/tables_advanced_spec.yue",
+	"spec/inputs/test/break_multiple_values_spec.yue",
 	"spec/inputs/unicode/macro_export.yue",
 	"spec/inputs/unicode/attrib.yue",
 	"spec/inputs/unicode/macro.yue",
@@ -182,11 +183,14 @@ return describe("format", function()
 			local f = io.open(file)
 			local code = f:read("a*")
 			f:close()
-			local original_ast = yue.to_ast(code)
+			local original_ast, err = yue.to_ast(code)
+			assert.is_nil(err)
 			assert.is_not_nil(original_ast)
 			rewriteLineCol(original_ast)
 			local formated = yue.format(code, 0, true)
-			local ast = yue.to_ast(formated)
+			local ast
+			ast, err = yue.to_ast(formated)
+			assert.is_nil(err)
 			assert.is_not_nil(ast)
 			rewriteLineCol(ast)
 			return assert.same(original_ast, ast)

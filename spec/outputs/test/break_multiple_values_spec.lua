@@ -1676,7 +1676,7 @@ return describe("break with multiple values", function()
 		assert.is_nil(x)
 		return assert.is_nil(y)
 	end)
-	return it("should mix break continue and value break with value break winning", function()
+	it("should mix break continue and value break with value break winning", function()
 		local x, y
 		for i = 1, 9 do
 			if i % 2 == 0 then
@@ -1693,5 +1693,54 @@ return describe("break with multiple values", function()
 		end
 		assert.same(x, 5)
 		return assert.same(y, 15)
+	end)
+	it("should allow nesting do and for", function()
+		local x, y
+		do
+			repeat
+				local min, max = 1, 10
+				if max > min then
+					for j = min, max do
+						if j > 5 then
+							x, y = j, j * 10
+							break
+						end
+					end
+					break
+				end
+				x, y = 0, 0
+				break
+			until true
+		end
+		assert.same(x, 6)
+		return assert.same(y, 60)
+	end)
+	return it("should allow nesting do and with", function()
+		local x
+		do
+			local _with_0 = {
+				a = 123,
+				b = true
+			}
+			repeat
+				do
+					if _with_0.b then
+						local _with_1 = {
+							a = _with_0.a,
+							b = _with_0.b,
+							c = "ok"
+						}
+						repeat
+							if _with_1.b and _with_1.c == "ok" then
+								x = _with_1.a
+								break
+							end
+						until true
+						break
+					end
+				end
+			until true
+		end
+		return assert.same(x, 123)
 	end)
 end)
