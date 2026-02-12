@@ -86,7 +86,7 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-Além disso, os loops for suportam break com valor de retorno, permitindo que o próprio loop seja usado como expressão que sai antecipadamente com um resultado significativo.
+Além disso, os loops for suportam break com valores de retorno, permitindo que o próprio loop seja usado como expressão que sai antecipadamente com um resultado significativo. Expressões `for` suportam `break` com múltiplos valores.
 
 Por exemplo, para encontrar o primeiro número maior que 10:
 
@@ -105,6 +105,20 @@ first_large = for n in *numbers
 </YueDisplay>
 
 Esta sintaxe de break-com-valor permite padrões concisos e expressivos de busca ou saída antecipada diretamente em expressões de loop.
+
+```yuescript
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+<YueDisplay>
+
+```yue
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+</YueDisplay>
 
 Você também pode filtrar valores combinando a expressão do loop for com a instrução continue.
 

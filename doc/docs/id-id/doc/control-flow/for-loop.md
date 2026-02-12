@@ -86,7 +86,7 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-Selain itu, loop for mendukung break dengan nilai kembalian, sehingga loop itu sendiri bisa dipakai sebagai ekspresi yang keluar lebih awal dengan hasil bermakna.
+Selain itu, loop for mendukung break dengan nilai kembalian, sehingga loop itu sendiri bisa dipakai sebagai ekspresi yang keluar lebih awal dengan hasil bermakna. Ekspresi `for` mendukung `break` dengan banyak nilai.
 
 Contohnya, untuk menemukan angka pertama yang lebih besar dari 10:
 
@@ -105,6 +105,20 @@ first_large = for n in *numbers
 </YueDisplay>
 
 Sintaks break-dengan-nilai ini memungkinkan pola pencarian atau keluar-lebih-awal yang ringkas langsung di dalam ekspresi loop.
+
+```yuescript
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+<YueDisplay>
+
+```yue
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+</YueDisplay>
 
 Anda juga bisa memfilter nilai dengan menggabungkan ekspresi for dengan pernyataan continue.
 

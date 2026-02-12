@@ -44,6 +44,50 @@ file = with File "Lieblingsessen.txt"
 
 </YueDisplay>
 
+`with`-Ausdrücke unterstützen `break` mit genau einem Wert:
+
+```yuescript
+result = with obj
+  break .value
+```
+
+<YueDisplay>
+
+```yue
+result = with obj
+  break .value
+```
+
+</YueDisplay>
+
+Sobald `break value` in `with` verwendet wird, gibt der `with`-Ausdruck nicht mehr sein Zielobjekt zurück, sondern den von `break` gelieferten Wert.
+
+```yuescript
+a = with obj
+  .x = 1
+-- a ist obj
+
+b = with obj
+  break .x
+-- b ist .x, nicht obj
+```
+
+<YueDisplay>
+
+```yue
+a = with obj
+  .x = 1
+-- a ist obj
+
+b = with obj
+  break .x
+-- b ist .x, nicht obj
+```
+
+</YueDisplay>
+
+Im Unterschied zu `for` / `while` / `repeat` / `do` unterstützt `with` nur einen `break`-Wert.
+
 Oder …
 
 ```yuescript

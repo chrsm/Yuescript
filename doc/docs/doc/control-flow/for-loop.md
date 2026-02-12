@@ -86,7 +86,7 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-In addition, for loops support break with a return value, allowing the loop itself to be used as an expression that exits early with a meaningful result.
+In addition, for loops support break with return values, allowing the loop itself to be used as an expression that exits early with meaningful results.
 
 For example, to find the first number greater than 10:
 
@@ -105,6 +105,22 @@ first_large = for n in *numbers
 </YueDisplay>
 
 This break-with-value syntax enables concise and expressive search or early-exit patterns directly within loop expressions.
+
+For loop expressions can break with multiple values:
+
+```yuescript
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+<YueDisplay>
+
+```yue
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+</YueDisplay>
 
 You can also filter values by combining the for loop expression with the continue statement.
 

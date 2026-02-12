@@ -45,7 +45,25 @@ until running == false do my_function!
 
 </YueDisplay>
 
-Like for loops, the while loop can also be used an expression. Additionally, for a function to return the accumulated value of a while loop, the statement must be explicitly returned.
+Like for loops, the while loop can also be used as an expression. While and until loop expressions support `break` with multiple return values.
+
+```yuescript
+value, doubled = while true
+  n = get_next!
+  break n, n * 2 if n > 10
+```
+
+<YueDisplay>
+
+```yue
+value, doubled = while true
+  n = get_next!
+  break n, n * 2 if n > 10
+```
+
+</YueDisplay>
+
+Additionally, for a function to return the accumulated value of a while loop, the statement must be explicitly returned.
 
 ## Repeat Loop
 
@@ -67,6 +85,28 @@ repeat
   print i
   i -= 1
 until i == 0
+```
+
+</YueDisplay>
+
+Repeat loop expressions also support `break` with multiple return values:
+
+```yuescript
+i = 1
+value, scaled = repeat
+  break i, i * 100 if i > 3
+  i += 1
+until false
+```
+
+<YueDisplay>
+
+```yue
+i = 1
+value, scaled = repeat
+  break i, i * 100 if i > 3
+  i += 1
+until false
 ```
 
 </YueDisplay>

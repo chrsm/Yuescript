@@ -44,6 +44,50 @@ file = with File "favorite_foods.txt"
 
 </YueDisplay>
 
+`with` expressions support `break` with one value:
+
+```yuescript
+result = with obj
+  break .value
+```
+
+<YueDisplay>
+
+```yue
+result = with obj
+  break .value
+```
+
+</YueDisplay>
+
+After `break value` is used inside `with`, the `with` expression no longer returns its target object. Instead, it returns the value from `break`.
+
+```yuescript
+a = with obj
+  .x = 1
+-- a is obj
+
+b = with obj
+  break .x
+-- b is .x, not obj
+```
+
+<YueDisplay>
+
+```yue
+a = with obj
+  .x = 1
+-- a is obj
+
+b = with obj
+  break .x
+-- b is .x, not obj
+```
+
+</YueDisplay>
+
+Unlike `for` / `while` / `repeat` / `do`, `with` only supports one break value.
+
 Or…
 
 ```yuescript

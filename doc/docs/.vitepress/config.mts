@@ -299,6 +299,7 @@ function createSidebar(basePath: string, locale: SidebarLocale) {
           text: text.attributes,
           link: `${basePath}/language-basics/attributes`,
         },
+        { text: text.module, link: `${basePath}/language-basics/module` },
       ],
     },
     {
@@ -389,7 +390,6 @@ function createSidebar(basePath: string, locale: SidebarLocale) {
       collapsed: true,
       items: [
         { text: text.macro, link: `${basePath}/advanced/macro` },
-        { text: text.module, link: `${basePath}/advanced/module` },
         {
           text: text.lineDecorators,
           link: `${basePath}/advanced/line-decorators`,
@@ -509,6 +509,11 @@ export default defineConfig({
   s.async = true;
   document.head.appendChild(s);
 })();`,
+    ],
+    [
+      "style",
+      {},
+      ".dark .vp-code span{color:var(--shiki-dark,inherit)}html:not(.dark) .vp-code span{color:var(--shiki-light,inherit)}",
     ],
   ],
   vite: {

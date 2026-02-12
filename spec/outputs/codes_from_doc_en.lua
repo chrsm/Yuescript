@@ -3,6 +3,18 @@ do
 	print(var)
 end
 print(var)
+local status, value
+do
+	repeat
+		local n = 12
+		if n > 10 then
+			status, value = "large", n
+			break
+		end
+		status, value = "small", n
+		break
+	until true
+end
 local counter
 do
 	local i = 0
@@ -24,6 +36,18 @@ do
 	print(var)
 end
 print(var)
+local status, value
+do
+	repeat
+		local n = 12
+		if n > 10 then
+			status, value = "large", n
+			break
+		end
+		status, value = "small", n
+		break
+	until true
+end
 local counter
 do
 	local i = 0
@@ -146,268 +170,6 @@ end
 do
 	print(123, "hello")
 end
-do
-	local insert, concat = table.insert, table.concat
-	local C, Ct, Cmt
-	do
-		local _obj_0 = require("lpeg")
-		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
-	end
-	local x, y, z
-	do
-		local _obj_0 = require('mymodule')
-		x, y, z = _obj_0.x, _obj_0.y, _obj_0.z
-	end
-	local a, b, c
-	local _obj_0 = require('module')
-	a, b, c = _obj_0.a, _obj_0.b, _obj_0.c
-end
-do
-	local module = require('module')
-	local module_x = require('module_x')
-	local d_a_s_h_e_s = require("d-a-s-h-e-s")
-	local part = require("module.part")
-end
-do
-	local PlayerModule = require("player")
-	local C, Ct, Cmt
-	do
-		local _obj_0 = require("lpeg")
-		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
-	end
-	local one, two, ch
-	local _obj_0 = require("export")
-	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
-end
-do
-	local tostring <const> = tostring
-	local concat <const> = table.concat
-	print(concat({
-		"a",
-		tostring(1)
-	}))
-end
-do
-	local print <const> = print
-	local math <const> = math
-	print("hello")
-	math.random(3)
-end
-do
-	local print <const> = print
-	print(FLAG)
-	FLAG = 123
-end
-local _module_0 = { }
-local a, b, c = 1, 2, 3
-_module_0["a"], _module_0["b"], _module_0["c"] = a, b, c
-local cool = "cat"
-_module_0["cool"] = cool
-local What
-if this then
-	What = "abc"
-else
-	What = "def"
-end
-_module_0["What"] = What
-local y
-y = function()
-	local hallo = 3434
-end
-_module_0["y"] = y
-local Something
-local _class_0
-local _base_0 = {
-	umm = "cool"
-}
-if _base_0.__index == nil then
-	_base_0.__index = _base_0
-end
-_class_0 = setmetatable({
-	__init = function() end,
-	__base = _base_0,
-	__name = "Something"
-}, {
-	__index = _base_0,
-	__call = function(cls, ...)
-		local _self_0 = setmetatable({ }, _base_0)
-		cls.__init(_self_0, ...)
-		return _self_0
-	end
-})
-_base_0.__class = _class_0
-Something = _class_0
-_module_0["Something"] = Something
-return _module_0
-local _module_0 = { }
-local loadstring, tolua
-do
-	local _obj_0 = yue
-	loadstring, tolua = _obj_0.loadstring, _obj_0.to_lua
-end
-_module_0["loadstring"], _module_0["tolua"] = loadstring, tolua
-local fieldA = tb.itemA.fieldA
-if fieldA == nil then
-	fieldA = 'default'
-end
-_module_0["fieldA"] = fieldA
-return _module_0
-local _module_0 = setmetatable({ }, { })
-_module_0.itemA = tb
-getmetatable(_module_0).__index = items
-_module_0["a-b-c"] = 123
-return _module_0
-local _module_0 = { }
-local d, e, f = 3, 2, 1
-_module_0[#_module_0 + 1] = d
-_module_0[#_module_0 + 1] = e
-_module_0[#_module_0 + 1] = f
-if this then
-	_module_0[#_module_0 + 1] = 123
-else
-	_module_0[#_module_0 + 1] = 456
-end
-local _with_0 = tmp
-local j = 2000
-_module_0[#_module_0 + 1] = _with_0
-return _module_0
-local _module_0 = nil
-_module_0 = function()
-	print("hello")
-	return 123
-end
-return _module_0
-do
-	local insert, concat = table.insert, table.concat
-	local C, Ct, Cmt
-	do
-		local _obj_0 = require("lpeg")
-		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
-	end
-	local x, y, z
-	do
-		local _obj_0 = require('mymodule')
-		x, y, z = _obj_0.x, _obj_0.y, _obj_0.z
-	end
-	local a, b, c
-	local _obj_0 = require('module')
-	a, b, c = _obj_0.a, _obj_0.b, _obj_0.c
-end
-do
-	local module = require('module')
-	local module_x = require('module_x')
-	local d_a_s_h_e_s = require("d-a-s-h-e-s")
-	local part = require("module.part")
-end
-do
-	local PlayerModule = require("player")
-	local C, Ct, Cmt
-	do
-		local _obj_0 = require("lpeg")
-		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
-	end
-	local one, two, ch
-	local _obj_0 = require("export")
-	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
-end
-do
-	local tostring <const> = tostring
-	local concat <const> = table.concat
-	print(concat({
-		"a",
-		tostring(1)
-	}))
-end
-do
-	local print <const> = print
-	local math <const> = math
-	print("hello")
-	math.random(3)
-end
-do
-	local print <const> = print
-	print(FLAG)
-	FLAG = 123
-end
-local _module_0 = { }
-local a, b, c = 1, 2, 3
-_module_0["a"], _module_0["b"], _module_0["c"] = a, b, c
-local cool = "cat"
-_module_0["cool"] = cool
-local What
-if this then
-	What = "abc"
-else
-	What = "def"
-end
-_module_0["What"] = What
-local y
-y = function()
-	local hallo = 3434
-end
-_module_0["y"] = y
-local Something
-local _class_0
-local _base_0 = {
-	umm = "cool"
-}
-if _base_0.__index == nil then
-	_base_0.__index = _base_0
-end
-_class_0 = setmetatable({
-	__init = function() end,
-	__base = _base_0,
-	__name = "Something"
-}, {
-	__index = _base_0,
-	__call = function(cls, ...)
-		local _self_0 = setmetatable({ }, _base_0)
-		cls.__init(_self_0, ...)
-		return _self_0
-	end
-})
-_base_0.__class = _class_0
-Something = _class_0
-_module_0["Something"] = Something
-return _module_0
-local _module_0 = { }
-local loadstring, tolua
-do
-	local _obj_0 = yue
-	loadstring, tolua = _obj_0.loadstring, _obj_0.to_lua
-end
-_module_0["loadstring"], _module_0["tolua"] = loadstring, tolua
-local fieldA = tb.itemA.fieldA
-if fieldA == nil then
-	fieldA = 'default'
-end
-_module_0["fieldA"] = fieldA
-return _module_0
-local _module_0 = setmetatable({ }, { })
-_module_0.itemA = tb
-getmetatable(_module_0).__index = items
-_module_0["a-b-c"] = 123
-return _module_0
-local _module_0 = { }
-local d, e, f = 3, 2, 1
-_module_0[#_module_0 + 1] = d
-_module_0[#_module_0 + 1] = e
-_module_0[#_module_0 + 1] = f
-if this then
-	_module_0[#_module_0 + 1] = 123
-else
-	_module_0[#_module_0 + 1] = 456
-end
-local _with_0 = tmp
-local j = 2000
-_module_0[#_module_0 + 1] = _with_0
-return _module_0
-local _module_0 = nil
-_module_0 = function()
-	print("hello")
-	return 123
-end
-return _module_0
 xpcall(function()
 	return func(1, 2, 3)
 end, function(err)
@@ -2395,6 +2157,12 @@ local file
 local _with_0 = File("favorite_foods.txt")
 _with_0:set_encoding("utf8")
 file = _with_0
+local result
+local _with_0 = obj
+repeat
+	result = _with_0.value
+	break
+until true
 local create_person
 create_person = function(name, relatives)
 	local _with_0 = Person()
@@ -2435,6 +2203,12 @@ local file
 local _with_0 = File("favorite_foods.txt")
 _with_0:set_encoding("utf8")
 file = _with_0
+local result
+local _with_0 = obj
+repeat
+	result = _with_0.value
+	break
+until true
 local create_person
 create_person = function(name, relatives)
 	local _with_0 = Person()
@@ -3268,6 +3042,13 @@ for _index_0 = 1, #_list_0 do
 		break
 	end
 end
+local key, score
+for k, v in pairs(data) do
+	if k == "target" then
+		key, score = k, v * 10
+		break
+	end
+end
 local func_a
 func_a = function()
 	for i = 1, 10 do
@@ -3327,6 +3108,13 @@ for _index_0 = 1, #_list_0 do
 	local n = _list_0[_index_0]
 	if n > 10 then
 		first_large = n
+		break
+	end
+end
+local key, score
+for k, v in pairs(data) do
+	if k == "target" then
+		key, score = k, v * 10
 		break
 	end
 end
@@ -4008,11 +3796,32 @@ end
 while not (running == false) do
 	my_function()
 end
+local value, doubled
+local _val_0, _val_1
+while true do
+	local n = get_next()
+	if n > 10 then
+		_val_0, _val_1 = n, n * 2
+		break
+	end
+end
+value, doubled = _val_0, _val_1
 local i = 10
 repeat
 	print(i)
 	i = i - 1
 until i == 0
+local i = 1
+local value, scaled
+local _val_0, _val_1
+repeat
+	if i > 3 then
+		_val_0, _val_1 = i, i * 100
+		break
+	end
+	i = i + 1
+until false
+value, scaled = _val_0, _val_1
 local i = 10
 while i > 0 do
 	print(i)
@@ -4029,11 +3838,32 @@ end
 while not (running == false) do
 	my_function()
 end
+local value, doubled
+local _val_0, _val_1
+while true do
+	local n = get_next()
+	if n > 10 then
+		_val_0, _val_1 = n, n * 2
+		break
+	end
+end
+value, doubled = _val_0, _val_1
 local i = 10
 repeat
 	print(i)
 	i = i - 1
 until i == 0
+local i = 1
+local value, scaled
+local _val_0, _val_1
+repeat
+	if i > 3 then
+		_val_0, _val_1 = i, i * 100
+		break
+	end
+	i = i + 1
+until false
+value, scaled = _val_0, _val_1
 local my_object = {
 	value = 1000,
 	write = function(self)
@@ -5136,3 +4966,265 @@ fn = function()
 	return str
 end
 local str = "path: \"C:\\Program Files\\App\"\nnote: 'He said: \"" .. tostring(Hello) .. "!\"'"
+do
+	local insert, concat = table.insert, table.concat
+	local C, Ct, Cmt
+	do
+		local _obj_0 = require("lpeg")
+		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
+	end
+	local x, y, z
+	do
+		local _obj_0 = require('mymodule')
+		x, y, z = _obj_0.x, _obj_0.y, _obj_0.z
+	end
+	local a, b, c
+	local _obj_0 = require('module')
+	a, b, c = _obj_0.a, _obj_0.b, _obj_0.c
+end
+do
+	local module = require('module')
+	local module_x = require('module_x')
+	local d_a_s_h_e_s = require("d-a-s-h-e-s")
+	local part = require("module.part")
+end
+do
+	local PlayerModule = require("player")
+	local C, Ct, Cmt
+	do
+		local _obj_0 = require("lpeg")
+		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
+	end
+	local one, two, ch
+	local _obj_0 = require("export")
+	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
+end
+do
+	local tostring <const> = tostring
+	local concat <const> = table.concat
+	print(concat({
+		"a",
+		tostring(1)
+	}))
+end
+do
+	local print <const> = print
+	local math <const> = math
+	print("hello")
+	math.random(3)
+end
+do
+	local print <const> = print
+	print(FLAG)
+	FLAG = 123
+end
+local _module_0 = { }
+local a, b, c = 1, 2, 3
+_module_0["a"], _module_0["b"], _module_0["c"] = a, b, c
+local cool = "cat"
+_module_0["cool"] = cool
+local What
+if this then
+	What = "abc"
+else
+	What = "def"
+end
+_module_0["What"] = What
+local y
+y = function()
+	local hallo = 3434
+end
+_module_0["y"] = y
+local Something
+local _class_0
+local _base_0 = {
+	umm = "cool"
+}
+if _base_0.__index == nil then
+	_base_0.__index = _base_0
+end
+_class_0 = setmetatable({
+	__init = function() end,
+	__base = _base_0,
+	__name = "Something"
+}, {
+	__index = _base_0,
+	__call = function(cls, ...)
+		local _self_0 = setmetatable({ }, _base_0)
+		cls.__init(_self_0, ...)
+		return _self_0
+	end
+})
+_base_0.__class = _class_0
+Something = _class_0
+_module_0["Something"] = Something
+return _module_0
+local _module_0 = { }
+local loadstring, tolua
+do
+	local _obj_0 = yue
+	loadstring, tolua = _obj_0.loadstring, _obj_0.to_lua
+end
+_module_0["loadstring"], _module_0["tolua"] = loadstring, tolua
+local fieldA = tb.itemA.fieldA
+if fieldA == nil then
+	fieldA = 'default'
+end
+_module_0["fieldA"] = fieldA
+return _module_0
+local _module_0 = setmetatable({ }, { })
+_module_0.itemA = tb
+getmetatable(_module_0).__index = items
+_module_0["a-b-c"] = 123
+return _module_0
+local _module_0 = { }
+local d, e, f = 3, 2, 1
+_module_0[#_module_0 + 1] = d
+_module_0[#_module_0 + 1] = e
+_module_0[#_module_0 + 1] = f
+if this then
+	_module_0[#_module_0 + 1] = 123
+else
+	_module_0[#_module_0 + 1] = 456
+end
+local _with_0 = tmp
+local j = 2000
+_module_0[#_module_0 + 1] = _with_0
+return _module_0
+local _module_0 = nil
+_module_0 = function()
+	print("hello")
+	return 123
+end
+return _module_0
+do
+	local insert, concat = table.insert, table.concat
+	local C, Ct, Cmt
+	do
+		local _obj_0 = require("lpeg")
+		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
+	end
+	local x, y, z
+	do
+		local _obj_0 = require('mymodule')
+		x, y, z = _obj_0.x, _obj_0.y, _obj_0.z
+	end
+	local a, b, c
+	local _obj_0 = require('module')
+	a, b, c = _obj_0.a, _obj_0.b, _obj_0.c
+end
+do
+	local module = require('module')
+	local module_x = require('module_x')
+	local d_a_s_h_e_s = require("d-a-s-h-e-s")
+	local part = require("module.part")
+end
+do
+	local PlayerModule = require("player")
+	local C, Ct, Cmt
+	do
+		local _obj_0 = require("lpeg")
+		C, Ct, Cmt = _obj_0.C, _obj_0.Ct, _obj_0.Cmt
+	end
+	local one, two, ch
+	local _obj_0 = require("export")
+	one, two, ch = _obj_0[1], _obj_0[2], _obj_0.Something.umm[1]
+end
+do
+	local tostring <const> = tostring
+	local concat <const> = table.concat
+	print(concat({
+		"a",
+		tostring(1)
+	}))
+end
+do
+	local print <const> = print
+	local math <const> = math
+	print("hello")
+	math.random(3)
+end
+do
+	local print <const> = print
+	print(FLAG)
+	FLAG = 123
+end
+local _module_0 = { }
+local a, b, c = 1, 2, 3
+_module_0["a"], _module_0["b"], _module_0["c"] = a, b, c
+local cool = "cat"
+_module_0["cool"] = cool
+local What
+if this then
+	What = "abc"
+else
+	What = "def"
+end
+_module_0["What"] = What
+local y
+y = function()
+	local hallo = 3434
+end
+_module_0["y"] = y
+local Something
+local _class_0
+local _base_0 = {
+	umm = "cool"
+}
+if _base_0.__index == nil then
+	_base_0.__index = _base_0
+end
+_class_0 = setmetatable({
+	__init = function() end,
+	__base = _base_0,
+	__name = "Something"
+}, {
+	__index = _base_0,
+	__call = function(cls, ...)
+		local _self_0 = setmetatable({ }, _base_0)
+		cls.__init(_self_0, ...)
+		return _self_0
+	end
+})
+_base_0.__class = _class_0
+Something = _class_0
+_module_0["Something"] = Something
+return _module_0
+local _module_0 = { }
+local loadstring, tolua
+do
+	local _obj_0 = yue
+	loadstring, tolua = _obj_0.loadstring, _obj_0.to_lua
+end
+_module_0["loadstring"], _module_0["tolua"] = loadstring, tolua
+local fieldA = tb.itemA.fieldA
+if fieldA == nil then
+	fieldA = 'default'
+end
+_module_0["fieldA"] = fieldA
+return _module_0
+local _module_0 = setmetatable({ }, { })
+_module_0.itemA = tb
+getmetatable(_module_0).__index = items
+_module_0["a-b-c"] = 123
+return _module_0
+local _module_0 = { }
+local d, e, f = 3, 2, 1
+_module_0[#_module_0 + 1] = d
+_module_0[#_module_0 + 1] = e
+_module_0[#_module_0 + 1] = f
+if this then
+	_module_0[#_module_0 + 1] = 123
+else
+	_module_0[#_module_0 + 1] = 456
+end
+local _with_0 = tmp
+local j = 2000
+_module_0[#_module_0 + 1] = _with_0
+return _module_0
+local _module_0 = nil
+_module_0 = function()
+	print("hello")
+	return 123
+end
+return _module_0

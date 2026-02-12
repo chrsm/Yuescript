@@ -20,7 +20,27 @@ print var -- 这里是nil
 
 </YueDisplay>
 
-&emsp;&emsp;月之脚本的 **do** 也可以用作表达式。允许你将多行代码的处理合并为一个表达式，并将 do 语句代码块的最后一个语句作为表达式返回的结果。
+&emsp;&emsp;月之脚本的 **do** 也可以用作表达式。允许你将多行代码的处理合并为一个表达式，并将 do 语句代码块的最后一个语句作为表达式返回的结果。`do` 表达式支持通过 `break` 打断执行流并提前返回多个值。
+
+```yuescript
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
+```
+
+<YueDisplay>
+
+```yue
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
+```
+
+</YueDisplay>
 
 ```yuescript
 counter = do

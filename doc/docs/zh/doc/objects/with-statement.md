@@ -44,6 +44,50 @@ file = with File "favorite_foods.txt"
 
 </YueDisplay>
 
+`with` 表达式支持 `break` 返回一个值：
+
+```yuescript
+result = with obj
+  break .value
+```
+
+<YueDisplay>
+
+```yue
+result = with obj
+  break .value
+```
+
+</YueDisplay>
+
+在 `with` 中使用 `break value` 后，`with` 表达式将不再返回其目标对象，而是返回 `break` 给出的值。
+
+```yuescript
+a = with obj
+  .x = 1
+-- a 是 obj
+
+b = with obj
+  break .x
+-- b 是 .x，不是 obj
+```
+
+<YueDisplay>
+
+```yue
+a = with obj
+  .x = 1
+-- a 是 obj
+
+b = with obj
+  break .x
+-- b 是 .x，不是 obj
+```
+
+</YueDisplay>
+
+与 `for` / `while` / `repeat` / `do` 不同，`with` 只支持一个 break 返回值。
+
 或者…
 
 ```yuescript

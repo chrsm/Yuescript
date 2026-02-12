@@ -11,7 +11,6 @@ getFiles = function(locale)
 		"doc/docs/" .. tostring(locale) .. "doc/advanced/do.md",
 		"doc/docs/" .. tostring(locale) .. "doc/advanced/line-decorators.md",
 		"doc/docs/" .. tostring(locale) .. "doc/advanced/macro.md",
-		"doc/docs/" .. tostring(locale) .. "doc/advanced/module.md",
 		"doc/docs/" .. tostring(locale) .. "doc/advanced/try.md",
 		"doc/docs/" .. tostring(locale) .. "doc/data-structures/table-literals.md",
 		"doc/docs/" .. tostring(locale) .. "doc/data-structures/comprehensions.md",
@@ -38,6 +37,7 @@ getFiles = function(locale)
 		"doc/docs/" .. tostring(locale) .. "doc/language-basics/attributes.md",
 		"doc/docs/" .. tostring(locale) .. "doc/language-basics/operator.md",
 		"doc/docs/" .. tostring(locale) .. "doc/language-basics/literals.md",
+		"doc/docs/" .. tostring(locale) .. "doc/language-basics/module.md",
 		"doc/docs/" .. tostring(locale) .. "doc/reference/license-mit.md",
 		"doc/docs/" .. tostring(locale) .. "doc/reference/the-yuescript-library.md"
 	}

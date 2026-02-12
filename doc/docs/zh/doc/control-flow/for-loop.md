@@ -86,7 +86,7 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-&emsp;&emsp;此外，for 循环还支持带返回值的 break 语句，这样循环本身就可以作为一个表达式，在满足条件时提前退出并返回有意义的结果。
+&emsp;&emsp;此外，for 循环还支持带返回值的 break 语句，这样循环本身就可以作为一个表达式，在满足条件时提前退出并返回有意义的结果。for 循环表达式支持 `break` 返回多个值。
 
 &emsp;&emsp;例如，查找第一个大于 10 的数字：
 
@@ -100,6 +100,20 @@ first_large = for n in *numbers
 ```yue
 first_large = for n in *numbers
   break n if n > 10
+```
+
+</YueDisplay>
+
+```yuescript
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+<YueDisplay>
+
+```yue
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
 ```
 
 </YueDisplay>

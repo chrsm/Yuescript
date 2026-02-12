@@ -45,7 +45,25 @@ until running == false do my_function!
 
 </YueDisplay>
 
-&emsp;&emsp;像 for 循环的语法一样，while 循环也可以作为一个表达式使用。为了使函数返回 while 循环的累积列表值，必须明确使用返回语句返回 while 循环表达式。
+&emsp;&emsp;像 for 循环的语法一样，while 循环也可以作为一个表达式使用。while / until 循环表达式支持 `break` 返回多个值。
+
+```yuescript
+value, doubled = while true
+  n = get_next!
+  break n, n * 2 if n > 10
+```
+
+<YueDisplay>
+
+```yue
+value, doubled = while true
+  n = get_next!
+  break n, n * 2 if n > 10
+```
+
+</YueDisplay>
+
+&emsp;&emsp;为了使函数返回 while 循环的累积列表值，必须明确使用返回语句返回 while 循环表达式。
 
 ## repeat 循环
 
@@ -67,6 +85,28 @@ repeat
   print i
   i -= 1
 until i == 0
+```
+
+</YueDisplay>
+
+&emsp;&emsp;repeat 循环表达式同样支持 `break` 返回多个值：
+
+```yuescript
+i = 1
+value, scaled = repeat
+  break i, i * 100 if i > 3
+  i += 1
+until false
+```
+
+<YueDisplay>
+
+```yue
+i = 1
+value, scaled = repeat
+  break i, i * 100 if i > 3
+  i += 1
+until false
 ```
 
 </YueDisplay>

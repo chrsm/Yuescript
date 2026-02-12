@@ -7,7 +7,6 @@ getFiles = (locale) ->
 		"doc/docs/#{locale}doc/advanced/do.md"
 		"doc/docs/#{locale}doc/advanced/line-decorators.md"
 		"doc/docs/#{locale}doc/advanced/macro.md"
-		"doc/docs/#{locale}doc/advanced/module.md"
 		"doc/docs/#{locale}doc/advanced/try.md"
 		"doc/docs/#{locale}doc/data-structures/table-literals.md"
 		"doc/docs/#{locale}doc/data-structures/comprehensions.md"
@@ -34,6 +33,7 @@ getFiles = (locale) ->
 		"doc/docs/#{locale}doc/language-basics/attributes.md"
 		"doc/docs/#{locale}doc/language-basics/operator.md"
 		"doc/docs/#{locale}doc/language-basics/literals.md"
+		"doc/docs/#{locale}doc/language-basics/module.md"
 		"doc/docs/#{locale}doc/reference/license-mit.md"
 		"doc/docs/#{locale}doc/reference/the-yuescript-library.md"
 	]

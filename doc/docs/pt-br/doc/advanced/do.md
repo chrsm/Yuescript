@@ -20,7 +20,27 @@ print var -- nil aqui
 
 </YueDisplay>
 
-O **do** do YueScript também pode ser usado como expressão. Permitindo combinar múltiplas linhas em uma. O resultado da expressão do é a última instrução em seu corpo.
+O **do** do YueScript também pode ser usado como expressão. Permitindo combinar múltiplas linhas em uma. O resultado da expressão do é a última instrução em seu corpo. Expressões `do` suportam usar `break` para interromper o fluxo de execução e retornar múltiplos valores antecipadamente.
+
+```yuescript
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
+```
+
+<YueDisplay>
+
+```yue
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
+```
+
+</YueDisplay>
 
 ```yuescript
 counter = do

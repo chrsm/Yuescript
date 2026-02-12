@@ -86,7 +86,7 @@ doubled_evens = for i = 1, 20
 
 </YueDisplay>
 
-Zusätzlich unterstützen `for`-Schleifen `break` mit Rückgabewert, sodass die Schleife selbst als Ausdruck verwendet werden kann, der früh mit einem sinnvollen Ergebnis endet.
+Zusätzlich unterstützen `for`-Schleifen `break` mit Rückgabewerten, sodass die Schleife selbst als Ausdruck verwendet werden kann, der früh mit einem sinnvollen Ergebnis endet. `for`-Ausdrücke unterstützen mehrere `break`-Werte.
 
 Beispiel: die erste Zahl größer als 10 finden:
 
@@ -105,6 +105,20 @@ first_large = for n in *numbers
 </YueDisplay>
 
 Diese `break`-mit-Wert-Syntax ermöglicht knappe und ausdrucksstarke Such- bzw. Early-Exit-Muster direkt in Schleifenausdrücken.
+
+```yuescript
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+<YueDisplay>
+
+```yue
+key, score = for k, v in pairs data
+  break k, v * 10 if k == "target"
+```
+
+</YueDisplay>
 
 Du kannst Werte auch filtern, indem du den `for`-Ausdruck mit `continue` kombinierst.
 
