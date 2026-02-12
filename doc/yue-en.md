@@ -2379,7 +2379,7 @@ Use YueScript module in Lua:
 
   Require "your_yuescript_entry.yue" in Lua.
 
-  ```Lua
+  ```lua
   require("yue")("your_yuescript_entry")
   ```
 

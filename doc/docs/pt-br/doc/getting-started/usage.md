@@ -8,7 +8,7 @@ Use o módulo YueScript em Lua:
 
   Use require em "your_yuescript_entry.yue" no Lua.
 
-  ```Lua
+  ```lua
   require("yue")("your_yuescript_entry")
   ```
 

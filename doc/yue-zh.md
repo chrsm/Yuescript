@@ -2371,7 +2371,7 @@ print i, k -- 这些已经被更新
 
   &emsp;&emsp;在 Lua 中引入 "你的脚本入口文件.yue"。
 
-  ```Lua
+  ```lua
   require("yue")("你的脚本入口文件")
   ```
 

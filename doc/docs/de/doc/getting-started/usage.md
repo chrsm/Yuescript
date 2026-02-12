@@ -8,7 +8,7 @@ YueScript-Modul in Lua verwenden:
 
   "your_yuescript_entry.yue" in Lua require'n.
 
-  ```Lua
+  ```lua
   require("yue")("your_yuescript_entry")
   ```
 

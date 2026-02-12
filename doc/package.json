@@ -10,7 +10,7 @@
   "repository": "https://github.com/pigpigyyy/Yuescript/doc",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs && node scripts/fix-css-link-rel.mjs",
+    "build": "vitepress build docs",
     "preview": "vitepress preview docs"
   },
   "license": "MIT",
