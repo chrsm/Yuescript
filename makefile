@@ -33,6 +33,7 @@ INSTALL_PREFIX = usr/local
 TEST_INPUT = ./spec/inputs
 TEST_OUTPUT = ./spec/generated
 GEN_OUTPUT = ./spec/outputs
+DOC_OUTPUT = ./doc
 
 PLAT = macos
 
@@ -439,7 +440,7 @@ test: debug
 	@./$(BIN_NAME) $(TEST_INPUT)/import_global.yue -o $(TEST_OUTPUT)/5.1/import_global.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.yue -o $(TEST_OUTPUT)/5.1/test/loops_spec.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/test/try_catch_spec.yue -o $(TEST_OUTPUT)/5.1/test/try_catch_spec.lua --target 5.1
-	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(TEST_OUTPUT)
+	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(TEST_OUTPUT) $(DOC_OUTPUT)
 	@echo -en "Compile time: "
 	@$(END_TIME)
 	@./$(BIN_NAME) -e "$$(printf "r = io.popen('git diff --no-index $(TEST_OUTPUT) $(GEN_OUTPUT) | head -5')\\\\read '*a'\nif r ~= ''\n print r\n os.exit 1")"
@@ -466,7 +467,7 @@ gen: release
 	@./$(BIN_NAME) $(TEST_INPUT)/import_global.yue -o $(GEN_OUTPUT)/5.1/import_global.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.yue -o $(GEN_OUTPUT)/5.1/test/loops_spec.lua --target 5.1
 	@./$(BIN_NAME) $(TEST_INPUT)/test/try_catch_spec.yue -o $(GEN_OUTPUT)/5.1/test/try_catch_spec.lua --target 5.1
-	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(GEN_OUTPUT)
+	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(GEN_OUTPUT) $(DOC_OUTPUT)
 	@echo -en "Compile time: "
 	@$(END_TIME)
 

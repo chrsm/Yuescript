@@ -1,4 +1,10 @@
-local outputFolder = ...
+local outputFolder, docFolder
+do
+	local _obj_0 = {
+		...
+	}
+	outputFolder, docFolder = _obj_0[1], _obj_0[2]
+end
 local getFiles
 getFiles = function(locale)
 	if locale == "en" then
@@ -57,6 +63,7 @@ do
 		local locale = _list_0[_index_0]
 		_accum_0[_len_0] = {
 			"codes_from_doc_" .. tostring(locale) .. ".lua",
+			"yue-" .. tostring(locale) .. ".md",
 			getFiles(locale)
 		}
 		_len_0 = _len_0 + 1
@@ -65,8 +72,9 @@ do
 end
 for _index_0 = 1, #docs do
 	local _des_0 = docs[_index_0]
-	local compiledFile, docFiles = _des_0[1], _des_0[2]
+	local compiledFile, docFile, docFiles = _des_0[1], _des_0[2], _des_0[3]
 	local codes = { }
+	local docTexts = { }
 	for _index_1 = 1, #docFiles do
 		local docFile = docFiles[_index_1]
 		local input
@@ -74,6 +82,7 @@ for _index_0 = 1, #docs do
 		if _with_0 ~= nil then
 			local to_lua = require("yue").to_lua
 			local text = _with_0:read("*a")
+			docTexts[#docTexts + 1] = text
 			for code in text:gmatch("```yuescript[\r\n]+(.-)```[^%w]") do
 				local result, err = to_lua(code, {
 					implicit_return_root = false,
@@ -103,8 +112,15 @@ for _index_0 = 1, #docs do
 		local _close_0 <close> = input
 	end
 	local output
-	local _with_0 = io.open(tostring(outputFolder) .. "/" .. tostring(compiledFile), "w+")
-	_with_0:write(table.concat(codes))
-	output = _with_0
+	do
+		local _with_0 = io.open(tostring(outputFolder) .. "/" .. tostring(compiledFile), "w+")
+		_with_0:write(table.concat(codes))
+		output = _with_0
+	end
 	local _close_0 <close> = output
+	local output2
+	local _with_0 = io.open(tostring(docFolder) .. "/" .. tostring(docFile), "w+")
+	_with_0:write(table.concat(docTexts, "\n"))
+	output2 = _with_0
+	local _close_1 <close> = output2
 end

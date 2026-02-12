@@ -1,4 +1,4 @@
-outputFolder = ...
+[outputFolder, docFolder] = {...}
 
 getFiles = (locale) ->
 	locale = if locale == "en" then "" else "#{locale}/"
@@ -37,13 +37,15 @@ getFiles = (locale) ->
 		"doc/docs/#{locale}doc/reference/license-mit.md"
 		"doc/docs/#{locale}doc/reference/the-yuescript-library.md"
 	]
-docs = [ ["codes_from_doc_#{locale}.lua", getFiles locale] for locale in *["en", "zh", "pt-br", "de", "id-id"]]
-for [compiledFile, docFiles] in *docs
+docs = [ ["codes_from_doc_#{locale}.lua", "yue-#{locale}.md", getFiles locale] for locale in *["en", "zh", "pt-br", "de", "id-id"]]
+for [compiledFile, docFile, docFiles] in *docs
 	codes = []
+	docTexts = []
 	for docFile in *docFiles
 		close input = with? io.open docFile
 			import "yue" as :to_lua
 			text = \read "*a"
+			docTexts[] = text
 			for code in text\gmatch "```yuescript[\r\n]+(.-)```[^%w]"
 				if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
 					codes[] = result
@@ -58,4 +60,6 @@ for [compiledFile, docFiles] in *docs
 					os.exit 1
 	close output = with io.open "#{outputFolder}/#{compiledFile}", "w+"
 		\write table.concat codes
+	close output2 = with io.open "#{docFolder}/#{docFile}", "w+"
+		\write table.concat docTexts, "\n"
 

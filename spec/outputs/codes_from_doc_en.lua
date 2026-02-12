@@ -2163,6 +2163,18 @@ repeat
 	result = _with_0.value
 	break
 until true
+local a
+do
+	local _with_0 = obj
+	_with_0.x = 1
+	a = _with_0
+end
+local b
+local _with_0 = obj
+repeat
+	b = _with_0.x
+	break
+until true
 local create_person
 create_person = function(name, relatives)
 	local _with_0 = Person()
@@ -2207,6 +2219,18 @@ local result
 local _with_0 = obj
 repeat
 	result = _with_0.value
+	break
+until true
+local a
+do
+	local _with_0 = obj
+	_with_0.x = 1
+	a = _with_0
+end
+local b
+local _with_0 = obj
+repeat
+	b = _with_0.x
 	break
 until true
 local create_person
