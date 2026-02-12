@@ -27,7 +27,7 @@ jobs:
           bin\windows\Win32\Debug\yue.exe spec\inputs\import_global.yue -o spec\generated\5.1\import_global.lua --target=5.1
           bin\windows\Win32\Debug\yue.exe spec\inputs\test\loops_spec.yue -o spec\generated\5.1\test\loops_spec.lua --target=5.1
           bin\windows\Win32\Debug\yue.exe spec\inputs\test\try_catch_spec.yue -o spec\generated\5.1\test\try_catch_spec.lua --target=5.1
-          bin\windows\Win32\Debug\yue.exe -e spec/inputs/compile_doc.yue spec/generated
+          bin\windows\Win32\Debug\yue.exe -e spec/inputs/compile_doc.yue spec/generated doc
           bin\windows\Win32\Debug\yue.exe -e "io.popen('git diff --no-index spec\\outputs spec\\generated')\read('*a') |> ((r)-> r ~= '' and (print(r) or os.exit 1))"
           msbuild win-build\Yuescript.sln /p:Configuration=Debug /p:Platform=x64
           bin\windows\x64\Debug\yue.exe spec\inputs -t spec\generated --tl_enabled
@@ -38,7 +38,7 @@ jobs:
           bin\windows\x64\Debug\yue.exe spec\inputs\import_global.yue -o spec\generated\5.1\import_global.lua --target=5.1
           bin\windows\x64\Debug\yue.exe spec\inputs\test\loops_spec.yue -o spec\generated\5.1\test\loops_spec.lua --target=5.1
           bin\windows\x64\Debug\yue.exe spec\inputs\test\try_catch_spec.yue -o spec\generated\5.1\test\try_catch_spec.lua --target=5.1
-          bin\windows\x64\Debug\yue.exe -e spec/inputs/compile_doc.yue spec/generated
+          bin\windows\x64\Debug\yue.exe -e spec/inputs/compile_doc.yue spec/generated doc
           bin\windows\x64\Debug\yue.exe -e "io.popen('git diff --no-index spec\\outputs spec\\generated')\read('*a') |> ((r)-> r ~= '' and (print(r) or os.exit 1))"
       - name: Setup MSVC dev cmd
         uses: ilammy/msvc-dev-cmd@v1
