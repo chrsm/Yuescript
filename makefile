@@ -12,7 +12,7 @@ SRC_PATH = ./src
 LIBS =
 # General compiler flags
 COMPILE_FLAGS = -Wall -Wextra
-CXXFLAGS = -std=c++17 -DYUE_UTF8_IMPL
+CXXFLAGS = -std=c++20 -DYUE_UTF8_IMPL
 # Additional release-specific flags
 RCOMPILE_FLAGS = -DNDEBUG -O3
 # Additional debug-specific flags
