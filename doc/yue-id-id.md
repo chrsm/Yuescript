@@ -4508,6 +4508,7 @@ readFile "example.txt"
 "hello" |> print
 1 |> print 2 -- sisipkan nilai pipe sebagai argumen pertama
 2 |> print 1, _, 3 -- pipe dengan placeholder
+
 -- ekspresi pipe multi-baris
 readFile "example.txt"
   |> extract language, {}

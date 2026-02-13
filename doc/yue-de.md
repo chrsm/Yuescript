@@ -4510,6 +4510,7 @@ readFile "example.txt"
 "hello" |> print
 1 |> print 2 -- Pipe-Element als erstes Argument einfügen
 2 |> print 1, _, 3 -- Pipe mit Platzhalter
+
 -- Pipe-Ausdruck über mehrere Zeilen
 readFile "example.txt"
   |> extract language, {}

@@ -4514,6 +4514,7 @@ readFile "example.txt"
 "hello" |> print
 1 |> print 2 -- insert pipe item as the first argument
 2 |> print 1, _, 3 -- pipe with a placeholder
+
 -- pipe expression in multiline
 readFile "example.txt"
   |> extract language, {}

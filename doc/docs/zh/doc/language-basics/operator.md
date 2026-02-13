@@ -347,6 +347,7 @@ readFile "example.txt"
 "你好" |> print
 1 |> print 2 -- 将管道项作为第一个参数插入
 2 |> print 1, _, 3 -- 带有占位符的管道
+
 -- 多行的管道表达式
 readFile "example.txt"
   |> extract language, {}
