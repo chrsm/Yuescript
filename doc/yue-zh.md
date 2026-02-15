@@ -2770,6 +2770,64 @@ if a in list
 
 </YueDisplay>
 
+`in` 运算符也可以用于表，并支持 `not in` 变体来进行否定检查：
+
+```yuescript
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a 在表中"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+<YueDisplay>
+
+```yue
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a 在表中"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+</YueDisplay>
+
+单元素列表或表会检查与该元素的相等性：
+
+```yuescript
+-- [1,] 检查 value == 1
+c = a in [1,]
+
+-- {1} 也是检查 value == 1
+c = a in {1}
+
+-- 没有逗号，[1] 是索引访问（tb[1]）
+with tb
+  c = a in [1]
+```
+
+<YueDisplay>
+
+```yue
+-- [1,] 检查 value == 1
+c = a in [1,]
+
+-- {1} 也是检查 value == 1
+c = a in {1}
+
+-- 没有逗号，[1] 是索引访问（tb[1]）
+with tb
+  c = a in [1]
+```
+
+</YueDisplay>
+
 # for 循环
 
 &emsp;&emsp;Lua 中有两种 for 循环形式，数字型和通用型：

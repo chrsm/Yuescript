@@ -2779,6 +2779,64 @@ if a in list
 
 </YueDisplay>
 
+Der `in`-Operator kann auch mit Tabellen verwendet werden und unterstützt die Variante `not in` für Verneinungen:
+
+```yuescript
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a ist in der Tabelle"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+<YueDisplay>
+
+```yue
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a ist in der Tabelle"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+</YueDisplay>
+
+Eine Ein-Element-Liste oder Tabelle prüft auf Gleichheit mit diesem Element:
+
+```yuescript
+-- [1,] prüft, ob wert == 1
+c = a in [1,]
+
+-- {1} prüft auch, ob wert == 1
+c = a in {1}
+
+-- Ohne Komma ist [1] ein Indexzugriff (tb[1])
+with tb
+  c = a in [1]
+```
+
+<YueDisplay>
+
+```yue
+-- [1,] prüft, ob wert == 1
+c = a in [1,]
+
+-- {1} prüft auch, ob wert == 1
+c = a in {1}
+
+-- Ohne Komma ist [1] ein Indexzugriff (tb[1])
+with tb
+  c = a in [1]
+```
+
+</YueDisplay>
+
 # For-Schleife
 
 Es gibt zwei Formen der `for`-Schleife, genau wie in Lua: eine numerische und eine generische.

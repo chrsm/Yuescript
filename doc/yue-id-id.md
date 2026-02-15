@@ -2778,6 +2778,64 @@ if a in list
 
 </YueDisplay>
 
+Operator `in` juga dapat digunakan dengan tabel dan mendukung varian `not in` untuk negasi:
+
+```yuescript
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a ada di dalam tabel"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+<YueDisplay>
+
+```yue
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a ada di dalam tabel"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+</YueDisplay>
+
+Daftar atau tabel dengan satu elemen memeriksa kesamaan dengan elemen tersebut:
+
+```yuescript
+-- [1,] memeriksa apakah nilai == 1
+c = a in [1,]
+
+-- {1} juga memeriksa apakah nilai == 1
+c = a in {1}
+
+-- Tanpa koma, [1] adalah akses indeks (tb[1])
+with tb
+  c = a in [1]
+```
+
+<YueDisplay>
+
+```yue
+-- [1,] memeriksa apakah nilai == 1
+c = a in [1,]
+
+-- {1} juga memeriksa apakah nilai == 1
+c = a in {1}
+
+-- Tanpa koma, [1] adalah akses indeks (tb[1])
+with tb
+  c = a in [1]
+```
+
+</YueDisplay>
+
 # Perulangan For
 
 Ada dua bentuk perulangan for, seperti di Lua. Satu numerik dan satu generik:

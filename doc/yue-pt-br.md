@@ -2777,6 +2777,64 @@ if a in list
 
 </YueDisplay>
 
+O operador `in` também pode ser usado com tabelas e suporta a variante `not in` para negação:
+
+```yuescript
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a está na tabela"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+<YueDisplay>
+
+```yue
+has = "foo" in {"bar", "foo"}
+
+if a in {1, 2, 3}
+  print "a está na tabela"
+
+not_exist = item not in list
+
+check = -> value not in table
+```
+
+</YueDisplay>
+
+Uma lista ou tabela de único elemento verifica igualdade com esse elemento:
+
+```yuescript
+-- [1,] verifica se valor == 1
+c = a in [1,]
+
+-- {1} também verifica se valor == 1
+c = a in {1}
+
+-- Sem vírgula, [1] é acesso por índice (tb[1])
+with tb
+  c = a in [1]
+```
+
+<YueDisplay>
+
+```yue
+-- [1,] verifica se valor == 1
+c = a in [1,]
+
+-- {1} também verifica se valor == 1
+c = a in {1}
+
+-- Sem vírgula, [1] é acesso por índice (tb[1])
+with tb
+  c = a in [1]
+```
+
+</YueDisplay>
+
 # Loop For
 
 Existem duas formas de loop for, assim como no Lua. Uma numérica e uma genérica:

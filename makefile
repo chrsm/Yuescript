@@ -58,22 +58,29 @@ endif
 	LINK_FLAGS += -L $(SRC_PATH)/3rdParty/lua -llua -ldl
 endif
 
+# Detect PRoot environment (e.g., PRoot-Distro)
+# PRoot can be detected by checking uname -v or /proc/version for "PRoot"
+IS_PROOT := $(shell uname -v 2>/dev/null | grep -q "PRoot" && echo yes || cat /proc/version 2>/dev/null | grep -q "PRoot" && echo yes)
+
 # Detect Android Termux environment
 # Termux typically has ANDROID_ROOT environment variable set and PREFIX points to Termux directory
+# Note: PRoot environments may have ANDROID_ROOT set but are not Termux
 IS_TERMUX := false
-ANDROID_ROOT_VAR := $(shell echo $$ANDROID_ROOT)
-PREFIX_VAR := $(shell echo $$PREFIX)
-ifneq ($(ANDROID_ROOT_VAR),)
-	# Check if PREFIX environment variable points to Termux directory
-	ifneq ($(PREFIX_VAR),)
-		ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
-			IS_TERMUX := true
+ifeq ($(IS_PROOT),)
+	ANDROID_ROOT_VAR := $(shell echo $$ANDROID_ROOT)
+	PREFIX_VAR := $(shell echo $$PREFIX)
+	ifneq ($(ANDROID_ROOT_VAR),)
+		# Check if PREFIX environment variable points to Termux directory
+		ifneq ($(PREFIX_VAR),)
+			ifneq ($(findstring com.termux,$(PREFIX_VAR)),)
+				IS_TERMUX := true
+			endif
 		endif
-	endif
-	# Alternative check: verify if Termux installation path exists
-	ifeq ($(IS_TERMUX),false)
-		ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
-			IS_TERMUX := true
+		# Alternative check: verify if Termux installation path exists
+		ifeq ($(IS_TERMUX),false)
+			ifneq ($(shell test -d /data/data/com.termux/files/usr && echo yes),)
+				IS_TERMUX := true
+			endif
 		endif
 	endif
 endif
@@ -82,8 +89,12 @@ endif
 ifeq ($(IS_TERMUX),true)
 	ifeq ($(NO_WATCHER),)
 		NO_WATCHER := true
-		$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
+		TERMUX_DETECTED := true
 	endif
+endif
+
+ifdef TERMUX_DETECTED
+$(info Detected Android Termux environment, automatically setting NO_WATCHER=true)
 endif
 
 ifeq ($(NO_WATCHER),true)

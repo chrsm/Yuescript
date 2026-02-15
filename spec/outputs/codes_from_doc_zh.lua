@@ -2966,6 +2966,65 @@ if (function()
 end)() then
 	print("检查`a`是否在列表中")
 end
+local has
+do
+	local _val_0 = "foo"
+	has = "bar" == _val_0 or "foo" == _val_0
+end
+if (function()
+	local _val_0 = a
+	return 1 == _val_0 or 2 == _val_0 or 3 == _val_0
+end)() then
+	print("a 在表中")
+end
+local not_exist
+do
+	local _check_0 = list
+	local _val_0 = item
+	local _find_0 = false
+	for _index_0 = 1, #_check_0 do
+		local _item_0 = _check_0[_index_0]
+		if _item_0 == _val_0 then
+			_find_0 = true
+			break
+		end
+	end
+	not_exist = not _find_0
+end
+local check
+check = function()
+	local _check_0 = table
+	local _val_0 = value
+	for _index_0 = 1, #_check_0 do
+		if _check_0[_index_0] == _val_0 then
+			return false
+		end
+	end
+	return true
+end
+local c
+do
+	local _val_0 = a
+	c = 1 == _val_0
+end
+do
+	local _val_0 = a
+	c = 1 == _val_0
+end
+local _with_0 = tb
+do
+	local _check_0 = _with_0[1]
+	local _val_0 = a
+	local _find_0 = false
+	for _index_0 = 1, #_check_0 do
+		local _item_0 = _check_0[_index_0]
+		if _item_0 == _val_0 then
+			_find_0 = true
+			break
+		end
+	end
+	c = _find_0
+end
 local have_coins = false
 if have_coins then
 	print("有硬币")
@@ -3021,6 +3080,65 @@ if (function()
 	return false
 end)() then
 	print("检查`a`是否在列表中")
+end
+local has
+do
+	local _val_0 = "foo"
+	has = "bar" == _val_0 or "foo" == _val_0
+end
+if (function()
+	local _val_0 = a
+	return 1 == _val_0 or 2 == _val_0 or 3 == _val_0
+end)() then
+	print("a 在表中")
+end
+local not_exist
+do
+	local _check_0 = list
+	local _val_0 = item
+	local _find_0 = false
+	for _index_0 = 1, #_check_0 do
+		local _item_0 = _check_0[_index_0]
+		if _item_0 == _val_0 then
+			_find_0 = true
+			break
+		end
+	end
+	not_exist = not _find_0
+end
+local check
+check = function()
+	local _check_0 = table
+	local _val_0 = value
+	for _index_0 = 1, #_check_0 do
+		if _check_0[_index_0] == _val_0 then
+			return false
+		end
+	end
+	return true
+end
+local c
+do
+	local _val_0 = a
+	c = 1 == _val_0
+end
+do
+	local _val_0 = a
+	c = 1 == _val_0
+end
+local _with_0 = tb
+do
+	local _check_0 = _with_0[1]
+	local _val_0 = a
+	local _find_0 = false
+	for _index_0 = 1, #_check_0 do
+		local _item_0 = _check_0[_index_0]
+		if _item_0 == _val_0 then
+			_find_0 = true
+			break
+		end
+	end
+	c = _find_0
 end
 for i = 10, 20 do
 	print(i)

@@ -264,7 +264,9 @@ static std::string compileFile(const fs::path& file, yue::YueConfig conf, const 
 		return "Failed to read file: "s + srcFile.string() + '\n';
 	}
 }
+#endif // YUE_NO_WATCHER
 
+#ifndef YUE_NO_WATCHER
 class UpdateListener : public efsw::FileWatchListener {
 public:
 	void handleFileAction(efsw::WatchID, const std::string& dir, const std::string& filename, efsw::Action action, std::string) override {
