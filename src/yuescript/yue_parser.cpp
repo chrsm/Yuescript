@@ -889,7 +889,7 @@ YueParser::YueParser() {
 		NormalDef;
 
 	table_lit_line = (
-		push_indent_match >> (space >> not_(line_break | '}') >> (table_value | expected_expression_error) >> *(space >> ',' >> space >> table_value) >> pop_indent | pop_indent)
+		push_indent_match >> (plain_space >> not_(line_break | '}') >> (table_value | yue_line_comment | expected_expression_error) >> *(plain_space >> ',' >> plain_space >> (table_value | yue_line_comment)) >> pop_indent | pop_indent)
 	) | (
 		space
 	);
@@ -898,7 +898,7 @@ YueParser::YueParser() {
 
 	TableLit =
 		'{' >> Seperator >>
-		-(space >> table_value >> *(space >> ',' >> space >> table_value) >> -(space >> ',')) >>
+		-(plain_space >> (table_value | yue_line_comment) >> *(plain_space >> ',' >> plain_space >> (table_value | yue_line_comment)) >> -(plain_space >> ',')) >>
 		(
 			table_lit_lines >> white >> end_braces_expression |
 			white >> '}'

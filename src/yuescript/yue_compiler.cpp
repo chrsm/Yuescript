@@ -8250,6 +8250,11 @@ private:
 			bool isMetamethod = false;
 			switch (item->get_id()) {
 				case id<Exp_t>(): transformExp(static_cast<Exp_t*>(item), temp, ExpUsage::Closure); break;
+				case id<YueLineComment_t>(): {
+					auto comment = static_cast<YueLineComment_t*>(item);
+					temp.emplace_back("--"s + _parser.toString(comment));
+					break;
+				}
 				case id<VariablePair_t>(): transform_variable_pair(static_cast<VariablePair_t*>(item), temp); break;
 				case id<NormalPair_t>(): transform_normal_pair(static_cast<NormalPair_t*>(item), temp, false); break;
 				case id<TableBlockIndent_t>(): transformTableBlockIndent(static_cast<TableBlockIndent_t*>(item), temp); break;
@@ -8307,7 +8312,11 @@ private:
 				default: YUEE("AST node mismatch", item); break;
 			}
 			if (!isMetamethod) {
-				temp.back() = indent() + (value == values.back() ? temp.back() : temp.back() + ',') + nl(value);
+				if (ast_is<YueLineComment_t>(value)) {
+					temp.back() = indent() + temp.back() + nl(value);
+				} else {
+					temp.back() = indent() + (value == values.back() ? temp.back() : temp.back() + ',') + nl(value);
+				}
 			}
 		}
 		if (metatable->pairs.empty() && !metatableItem) {

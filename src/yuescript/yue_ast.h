@@ -87,6 +87,7 @@ class NormalDef_t;
 class SpreadListExp_t;
 class Comprehension_t;
 class Value_t;
+class YueLineComment_t;
 } // namespace yue
 
 AST_LEAF(Num)
@@ -717,7 +718,7 @@ AST_NODE(TableLit)
 		VariablePairDef_t, NormalPairDef_t, SpreadExp_t, NormalDef_t,
 		MetaVariablePairDef_t, MetaNormalPairDef_t,
 		VariablePair_t, NormalPair_t, Exp_t,
-		MetaVariablePair_t, MetaNormalPair_t,
+		MetaVariablePair_t, MetaNormalPair_t, YueLineComment_t,
 		/*non-syntax-rule*/ TableBlockIndent_t, SpreadListExp_t> values;
 	AST_MEMBER(TableLit, &sep, &values)
 AST_END(TableLit)
