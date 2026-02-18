@@ -888,17 +888,18 @@ YueParser::YueParser() {
 		SpreadExp |
 		NormalDef;
 
-	table_lit_line = (
-		push_indent_match >> (plain_space >> not_(line_break | '}') >> (table_value | yue_line_comment | expected_expression_error) >> *(plain_space >> ',' >> plain_space >> (table_value | yue_line_comment)) >> pop_indent | pop_indent)
-	) | (
-		space
-	);
+	table_lit_line =
+		-EmptyLine >> (
+			push_indent_match >> (plain_space >> not_(line_break | '}') >> (table_value | yue_line_comment | yue_multiline_comment | expected_expression_error) >> *(plain_space >> ',' >> plain_space >> (table_value | yue_line_comment | yue_multiline_comment)) >> pop_indent | pop_indent)
+		) | (
+			space
+		);
 
 	table_lit_lines = space_break >> table_lit_line >> *(-(space >> ',') >> space_break >> table_lit_line) >> -(space >> ',');
 
 	TableLit =
 		'{' >> Seperator >>
-		-(plain_space >> (table_value | yue_line_comment) >> *(plain_space >> ',' >> plain_space >> (table_value | yue_line_comment)) >> -(plain_space >> ',')) >>
+		-(plain_space >> (table_value | yue_line_comment | yue_multiline_comment) >> *(plain_space >> ',' >> plain_space >> (table_value | yue_line_comment | yue_multiline_comment)) >> -(plain_space >> ',')) >>
 		(
 			table_lit_lines >> white >> end_braces_expression |
 			white >> '}'
