@@ -8207,14 +8207,14 @@ private:
 		if (!_config.reserveComment) {
 			for (auto it = values.rbegin(); it != values.rend(); ++it) {
 				auto node = *it;
-				if (!ast_is<YueLineComment_t, YueMultilineComment_t, EmptyLine_t>(node)) {
+				if (!ast_is<YueComment_t, EmptyLine_t>(node)) {
 					lastValueNode = node;
 					break;
 				}
 			}
 		}
 		for (auto value : values) {
-			if (!_config.reserveComment && ast_is<YueLineComment_t, YueMultilineComment_t, EmptyLine_t>(value)) {
+			if (!_config.reserveComment && ast_is<YueComment_t, EmptyLine_t>(value)) {
 				continue;
 			}
 			auto item = value;
@@ -8264,15 +8264,9 @@ private:
 			bool skipComma = false;
 			switch (item->get_id()) {
 				case id<Exp_t>(): transformExp(static_cast<Exp_t*>(item), temp, ExpUsage::Closure); break;
-				case id<YueLineComment_t>(): {
-					auto comment = static_cast<YueLineComment_t*>(item);
-					temp.emplace_back("--"s + _parser.toString(comment));
-					skipComma = true;
-					break;
-				}
-				case id<YueMultilineComment_t>(): {
-					auto comment = static_cast<YueMultilineComment_t*>(item);
-					temp.emplace_back("--[["s + _parser.toString(comment) + "]]"s);
+				case id<YueComment_t>(): {
+					auto comment = static_cast<YueComment_t*>(item);
+					temp.emplace_back(comment->to_string(&_config));
 					skipComma = true;
 					break;
 				}
@@ -8337,7 +8331,7 @@ private:
 				default: YUEE("AST node mismatch", item); break;
 			}
 			if (!isMetamethod) {
-				if (skipComma || temp.back().rfind("--"sv, 0) == 0) {
+				if (skipComma) {
 					temp.back() = indent() + temp.back() + nl(value);
 				} else {
 					temp.back() = indent() + (value == lastValueNode ? temp.back() : temp.back() + ',') + nl(value);

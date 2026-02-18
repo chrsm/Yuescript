@@ -1154,7 +1154,7 @@ std::string TableLit_t::to_string(void* ud) const {
 	bool hasCommentOrEmpty = false;
 	ast_node* lastValueNode = nullptr;
 	for (auto value : values.objects()) {
-		if (ast_is<YueLineComment_t, YueMultilineComment_t, EmptyLine_t>(value)) {
+		if (ast_is<YueComment_t, EmptyLine_t>(value)) {
 			hasCommentOrEmpty = true;
 			continue;
 		}
@@ -1173,7 +1173,7 @@ std::string TableLit_t::to_string(void* ud) const {
 				continue;
 			}
 			auto valueStr = value->to_string(ud);
-			if (!ast_is<YueLineComment_t, YueMultilineComment_t>(value) && value != lastValueNode) {
+			if (!ast_is<YueComment_t>(value) && value != lastValueNode) {
 				valueStr += ',';
 			}
 			temp.emplace_back(info->ind() + valueStr);
