@@ -8203,7 +8203,20 @@ private:
 		incIndentOffset();
 		auto metatable = x->new_ptr<SimpleTable_t>();
 		ast_sel<false, Exp_t, TableBlock_t> metatableItem;
+		ast_node* lastValueNode = values.back();
+		if (!_config.reserveComment) {
+			for (auto it = values.rbegin(); it != values.rend(); ++it) {
+				auto node = *it;
+				if (!ast_is<YueLineComment_t, YueMultilineComment_t, EmptyLine_t>(node)) {
+					lastValueNode = node;
+					break;
+				}
+			}
+		}
 		for (auto value : values) {
+			if (!_config.reserveComment && ast_is<YueLineComment_t, YueMultilineComment_t, EmptyLine_t>(value)) {
+				continue;
+			}
 			auto item = value;
 			switch (item->get_id()) {
 				case id<VariablePairDef_t>(): {
@@ -8327,7 +8340,7 @@ private:
 				if (skipComma || temp.back().rfind("--"sv, 0) == 0) {
 					temp.back() = indent() + temp.back() + nl(value);
 				} else {
-					temp.back() = indent() + (value == values.back() ? temp.back() : temp.back() + ',') + nl(value);
+					temp.back() = indent() + (value == lastValueNode ? temp.back() : temp.back() + ',') + nl(value);
 				}
 			}
 		}
