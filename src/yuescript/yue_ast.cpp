@@ -1151,18 +1151,32 @@ std::string TableLit_t::to_string(void* ud) const {
 		return "{ }"s;
 	}
 	bool hasInBlockExp = false;
+	bool hasCommentOrEmpty = false;
+	ast_node* lastValueNode = nullptr;
 	for (auto value : values.objects()) {
+		if (ast_is<YueLineComment_t, YueMultilineComment_t, EmptyLine_t>(value)) {
+			hasCommentOrEmpty = true;
+			continue;
+		}
+		lastValueNode = value;
 		if (isInBlockExp(value, value == values.back())) {
 			hasInBlockExp = true;
-			break;
 		}
 	}
-	if (hasInBlockExp) {
+	if (hasInBlockExp || hasCommentOrEmpty) {
 		str_list temp;
 		temp.emplace_back("{"s);
 		info->pushScope();
 		for (auto value : values.objects()) {
-			temp.emplace_back(info->ind() + value->to_string(ud));
+			if (ast_is<EmptyLine_t>(value)) {
+				temp.emplace_back(""s);
+				continue;
+			}
+			auto valueStr = value->to_string(ud);
+			if (!ast_is<YueLineComment_t, YueMultilineComment_t>(value) && value != lastValueNode) {
+				valueStr += ',';
+			}
+			temp.emplace_back(info->ind() + valueStr);
 		}
 		info->popScope();
 		temp.emplace_back(info->ind() + '}');
@@ -1175,6 +1189,7 @@ std::string TableLit_t::to_string(void* ud) const {
 		return '{' + join(temp, ", "sv) + '}';
 	}
 }
+
 std::string TableBlock_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
 	str_list temp;
