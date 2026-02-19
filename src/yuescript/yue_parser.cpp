@@ -909,11 +909,11 @@ YueParser::YueParser() {
 			white >> '}'
 		);
 
-	table_block_inner = Seperator >> key_value_line >> *(+(plain_space >> line_break) >> key_value_line);
+	table_block_inner = Seperator >> key_value_line >> *(+space_break >> key_value_line);
 	TableBlock = +space_break >> advance_match >> ensure(table_block_inner, pop_indent);
 	TableBlockIndent = ('*' | '-' >> space_one) >> Seperator >> disable_arg_table_block_rule(
 		space >> key_value_list >> -(space >> ',') >>
-		-(+(plain_space >> line_break) >> advance_match >> space >> ensure(key_value_list >> -(space >> ',') >> *(+(plain_space >> line_break) >> key_value_line), pop_indent)));
+		-(+space_break >> advance_match >> space >> ensure(key_value_list >> -(space >> ',') >> *(+space_break >> key_value_line), pop_indent)));
 
 	ClassMemberList = Seperator >> key_value >> *(space >> ',' >> space >> key_value);
 	class_line = check_indent_match >> space >> (ClassMemberList | Statement) >> -(space >> ',');
