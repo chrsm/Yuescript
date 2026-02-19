@@ -734,6 +734,7 @@ private:
 				return isLocal(variableToString(pair->name));
 			}
 			case id<YueComment_t>():
+			case id<EmptyLine_t>():
 				return true;
 			case id<MetaNormalPair_t>(): {
 				auto pair = static_cast<MetaNormalPair_t*>(item);
@@ -8219,6 +8220,8 @@ private:
 		auto metatable = x->new_ptr<SimpleTable_t>();
 		ast_sel<false, Exp_t, TableBlock_t> metatableItem;
 		ast_node* lastValueNode = values.back();
+		int lastValueLine = x->m_begin.m_line;
+		bool prevWasEmptyLine = false;
 		if (!_config.reserveComment) {
 			for (auto it = values.rbegin(); it != values.rend(); ++it) {
 				auto node = *it;
@@ -8280,6 +8283,9 @@ private:
 			switch (item->get_id()) {
 				case id<Exp_t>(): transformExp(static_cast<Exp_t*>(item), temp, ExpUsage::Closure); break;
 				case id<YueComment_t>(): {
+					if (_config.reserveComment && !prevWasEmptyLine && value->m_begin.m_line > lastValueLine + 1) {
+						temp.emplace_back(Empty);
+					}
 					auto comment = static_cast<YueComment_t*>(item);
 					temp.emplace_back(comment->to_string(&_config));
 					skipComma = true;
@@ -8352,6 +8358,8 @@ private:
 					temp.back() = indent() + (value == lastValueNode ? temp.back() : temp.back() + ',') + nl(value);
 				}
 			}
+			lastValueLine = value->m_end.m_line;
+			prevWasEmptyLine = ast_is<EmptyLine_t>(value);
 		}
 		if (metatable->pairs.empty() && !metatableItem) {
 			out.push_back('{' + nl(x) + join(temp));
