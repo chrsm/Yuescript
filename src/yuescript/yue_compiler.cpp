@@ -7989,6 +7989,19 @@ private:
 					transformFor(forNode, temp);
 					break;
 				}
+				case id<YueComment_t>(): {
+					if (_config.reserveComment) {
+						auto comment = static_cast<YueComment_t*>(item);
+						temp.push_back(indent() + comment->to_string(&_config) + nl(item));
+					}
+					break;
+				}
+				case id<EmptyLine_t>(): {
+					if (_config.reserveComment) {
+						temp.push_back(nl(item));
+					}
+					break;
+				}
 				case id<VariablePair_t>():
 				case id<VariablePairDef_t>(): {
 					if (auto pair = ast_cast<VariablePairDef_t>(item)) {
