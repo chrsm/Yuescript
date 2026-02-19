@@ -733,6 +733,8 @@ private:
 				auto pair = static_cast<MetaVariablePair_t*>(item);
 				return isLocal(variableToString(pair->name));
 			}
+			case id<YueComment_t>():
+				return true;
 			case id<MetaNormalPair_t>(): {
 				auto pair = static_cast<MetaNormalPair_t*>(item);
 				if (auto str = pair->key.as<String_t>()) {

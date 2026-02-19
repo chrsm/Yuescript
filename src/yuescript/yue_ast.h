@@ -729,13 +729,14 @@ AST_NODE(TableBlockIndent)
 	ast_ptr<true, Seperator_t> sep;
 	ast_sel_list<false,
 		VariablePair_t, NormalPair_t, Exp_t, TableBlockIndent_t,
-		MetaVariablePair_t, MetaNormalPair_t> values;
+		MetaVariablePair_t, MetaNormalPair_t,
+		YueComment_t> values;
 	AST_MEMBER(TableBlockIndent, &sep, &values)
 AST_END(TableBlockIndent)
 
 AST_NODE(TableBlock)
 	ast_ptr<true, Seperator_t> sep;
-	ast_sel_list<false, VariablePair_t, NormalPair_t, TableBlockIndent_t, Exp_t, TableBlock_t, SpreadExp_t, MetaVariablePair_t, MetaNormalPair_t> values;
+	ast_sel_list<false, VariablePair_t, NormalPair_t, TableBlockIndent_t, Exp_t, TableBlock_t, SpreadExp_t, MetaVariablePair_t, MetaNormalPair_t, YueComment_t> values;
 	AST_MEMBER(TableBlock, &sep, &values)
 AST_END(TableBlock)
 
