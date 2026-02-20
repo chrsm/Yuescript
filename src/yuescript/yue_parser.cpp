@@ -922,9 +922,9 @@ YueParser::YueParser() {
 		YueComment |
 		check_indent_match >> space >> (ClassMemberList | Statement) >> -(space >> ',');
 	ClassBlock =
-		+space_break >>
+		((+(plain_space >> line_break)) | (+space_break >> not_(expr("--")))) >>
 		advance_match >> Seperator >>
-		class_line >> *(+space_break >> class_line) >>
+		class_line >> *(((plain_space >> line_break) >> class_line) | (+space_break >> not_(expr("--")) >> class_line)) >>
 		pop_indent;
 
 	ClassDecl =
