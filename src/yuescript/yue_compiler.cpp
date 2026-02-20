@@ -9937,6 +9937,8 @@ private:
 						std::tie(clsName, newDefined, clsTextName) = defineClassVariable(clsDecl->name);
 						if (newDefined) varDefs.push_back(clsName);
 					}
+				} else if (ast_is<YueComment_t, EmptyLine_t>(item)) {
+					block->statementOrComments.push_back(item);
 				}
 			}
 			if (!varDefs.empty()) {
@@ -9990,6 +9992,14 @@ private:
 			for (auto stmt_ : block->statementOrComments.objects()) {
 				if (auto stmt = ast_cast<Statement_t>(stmt_)) {
 					transformStatement(stmt, statements);
+				} else if (auto comment = ast_cast<YueComment_t>(stmt_)) {
+					if (_config.reserveComment) {
+						statements.push_back(indent() + comment->to_string(&_config) + nl(comment));
+					}
+				} else if (auto emptyLine = ast_cast<EmptyLine_t>(stmt_)) {
+					if (_config.reserveComment) {
+						statements.push_back(nl(emptyLine));
+					}
 				}
 			}
 			for (auto& member : members) {
