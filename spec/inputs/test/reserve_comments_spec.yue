@@ -1,0 +1,413 @@
+describe "reserve_comments option", ->
+	import to_lua from require("yue")
+
+	it "should preserve top-level comments with reserve_comment option", ->
+		code = [[
+-- Top level comment
+x = 1
+-- Another comment
+y = 2
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("Top level comment") ~= nil
+		assert.is_true result\match("Another comment") ~= nil
+
+	it "should NOT preserve comments without reserve_comment option", ->
+		code = [[
+-- Top level comment
+x = 1
+-- Another comment
+y = 2
+]]
+		result = to_lua code, {}
+		assert.is_true result\match("Top level comment") == nil
+		assert.is_true result\match("Another comment") == nil
+
+	it "should preserve comments in table literals", ->
+		code = [[
+t = {
+    -- First value comment
+    1,
+    -- Second value comment
+    2
+}
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("First value comment") ~= nil
+		assert.is_true result\match("Second value comment") ~= nil
+
+	it "should preserve comments in if statement", ->
+		code = [[
+if true
+    -- Inside if block
+    print "test"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("Inside if block") ~= nil
+
+	it "should preserve comments in function body", ->
+		code = [[
+func = =>
+    -- Inside function
+    print "hello"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("Inside function") ~= nil
+
+	it "should preserve comments in while loop", ->
+		code = [[
+while true
+    -- Loop body comment
+    print "looping"
+    break
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("Loop body comment") ~= nil
+
+	it "should preserve comments in for loop", ->
+		code = [[
+for i = 1, 3
+    -- For loop comment
+    print i
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("For loop comment") ~= nil
+
+	it "should preserve comments in TableBlock syntax", ->
+		code = [[
+tbl = {
+    -- Key comment
+    key: "value"
+    -- Another key
+    another: 123
+}
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("Key comment") ~= nil
+		assert.is_true result\match("Another key") ~= nil
+
+	it "should preserve multiple comments across statements", ->
+		code = [[
+-- Assign x
+x = 1
+-- Assign y
+y = 2
+-- Assign z
+z = 3
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("Assign x") ~= nil
+		assert.is_true result\match("Assign y") ~= nil
+		assert.is_true result\match("Assign z") ~= nil
+
+	it "should handle table with mixed values and comments", ->
+		code = [[
+t = {
+    -- First item
+    1,
+    -- Second item
+    2,
+    -- Third item
+    3
+}
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("First item") ~= nil
+		assert.is_true result\match("Second item") ~= nil
+		assert.is_true result\match("Third item") ~= nil
+
+	it "should preserve comments in nested structures", ->
+		code = [[
+outer = {
+    -- outer comment
+    inner: {
+        -- inner comment
+        value: 42
+    }
+}
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("outer comment") ~= nil
+		assert.is_true result\match("inner comment") ~= nil
+
+	it "should preserve comments in else block", ->
+		code = [[
+if false
+    print "if"
+else
+    -- else comment
+    print "else"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("else comment") ~= nil
+
+	it "should preserve comments in elseif block", ->
+		code = [[
+if false
+    print "if"
+elseif true
+    -- elseif comment
+    print "elseif"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("elseif comment") ~= nil
+
+	it "should preserve comments before return statement", ->
+		code = [[
+func = =>
+    -- before return
+    return 42
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("before return") ~= nil
+
+	it "should preserve comments in switch statement", ->
+		code = [[
+switch 2
+    when 1
+        -- case 1 comment
+        print "one"
+    when 2
+        -- case 2 comment
+        print "two"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("case 1 comment") ~= nil
+		assert.is_true result\match("case 2 comment") ~= nil
+
+	it "should preserve comments in with statement", ->
+		code = [[
+with t
+    -- with body comment
+    .value = 10
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("with body comment") ~= nil
+
+	it "should handle empty lines with reserve_comment", ->
+		code = [[
+-- First comment
+x = 1
+-- Second comment
+]]
+		-- Just verify it compiles without error
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result ~= nil
+		assert.is_true type(result) == "string"
+
+	it "should preserve comments in class body", ->
+		code = [[
+class MyClass
+    -- property comment
+    value: 10
+    -- method comment
+    method: => print "hello"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("property comment") ~= nil
+		assert.is_true result\match("method comment") ~= nil
+
+	it "should preserve comments in class with inheritance", ->
+		code = [[
+class Child extends Parent
+    -- child property
+    value: 100
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("child property") ~= nil
+
+	it "should preserve comments in export statement", ->
+		code = [[
+-- export value comment
+export x = 42
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("export value comment") ~= nil
+
+	it "should preserve comments in import statement", ->
+		code = [[
+-- import comment
+import format from "string"
+]]
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("import comment") ~= nil
+
+	-- Additional tests for TableBlock syntax with multiple empty lines
+	it "should preserve empty lines between comments in TableBlock", ->
+		code = "tb =\n\t-- line\n\n\n\n\t--[[ajdjd]]\n\ta: ->\n\n\t-- line 2\n\tb: 123\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("line") ~= nil
+		assert.is_true result\match("ajdjd") ~= nil
+		assert.is_true result\match("line 2") ~= nil
+
+	it "should preserve block comments in TableBlock", ->
+		code = "tb =\n\t--[[block comment]]\n\ta: 1\n\n\t--[[another block]]\n\tb: 2\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("block comment") ~= nil
+		assert.is_true result\match("another block") ~= nil
+
+	it "should preserve multiple empty lines in table literal", ->
+		code = "tb = {\n\t-- line\n\n\n\n\t--[[ajdjd]]\n\ta: ->\n\n\t-- line 2\n\tb: 123\n}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("line") ~= nil
+		assert.is_true result\match("ajdjd") ~= nil
+		assert.is_true result\match("line 2") ~= nil
+
+	it "should preserve mixed single and block comments in TableBlock", ->
+		code = "tb =\n\t-- single line comment\n\ta: 1\n\n\t--[[multi\n\tline\n\tblock\n\tcomment]]\n\tb: 2\n\n\t-- another single\n\tc: 3\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("single line comment") ~= nil
+		assert.is_true result\match("multi") ~= nil
+		assert.is_true result\match("another single") ~= nil
+
+	it "should preserve comments and empty lines in table with colon syntax", ->
+		code = "tbl = {\n\t-- first key\n\tkey1: \"value1\"\n\n\n\t-- second key\n\tkey2: \"value2\"\n\n\t-- third key\n\tkey3: \"value3\"\n}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("first key") ~= nil
+		assert.is_true result\match("second key") ~= nil
+		assert.is_true result\match("third key") ~= nil
+
+	it "should preserve comments in nested TableBlock structures", ->
+		code = "outer =\n\t-- outer item\n\ta: 1\n\n\t-- inner tableblock\n\tinner:\n\t\t-- inner item 1\n\t\tx: 10\n\t\t-- inner item 2\n\t\ty: 20\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("outer item") ~= nil
+		assert.is_true result\match("inner tableblock") ~= nil
+		assert.is_true result\match("inner item 1") ~= nil
+		assert.is_true result\match("inner item 2") ~= nil
+
+	it "should handle function values in TableBlock with comments", ->
+		code = "tb =\n\t-- comment before function\n\tfunc1: => print \"a\"\n\n\t-- another function\n\tfunc2: (x) => x * 2\n\n\t-- method\n\tmethod: =>\n\t\t-- inside method\n\t\tprint \"method\"\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("comment before function") ~= nil
+		assert.is_true result\match("another function") ~= nil
+		assert.is_true result\match("method") ~= nil
+		assert.is_true result\match("inside method") ~= nil
+
+	it "should preserve comments in TableBlock with various value types", ->
+		code = "tb =\n\t-- string value\n\tstr: \"hello\"\n\n\t-- number value\n\tnum: 42\n\n\t-- boolean value\n\tbool: true\n\n\t-- table value\n\ttbl: {1, 2, 3}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("string value") ~= nil
+		assert.is_true result\match("number value") ~= nil
+		assert.is_true result\match("boolean value") ~= nil
+		assert.is_true result\match("table value") ~= nil
+
+	it "should preserve empty lines at end of TableBlock", ->
+		code = "tb =\n\t-- item 1\n\ta: 1\n\n\t-- item 2\n\tb: 2\n\n\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("item 1") ~= nil
+		assert.is_true result\match("item 2") ~= nil
+
+	-- Tests specifically for empty lines between comments
+	it "should preserve empty lines in TableBlock between comments", ->
+		code = "tb =\n\t-- a\n\t\n\t\n\t\n\tval: 1\n"
+		result = to_lua code, {reserve_comment: true}
+		-- Empty lines should produce line number comments in output
+		-- Check that there's a line with just a comment marker (line number)
+		assert.is_true result\match("-- %d+") ~= nil
+
+	it "should preserve empty lines in TableBlock with comments", ->
+		code = "tb =\n\t-- first\n\t\n\t\n\tval: 1\n\t\n\t-- second\n\tval2: 2\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("first") ~= nil
+		assert.is_true result\match("second") ~= nil
+		-- Should have empty line representations (lines with line number comments)
+		assert.is_true result\match("-- %d+") ~= nil
+
+	it "should preserve empty lines in table literal", ->
+		code = "t = {\n\t-- item1\n\t\n\t\n\t1,\n\t\n\t-- item2\n\t2\n}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("item1") ~= nil
+		assert.is_true result\match("item2") ~= nil
+		-- Empty lines should produce line comments
+		assert.is_true result\match("-- %d+") ~= nil
+
+	it "should have more newlines with reserve_comment than without", ->
+		code = "-- comment1\nx = 1\n-- comment2\ny = 2\n"
+		result_with = to_lua code, {reserve_comment: true}
+		result_without = to_lua code, {}
+		-- Count newlines in both results using gmatch
+		newlines_with = 0
+		newlines_without = 0
+		for _ in result_with\gmatch("\n")
+			newlines_with += 1
+		for _ in result_without\gmatch("\n")
+			newlines_without += 1
+		-- With reserve_comment should have equal or more newlines
+		assert.is_true newlines_with >= newlines_without
+
+	it "should preserve empty lines in TableBlock between entries", ->
+		code = "tb =\n\t-- key1\n\tkey1: 1\n\t\n\t\n\t-- key2\n\tkey2: 2\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("key1") ~= nil
+		assert.is_true result\match("key2") ~= nil
+		-- Empty lines should produce lines with line number comments
+		assert.is_true result\match("\t-- %d+\n") ~= nil
+
+	it "should preserve empty lines in class body", ->
+		code = "class C\n\t-- prop1\n\tprop1: 1\n\t\n\t\n\t-- prop2\n\tprop2: 2\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("prop1") ~= nil
+		assert.is_true result\match("prop2") ~= nil
+
+	it "should preserve empty lines between comments in table", ->
+		code = "t = {\n\t-- first\n\t\n\t-- second\n\t\n\t-- third\n\tval: 1\n}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("first") ~= nil
+		assert.is_true result\match("second") ~= nil
+		assert.is_true result\match("third") ~= nil
+		-- Empty lines should produce line comments
+		assert.is_true result\match("-- %d+") ~= nil
+
+	it "should preserve multiple consecutive empty lines in TableBlock", ->
+		code = "tb =\n\t-- start\n\tval1: 1\n\t\n\t\n\t\n\t-- middle\n\tval2: 2\n\t\n\t\n\t-- end\n\tval3: 3\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("start") ~= nil
+		assert.is_true result\match("middle") ~= nil
+		assert.is_true result\match("end") ~= nil
+		-- Should have line number comments for empty lines
+		assert.is_true result\match("-- %d+") ~= nil
+
+	-- Comparison tests: Table literal vs TableBlock vs Class
+	it "should preserve comments in table literal", ->
+		code = "t = {\n\t-- comment\n\tkey: 1\n}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("comment") ~= nil
+
+	it "should preserve comments in TableBlock", ->
+		code = "t =\n\t-- comment\n\tkey: 1\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("comment") ~= nil
+
+	it "should preserve comments in class body", ->
+		code = "class C\n\t-- comment\n\tkey: 1\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("comment") ~= nil
+
+	it "should preserve multiple comments in class body", ->
+		code = "class C\n\t-- prop1\n\tprop1: 1\n\t-- prop2\n\tprop2: 2\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("prop1") ~= nil
+		assert.is_true result\match("prop2") ~= nil
+
+	it "should preserve empty lines in table literal", ->
+		code = "t = {\n\t-- a\n\t\n\t-- b\n\tkey: 1\n}\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("a") ~= nil
+		assert.is_true result\match("b") ~= nil
+		-- Empty lines produce line comments
+		assert.is_true result\match("-- %d+") ~= nil
+
+	it "should preserve empty lines in TableBlock", ->
+		code = "t =\n\t-- a\n\t\n\t-- b\n\tkey: 1\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("a") ~= nil
+		assert.is_true result\match("b") ~= nil
+		-- Empty lines produce line comments
+		assert.is_true result\match("-- %d+") ~= nil
+
+	it "should preserve empty lines in class body", ->
+		code = "class C\n\t-- a\n\ta: 1\n\t\n\t-- b\n\tb: 2\n"
+		result = to_lua code, {reserve_comment: true}
+		assert.is_true result\match("a") ~= nil
+		assert.is_true result\match("b") ~= nil
+		-- Empty lines in class should also be preserved

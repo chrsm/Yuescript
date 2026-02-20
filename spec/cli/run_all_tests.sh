@@ -105,6 +105,7 @@ run_test_suite() {
 # Run all test suites
 run_test_suite "Basic Options Test" "$SCRIPT_DIR/test_basic_options.sh"
 run_test_suite "Compilation Test" "$SCRIPT_DIR/test_compilation.sh"
+run_test_suite "Reserve Comments Test" "$SCRIPT_DIR/test_reserve_comments.sh"
 run_test_suite "Error Handling Test" "$SCRIPT_DIR/test_error_handling.sh"
 run_test_suite "Execution Test" "$SCRIPT_DIR/test_execution.sh"
 

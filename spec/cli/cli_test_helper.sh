@@ -123,6 +123,33 @@ assert_output_equals() {
     fi
 }
 
+# Assert that output does NOT contain expected string
+assert_output_not_contains() {
+    local description="$1"
+    local unexpected="$2"
+    shift 2
+    TESTS_RUN=$((TESTS_RUN + 1))
+
+    if "$@" > /tmp/test_stdout.txt 2> /tmp/test_stderr.txt; then
+        if grep -qF -- "$unexpected" /tmp/test_stdout.txt || grep -qF -- "$unexpected" /tmp/test_stderr.txt; then
+            echo -e "${RED}✗${NC} $description (output contains '$unexpected')"
+            echo -e "  ${YELLOW}STDOUT:$(cat /tmp/test_stdout.txt)${NC}"
+            echo -e "  ${YELLOW}STDERR:$(cat /tmp/test_stderr.txt)${NC}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+            return 1
+        else
+            echo -e "${GREEN}✓${NC} $description"
+            TESTS_PASSED=$((TESTS_PASSED + 1))
+            return 0
+        fi
+    else
+        echo -e "${RED}✗${NC} $description (command failed)"
+        echo -e "  ${YELLOW}Exit code: $?${NC}"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+        return 1
+    fi
+}
+
 # Assert file exists
 assert_file_exists() {
     local description="$1"
