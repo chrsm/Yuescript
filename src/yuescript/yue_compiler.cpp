@@ -9937,8 +9937,6 @@ private:
 						std::tie(clsName, newDefined, clsTextName) = defineClassVariable(clsDecl->name);
 						if (newDefined) varDefs.push_back(clsName);
 					}
-				} else if (ast_is<YueComment_t, EmptyLine_t>(item)) {
-					block->statementOrComments.push_back(item);
 				}
 			}
 			if (!varDefs.empty()) {
@@ -9958,7 +9956,7 @@ private:
 		addToScope(baseVar);
 		temp.push_back(indent() + "local "s + baseVar + " = "s);
 		str_list builtins;
-		str_list commons;
+		std::vector<std::pair<std::string, bool>> baseEntries;
 		str_list statements;
 		if (body) {
 			std::list<ClassMember> members;
@@ -9972,15 +9970,28 @@ private:
 							auto& member = *it;
 							if (member.type == MemType::Property) {
 								statements.push_back(indent() + member.item + nl(content));
+							} else if (member.type == MemType::Builtin) {
+								builtins.push_back((builtins.empty() ? Empty : ',' + nl(member.node)) + indent(1) + member.item);
 							} else {
-								member.item = indent(1) + member.item;
+								baseEntries.emplace_back(indent(1) + member.item + nl(member.node), true);
 							}
 						}
 						break;
 					}
+					case id<YueComment_t>(): {
+						if (_config.reserveComment) {
+							auto comment = static_cast<YueComment_t*>(content);
+							baseEntries.emplace_back(indent(1) + comment->to_string(&_config) + nl(content), false);
+						}
+						break;
+					}
+					case id<EmptyLine_t>(): {
+						if (_config.reserveComment) {
+							baseEntries.emplace_back(nl(content), false);
+						}
+						break;
+					}
 					case id<Statement_t>():
-					case id<YueComment_t>():
-					case id<EmptyLine_t>():
 						break;
 					default: YUEE("AST node mismatch", content); break;
 				}
@@ -9992,30 +10003,31 @@ private:
 			for (auto stmt_ : block->statementOrComments.objects()) {
 				if (auto stmt = ast_cast<Statement_t>(stmt_)) {
 					transformStatement(stmt, statements);
-				} else if (auto comment = ast_cast<YueComment_t>(stmt_)) {
-					if (_config.reserveComment) {
-						statements.push_back(indent() + comment->to_string(&_config) + nl(comment));
-					}
-				} else if (auto emptyLine = ast_cast<EmptyLine_t>(stmt_)) {
-					if (_config.reserveComment) {
-						statements.push_back(nl(emptyLine));
-					}
 				}
 			}
-			for (auto& member : members) {
-				switch (member.type) {
-					case MemType::Common:
-						commons.push_back((commons.empty() ? Empty : ',' + nl(member.node)) + member.item);
-						break;
-					case MemType::Builtin:
-						builtins.push_back((builtins.empty() ? Empty : ',' + nl(member.node)) + member.item);
-						break;
-					default: break;
-				}
-			}
-			if (!commons.empty()) {
+			if (!baseEntries.empty()) {
 				temp.back() += '{' + nl(body);
-				temp.push_back(join(commons) + nl(body));
+				int lastValue = -1;
+				for (int i = static_cast<int>(baseEntries.size()) - 1; i >= 0; --i) {
+					if (baseEntries[i].second) {
+						lastValue = i;
+						break;
+					}
+				}
+				str_list baseItems;
+				for (int i = 0; i < static_cast<int>(baseEntries.size()); ++i) {
+					auto item = baseEntries[i].first;
+					if (baseEntries[i].second && i != lastValue) {
+						auto pos = item.rfind('\n');
+						if (pos != std::string::npos) {
+							item.insert(pos, ",");
+						} else {
+							item.push_back(',');
+						}
+					}
+					baseItems.push_back(std::move(item));
+				}
+				temp.push_back(join(baseItems));
 				temp.push_back(indent() + '}' + nl(body));
 			} else {
 				temp.back() += "{ }"s + nl(body);
