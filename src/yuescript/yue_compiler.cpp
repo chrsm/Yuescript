@@ -9987,9 +9987,7 @@ private:
 					}
 					case id<EmptyLine_t>(): {
 						if (_config.reserveComment) {
-							auto emptyLine = static_cast<EmptyLine_t*>(content);
-							int emptyLines = std::max(1, emptyLine->m_end.m_line - emptyLine->m_begin.m_line);
-							baseEntries.emplace_back(std::string(static_cast<size_t>(emptyLines), '\n'), false);
+							baseEntries.emplace_back("\n"s, false);
 						}
 						break;
 					}
