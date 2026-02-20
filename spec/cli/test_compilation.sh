@@ -88,6 +88,27 @@ EOF
 assert_success "Compile with line numbers" $YUE_BIN -l "$TMP_DIR/test_line.yue" -o "$TMP_DIR/test_line.lua"
 assert_output_contains "Compiled file should have line comment" "yue" cat "$TMP_DIR/test_line.lua"
 
+cat > "$TMP_DIR/test_line_empty_block.yue" << 'EOF'
+x = {
+	1
+
+	2
+}
+
+y =
+	a: 1
+
+	b: 2
+
+Z = class
+	m: 1
+
+	n: 2
+EOF
+
+assert_success "Compile with line numbers for table/class blocks with empty lines" $YUE_BIN -l "$TMP_DIR/test_line_empty_block.yue" -o "$TMP_DIR/test_line_empty_block.lua"
+assert_success "Empty lines should not generate standalone line number comments" bash -lc '! grep -Eq "^[[:space:]]*-- [0-9]+$" "$0"' "$TMP_DIR/test_line_empty_block.lua"
+
 # Test 7: Compile with spaces instead of tabs (-s)
 echo ""
 echo "Testing compilation with spaces..."

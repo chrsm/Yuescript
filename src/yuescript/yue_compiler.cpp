@@ -1033,6 +1033,9 @@ private:
 
 	const std::string nl(ast_node* node) const {
 		if (_config.reserveLineNumber) {
+			if (ast_is<EmptyLine_t>(node)) {
+				return _newLine;
+			}
 			return " -- "s + std::to_string(node->m_begin.m_line + _config.lineOffset) + _newLine;
 		} else {
 			return _newLine;
