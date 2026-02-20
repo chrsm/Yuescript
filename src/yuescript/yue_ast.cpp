@@ -1242,10 +1242,17 @@ std::string ClassBlock_t::to_string(void* ud) const {
 	str_list temp;
 	info->pushScope();
 	for (auto content : contents.objects()) {
-		if (ast_is<Statement_t>(content)) {
-			temp.emplace_back(info->ind() + content->to_string(ud));
-		} else {
-			temp.emplace_back(content->to_string(ud));
+		switch (content->get_id()) {
+			case id<Statement_t>():
+			case id<YueComment_t>():
+				temp.emplace_back(info->ind() + content->to_string(ud));
+				break;
+			case id<EmptyLine_t>():
+				temp.emplace_back(""s);
+				break;
+			default:
+				temp.emplace_back(content->to_string(ud));
+				break;
 		}
 	}
 	info->popScope();

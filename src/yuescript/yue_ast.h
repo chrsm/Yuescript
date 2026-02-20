@@ -748,7 +748,7 @@ AST_END(ClassMemberList)
 
 AST_NODE(ClassBlock)
 	ast_ptr<true, Seperator_t> sep;
-	ast_sel_list<true, ClassMemberList_t, Statement_t> contents;
+	ast_sel_list<true, ClassMemberList_t, Statement_t, YueComment_t, EmptyLine_t> contents;
 	AST_MEMBER(ClassBlock, &sep, &contents)
 AST_END(ClassBlock)
 

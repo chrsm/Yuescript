@@ -917,7 +917,10 @@ YueParser::YueParser() {
 		  (+space_break >> advance_match >> space >> ensure(key_value_list >> -(space >> ',') >> *(+space_break >> key_value_line), pop_indent))));
 
 	ClassMemberList = Seperator >> key_value >> *(space >> ',' >> space >> key_value);
-	class_line = check_indent_match >> space >> (ClassMemberList | Statement) >> -(space >> ',');
+	class_line =
+		(EmptyLine >> YueComment) |
+		YueComment |
+		check_indent_match >> space >> (ClassMemberList | Statement) >> -(space >> ',');
 	ClassBlock =
 		+space_break >>
 		advance_match >> Seperator >>

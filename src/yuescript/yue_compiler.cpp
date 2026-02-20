@@ -9976,7 +9976,10 @@ private:
 						}
 						break;
 					}
-					case id<Statement_t>(): break;
+					case id<Statement_t>():
+					case id<YueComment_t>():
+					case id<EmptyLine_t>():
+						break;
 					default: YUEE("AST node mismatch", content); break;
 				}
 			}
