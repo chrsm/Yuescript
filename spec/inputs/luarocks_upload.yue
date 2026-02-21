@@ -1,4 +1,5 @@
 luarocksKey = ...
+
 local version
 with? io.open "src/yuescript/yue_compiler.cpp"
 	codes = \read "*a"
@@ -8,17 +9,52 @@ unless version?
 	print "failed to get version!"
 	os.exit 1
 
+-- ==============================
+-- 1. Prepare minimal source tree
+-- ==============================
+
+local tmpBase = os.getenv("RUNNER_TEMP") or os.getenv("TMPDIR") or "/tmp"
+local pkgRoot = "#{tmpBase}/yuescript_pack_#{version}"
+local srcDir	= "#{pkgRoot}/yuescript-#{version}"
+local tarFile = "#{pkgRoot}/yuescript-#{version}.tar.gz"
+
+run = (cmd) ->
+	print cmd
+	ok = os.execute cmd
+	unless ok == true or ok == 0
+		print "Command failed!"
+		os.exit 1
+
+-- clean & create
+run "rm -rf '#{pkgRoot}'"
+run "mkdir -p '#{srcDir}'"
+
+-- copy whitelist files
+run "cp CMakeLists.txt '#{srcDir}/'"
+run "cp README.md '#{srcDir}/'"
+run "cp LICENSE '#{srcDir}/'"
+run "cp -R src '#{srcDir}/'"
+
+-- create tar.gz
+run "tar -C '#{pkgRoot}' -czf '#{tarFile}' 'yuescript-#{version}'"
+
+local sourceUrl = "file://#{tarFile}"
+
+-- =========================
+-- 2. Generate rockspec
+-- =========================
+
 rockspec = "rockspec_format = '3.0'
 package = 'Yuescript'
 version = '#{version}-1'
 source = {
-	url = 'git+https://github.com/pigpigyyy/yuescript'
+	url = '#{sourceUrl}'
 }
 description = {
 	summary = 'Yuescript is a Moonscript dialect.',
 	detailed = [[
 	Yuescript is a Moonscript dialect. It is derived from Moonscript language 0.5.0 and continuously adopting new features to be more up to date. ]],
-	homepage = 'https://github.com/pigpigyyy/yuescript',
+	homepage = 'https://github.com/IppClub/YueScript',
 	maintainer = 'Li Jin <dragon-fly@qq.com>',
 	labels = {'yuescript','cpp','transpiler','moonscript'},
 	license = 'MIT'
@@ -29,8 +65,8 @@ dependencies = {
 build = {
 	type = 'cmake',
 	variables = {
-		LUA='$(LUA)',
-		LUA_INCDIR='$(LUA_INCDIR)',
+		LUA = '$(LUA)',
+		LUA_INCDIR = '$(LUA_INCDIR)',
 		CMAKE_BUILD_TYPE='Release'
 	},
 	install = {
@@ -40,13 +76,33 @@ build = {
 		bin = {
 			'build.luarocks/yue'
 		}
+	},
+	platforms = {
+		windows = {
+			install = {
+				lib = {
+					'build.luarocks/Release/yue.dll'
+				},
+				bin = {
+					'build.luarocks/Release/yue.exe'
+				}
+			}
+		}
 	}
 }"
 
 specFile = "yuescript-#{version}-1.rockspec"
+
 with? io.open specFile, "w+"
 	\write rockspec
 	\close!
+
+print "Using source: #{sourceUrl}"
+print "Uploading rockspec: #{specFile}"
+
+-- =========================
+-- 3. Upload
+-- =========================
 
 result = io.popen("luarocks upload --api-key #{luarocksKey} #{specFile}")\read '*a'
 unless result\match "Done:"

@@ -12,7 +12,28 @@ if not (version ~= nil) then
 	print("failed to get version!")
 	os.exit(1)
 end
-local rockspec = "rockspec_format = '3.0'\npackage = 'Yuescript'\nversion = '" .. tostring(version) .. "-1'\nsource = {\n	url = 'git+https://github.com/pigpigyyy/yuescript'\n}\ndescription = {\n	summary = 'Yuescript is a Moonscript dialect.',\n	detailed = [[\n	Yuescript is a Moonscript dialect. It is derived from Moonscript language 0.5.0 and continuously adopting new features to be more up to date. ]],\n	homepage = 'https://github.com/pigpigyyy/yuescript',\n	maintainer = 'Li Jin <dragon-fly@qq.com>',\n	labels = {'yuescript','cpp','transpiler','moonscript'},\n	license = 'MIT'\n}\ndependencies = {\n	'lua >= 5.1',\n}\nbuild = {\n	type = 'cmake',\n	variables = {\n		LUA='$(LUA)',\n		LUA_INCDIR='$(LUA_INCDIR)',\n		CMAKE_BUILD_TYPE='Release'\n	},\n	install = {\n		lib = {\n			'build.luarocks/yue.so'\n		},\n		bin = {\n			'build.luarocks/yue'\n		}\n	}\n}"
+local tmpBase = os.getenv("RUNNER_TEMP") or os.getenv("TMPDIR") or "/tmp"
+local pkgRoot = tostring(tmpBase) .. "/yuescript_pack_" .. tostring(version)
+local srcDir = tostring(pkgRoot) .. "/yuescript-" .. tostring(version)
+local tarFile = tostring(pkgRoot) .. "/yuescript-" .. tostring(version) .. ".tar.gz"
+local run
+run = function(cmd)
+	print(cmd)
+	local ok = os.execute(cmd)
+	if not (ok == true or ok == 0) then
+		print("Command failed!")
+		return os.exit(1)
+	end
+end
+run("rm -rf '" .. tostring(pkgRoot) .. "'")
+run("mkdir -p '" .. tostring(srcDir) .. "'")
+run("cp CMakeLists.txt '" .. tostring(srcDir) .. "/'")
+run("cp README.md '" .. tostring(srcDir) .. "/'")
+run("cp LICENSE '" .. tostring(srcDir) .. "/'")
+run("cp -R src '" .. tostring(srcDir) .. "/'")
+run("tar -C '" .. tostring(pkgRoot) .. "' -czf '" .. tostring(tarFile) .. "' 'yuescript-" .. tostring(version) .. "'")
+local sourceUrl = "file://" .. tostring(tarFile)
+local rockspec = "rockspec_format = '3.0'\npackage = 'Yuescript'\nversion = '" .. tostring(version) .. "-1'\nsource = {\n	url = '" .. tostring(sourceUrl) .. "'\n}\ndescription = {\n	summary = 'Yuescript is a Moonscript dialect.',\n	detailed = [[\n	Yuescript is a Moonscript dialect. It is derived from Moonscript language 0.5.0 and continuously adopting new features to be more up to date. ]],\n	homepage = 'https://github.com/IppClub/YueScript',\n	maintainer = 'Li Jin <dragon-fly@qq.com>',\n	labels = {'yuescript','cpp','transpiler','moonscript'},\n	license = 'MIT'\n}\ndependencies = {\n	'lua >= 5.1',\n}\nbuild = {\n	type = 'cmake',\n	variables = {\n		LUA = '$(LUA)',\n		LUA_INCDIR = '$(LUA_INCDIR)',\n		CMAKE_BUILD_TYPE='Release'\n	},\n	install = {\n		lib = {\n			'build.luarocks/yue.so'\n		},\n		bin = {\n			'build.luarocks/yue'\n		}\n	},\n	platforms = {\n		windows = {\n			install = {\n				lib = {\n					'build.luarocks/Release/yue.dll'\n				},\n				bin = {\n					'build.luarocks/Release/yue.exe'\n				}\n			}\n		}\n	}\n}"
 local specFile = "yuescript-" .. tostring(version) .. "-1.rockspec"
 do
 	local _with_0 = io.open(specFile, "w+")
@@ -21,6 +42,8 @@ do
 		_with_0:close()
 	end
 end
+print("Using source: " .. tostring(sourceUrl))
+print("Uploading rockspec: " .. tostring(specFile))
 local result = io.popen("luarocks upload --api-key " .. tostring(luarocksKey) .. " " .. tostring(specFile)):read('*a')
 if not result:match("Done:") then
 	print(result)
