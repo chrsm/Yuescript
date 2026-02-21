@@ -160,4 +160,43 @@ local a,\
 				b,\
 					c
 
+do
+	tb =
+
+
+		-- one
+
+
+		-- a
+		a: 1 -- 1
+
+		-- two
+		b: -> -- 2
+
+	tb2 = {
+
+
+		-- one
+
+
+		-- a
+		a: 1 -- 1
+
+		-- two
+		b: -> -- 2
+	}
+
+	tb3 = class -- dsd
+
+
+
+		-- one
+
+		-- a
+		a: 1 -- 1
+
+		-- two
+		b: -> -- 2
+
+
 nil

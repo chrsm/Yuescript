@@ -200,6 +200,7 @@ private:
 	NONE_AST_RULE(num_expo_hex);
 	NONE_AST_RULE(lj_num);
 	NONE_AST_RULE(plain_space);
+	NONE_AST_RULE(plain_space_break);
 	NONE_AST_RULE(line_break);
 	NONE_AST_RULE(any_char);
 	NONE_AST_RULE(white);

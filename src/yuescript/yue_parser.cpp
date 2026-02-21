@@ -63,6 +63,7 @@ public:
 YueParser::YueParser() {
 	plain_space = *set(" \t");
 	line_break = nl(-expr('\r') >> '\n');
+	plain_space_break = plain_space >> line_break;
 	any_char = line_break | any();
 	stop = line_break | eof();
 	comment = "--" >> *(not_(set("\r\n")) >> any_char) >> and_(stop);
@@ -888,43 +889,37 @@ YueParser::YueParser() {
 		SpreadExp |
 		NormalDef;
 
-	table_lit_line =
-		-EmptyLine >> (
-			push_indent_match >> (
-				space >> not_(line_break | '}') >> (table_value | expected_expression_error) >> *(space >> ',' >> space >> table_value) >> pop_indent |
-				YueComment >> pop_indent |
-				pop_indent
-			)
-		) | (
-			space
-		);
+	table_lit_line = -EmptyLine >> push_indent_match >> (
+		space >> not_(line_break | '}') >> (table_value | expected_expression_error) >> *(space >> ',' >> space >> table_value) >> space >> -(',' >> space) >> pop_indent |
+		YueComment >> pop_indent |
+		pop_indent
+	);
 
-	table_lit_lines = space_break >> table_lit_line >> *(-(space >> ',') >> space_break >> table_lit_line) >> -(space >> ',');
+	table_lit_lines = +plain_space_break >> table_lit_line >> *(line_break >> table_lit_line);
 
 	TableLit =
 		'{' >> Seperator >>
-		-(space >> table_value >> *(space >> ',' >> space >> table_value) >> -(space >> ',')) >>
+		-(space >> table_value >> *(space >> ',' >> space >> table_value) >> -(space >> ',')) >> space >>
 		(
 			table_lit_lines >> white >> end_braces_expression |
 			white >> '}'
 		);
 
-	table_block_inner = Seperator >> key_value_line >> *(((plain_space >> line_break) >> key_value_line) | (+space_break >> not_(expr("--")) >> key_value_line));
-	TableBlock = ((+(plain_space >> line_break)) | (+space_break >> not_(expr("--")))) >> advance_match >> ensure(table_block_inner, pop_indent);
+	table_block_inner = Seperator >> key_value_line >> *(line_break >> key_value_line);
+	TableBlock = +plain_space_break >> advance_match >> ensure(table_block_inner, pop_indent);
 	TableBlockIndent = ('*' | '-' >> space_one) >> Seperator >> disable_arg_table_block_rule(
 		space >> key_value_list >> -(space >> ',') >>
-		-((plain_space >> line_break >> advance_match >> space >> ensure(key_value_list >> -(space >> ',') >> *(((plain_space >> line_break) >> key_value_line) | (+space_break >> not_(expr("--")) >> key_value_line)), pop_indent)) |
-		  (+space_break >> advance_match >> space >> ensure(key_value_list >> -(space >> ',') >> *(+space_break >> key_value_line), pop_indent))));
+		-(plain_space_break >> advance_match >> space >> ensure(key_value_list >> -(space >> ',') >> *(plain_space_break >> key_value_line), pop_indent)));
 
 	ClassMemberList = Seperator >> key_value >> *(space >> ',' >> space >> key_value);
-	class_line =
-		(EmptyLine >> YueComment) |
+	class_line = -EmptyLine >> (
 		YueComment |
-		check_indent_match >> space >> (ClassMemberList | Statement) >> -(space >> ',');
+		check_indent_match >> space >> (ClassMemberList | Statement) >> -(space >> ',')
+	) >> space;
 	ClassBlock =
-		((+(plain_space >> line_break)) | (+space_break >> not_(expr("--")))) >>
+		+plain_space_break >>
 		advance_match >> Seperator >>
-		class_line >> *(((plain_space >> line_break) >> class_line) | (+space_break >> not_(expr("--")) >> class_line)) >>
+		class_line >> *(plain_space_break >> class_line) >>
 		pop_indent;
 
 	ClassDecl =
@@ -932,7 +927,7 @@ YueParser::YueParser() {
 			-(space >> Assignable) >>
 			-(space >> key("extends") >> prevent_indent >> space >> ensure(must_exp, pop_indent)) >>
 			-(space >> key("using") >> prevent_indent >> space >> ensure(ExpList | expected_expression_error, pop_indent))
-		) >> -ClassBlock;
+		) >> space >> -ClassBlock;
 
 	GlobalValues = NameList >> -(space >> '=' >> space >> (TableBlock | ExpList | expected_expression_error));
 	GlobalOp = expr('*') | '^';
@@ -1021,14 +1016,14 @@ YueParser::YueParser() {
 		MetaVariablePair |
 		MetaNormalPair;
 	key_value_list = key_value >> *(space >> ',' >> space >> key_value);
-	key_value_line =
-		(EmptyLine >> YueComment) |
+	key_value_line = -EmptyLine >> (
 		YueComment |
 		check_indent_match >> space >> (
 			key_value_list >> -(space >> ',') |
 			TableBlockIndent |
 			('*' | '-' >> space_one) >> space >> (SpreadExp | Exp | TableBlock)
-		);
+		) >> space
+	);
 
 	fn_arg_def_list = FnArgDef >> *(space >> ',' >> space >> FnArgDef);
 

@@ -1033,9 +1033,6 @@ private:
 
 	const std::string nl(ast_node* node) const {
 		if (_config.reserveLineNumber) {
-			if (ast_is<EmptyLine_t>(node)) {
-				return _newLine;
-			}
 			return " -- "s + std::to_string(node->m_begin.m_line + _config.lineOffset) + _newLine;
 		} else {
 			return _newLine;
@@ -7996,13 +7993,13 @@ private:
 				case id<YueComment_t>(): {
 					if (_config.reserveComment) {
 						auto comment = static_cast<YueComment_t*>(item);
-						temp.push_back(indent() + comment->to_string(&_config) + nl(item));
+						temp.push_back(indent() + comment->to_string(&_config) + '\n');
 					}
 					break;
 				}
 				case id<EmptyLine_t>(): {
 					if (_config.reserveComment) {
-						temp.push_back(nl(item));
+						temp.push_back("\n"s);
 					}
 					break;
 				}
@@ -8356,7 +8353,7 @@ private:
 			}
 			if (!isMetamethod) {
 				if (skipComma) {
-					temp.back() = indent() + temp.back() + nl(value);
+					temp.back() = indent() + temp.back() + '\n';
 				} else {
 					temp.back() = indent() + (value == lastValueNode ? temp.back() : temp.back() + ',') + nl(value);
 				}
@@ -9984,7 +9981,7 @@ private:
 					case id<YueComment_t>(): {
 						if (_config.reserveComment) {
 							auto comment = static_cast<YueComment_t*>(content);
-							baseEntries.emplace_back(indent(1) + comment->to_string(&_config) + nl(content), false);
+							baseEntries.emplace_back(indent(1) + comment->to_string(&_config) + '\n', false);
 						}
 						break;
 					}
