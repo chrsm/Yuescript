@@ -4,7 +4,7 @@ hero:
   name: YueScript
   tagline: Uma linguagem que compila para Lua
   image:
-    src: /image/yuescript.svg
+    src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: YueScript
   actions:
     - theme: brand

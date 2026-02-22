@@ -4,7 +4,7 @@ hero:
   name: YueScript
   tagline: Eine Sprache, die zu Lua kompiliert
   image:
-    src: /image/yuescript.svg
+    src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: YueScript
   actions:
     - theme: brand

@@ -4,7 +4,7 @@ hero:
   name: 月之脚本
   tagline: 一门编译到 Lua 的语言
   image:
-    src: /image/yuescript.svg
+    src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: 月之脚本
   actions:
     - theme: brand
