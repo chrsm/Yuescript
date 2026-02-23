@@ -120,7 +120,7 @@ for _index_0 = 1, #docs do
 	local _close_0 <close> = output
 	local output2
 	local _with_0 = io.open(tostring(docFolder) .. "/" .. tostring(docFile), "w+")
-	_with_0:write(table.concat(docTexts, "\n"))
+	_with_0:write((table.concat(docTexts, "\n"):gsub("<img .-/>\n\n", ""):gsub("%-%-%-.-%-%-%-\n\n", ""):gsub("<YueDisplay>.-</YueDisplay>\n\n", "")))
 	output2 = _with_0
 	local _close_1 <close> = output2
 end

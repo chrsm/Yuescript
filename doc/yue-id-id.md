@@ -1,10 +1,4 @@
----
-title: Referensi
----
-
 # Dokumentasi YueScript
-
-<img src="/image/yuescript.svg" width="250px" height="250px" alt="logo" style="padding-top: 3em; padding-bottom: 2em;"/>
 
 Selamat datang di dokumentasi resmi <b>YueScript</b>!<br/>
 Di sini Anda dapat menemukan fitur bahasa, penggunaan, contoh referensi, dan sumber daya.<br/>
@@ -21,17 +15,6 @@ do
 print var -- nil di sini
 ```
 
-<YueDisplay>
-
-```yue
-do
-  var = "hello"
-  print var
-print var -- nil di sini
-```
-
-</YueDisplay>
-
 `do` di YueScript juga bisa digunakan sebagai ekspresi, memungkinkan Anda menggabungkan beberapa baris menjadi satu. Hasil ekspresi `do` adalah pernyataan terakhir di badannya. Ekspresi `do` mendukung penggunaan `break` untuk memutus alur eksekusi dan mengembalikan banyak nilai lebih awal.
 
 ```yuescript
@@ -42,18 +25,6 @@ status, value = do
   break "small", n
 ```
 
-<YueDisplay>
-
-```yue
-status, value = do
-  n = 12
-  if n > 10
-    break "large", n
-  break "small", n
-```
-
-</YueDisplay>
-
 ```yuescript
 counter = do
   i = 0
@@ -65,21 +36,6 @@ print counter!
 print counter!
 ```
 
-<YueDisplay>
-
-```yue
-counter = do
-  i = 0
-  ->
-    i += 1
-    i
-
-print counter!
-print counter!
-```
-
-</YueDisplay>
-
 ```yuescript
 tbl = {
   key: do
@@ -87,18 +43,6 @@ tbl = {
     1234
 }
 ```
-
-<YueDisplay>
-
-```yue
-tbl = {
-  key: do
-    print "assigning key!"
-    1234
-}
-```
-
-</YueDisplay>
 
 # Dekorator Baris
 
@@ -108,27 +52,11 @@ Untuk kemudahan, loop for dan pernyataan if dapat diterapkan pada pernyataan tun
 print "hello world" if name == "Rob"
 ```
 
-<YueDisplay>
-
-```yue
-print "hello world" if name == "Rob"
-```
-
-</YueDisplay>
-
 Dan dengan loop dasar:
 
 ```yuescript
 print "item: ", item for item in *items
 ```
-
-<YueDisplay>
-
-```yue
-print "item: ", item for item in *items
-```
-
-</YueDisplay>
 
 Dan dengan loop while:
 
@@ -137,16 +65,6 @@ game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
-
-<YueDisplay>
-
-```yue
-game\update! while game\isRunning!
-
-reader\parse_line! until reader\eof!
-```
-
-</YueDisplay>
 
 # Makro
 
@@ -183,39 +101,6 @@ if $and f1!, f2!, f3!
   print "OK"
 ```
 
-<YueDisplay>
-
-```yue
-macro PI2 = -> math.pi * 2
-area = $PI2 * 5
-
-macro HELLO = -> "'hello world'"
-print $HELLO
-
-macro config = (debugging) ->
-  global debugMode = debugging == "true"
-  ""
-
-macro asserts = (cond) ->
-  debugMode and "assert #{cond}" or ""
-
-macro assert = (cond) ->
-  debugMode and "assert #{cond}" or "#{cond}"
-
-$config true
-$asserts item ~= nil
-
-$config false
-value = $assert item
-
--- ekspresi yang dikirim diperlakukan sebagai string
-macro and = (...) -> "#{ table.concat {...}, ' and ' }"
-if $and f1!, f2!, f3!
-  print "OK"
-```
-
-</YueDisplay>
-
 ## Menyisipkan Kode Mentah
 
 Fungsi macro bisa mengembalikan string YueScript atau tabel konfigurasi yang berisi kode Lua.
@@ -246,36 +131,6 @@ end
 ]==]
 ```
 
-<YueDisplay>
-
-```yue
-macro yueFunc = (var) -> "local #{var} = ->"
-$yueFunc funcA
-funcA = -> "gagal meng-assign ke variabel yang didefinisikan oleh macro Yue"
-
-macro luaFunc = (var) -> {
-  code: "local function #{var}() end"
-  type: "lua"
-}
-$luaFunc funcB
-funcB = -> "gagal meng-assign ke variabel yang didefinisikan oleh macro Lua"
-
-macro lua = (code) -> {
-  :code
-  type: "lua"
-}
-
--- simbol awal dan akhir string mentah otomatis di-trim
-$lua[==[
--- penyisipan kode Lua mentah
-if cond then
-  print("output")
-end
-]==]
-```
-
-</YueDisplay>
-
 ## Export Macro
 
 Fungsi macro dapat diekspor dari modul dan diimpor di modul lain. Anda harus menaruh fungsi macro export dalam satu file agar dapat digunakan, dan hanya definisi macro, impor macro, dan ekspansi macro yang boleh ada di modul export macro.
@@ -295,28 +150,6 @@ import "utils" as {
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
 
-<YueDisplay>
-
-```yue
--- file: utils.yue
-export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
-export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
-export macro foreach = (items, action) -> "for _ in *#{items}
-  #{action}"
-
--- file main.yue
--- fungsi import tidak tersedia di browser, coba di lingkungan nyata
---[[
-import "utils" as {
-  $, -- simbol untuk mengimpor semua macro
-  $foreach: $each -- ganti nama macro $foreach menjadi $each
-}
-[1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
-]]
-```
-
-</YueDisplay>
-
 ## Macro Bawaan
 
 Ada beberapa macro bawaan tetapi Anda bisa menimpanya dengan mendeklarasikan macro dengan nama yang sama.
@@ -325,15 +158,6 @@ Ada beberapa macro bawaan tetapi Anda bisa menimpanya dengan mendeklarasikan mac
 print $FILE -- mendapatkan string nama modul saat ini
 print $LINE -- mendapatkan angka 2
 ```
-
-<YueDisplay>
-
-```yue
-print $FILE -- mendapatkan string nama modul saat ini
-print $LINE -- mendapatkan angka 2
-```
-
-</YueDisplay>
 
 ## Menghasilkan Macro dengan Macro
 
@@ -357,28 +181,6 @@ print "Valid enum type:", $BodyType Static
 -- print "Compilation error with enum type:", $BodyType Unknown
 ```
 
-<YueDisplay>
-
-```yue
-macro Enum = (...) ->
-  items = {...}
-  itemSet = {item, true for item in *items}
-  (item) ->
-    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
-    "\"#{item}\""
-
-macro BodyType = $Enum(
-  Static
-  Dynamic
-  Kinematic
-)
-
-print "Valid enum type:", $BodyType Static
--- print "Compilation error with enum type:", $BodyType Unknown
-```
-
-</YueDisplay>
-
 ## Validasi Argumen
 
 Anda dapat mendeklarasikan tipe node AST yang diharapkan dalam daftar argumen, dan memeriksa apakah argumen macro yang masuk memenuhi harapan pada waktu kompilasi.
@@ -393,20 +195,6 @@ macro printNumAndStr = (num `Num, str `String) -> |
 $printNumAndStr 123, "hello"
 ```
 
-<YueDisplay>
-
-```yue
-macro printNumAndStr = (num `Num, str `String) -> |
-  print(
-    #{num}
-    #{str}
-  )
-
-$printNumAndStr 123, "hello"
-```
-
-</YueDisplay>
-
 Jika Anda membutuhkan pengecekan argumen yang lebih fleksibel, Anda dapat menggunakan fungsi macro bawaan `$is_ast` untuk memeriksa secara manual pada tempat yang tepat.
 
 ```yuescript
@@ -417,19 +205,6 @@ macro printNumAndStr = (num, str) ->
 
 $printNumAndStr 123, "hello"
 ```
-
-<YueDisplay>
-
-```yue
-macro printNumAndStr = (num, str) ->
-  error "expected Num as first argument" unless $is_ast Num, num
-  error "expected String as second argument" unless $is_ast String, str
-  "print(#{num}, #{str})"
-
-$printNumAndStr 123, "hello"
-```
-
-</YueDisplay>
 
 Untuk detail lebih lanjut tentang node AST yang tersedia, silakan lihat definisi huruf besar di [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
 
@@ -465,38 +240,6 @@ catch err
   print result
 ```
 
-<YueDisplay>
-
-```yue
-try
-  func 1, 2, 3
-catch err
-  print yue.traceback err
-
-success, result = try
-  func 1, 2, 3
-catch err
-  yue.traceback err
-
-try func 1, 2, 3
-catch err
-  print yue.traceback err
-
-success, result = try func 1, 2, 3
-
-try
-  print "trying"
-  func 1, 2, 3
-
--- bekerja dengan pola if assignment
-if success, result := try func 1, 2, 3
-catch err
-    print yue.traceback err
-  print result
-```
-
-</YueDisplay>
-
 ## Try?
 
 `try?` adalah bentuk sederhana untuk penanganan error yang menghilangkan status boolean dari pernyataan `try`, dan akan mengembalikan hasil dari blok try ketika berhasil, atau mengembalikan nil alih-alih objek error bila gagal.
@@ -519,43 +262,13 @@ catch e
   e
 ```
 
-<YueDisplay>
-
-```yue
-a, b, c = try? func!
-
--- dengan operator nil coalescing
-a = (try? func!) ?? "default"
-
--- sebagai argumen fungsi
-f try? func!
-
--- dengan blok catch
-f try?
-  print 123
-  func!
-catch e
-  print e
-  e
-```
-
-</YueDisplay>
-
 # Literal Tabel
 
 Seperti di Lua, tabel dibatasi dengan kurung kurawal.
 
 ```yuescript
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
-
-<YueDisplay>
-
-```yue
-some_values = [1, 2, 3, 4]
-```
-
-</YueDisplay>
 
 Berbeda dengan Lua, assignment nilai ke sebuah kunci di tabel dilakukan dengan **:** (bukan **=**).
 
@@ -567,18 +280,6 @@ some_values = {
 }
 ```
 
-<YueDisplay>
-
-```yue
-some_values = {
-  name: "Bill",
-  age: 200,
-  ["favorite food"]: "rice"
-}
-```
-
-</YueDisplay>
-
 Kurung kurawal dapat dihilangkan jika hanya satu tabel pasangan key-value yang di-assign.
 
 ```yuescript
@@ -587,17 +288,6 @@ profile =
   shoe_size: 13,
   favorite_foods: ["ice cream", "donuts"]
 ```
-
-<YueDisplay>
-
-```yue
-profile =
-  height: "4 feet",
-  shoe_size: 13,
-  favorite_foods: ["ice cream", "donuts"]
-```
-
-</YueDisplay>
 
 Baris baru dapat digunakan untuk memisahkan nilai sebagai ganti koma (atau keduanya):
 
@@ -610,19 +300,6 @@ values = {
 }
 ```
 
-<YueDisplay>
-
-```yue
-values = {
-  1, 2, 3, 4
-  5, 6, 7, 8
-  name: "superman"
-  occupation: "crime fighting"
-}
-```
-
-</YueDisplay>
-
 Saat membuat literal tabel satu baris, kurung kurawal juga bisa dihilangkan:
 
 ```yuescript
@@ -630,16 +307,6 @@ my_function dance: "Tango", partner: "none"
 
 y = type: "dog", legs: 4, tails: 1
 ```
-
-<YueDisplay>
-
-```yue
-my_function dance: "Tango", partner: "none"
-
-y = type: "dog", legs: 4, tails: 1
-```
-
-</YueDisplay>
 
 Kunci literal tabel dapat berupa kata kunci bahasa tanpa perlu di-escape:
 
@@ -649,17 +316,6 @@ tbl = {
   end: "hunger"
 }
 ```
-
-<YueDisplay>
-
-```yue
-tbl = {
-  do: "something"
-  end: "hunger"
-}
-```
-
-</YueDisplay>
 
 Jika Anda membangun tabel dari variabel dan ingin kunci sama dengan nama variabel, maka operator prefiks **:** dapat digunakan:
 
@@ -671,18 +327,6 @@ person = { :hair, :height, shoe_size: 40 }
 print_table :hair, :height
 ```
 
-<YueDisplay>
-
-```yue
-hair = "golden"
-height = 200
-person = { :hair, :height, shoe_size: 40 }
-
-print_table :hair, :height
-```
-
-</YueDisplay>
-
 Jika Anda ingin kunci field dalam tabel menjadi hasil suatu ekspresi, Anda dapat membungkusnya dengan **[ ]**, seperti di Lua. Anda juga bisa menggunakan literal string langsung sebagai kunci tanpa tanda kurung siku. Ini berguna jika kunci memiliki karakter khusus.
 
 ```yuescript
@@ -692,32 +336,12 @@ t = {
 }
 ```
 
-<YueDisplay>
-
-```yue
-t = {
-  [1 + 2]: "hello"
-  "hello world": true
-}
-```
-
-</YueDisplay>
-
-Tabel Lua memiliki bagian array dan bagian hash, tetapi terkadang Anda ingin membedakan penggunaan array dan hash secara semantik saat menulis tabel Lua. Maka Anda bisa menulis tabel Lua dengan **[ ]** alih-alih **{ }** untuk merepresentasikan tabel array, dan menuliskan pasangan key-value di tabel list tidak akan diizinkan.
+Tabel Lua memiliki bagian array dan bagian hash, tetapi kadang-kadang berguna untuk membuat perbedaan semantik di antara keduanya. Anda dapat menggunakan **[ ]** sebagai ganti **{ }** untuk mendeklarasikan tabel secara eksplisit sebagai array, dengan begitu akan mencegah pasangan key-value dituliskan di dalamnya.
 
 ```yuescript
 some_values = [1, 2, 3, 4]
 list_with_one_element = [1, ]
 ```
-
-<YueDisplay>
-
-```yue
-some_values = [1, 2, 3, 4]
-list_with_one_element = [1, ]
-```
-
-</YueDisplay>
 
 # Komprehensi
 
@@ -732,42 +356,17 @@ items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
 ```
 
-<YueDisplay>
-
-```yue
-items = [ 1, 2, 3, 4 ]
-doubled = [item * 2 for i, item in ipairs items]
-```
-
-</YueDisplay>
-
 Item yang disertakan dalam tabel baru bisa dibatasi dengan klausa `when`:
 
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
 
-<YueDisplay>
-
-```yue
-slice = [item for i, item in ipairs items when i > 1 and i < 3]
-```
-
-</YueDisplay>
-
 Karena umum untuk mengiterasi nilai dari tabel berindeks numerik, operator **\*** diperkenalkan. Contoh `doubled` bisa ditulis ulang sebagai:
 
 ```yuescript
 doubled = [item * 2 for item in *items]
 ```
-
-<YueDisplay>
-
-```yue
-doubled = [item * 2 for item in *items]
-```
-
-</YueDisplay>
 
 Dalam komprehensi list, Anda juga bisa menggunakan operator spread `...` untuk meratakan list bertingkat, menghasilkan efek flat map:
 
@@ -779,19 +378,6 @@ data =
 flat = [...v for k,v in pairs data]
 -- flat sekarang [1, 2, 3, 4, 5, 6]
 ```
-
-<YueDisplay>
-
-```yue
-data =
-  a: [1, 2, 3]
-  b: [4, 5, 6]
-
-flat = [...v for k,v in pairs data]
--- flat sekarang [1, 2, 3, 4, 5, 6]
-```
-
-</YueDisplay>
 
 Klausa `for` dan `when` dapat dirantai sebanyak yang diinginkan. Satu-satunya syarat adalah komprehensi memiliki setidaknya satu klausa `for`.
 
@@ -805,31 +391,11 @@ points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
 
-<YueDisplay>
-
-```yue
-x_coords = [4, 5, 6, 7]
-y_coords = [9, 2, 3]
-
-points = [ [x, y] for x in *x_coords \
-for y in *y_coords]
-```
-
-</YueDisplay>
-
 Perulangan for numerik juga bisa digunakan dalam komprehensi:
 
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
-
-<YueDisplay>
-
-```yue
-evens = [i for i = 1, 100 when i % 2 == 0]
-```
-
-</YueDisplay>
 
 ## Komprehensi Tabel
 
@@ -847,31 +413,9 @@ thing = {
 thing_copy = {k, v for k, v in pairs thing}
 ```
 
-<YueDisplay>
-
-```yue
-thing = {
-  color: "red"
-  name: "fast"
-  width: 123
-}
-
-thing_copy = {k, v for k, v in pairs thing}
-```
-
-</YueDisplay>
-
 ```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
-
-<YueDisplay>
-
-```yue
-no_color = {k, v for k, v in pairs thing when k != "color"}
-```
-
-</YueDisplay>
 
 Operator **\*** juga didukung. Di sini kita membuat tabel lookup akar kuadrat untuk beberapa angka.
 
@@ -879,15 +423,6 @@ Operator **\*** juga didukung. Di sini kita membuat tabel lookup akar kuadrat un
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
-
-<YueDisplay>
-
-```yue
-numbers = [1, 2, 3, 4]
-sqrts = {i, math.sqrt i for i in *numbers}
-```
-
-</YueDisplay>
 
 Tuple key-value dalam komprehensi tabel juga bisa berasal dari satu ekspresi, yang berarti ekspresi tersebut harus mengembalikan dua nilai. Nilai pertama digunakan sebagai kunci dan nilai kedua digunakan sebagai nilai:
 
@@ -897,15 +432,6 @@ Dalam contoh ini kita mengonversi array pasangan menjadi tabel di mana item pert
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
-
-<YueDisplay>
-
-```yue
-tuples = [ ["hello", "world"], ["foo", "bar"]]
-tbl = {unpack tuple for tuple in *tuples}
-```
-
-</YueDisplay>
 
 ## Slicing
 
@@ -917,41 +443,17 @@ Di sini kita bisa menetapkan batas minimum dan maksimum, mengambil semua item de
 slice = [item for item in *items[1, 5]]
 ```
 
-<YueDisplay>
-
-```yue
-slice = [item for item in *items[1, 5]]
-```
-
-</YueDisplay>
-
 Salah satu argumen slice boleh dikosongkan untuk menggunakan default yang masuk akal. Pada contoh ini, jika indeks maksimum dikosongkan, defaultnya adalah panjang tabel. Ini akan mengambil semua item kecuali elemen pertama:
 
 ```yuescript
 slice = [item for item in *items[2,]]
 ```
 
-<YueDisplay>
-
-```yue
-slice = [item for item in *items[2,]]
-```
-
-</YueDisplay>
-
 Jika batas minimum dikosongkan, defaultnya adalah 1. Di sini kita hanya memberikan ukuran langkah dan membiarkan batas lainnya kosong. Ini akan mengambil semua item berindeks ganjil: (1, 3, 5, …)
 
 ```yuescript
 slice = [item for item in *items[,,2]]
 ```
-
-<YueDisplay>
-
-```yue
-slice = [item for item in *items[,,2]]
-```
-
-</YueDisplay>
 
 Batas minimum dan maksimum bisa bernilai negatif, yang berarti batas dihitung dari akhir tabel.
 
@@ -960,28 +462,11 @@ Batas minimum dan maksimum bisa bernilai negatif, yang berarti batas dihitung da
 slice = [item for item in *items[-4,-1]]
 ```
 
-<YueDisplay>
-
-```yue
--- ambil 4 item terakhir
-slice = [item for item in *items[-4,-1]]
-```
-
-</YueDisplay>
-
 Ukuran langkah juga bisa negatif, yang berarti item diambil dalam urutan terbalik.
 
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
-
-<YueDisplay>
-
-```yue
-reverse_slice = [item for item in *items[-1,1,-1]]
-```
-
-</YueDisplay>
 
 ### Ekspresi Slicing
 
@@ -994,18 +479,6 @@ sub_list = items[2, 4]
 -- ambil 4 item terakhir
 last_four_items = items[-4, -1]
 ```
-
-<YueDisplay>
-
-```yue
--- ambil item ke-2 dan ke-4 sebagai list baru
-sub_list = items[2, 4]
-
--- ambil 4 item terakhir
-last_four_items = items[-4, -1]
-```
-
-</YueDisplay>
 
 # Pemrograman Berorientasi Objek
 
@@ -1025,22 +498,6 @@ class Inventory
       @items[name] = 1
 ```
 
-<YueDisplay>
-
-```yue
-class Inventory
-  new: =>
-    @items = {}
-
-  add_item: (name) =>
-    if @items[name]
-      @items[name] += 1
-    else
-      @items[name] = 1
-```
-
-</YueDisplay>
-
 Kelas dideklarasikan dengan pernyataan `class` diikuti deklarasi mirip tabel di mana semua method dan properti dicantumkan.
 
 Properti `new` bersifat khusus karena akan menjadi konstruktor.
@@ -1056,16 +513,6 @@ inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
 ```
-
-<YueDisplay>
-
-```yue
-inv = Inventory!
-inv\add_item "t-shirt"
-inv\add_item "pants"
-```
-
-</YueDisplay>
 
 Karena instance kelas perlu dikirim ke method saat dipanggil, operator `\` digunakan.
 
@@ -1089,26 +536,6 @@ b\give_item "shirt"
 print item for item in *a.clothes
 ```
 
-<YueDisplay>
-
-```yue
-class Person
-  clothes: []
-  give_item: (name) =>
-    table.insert @clothes, name
-
-a = Person!
-b = Person!
-
-a\give_item "pants"
-b\give_item "shirt"
-
--- akan mencetak pants dan shirt
-print item for item in *a.clothes
-```
-
-</YueDisplay>
-
 Cara yang benar untuk menghindari masalah ini adalah membuat state yang dapat berubah di konstruktor:
 
 ```yuescript
@@ -1116,16 +543,6 @@ class Person
   new: =>
     @clothes = []
 ```
-
-<YueDisplay>
-
-```yue
-class Person
-  new: =>
-    @clothes = []
-```
-
-</YueDisplay>
 
 ## Pewarisan
 
@@ -1138,18 +555,6 @@ class BackPack extends Inventory
     if #@items > size then error "backpack is full"
     super name
 ```
-
-<YueDisplay>
-
-```yue
-class BackPack extends Inventory
-  size: 10
-  add_item: (name) =>
-    if #@items > size then error "backpack is full"
-    super name
-```
-
-</YueDisplay>
 
 Di sini kita memperluas kelas Inventory, dan membatasi jumlah item yang bisa dibawa.
 
@@ -1165,19 +570,6 @@ class Shelf
 -- akan mencetak: Shelf was inherited by Cupboard
 class Cupboard extends Shelf
 ```
-
-<YueDisplay>
-
-```yue
-class Shelf
-  @__inherited: (child) =>
-    print @__name, "was inherited by", child.__name
-
--- akan mencetak: Shelf was inherited by Cupboard
-class Cupboard extends Shelf
-```
-
-</YueDisplay>
 
 ## Super
 
@@ -1205,22 +597,6 @@ class MyClass extends ParentClass
     assert super == ParentClass
 ```
 
-<YueDisplay>
-
-```yue
-class MyClass extends ParentClass
-  a_method: =>
-    -- berikut memiliki efek yang sama:
-    super "hello", "world"
-    super\a_method "hello", "world"
-    super.a_method self, "hello", "world"
-
-    -- super sebagai nilai sama dengan kelas induk:
-    assert super == ParentClass
-```
-
-</YueDisplay>
-
 **super** juga dapat digunakan di sisi kiri Function Stub. Perbedaan utamanya adalah, alih-alih fungsi hasil terikat pada nilai `super`, fungsi terikat pada `self`.
 
 ## Tipe
@@ -1233,17 +609,6 @@ assert b.__class == BackPack
 
 print BackPack.size -- mencetak 10
 ```
-
-<YueDisplay>
-
-```yue
-b = BackPack!
-assert b.__class == BackPack
-
-print BackPack.size -- mencetak 10
-```
-
-</YueDisplay>
 
 ## Objek Kelas
 
@@ -1265,14 +630,6 @@ Nama kelas saat dideklarasikan disimpan sebagai string di field `__name` pada ob
 print BackPack.__name -- mencetak Backpack
 ```
 
-<YueDisplay>
-
-```yue
-print BackPack.__name -- mencetak Backpack
-```
-
-</YueDisplay>
-
 Objek base disimpan di `__base`. Kita dapat memodifikasi tabel ini untuk menambahkan fungsionalitas ke instance yang sudah dibuat maupun yang akan dibuat.
 
 Jika kelas memperluas kelas lain, objek kelas induk disimpan di `__parent`.
@@ -1291,20 +648,6 @@ Things\some_func!
 assert Things().some_func == nil
 ```
 
-<YueDisplay>
-
-```yue
-class Things
-  @some_func: => print "Hello from", @__name
-
-Things\some_func!
-
--- variabel kelas tidak terlihat pada instance
-assert Things().some_func == nil
-```
-
-</YueDisplay>
-
 Dalam ekspresi, kita dapat menggunakan `@@` untuk mengakses nilai yang disimpan di `__class` milik `self`. Jadi, `@@hello` adalah singkatan dari `self.__class.hello`.
 
 ```yuescript
@@ -1320,36 +663,11 @@ Counter!
 print Counter.count -- mencetak 2
 ```
 
-<YueDisplay>
-
-```yue
-class Counter
-  @count: 0
-
-  new: =>
-    @@count += 1
-
-Counter!
-Counter!
-
-print Counter.count -- mencetak 2
-```
-
-</YueDisplay>
-
 Semantik pemanggilan `@@` mirip dengan `@`. Memanggil nama `@@` akan meneruskan kelas sebagai argumen pertama menggunakan sintaks kolon Lua.
 
 ```yuescript
 @@hello 1,2,3,4
 ```
-
-<YueDisplay>
-
-```yue
-@@hello 1,2,3,4
-```
-
-</YueDisplay>
 
 ## Pernyataan Deklarasi Kelas
 
@@ -1361,15 +679,6 @@ Berikut cara alternatif untuk membuat variabel kelas dibandingkan yang dijelaska
 class Things
   @class_var = "hello world"
 ```
-
-<YueDisplay>
-
-```yue
-class Things
-  @class_var = "hello world"
-```
-
-</YueDisplay>
 
 Ekspresi ini dieksekusi setelah semua properti ditambahkan ke base.
 
@@ -1384,19 +693,6 @@ class MoreThings
     log "hello world: " .. secret
 ```
 
-<YueDisplay>
-
-```yue
-class MoreThings
-  secret = 123
-  log = (msg) -> print "LOG:", msg
-
-  some_method: =>
-    log "hello world: " .. secret
-```
-
-</YueDisplay>
-
 ## Nilai @ dan @@
 
 Ketika `@` dan `@@` diprefiks di depan sebuah nama, masing-masing merepresentasikan nama tersebut yang diakses di `self` dan `self.__class`.
@@ -1408,28 +704,11 @@ assert @ == self
 assert @@ == self.__class
 ```
 
-<YueDisplay>
-
-```yue
-assert @ == self
-assert @@ == self.__class
-```
-
-</YueDisplay>
-
 Contohnya, cara cepat untuk membuat instance baru dari kelas yang sama dari method instance menggunakan `@@`:
 
 ```yuescript
 some_instance_method = (...) => @@ ...
 ```
-
-<YueDisplay>
-
-```yue
-some_instance_method = (...) => @@ ...
-```
-
-</YueDisplay>
 
 ## Promosi Properti Konstruktor
 
@@ -1449,24 +728,6 @@ class Something
     @@baz = baz
 ```
 
-<YueDisplay>
-
-```yue
-class Something
-  new: (@foo, @bar, @@biz, @@baz) =>
-
--- Yang merupakan singkatan dari
-
-class Something
-  new: (foo, bar, biz, baz) =>
-    @foo = foo
-    @bar = bar
-    @@biz = biz
-    @@baz = baz
-```
-
-</YueDisplay>
-
 Anda juga bisa menggunakan sintaks ini untuk fungsi umum guna menginisialisasi field objek.
 
 ```yuescript
@@ -1474,16 +735,6 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
-
-<YueDisplay>
-
-```yue
-new = (@fieldA, @fieldB) => @
-obj = new {}, 123, "abc"
-print obj
-```
-
-</YueDisplay>
 
 ## Ekspresi Kelas
 
@@ -1494,16 +745,6 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
-
-<YueDisplay>
-
-```yue
-x = class Bucket
-  drops: 0
-  add_drop: => @drops += 1
-```
-
-</YueDisplay>
 
 ## Kelas Anonim
 
@@ -1516,30 +757,11 @@ BigBucket = class extends Bucket
 assert Bucket.__name == "BigBucket"
 ```
 
-<YueDisplay>
-
-```yue
-BigBucket = class extends Bucket
-  add_drop: => @drops += 10
-
-assert Bucket.__name == "BigBucket"
-```
-
-</YueDisplay>
-
 Anda bahkan bisa menghilangkan badan kelas, artinya Anda bisa menulis kelas anonim kosong seperti ini:
 
 ```yuescript
 x = class
 ```
-
-<YueDisplay>
-
-```yue
-x = class
-```
-
-</YueDisplay>
 
 ## Pencampuran Kelas
 
@@ -1563,28 +785,6 @@ y\func!
 assert y.__class.__parent ~= X -- X bukan parent dari Y
 ```
 
-<YueDisplay>
-
-```yue
-MyIndex = __index: var: 1
-
-class X using MyIndex
-  func: =>
-    print 123
-
-x = X!
-print x.var
-
-class Y using X
-
-y = Y!
-y\func!
-
-assert y.__class.__parent ~= X -- X bukan parent dari Y
-```
-
-</YueDisplay>
-
 # Pernyataan With
 
 Pola umum saat membuat objek adalah memanggil serangkaian fungsi dan mengatur serangkaian properti segera setelah objek dibuat.
@@ -1603,18 +803,6 @@ with Person!
   print .name
 ```
 
-<YueDisplay>
-
-```yue
-with Person!
-  .name = "Oswald"
-  \add_relative my_dad
-  \save!
-  print .name
-```
-
-</YueDisplay>
-
 Pernyataan `with` juga bisa digunakan sebagai ekspresi yang mengembalikan nilai yang diberi akses.
 
 ```yuescript
@@ -1622,30 +810,12 @@ file = with File "favorite_foods.txt"
   \set_encoding "utf8"
 ```
 
-<YueDisplay>
-
-```yue
-file = with File "favorite_foods.txt"
-  \set_encoding "utf8"
-```
-
-</YueDisplay>
-
 Ekspresi `with` mendukung `break` dengan satu nilai:
 
 ```yuescript
 result = with obj
   break .value
 ```
-
-<YueDisplay>
-
-```yue
-result = with obj
-  break .value
-```
-
-</YueDisplay>
 
 Setelah `break value` digunakan di dalam `with`, ekspresi `with` tidak lagi mengembalikan objek targetnya, melainkan mengembalikan nilai dari `break`.
 
@@ -1658,20 +828,6 @@ b = with obj
   break .x
 -- b adalah .x, bukan obj
 ```
-
-<YueDisplay>
-
-```yue
-a = with obj
-  .x = 1
--- a adalah obj
-
-b = with obj
-  break .x
--- b adalah .x, bukan obj
-```
-
-</YueDisplay>
 
 Berbeda dari `for` / `while` / `repeat` / `do`, `with` hanya mendukung satu nilai `break`.
 
@@ -1686,19 +842,6 @@ create_person = (name,  relatives) ->
 me = create_person "Leaf", [dad, mother, sister]
 ```
 
-<YueDisplay>
-
-```yue
-create_person = (name,  relatives) ->
-  with Person!
-    .name = name
-    \add_relative relative for relative in *relatives
-
-me = create_person "Leaf", [dad, mother, sister]
-```
-
-</YueDisplay>
-
 Dalam penggunaan ini, `with` dapat dilihat sebagai bentuk khusus dari kombinator K.
 
 Ekspresi pada pernyataan `with` juga bisa berupa assignment jika Anda ingin memberi nama pada ekspresi tersebut.
@@ -1708,16 +851,6 @@ with str := "Hello"
   print "original:", str
   print "upper:", \upper!
 ```
-
-<YueDisplay>
-
-```yue
-with str := "Hello"
-  print "original:", str
-  print "upper:", \upper!
-```
-
-</YueDisplay>
 
 Anda bisa mengakses kunci khusus dengan `[]` di dalam pernyataan `with`.
 
@@ -1731,35 +864,12 @@ with tb
   [] = "abc" -- menambahkan ke "tb"
 ```
 
-<YueDisplay>
-
-```yue
-with tb
-  [1] = 1
-  print [2]
-  with [abc]
-    [3] = [2]\func!
-    ["key-name"] = value
-  [] = "abc" -- menambahkan ke "tb"
-```
-
-</YueDisplay>
-
 `with?` adalah versi yang ditingkatkan dari sintaks `with`, yang memperkenalkan pengecekan keberadaan untuk mengakses objek yang mungkin nil secara aman tanpa pemeriksaan null eksplisit.
 
 ```yuescript
 with? obj
   print obj.name
 ```
-
-<YueDisplay>
-
-```yue
-with? obj
-  print obj.name
-```
-
-</YueDisplay>
 
 # Penugasan
 
@@ -1770,16 +880,6 @@ hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- menggunakan variabel yang sudah ada
 ```
-
-<YueDisplay>
-
-```yue
-hello = "world"
-a, b, c = 1, 2, 3
-hello = 123 -- menggunakan variabel yang sudah ada
-```
-
-</YueDisplay>
 
 ## Pembaruan Nilai
 
@@ -1796,21 +896,6 @@ s ..= "world" -- akan menambah local baru jika variabel local belum ada
 arg or= "default value"
 ```
 
-<YueDisplay>
-
-```yue
-x = 1
-x += 1
-x -= 1
-x *= 10
-x /= 10
-x %= 10
-s ..= "world" -- akan menambah local baru jika variabel local belum ada
-arg or= "default value"
-```
-
-</YueDisplay>
-
 ## Assignment Berantai
 
 Anda bisa melakukan assignment berantai untuk menetapkan beberapa item ke nilai yang sama.
@@ -1819,15 +904,6 @@ Anda bisa melakukan assignment berantai untuk menetapkan beberapa item ke nilai 
 a = b = c = d = e = 0
 x = y = z = f!
 ```
-
-<YueDisplay>
-
-```yue
-a = b = c = d = e = 0
-x = y = z = f!
-```
-
-</YueDisplay>
 
 ## Local Eksplisit
 
@@ -1848,27 +924,6 @@ do
   B = 2
 ```
 
-<YueDisplay>
-
-```yue
-do
-  local a = 1
-  local *
-  print "deklarasikan semua variabel sebagai local di awal"
-  x = -> 1 + y + z
-  y, z = 2, 3
-  global instance = Item\new!
-
-do
-  local X = 1
-  local ^
-  print "hanya deklarasikan variabel huruf besar sebagai local di awal"
-  a = 1
-  B = 2
-```
-
-</YueDisplay>
-
 ## Global Eksplisit
 
 ```yuescript
@@ -1888,27 +943,6 @@ do
   local Temp = "a local value"
 ```
 
-<YueDisplay>
-
-```yue
-do
-  global a = 1
-  global *
-  print "deklarasikan semua variabel sebagai global"
-  x = -> 1 + y + z
-  y, z = 2, 3
-
-do
-  global X = 1
-  global ^
-  print "hanya deklarasikan variabel huruf besar sebagai global"
-  a = 1
-  B = 2
-  local Temp = "a local value"
-```
-
-</YueDisplay>
-
 # Penugasan Varargs
 
 Anda dapat meng-assign hasil yang dikembalikan dari sebuah fungsi ke simbol varargs `...`. Lalu akses isinya menggunakan cara Lua.
@@ -1922,19 +956,6 @@ first = select 1, ...
 print ok, count, first
 ```
 
-<YueDisplay>
-
-```yue
-list = [1, 2, 3, 4, 5]
-fn = (ok) -> ok, table.unpack list
-ok, ... = fn true
-count = select '#', ...
-first = select 1, ...
-print ok, count, first
-```
-
-</YueDisplay>
-
 # Penugasan pada If
 
 Blok `if` dan `elseif` dapat menerima assignment sebagai ganti ekspresi kondisional. Saat kondisi dievaluasi, assignment akan dilakukan dan nilai yang di-assign akan digunakan sebagai ekspresi kondisional. Variabel yang di-assign hanya berada dalam scope badan kondisional, artinya tidak pernah tersedia jika nilai tidak truthy. Dan Anda harus menggunakan "walrus operator" `:=` sebagai ganti `=` untuk melakukan assignment.
@@ -1944,15 +965,6 @@ if user := database.find_user "moon"
   print user.name
 ```
 
-<YueDisplay>
-
-```yue
-if user := database.find_user "moon"
-  print user.name
-```
-
-</YueDisplay>
-
 ```yuescript
 if hello := os.getenv "hello"
   print "You have hello", hello
@@ -1961,19 +973,6 @@ elseif world := os.getenv "world"
 else
   print "nothing :("
 ```
-
-<YueDisplay>
-
-```yue
-if hello := os.getenv "hello"
-  print "You have hello", hello
-elseif world := os.getenv "world"
-  print "you have world", world
-else
-  print "nothing :("
-```
-
-</YueDisplay>
 
 Assignment if dengan beberapa nilai return. Hanya nilai pertama yang dicek, nilai lainnya tetap berada dalam scope.
 
@@ -1982,16 +981,6 @@ if success, result := pcall -> "get result without problems"
   print result -- variabel result berada dalam scope
 print "OK"
 ```
-
-<YueDisplay>
-
-```yue
-if success, result := pcall -> "get result without problems"
-  print result -- variabel result berada dalam scope
-print "OK"
-```
-
-</YueDisplay>
 
 ## Assignment pada While
 
@@ -2002,16 +991,6 @@ while byte := stream\read_one!
   -- lakukan sesuatu dengan byte
   print byte
 ```
-
-<YueDisplay>
-
-```yue
-while byte := stream\read_one!
-  -- lakukan sesuatu dengan byte
-  print byte
-```
-
-</YueDisplay>
 
 # Penugasan Destrukturisasi
 
@@ -2028,17 +1007,6 @@ thing = [1, 2]
 print a, b
 ```
 
-<YueDisplay>
-
-```yue
-thing = [1, 2]
-
-[a, b] = thing
-print a, b
-```
-
-</YueDisplay>
-
 Di literal tabel destrukturisasi, kunci mewakili kunci yang dibaca dari sisi kanan, dan nilai mewakili nama yang akan menerima nilai tersebut.
 
 ```yuescript
@@ -2053,23 +1021,6 @@ print hello, the_day
 
 :day = obj -- OK untuk destrukturisasi sederhana tanpa kurung
 ```
-
-<YueDisplay>
-
-```yue
-obj = {
-  hello: "world"
-  day: "tuesday"
-  length: 20
-}
-
-{hello: hello, day: the_day} = obj
-print hello, the_day
-
-:day = obj -- OK untuk destrukturisasi sederhana tanpa kurung
-```
-
-</YueDisplay>
 
 Ini juga bekerja pada struktur data bertingkat:
 
@@ -2086,23 +1037,6 @@ obj2 = {
 print first, second, color
 ```
 
-<YueDisplay>
-
-```yue
-obj2 = {
-  numbers: [1, 2, 3, 4]
-  properties: {
-    color: "green"
-    height: 13.5
-  }
-}
-
-{numbers: [first, second], properties: {color: color}} = obj2
-print first, second, color
-```
-
-</YueDisplay>
-
 Jika pernyataan destrukturisasi kompleks, Anda bisa memecahnya ke beberapa baris. Contoh yang sedikit lebih rumit:
 
 ```yuescript
@@ -2114,32 +1048,11 @@ Jika pernyataan destrukturisasi kompleks, Anda bisa memecahnya ke beberapa baris
 } = obj2
 ```
 
-<YueDisplay>
-
-```yue
-{
-  numbers: [first, second]
-  properties: {
-    color: color
-  }
-} = obj2
-```
-
-</YueDisplay>
-
 Umumnya mengekstrak nilai dari tabel lalu menugaskannya ke variabel local dengan nama yang sama dengan kuncinya. Untuk menghindari pengulangan, kita bisa menggunakan operator prefiks **:**:
 
 ```yuescript
 {:concat, :insert} = table
 ```
-
-<YueDisplay>
-
-```yue
-{:concat, :insert} = table
-```
-
-</YueDisplay>
 
 Ini secara efektif sama seperti import, tetapi kita dapat mengganti nama field yang ingin diekstrak dengan menggabungkan sintaks:
 
@@ -2147,41 +1060,17 @@ Ini secara efektif sama seperti import, tetapi kita dapat mengganti nama field y
 {:mix, :max, random: rand} = math
 ```
 
-<YueDisplay>
-
-```yue
-{:mix, :max, random: rand} = math
-```
-
-</YueDisplay>
-
 Anda bisa menulis nilai default saat destrukturisasi seperti:
 
 ```yuescript
 {:name = "nameless", :job = "jobless"} = person
 ```
 
-<YueDisplay>
-
-```yue
-{:name = "nameless", :job = "jobless"} = person
-```
-
-</YueDisplay>
-
 Anda dapat menggunakan `_` sebagai placeholder saat destrukturisasi list:
 
 ```yuescript
 [_, two, _, four] = items
 ```
-
-<YueDisplay>
-
-```yue
-[_, two, _, four] = items
-```
-
-</YueDisplay>
 
 ## Destrukturisasi Rentang
 
@@ -2194,18 +1083,6 @@ print first  -- prints: first
 print bulk   -- prints: {"second", "third", "fourth"}
 print last   -- prints: last
 ```
-
-<YueDisplay>
-
-```yue
-orders = ["first", "second", "third", "fourth", "last"]
-[first, ...bulk, last] = orders
-print first  -- prints: first
-print bulk   -- prints: {"second", "third", "fourth"}
-print last   -- prints: last
-```
-
-</YueDisplay>
 
 Operator spread dapat digunakan pada posisi berbeda untuk menangkap rentang yang berbeda, dan Anda bisa memakai `_` sebagai placeholder untuk nilai yang tidak ingin ditangkap:
 
@@ -2220,21 +1097,6 @@ Operator spread dapat digunakan pada posisi berbeda untuk menangkap rentang yang
 [first, ..._, last] = orders
 ```
 
-<YueDisplay>
-
-```yue
--- Tangkap semuanya setelah elemen pertama
-[first, ...rest] = orders
-
--- Tangkap semuanya sebelum elemen terakhir
-[...start, last] = orders
-
--- Tangkap semuanya kecuali elemen tengah
-[first, ..._, last] = orders
-```
-
-</YueDisplay>
-
 ## Destrukturisasi di Tempat Lain
 
 Destrukturisasi juga dapat muncul di tempat-tempat di mana assignment terjadi secara implisit. Contohnya adalah perulangan for:
@@ -2248,20 +1110,6 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
-
-<YueDisplay>
-
-```yue
-tuples = [
-  ["hello", "world"]
-  ["egg", "head"]
-]
-
-for [left, right] in *tuples
-  print left, right
-```
-
-</YueDisplay>
 
 Kita tahu setiap elemen pada tabel array adalah tuple dua item, sehingga kita dapat membongkarnya langsung di klausa nama pada pernyataan for menggunakan destrukturisasi.
 
@@ -2285,26 +1133,6 @@ my_func!
 print i -- akan mencetak 0
 ```
 
-<YueDisplay>
-
-```yue
-i = 100
-
--- banyak baris kode...
-
-my_func = ->
-  i = 10
-  while i > 0
-    print i
-    i -= 1
-
-my_func!
-
-print i -- akan mencetak 0
-```
-
-</YueDisplay>
-
 Di `my_func`, kita tanpa sengaja menimpa nilai `i`. Dalam contoh ini halnya cukup jelas, tetapi bayangkan kode besar atau basis kode asing di mana tidak jelas nama apa saja yang sudah dideklarasikan.
 
 Akan sangat membantu jika kita dapat menyatakan variabel mana dari scope luar yang memang ingin kita ubah, agar mencegah mengubah yang lain secara tidak sengaja.
@@ -2321,20 +1149,6 @@ my_func!
 print i -- mencetak 100, i tidak terpengaruh
 ```
 
-<YueDisplay>
-
-```yue
-i = 100
-
-my_func = (using nil) ->
-  i = "hello" -- variabel local baru dibuat di sini
-
-my_func!
-print i -- mencetak 100, i tidak terpengaruh
-```
-
-</YueDisplay>
-
 Beberapa nama dapat dipisahkan dengan koma. Nilai closure tetap bisa diakses, hanya saja tidak dapat dimodifikasi:
 
 ```yuescript
@@ -2349,23 +1163,6 @@ my_func = (add using k, i) ->
 my_func(22)
 print i, k -- ini telah diperbarui
 ```
-
-<YueDisplay>
-
-```yue
-tmp = 1213
-i, k = 100, 50
-
-my_func = (add using k, i) ->
-  tmp = tmp + add -- tmp local baru dibuat
-  i += tmp
-  k += tmp
-
-my_func(22)
-print i, k -- ini telah diperbarui
-```
-
-</YueDisplay>
 
 # Penggunaan
 
@@ -2535,55 +1332,6 @@ with apple
 export 🌛 = "Skrip Bulan"
 ```
 
-<YueDisplay>
-
-```yue
--- import syntax
-import p, to_lua from "yue"
-
--- object literals
-inventory =
-  equipment:
-    - "sword"
-    - "shield"
-  items:
-    - name: "potion"
-      count: 10
-    - name: "bread"
-      count: 3
-
--- list comprehension
-map = (arr, action) ->
-  [action item for item in *arr]
-
-filter = (arr, cond) ->
-  [item for item in *arr when cond item]
-
-reduce = (arr, init, action): init ->
-  init = action init, item for item in *arr
-
--- pipe operator
-[1, 2, 3]
-  |> map (x) -> x * 2
-  |> filter (x) -> x > 4
-  |> reduce 0, (a, b) -> a + b
-  |> print
-
--- metatable manipulation
-apple =
-  size: 15
-  <index>:
-    color: 0x00ffff
-
-with apple
-  p .size, .color, .<index> if .<>?
-
--- js-like export syntax
-export 🌛 = "Skrip Bulan"
-```
-
-</YueDisplay>
-
 ## Tentang Dora SSR
 
 YueScript dikembangkan dan dipelihara bersama mesin game open-source [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). YueScript telah digunakan untuk membuat alat mesin, demo game, dan prototipe, membuktikan kemampuannya dalam skenario dunia nyata sekaligus meningkatkan pengalaman pengembangan Dora SSR.
@@ -2642,18 +1390,6 @@ else
   print "Tidak ada koin"
 ```
 
-<YueDisplay>
-
-```yue
-have_coins = false
-if have_coins
-  print "Dapat koin"
-else
-  print "Tidak ada koin"
-```
-
-</YueDisplay>
-
 Sintaks pendek untuk pernyataan tunggal juga bisa digunakan:
 
 ```yuescript
@@ -2661,30 +1397,12 @@ have_coins = false
 if have_coins then print "Dapat koin" else print "Tidak ada koin"
 ```
 
-<YueDisplay>
-
-```yue
-have_coins = false
-if have_coins then print "Dapat koin" else print "Tidak ada koin"
-```
-
-</YueDisplay>
-
 Karena pernyataan if dapat digunakan sebagai ekspresi, ini juga bisa ditulis sebagai:
 
 ```yuescript
 have_coins = false
 print if have_coins then "Dapat koin" else "Tidak ada koin"
 ```
-
-<YueDisplay>
-
-```yue
-have_coins = false
-print if have_coins then "Dapat koin" else "Tidak ada koin"
-```
-
-</YueDisplay>
 
 Kondisional juga bisa digunakan di pernyataan return dan assignment:
 
@@ -2703,25 +1421,6 @@ else
 print message -- prints: Saya sangat tinggi
 ```
 
-<YueDisplay>
-
-```yue
-is_tall = (name) ->
-  if name == "Rob"
-    true
-  else
-    false
-
-message = if is_tall "Rob"
-  "Saya sangat tinggi"
-else
-  "Saya tidak terlalu tinggi"
-
-print message -- prints: Saya sangat tinggi
-```
-
-</YueDisplay>
-
 Kebalikan dari if adalah unless:
 
 ```yuescript
@@ -2729,26 +1428,9 @@ unless os.date("%A") == "Monday"
   print "hari ini bukan Senin!"
 ```
 
-<YueDisplay>
-
-```yue
-unless os.date("%A") == "Monday"
-  print "hari ini bukan Senin!"
-```
-
-</YueDisplay>
-
 ```yuescript
 print "Kamu beruntung!" unless math.random! > 0.1
 ```
-
-<YueDisplay>
-
-```yue
-print "Kamu beruntung!" unless math.random! > 0.1
-```
-
-</YueDisplay>
 
 ## Ekspresi In
 
@@ -2764,20 +1446,6 @@ if a in list
   print "memeriksa apakah `a` ada di dalam daftar"
 ```
 
-<YueDisplay>
-
-```yue
-a = 5
-
-if a in [1, 3, 5, 7]
-  print "memeriksa kesamaan dengan nilai-nilai diskrit"
-
-if a in list
-  print "memeriksa apakah `a` ada di dalam daftar"
-```
-
-</YueDisplay>
-
 Operator `in` juga dapat digunakan dengan tabel dan mendukung varian `not in` untuk negasi:
 
 ```yuescript
@@ -2790,21 +1458,6 @@ not_exist = item not in list
 
 check = -> value not in table
 ```
-
-<YueDisplay>
-
-```yue
-has = "foo" in {"bar", "foo"}
-
-if a in {1, 2, 3}
-  print "a ada di dalam tabel"
-
-not_exist = item not in list
-
-check = -> value not in table
-```
-
-</YueDisplay>
 
 Daftar atau tabel dengan satu elemen memeriksa kesamaan dengan elemen tersebut:
 
@@ -2819,22 +1472,6 @@ c = a in {1}
 with tb
   c = a in [1]
 ```
-
-<YueDisplay>
-
-```yue
--- [1,] memeriksa apakah nilai == 1
-c = a in [1,]
-
--- {1} juga memeriksa apakah nilai == 1
-c = a in {1}
-
--- Tanpa koma, [1] adalah akses indeks (tb[1])
-with tb
-  c = a in [1]
-```
-
-</YueDisplay>
 
 # Perulangan For
 
@@ -2851,36 +1488,12 @@ for key, value in pairs object
   print key, value
 ```
 
-<YueDisplay>
-
-```yue
-for i = 10, 20
-  print i
-
-for k = 1, 15, 2 -- an optional step provided
-  print k
-
-for key, value in pairs object
-  print key, value
-```
-
-</YueDisplay>
-
 Operator slicing dan **\*** dapat digunakan, seperti pada comprehension:
 
 ```yuescript
 for item in *items[2, 4]
   print item
 ```
-
-<YueDisplay>
-
-```yue
-for item in *items[2, 4]
-  print item
-```
-
-</YueDisplay>
 
 Sintaks yang lebih singkat juga tersedia untuk semua variasi ketika badan hanya satu baris:
 
@@ -2889,16 +1502,6 @@ for item in *items do print item
 
 for j = 1, 10, 3 do print j
 ```
-
-<YueDisplay>
-
-```yue
-for item in *items do print item
-
-for j = 1, 10, 3 do print j
-```
-
-</YueDisplay>
 
 Perulangan for juga bisa digunakan sebagai ekspresi. Pernyataan terakhir di badan for dipaksa menjadi ekspresi dan ditambahkan ke tabel array yang terakumulasi.
 
@@ -2912,18 +1515,6 @@ doubled_evens = for i = 1, 20
     i
 ```
 
-<YueDisplay>
-
-```yue
-doubled_evens = for i = 1, 20
-  if i % 2 == 0
-    i * 2
-  else
-    i
-```
-
-</YueDisplay>
-
 Selain itu, loop for mendukung break dengan nilai kembalian, sehingga loop itu sendiri bisa dipakai sebagai ekspresi yang keluar lebih awal dengan hasil bermakna. Ekspresi `for` mendukung `break` dengan banyak nilai.
 
 Contohnya, untuk menemukan angka pertama yang lebih besar dari 10:
@@ -2933,30 +1524,12 @@ first_large = for n in *numbers
   break n if n > 10
 ```
 
-<YueDisplay>
-
-```yue
-first_large = for n in *numbers
-  break n if n > 10
-```
-
-</YueDisplay>
-
 Sintaks break-dengan-nilai ini memungkinkan pola pencarian atau keluar-lebih-awal yang ringkas langsung di dalam ekspresi loop.
 
 ```yuescript
 key, score = for k, v in pairs data
   break k, v * 10 if k == "target"
 ```
-
-<YueDisplay>
-
-```yue
-key, score = for k, v in pairs data
-  break k, v * 10 if k == "target"
-```
-
-</YueDisplay>
 
 Anda juga bisa memfilter nilai dengan menggabungkan ekspresi for dengan pernyataan continue.
 
@@ -2970,18 +1543,6 @@ print func_a! -- prints nil
 print func_b! -- prints table object
 ```
 
-<YueDisplay>
-
-```yue
-func_a = -> for i = 1, 10 do print i
-func_b = -> return for i = 1, 10 do i
-
-print func_a! -- prints nil
-print func_b! -- prints table object
-```
-
-</YueDisplay>
-
 # Pernyataan Continue
 
 Pernyataan continue dapat digunakan untuk melewati iterasi saat ini di dalam loop.
@@ -2994,18 +1555,6 @@ while i < 10
   print i
 ```
 
-<YueDisplay>
-
-```yue
-i = 0
-while i < 10
-  i += 1
-  continue if i % 2 == 0
-  print i
-```
-
-</YueDisplay>
-
 continue juga bisa digunakan bersama ekspresi loop untuk mencegah iterasi tersebut diakumulasikan ke hasil. Contoh ini memfilter tabel array menjadi hanya angka genap:
 
 ```yuescript
@@ -3014,17 +1563,6 @@ odds = for x in *my_numbers
   continue if x % 2 == 1
   x
 ```
-
-<YueDisplay>
-
-```yue
-my_numbers = [1, 2, 3, 4, 5, 6]
-odds = for x in *my_numbers
-  continue if x % 2 == 1
-  x
-```
-
-</YueDisplay>
 
 # Pernyataan Switch
 
@@ -3039,20 +1577,6 @@ switch name := "Dan"
   else
     print "I don't know about you with name #{name}"
 ```
-
-<YueDisplay>
-
-```yue
-switch name := "Dan"
-  when "Robert"
-    print "You are Robert"
-  when "Dan", "Daniel"
-    print "Your name, it's Dan"
-  else
-    print "I don't know about you with name #{name}"
-```
-
-</YueDisplay>
 
 Klausa when pada switch bisa mencocokkan beberapa nilai dengan menuliskannya dipisah koma.
 
@@ -3069,21 +1593,6 @@ next_number = switch b
     error "can't count that high!"
 ```
 
-<YueDisplay>
-
-```yue
-b = 1
-next_number = switch b
-  when 1
-    2
-  when 2
-    3
-  else
-    error "can't count that high!"
-```
-
-</YueDisplay>
-
 Kita bisa memakai kata kunci `then` untuk menulis blok when switch pada satu baris. Tidak ada kata kunci tambahan yang dibutuhkan untuk menulis blok else pada satu baris.
 
 ```yuescript
@@ -3092,17 +1601,6 @@ msg = switch math.random(1, 5)
   when 2 then "you are almost lucky"
   else "not so lucky"
 ```
-
-<YueDisplay>
-
-```yue
-msg = switch math.random(1, 5)
-  when 1 then "you are lucky"
-  when 2 then "you are almost lucky"
-  else "not so lucky"
-```
-
-</YueDisplay>
 
 Jika Anda ingin menulis kode dengan satu indentasi lebih sedikit saat menulis switch, Anda bisa menaruh klausa when pertama pada baris awal pernyataan, lalu semua klausa lain dapat ditulis dengan satu indentasi lebih sedikit.
 
@@ -3118,23 +1616,6 @@ switch math.random(1, 5) when 1
 else
   print "not so lucky"
 ```
-
-<YueDisplay>
-
-```yue
-switch math.random(1, 5)
-  when 1
-    print "you are lucky" -- two indents
-  else
-    print "not so lucky"
-
-switch math.random(1, 5) when 1
-  print "you are lucky" -- one indent
-else
-  print "not so lucky"
-```
-
-</YueDisplay>
 
 Perlu dicatat urutan ekspresi perbandingan kasus. Ekspresi kasus berada di sisi kiri. Ini bisa berguna jika ekspresi kasus ingin mengganti cara perbandingan dengan mendefinisikan metamethod `eq`.
 
@@ -3157,25 +1638,6 @@ for item in *items
       print "size #{width}, #{height}"
 ```
 
-<YueDisplay>
-
-```yue
-items =
-  * x: 100
-    y: 200
-  * width: 300
-    height: 400
-
-for item in *items
-  switch item
-    when :x, :y
-      print "Vec2 #{x}, #{y}"
-    when :width, :height
-      print "size #{width}, #{height}"
-```
-
-</YueDisplay>
-
 Anda dapat menggunakan nilai default untuk mendestrukturisasi tabel secara opsional pada beberapa field.
 
 ```yuescript
@@ -3187,20 +1649,6 @@ switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- table destructuring will still pass
 ```
-
-<YueDisplay>
-
-```yue
-item = {}
-
-{pos: {:x = 50, :y = 200}} = item -- get error: attempt to index a nil value (field 'pos')
-
-switch item
-  when {pos: {:x = 50, :y = 200}}
-    print "Vec2 #{x}, #{y}" -- table destructuring will still pass
-```
-
-</YueDisplay>
 
 Anda juga bisa mencocokkan elemen array, field tabel, dan bahkan struktur bertingkat dengan literal array atau tabel.
 
@@ -3216,20 +1664,6 @@ switch tb
     print "1, 2, #{b}"
 ```
 
-<YueDisplay>
-
-```yue
-switch tb
-  when [1, 2, 3]
-    print "1, 2, 3"
-  when [1, b, 3]
-    print "1, #{b}, 3"
-  when [1, 2, b = 3] -- b has a default value
-    print "1, 2, #{b}"
-```
-
-</YueDisplay>
-
 Cocokkan terhadap field tabel dengan destrukturisasi.
 
 ```yuescript
@@ -3242,20 +1676,6 @@ switch tb
     print "invalid"
 ```
 
-<YueDisplay>
-
-```yue
-switch tb
-  when success: true, :result
-    print "success", result
-  when success: false
-    print "failed", result
-  else
-    print "invalid"
-```
-
-</YueDisplay>
-
 Cocokkan terhadap struktur tabel bertingkat.
 
 ```yuescript
@@ -3267,20 +1687,6 @@ switch tb
   else
     print "invalid"
 ```
-
-<YueDisplay>
-
-```yue
-switch tb
-  when data: {type: "success", :content}
-    print "success", content
-  when data: {type: "error", :content}
-    print "failed", content
-  else
-    print "invalid"
-```
-
-</YueDisplay>
 
 Cocokkan terhadap array dari tabel.
 
@@ -3295,21 +1701,6 @@ switch tb
     print "matched", fourth
 ```
 
-<YueDisplay>
-
-```yue
-switch tb
-  when [
-      {a: 1, b: 2}
-      {a: 3, b: 4}
-      {a: 5, b: 6}
-      fourth
-    ]
-    print "matched", fourth
-```
-
-</YueDisplay>
-
 Cocokkan terhadap daftar dan tangkap rentang elemen.
 
 ```yuescript
@@ -3320,19 +1711,6 @@ switch segments
     print "Resource:", resource -- prints: "logs"
     print "Action:", action -- prints: "view"
 ```
-
-<YueDisplay>
-
-```yue
-segments = ["admin", "users", "logs", "view"]
-switch segments
-  when [...groups, resource, action]
-    print "Group:", groups -- prints: {"admin", "users"}
-    print "Resource:", resource -- prints: "logs"
-    print "Action:", action -- prints: "view"
-```
-
-</YueDisplay>
 
 # Perulangan While
 
@@ -3347,19 +1725,6 @@ while i > 0
 while running == true do my_function!
 ```
 
-<YueDisplay>
-
-```yue
-i = 10
-while i > 0
-  print i
-  i -= 1
-
-while running == true do my_function!
-```
-
-</YueDisplay>
-
 ```yuescript
 i = 10
 until i == 0
@@ -3368,18 +1733,6 @@ until i == 0
 
 until running == false do my_function!
 ```
-
-<YueDisplay>
-
-```yue
-i = 10
-until i == 0
-  print i
-  i -= 1
-until running == false do my_function!
-```
-
-</YueDisplay>
 
 Seperti loop for, loop while juga bisa digunakan sebagai ekspresi. Ekspresi `while` dan `until` mendukung `break` dengan banyak nilai.
 
@@ -3388,16 +1741,6 @@ value, doubled = while true
   n = get_next!
   break n, n * 2 if n > 10
 ```
-
-<YueDisplay>
-
-```yue
-value, doubled = while true
-  n = get_next!
-  break n, n * 2 if n > 10
-```
-
-</YueDisplay>
 
 Selain itu, agar sebuah fungsi mengembalikan nilai akumulasi dari loop while, pernyataannya harus di-return secara eksplisit.
 
@@ -3413,18 +1756,6 @@ repeat
 until i == 0
 ```
 
-<YueDisplay>
-
-```yue
-i = 10
-repeat
-  print i
-  i -= 1
-until i == 0
-```
-
-</YueDisplay>
-
 Ekspresi `repeat` juga mendukung `break` dengan banyak nilai:
 
 ```yuescript
@@ -3434,18 +1765,6 @@ value, scaled = repeat
   i += 1
 until false
 ```
-
-<YueDisplay>
-
-```yue
-i = 1
-value, scaled = repeat
-  break i, i * 100 if i > 3
-  i += 1
-until false
-```
-
-</YueDisplay>
 
 # Stub Fungsi
 
@@ -3474,29 +1793,6 @@ run_callback my_object.write
 run_callback my_object\write
 ```
 
-<YueDisplay>
-
-```yue
-my_object = {
-  value: 1000
-  write: => print "the value:", @value
-}
-
-run_callback = (func) ->
-  print "running callback..."
-  func!
-
--- ini tidak akan berfungsi:
--- fungsi tidak memiliki referensi ke my_object
-run_callback my_object.write
-
--- sintaks stub fungsi
--- memungkinkan kita membundel objek ke fungsi baru
-run_callback my_object\write
-```
-
-</YueDisplay>
-
 # Backcall
 
 Backcall digunakan untuk meratakan callback yang bersarang. Backcall didefinisikan menggunakan panah yang mengarah ke kiri sebagai parameter terakhir secara default yang akan mengisi pemanggilan fungsi. Semua sintaks pada dasarnya sama seperti fungsi panah biasa, kecuali arahnya berlawanan dan badan fungsi tidak memerlukan indentasi.
@@ -3506,15 +1802,6 @@ x <- f
 print "hello" .. x
 ```
 
-<YueDisplay>
-
-```yue
-x <- f
-print "hello" .. x
-```
-
-</YueDisplay>
-
 Fungsi panah tebal juga tersedia.
 
 ```yuescript
@@ -3522,30 +1809,12 @@ Fungsi panah tebal juga tersedia.
 print @value
 ```
 
-<YueDisplay>
-
-```yue
-<= f
-print @value
-```
-
-</YueDisplay>
-
 Anda dapat menentukan placeholder untuk posisi fungsi backcall sebagai parameter.
 
 ```yuescript
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
-
-<YueDisplay>
-
-```yue
-(x) <- map _, [1, 2, 3]
-x * 2
-```
-
-</YueDisplay>
 
 Jika Anda ingin menulis kode lanjutan setelah backcall, Anda dapat memisahkannya dengan pernyataan `do`. Tanda kurung dapat dihilangkan untuk fungsi panah non-tebal.
 
@@ -3558,19 +1827,6 @@ result, msg = do
 print result, msg
 ```
 
-<YueDisplay>
-
-```yue
-result, msg = do
-  data <- readAsync "filename.txt"
-  print data
-  info <- processAsync data
-  check info
-print result, msg
-```
-
-</YueDisplay>
-
 # Literal Fungsi
 
 Semua fungsi dibuat menggunakan ekspresi fungsi. Fungsi sederhana ditandai dengan panah: **->**.
@@ -3579,15 +1835,6 @@ Semua fungsi dibuat menggunakan ekspresi fungsi. Fungsi sederhana ditandai denga
 my_function = ->
 my_function() -- memanggil fungsi kosong
 ```
-
-<YueDisplay>
-
-```yue
-my_function = ->
-my_function() -- memanggil fungsi kosong
-```
-
-</YueDisplay>
 
 Badan fungsi bisa berupa satu pernyataan yang ditulis langsung setelah panah, atau berupa serangkaian pernyataan yang diindentasi di baris berikutnya:
 
@@ -3599,18 +1846,6 @@ func_b = ->
   print "The value:", value
 ```
 
-<YueDisplay>
-
-```yue
-func_a = -> print "hello world"
-
-func_b = ->
-  value = 100
-  print "The value:", value
-```
-
-</YueDisplay>
-
 Jika fungsi tidak memiliki argumen, ia dapat dipanggil menggunakan operator `!`, sebagai ganti tanda kurung kosong. Pemanggilan `!` adalah cara yang disarankan untuk memanggil fungsi tanpa argumen.
 
 ```yuescript
@@ -3618,28 +1853,11 @@ func_a!
 func_b()
 ```
 
-<YueDisplay>
-
-```yue
-func_a!
-func_b()
-```
-
-</YueDisplay>
-
 Fungsi dengan argumen dapat dibuat dengan menaruh daftar nama argumen dalam tanda kurung sebelum panah:
 
 ```yuescript
 sum = (x, y) -> print "sum", x + y
 ```
-
-<YueDisplay>
-
-```yue
-sum = (x, y) -> print "sum", x + y
-```
-
-</YueDisplay>
 
 Fungsi dapat dipanggil dengan menuliskan argumen setelah nama ekspresi yang mengevaluasi ke fungsi. Saat merangkai pemanggilan fungsi, argumen diterapkan ke fungsi terdekat di sebelah kiri.
 
@@ -3650,30 +1868,11 @@ print sum 10, 20
 a b c "a", "b", "c"
 ```
 
-<YueDisplay>
-
-```yue
-sum 10, 20
-print sum 10, 20
-
-a b c "a", "b", "c"
-```
-
-</YueDisplay>
-
 Untuk menghindari ambiguitas saat memanggil fungsi, tanda kurung juga bisa digunakan untuk mengelilingi argumen. Ini diperlukan di sini agar argumen yang tepat dikirim ke fungsi yang tepat.
 
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
-
-<YueDisplay>
-
-```yue
-print "x:", sum(10, 20), "y:", sum(30, 40)
-```
-
-</YueDisplay>
 
 Tidak boleh ada spasi antara tanda kurung buka dan nama fungsi.
 
@@ -3684,28 +1883,11 @@ sum = (x, y) -> x + y
 print "The sum is ", sum 10, 20
 ```
 
-<YueDisplay>
-
-```yue
-sum = (x, y) -> x + y
-print "The sum is ", sum 10, 20
-```
-
-</YueDisplay>
-
 Dan jika Anda perlu return secara eksplisit, Anda bisa menggunakan kata kunci `return`:
 
 ```yuescript
 sum = (x, y) -> return x + y
 ```
-
-<YueDisplay>
-
-```yue
-sum = (x, y) -> return x + y
-```
-
-</YueDisplay>
 
 Seperti di Lua, fungsi dapat mengembalikan beberapa nilai. Pernyataan terakhir harus berupa daftar nilai yang dipisahkan koma:
 
@@ -3714,15 +1896,6 @@ mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
 
-<YueDisplay>
-
-```yue
-mystery = (x, y) -> x + y, x - y
-a, b = mystery 10, 20
-```
-
-</YueDisplay>
-
 ## Panah Tebal
 
 Karena sudah menjadi idiom di Lua untuk mengirim objek sebagai argumen pertama saat memanggil method, disediakan sintaks khusus untuk membuat fungsi yang otomatis menyertakan argumen `self`.
@@ -3730,14 +1903,6 @@ Karena sudah menjadi idiom di Lua untuk mengirim objek sebagai argumen pertama s
 ```yuescript
 func = (num) => @value + num
 ```
-
-<YueDisplay>
-
-```yue
-func = (num) => @value + num
-```
-
-</YueDisplay>
 
 ## Nilai Default Argumen
 
@@ -3749,31 +1914,12 @@ my_function = (name = "something", height = 100) ->
   print "My height is", height
 ```
 
-<YueDisplay>
-
-```yue
-my_function = (name = "something", height = 100) ->
-  print "Hello I am", name
-  print "My height is", height
-```
-
-</YueDisplay>
-
 Ekspresi nilai default argumen dievaluasi di dalam badan fungsi sesuai urutan deklarasi argumen. Karena itu, nilai default dapat mengakses argumen yang dideklarasikan sebelumnya.
 
 ```yuescript
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
-
-<YueDisplay>
-
-```yue
-some_args = (x = 100, y = x + 1000) ->
-  print x + y
-```
-
-</YueDisplay>
 
 ## Pertimbangan
 
@@ -3788,17 +1934,6 @@ c = x -y
 d = x- z
 ```
 
-<YueDisplay>
-
-```yue
-a = x - 10
-b = x-10
-c = x -y
-d = x- z
-```
-
-</YueDisplay>
-
 Prioritas argumen pertama pada pemanggilan fungsi dapat dikendalikan menggunakan spasi jika argumennya adalah literal string. Di Lua, sudah umum untuk menghilangkan tanda kurung saat memanggil fungsi dengan satu literal string atau tabel.
 
 Ketika tidak ada spasi antara variabel dan literal string, pemanggilan fungsi akan memiliki prioritas atas ekspresi yang mengikuti. Tidak ada argumen lain yang dapat diberikan pada fungsi ketika dipanggil dengan cara ini.
@@ -3809,15 +1944,6 @@ Ketika ada spasi setelah variabel dan literal string, pemanggilan fungsi bertind
 x = func"hello" + 100
 y = func "hello" + 100
 ```
-
-<YueDisplay>
-
-```yue
-x = func"hello" + 100
-y = func "hello" + 100
-```
-
-</YueDisplay>
 
 ## Argumen Multi-baris
 
@@ -3835,20 +1961,6 @@ cool_func 1, 2,
   7, 8
 ```
 
-<YueDisplay>
-
-```yue
-my_func 5, 4, 3,
-  8, 9, 10
-
-cool_func 1, 2,
-  3, 4,
-  5, 6,
-  7, 8
-```
-
-</YueDisplay>
-
 Jenis pemanggilan ini dapat dinest. Tingkat indentasi digunakan untuk menentukan argumen milik fungsi yang mana.
 
 ```yuescript
@@ -3857,17 +1969,6 @@ my_func 5, 6, 7,
     9, 1, 2,
   5, 4
 ```
-
-<YueDisplay>
-
-```yue
-my_func 5, 6, 7,
-  6, another_func 6, 7, 8,
-    9, 1, 2,
-  5, 4
-```
-
-</YueDisplay>
 
 Karena tabel juga menggunakan koma sebagai pemisah, sintaks indentasi ini membantu agar nilai menjadi bagian dari daftar argumen, bukan bagian dari tabel.
 
@@ -3879,18 +1980,6 @@ x = [
 ]
 ```
 
-<YueDisplay>
-
-```yue
-x = [
-  1, 2, 3, 4, a_func 4, 5,
-    5, 6,
-  8, 9, 10
-]
-```
-
-</YueDisplay>
-
 Meskipun jarang, perhatikan bahwa kita bisa memberikan indentasi yang lebih dalam untuk argumen fungsi jika kita tahu akan menggunakan indentasi yang lebih dangkal di bagian selanjutnya.
 
 ```yuescript
@@ -3899,17 +1988,6 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
-
-<YueDisplay>
-
-```yue
-y = [ my_func 1, 2, 3,
-   4, 5,
-  5, 6, 7
-]
-```
-
-</YueDisplay>
 
 Hal yang sama juga dapat dilakukan pada pernyataan tingkat blok lainnya seperti kondisional. Kita bisa menggunakan tingkat indentasi untuk menentukan nilai milik pernyataan apa:
 
@@ -3926,24 +2004,6 @@ if func 1, 2, 3,
   print "hello"
   print "I am inside if"
 ```
-
-<YueDisplay>
-
-```yue
-if func 1, 2, 3,
-  "hello",
-  "world"
-    print "hello"
-    print "I am inside if"
-
-if func 1, 2, 3,
-    "hello",
-    "world"
-  print "hello"
-  print "I am inside if"
-```
-
-</YueDisplay>
 
 ## Destrukturisasi Parameter
 
@@ -3966,23 +2026,6 @@ arg1 = {a: 0}
 f2 arg1, arg2
 ```
 
-<YueDisplay>
-
-```yue
-f1 = (:a, :b, :c) ->
-  print a, b, c
-
-f1 a: 1, b: "2", c: {}
-
-f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
-print a1, b, c
-
-arg1 = {a: 0}
-f2 arg1, arg2
-```
-
-</YueDisplay>
-
 ## Ekspresi Return Berawalan
 
 Saat bekerja dengan badan fungsi yang sangat bertingkat, menjaga keterbacaan dan konsistensi nilai return bisa terasa melelahkan. Untuk mengatasinya, YueScript memperkenalkan sintaks **Ekspresi Return Berawalan**. Bentuknya sebagai berikut:
@@ -3996,19 +2039,6 @@ findFirstEven = (list): nil ->
           return sub
 ```
 
-<YueDisplay>
-
-```yue
-findFirstEven = (list): nil ->
-  for item in *list
-    if type(item) == "table"
-      for sub in *item
-        if sub % 2 == 0
-          return sub
-```
-
-</YueDisplay>
-
 Ini setara dengan:
 
 ```yuescript
@@ -4020,20 +2050,6 @@ findFirstEven = (list) ->
           return sub
   nil
 ```
-
-<YueDisplay>
-
-```yue
-findFirstEven = (list) ->
-  for item in *list
-    if type(item) == "table"
-      for sub in *item
-        if sub % 2 == 0
-          return sub
-  nil
-```
-
-</YueDisplay>
 
 Satu-satunya perbedaan adalah Anda dapat memindahkan ekspresi return terakhir sebelum token `->` atau `=>` untuk menunjukkan nilai return implisit fungsi sebagai pernyataan terakhir. Dengan cara ini, bahkan pada fungsi dengan banyak loop bertingkat atau cabang kondisional, Anda tidak lagi perlu menulis ekspresi return di akhir badan fungsi, sehingga struktur logika menjadi lebih lurus dan mudah diikuti.
 
@@ -4063,32 +2079,6 @@ process = (...args) ->
 process 1, nil, 3, nil, 5
 ```
 
-<YueDisplay>
-
-```yue
-f = (...t) ->
-  print "argument count:", t.n
-  print "table length:", #t
-  for i = 1, t.n
-    print t[i]
-
-f 1, 2, 3
-f "a", "b", "c", "d"
-f!
-
--- Menangani kasus dengan nilai nil
-process = (...args) ->
-  sum = 0
-  for i = 1, args.n
-    if args[i] != nil and type(args[i]) == "number"
-      sum += args[i]
-  sum
-
-process 1, nil, 3, nil, 5
-```
-
-</YueDisplay>
-
 # Spasi Kosong
 
 YueScript adalah bahasa yang peka terhadap spasi. Anda harus menulis beberapa blok kode dengan indentasi yang sama menggunakan spasi **' '** atau tab **'\t'** seperti badan fungsi, daftar nilai, dan beberapa blok kontrol. Ekspresi yang mengandung spasi berbeda dapat bermakna berbeda. Tab diperlakukan seperti 4 spasi, tetapi sebaiknya jangan mencampur penggunaan spasi dan tab.
@@ -4100,14 +2090,6 @@ Sebuah pernyataan biasanya berakhir pada pergantian baris. Anda juga bisa memaka
 ```yuescript
 a = 1; b = 2; print a + b
 ```
-
-<YueDisplay>
-
-```yue
-a = 1; b = 2; print a + b
-```
-
-</YueDisplay>
 
 ## Rantai Multibaris
 
@@ -4121,19 +2103,6 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
-
-<YueDisplay>
-
-```yue
-Rx.Observable
-  .fromRange 1, 8
-  \filter (x) -> x % 2 == 0
-  \concat Rx.Observable.of 'who do we appreciate'
-  \map (value) -> value .. '!'
-  \subscribe print
-```
-
-</YueDisplay>
 
 # Komentar
 
@@ -4150,23 +2119,6 @@ Tidak masalah.
 func --[[port]] 3000, --[[ip]] "192.168.1.1"
 ```
 
-<YueDisplay>
-
-```yue
--- Saya adalah komentar
-
-str = --[[
-Ini komentar multi-baris.
-Tidak masalah.
-]] strA \ -- komentar 1
-  .. strB \ -- komentar 2
-  .. strC
-
-func --[[port]] 3000, --[[ip]] "192.168.1.1"
-```
-
-</YueDisplay>
-
 # Atribut
 
 Dukungan sintaks untuk atribut Lua 5.4. Anda juga masih bisa menggunakan deklarasi `const` dan `close` dan mendapatkan pemeriksaan konstanta serta callback berbatas-scope ketika menargetkan versi Lua di bawah 5.4.
@@ -4176,15 +2128,6 @@ const a = 123
 close _ = <close>: -> print "Out of scope."
 ```
 
-<YueDisplay>
-
-```yue
-const a = 123
-close _ = <close>: -> print "Out of scope."
-```
-
-</YueDisplay>
-
 Anda dapat melakukan destrukturisasi dengan variabel yang diberi atribut sebagai konstanta.
 
 ```yuescript
@@ -4192,30 +2135,12 @@ const {:a, :b, c, d} = tb
 -- a = 1
 ```
 
-<YueDisplay>
-
-```yue
-const {:a, :b, c, d} = tb
--- a = 1
-```
-
-</YueDisplay>
-
 Anda juga bisa mendeklarasikan variabel global sebagai `const`.
 
 ```yuescript
 global const Constant = 123
 -- Constant = 1
 ```
-
-<YueDisplay>
-
-```yue
-global const Constant = 123
--- Constant = 1
-```
-
-</YueDisplay>
 
 # Operator
 
@@ -4225,15 +2150,6 @@ Semua operator biner dan unari Lua tersedia. Selain itu **!=** adalah alias untu
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
-
-<YueDisplay>
-
-```yue
-tb\func! if tb ~= nil
-tb::func! if tb != nil
-```
-
-</YueDisplay>
 
 ## Perbandingan Berantai
 
@@ -4247,19 +2163,6 @@ a = 5
 print 1 <= a <= 10
 -- output: true
 ```
-
-<YueDisplay>
-
-```yue
-print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
--- output: true
-
-a = 5
-print 1 <= a <= 10
--- output: true
-```
-
-</YueDisplay>
 
 Perhatikan perilaku evaluasi perbandingan berantai:
 
@@ -4286,33 +2189,6 @@ print v(1) > v(2) <= v(3)
 ]]
 ```
 
-<YueDisplay>
-
-```yue
-v = (x) ->
-  print x
-  x
-
-print v(1) < v(2) <= v(3)
---[[
-  output:
-  2
-  1
-  3
-  true
-]]
-
-print v(1) > v(2) <= v(3)
---[[
-  output:
-  2
-  1
-  false
-]]
-```
-
-</YueDisplay>
-
 Ekspresi tengah hanya dievaluasi sekali, bukan dua kali seperti jika ekspresi ditulis sebagai `v(1) < v(2) and v(2) <= v(3)`. Namun, urutan evaluasi pada perbandingan berantai tidak didefinisikan. Sangat disarankan untuk tidak menggunakan ekspresi dengan efek samping (seperti `print`) di perbandingan berantai. Jika efek samping diperlukan, operator short-circuit `and` sebaiknya digunakan secara eksplisit.
 
 ## Menambahkan ke Tabel
@@ -4324,15 +2200,6 @@ tab = []
 tab[] = "Value"
 ```
 
-<YueDisplay>
-
-```yue
-tab = []
-tab[] = "Value"
-```
-
-</YueDisplay>
-
 Anda juga bisa memakai operator spread `...` untuk menambahkan semua elemen dari satu list ke list lain:
 
 ```yuescript
@@ -4341,17 +2208,6 @@ tbB = [4, 5, 6]
 tbA[] = ...tbB
 -- tbA sekarang [1, 2, 3, 4, 5, 6]
 ```
-
-<YueDisplay>
-
-```yue
-tbA = [1, 2, 3]
-tbB = [4, 5, 6]
-tbA[] = ...tbB
--- tbA sekarang [1, 2, 3, 4, 5, 6]
-```
-
-</YueDisplay>
 
 ## Penyebaran Tabel
 
@@ -4374,27 +2230,6 @@ b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
 
-<YueDisplay>
-
-```yue
-parts =
-  * "shoulders"
-  * "knees"
-lyrics =
-  * "head"
-  * ...parts
-  * "and"
-  * "toes"
-
-copy = {...other}
-
-a = {1, 2, 3, x: 1}
-b = {4, 5, y: 1}
-merge = {...a, ...b}
-```
-
-</YueDisplay>
-
 ## Indeks Balik Tabel
 
 Anda dapat menggunakan operator **#** untuk mendapatkan elemen terakhir dari tabel.
@@ -4404,16 +2239,6 @@ last = data.items[#]
 second_last = data.items[#-1]
 data.items[#] = 1
 ```
-
-<YueDisplay>
-
-```yue
-last = data.items[#]
-second_last = data.items[#-1]
-data.items[#] = 1
-```
-
-</YueDisplay>
 
 ## Metatable
 
@@ -4439,26 +2264,6 @@ print d.value
 close _ = <close>: -> print "out of scope"
 ```
 
-<YueDisplay>
-
-```yue
-mt = {}
-add = (right) => <>: mt, value: @value + right.value
-mt.__add = add
-
-a = <>: mt, value: 1
- -- set field dengan variabel bernama sama
-b = :<add>, value: 2
-c = <add>: mt.__add, value: 3
-
-d = a + b + c
-print d.value
-
-close _ = <close>: -> print "out of scope"
-```
-
-</YueDisplay>
-
 ### Mengakses Metatable
 
 Akses metatable dengan **<>**, nama metamethod yang dikelilingi **<>**, atau menulis ekspresi di dalam **<>**.
@@ -4473,19 +2278,6 @@ tb.<> = __index: {item: "hello"}
 print tb.item
 ```
 
-<YueDisplay>
-
-```yue
--- dibuat dengan metatable yang berisi field "value"
-tb = <"value">: 123
-tb.<index> = tb.<>
-print tb.value
-tb.<> = __index: {item: "hello"}
-print tb.item
-```
-
-</YueDisplay>
-
 ### Destrukturisasi Metatable
 
 Destrukturisasi metatable dengan kunci metamethod yang dikelilingi **<>**.
@@ -4494,15 +2286,6 @@ Destrukturisasi metatable dengan kunci metamethod yang dikelilingi **<>**.
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
-
-<YueDisplay>
-
-```yue
-{item, :new, :<close>, <index>: getter} = tb
-print item, new, close, getter
-```
-
-</YueDisplay>
 
 ## Keberadaan
 
@@ -4523,25 +2306,6 @@ with? io.open "test.txt", "w"
   \close!
 ```
 
-<YueDisplay>
-
-```yue
-func?!
-print abc?["hello world"]?.xyz
-
-x = tab?.value
-len = utf8?.len or string?.len or (o) -> #o
-
-if print and x?
-  print x
-
-with? io.open "test.txt", "w"
-  \write "hello"
-  \close!
-```
-
-</YueDisplay>
-
 ## Piping
 
 Sebagai ganti serangkaian pemanggilan fungsi bersarang, Anda bisa mengalirkan nilai dengan operator **|>**.
@@ -4560,24 +2324,6 @@ readFile "example.txt"
   |> print
 ```
 
-<YueDisplay>
-
-```yue
-"hello" |> print
-1 |> print 2 -- sisipkan nilai pipe sebagai argumen pertama
-2 |> print 1, _, 3 -- pipe dengan placeholder
-
--- ekspresi pipe multi-baris
-readFile "example.txt"
-  |> extract language, {}
-  |> parse language
-  |> emit
-  |> render
-  |> print
-```
-
-</YueDisplay>
-
 ## Nil Coalescing
 
 Operator nil-coalescing **??** mengembalikan nilai dari operan kiri jika bukan **nil**; jika tidak, operator mengevaluasi operan kanan dan mengembalikan hasilnya. Operator **??** tidak mengevaluasi operan kanan jika operan kiri bernilai non-nil.
@@ -4589,17 +2335,6 @@ func a ?? {}
 
 a ??= false
 ```
-
-<YueDisplay>
-
-```yue
-local a, b, c, d
-a = b ?? c ?? d
-func a ?? {}
-a ??= false
-```
-
-</YueDisplay>
 
 ## Objek Implisit
 
@@ -4648,52 +2383,6 @@ tb =
 
 ```
 
-<YueDisplay>
-
-```yue
--- assignment dengan objek implisit
-list =
-  * 1
-  * 2
-  * 3
-
--- pemanggilan fungsi dengan objek implisit
-func
-  * 1
-  * 2
-  * 3
-
--- return dengan objek implisit
-f = ->
-  return
-    * 1
-    * 2
-    * 3
-
--- tabel dengan objek implisit
-tb =
-  name: "abc"
-
-  values:
-    - "a"
-    - "b"
-    - "c"
-
-  objects:
-    - name: "a"
-      value: 1
-      func: => @value + 1
-      tb:
-        fieldA: 1
-
-    - name: "b"
-      value: 2
-      func: => @value + 2
-      tb: { }
-```
-
-</YueDisplay>
-
 # Literal
 
 Semua literal primitif di Lua dapat digunakan. Ini berlaku untuk angka, string, boolean, dan **nil**.
@@ -4709,19 +2398,6 @@ some_string = "Here is a string
 print "I am #{math.random! * 100}% sure."
 ```
 
-<YueDisplay>
-
-```yue
-some_string = "Here is a string
-  that has a line break in it."
-
--- Anda dapat mencampur ekspresi ke dalam literal string dengan sintaks #{}.
--- Interpolasi string hanya tersedia pada string dengan tanda kutip ganda.
-print "I am #{math.random! * 100}% sure."
-```
-
-</YueDisplay>
-
 ## Literal Angka
 
 Anda bisa menggunakan garis bawah pada literal angka untuk meningkatkan keterbacaan.
@@ -4731,16 +2407,6 @@ integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
 ```
-
-<YueDisplay>
-
-```yue
-integer = 1_000_000
-hex = 0xEF_BB_BF
-binary = 0B10011
-```
-
-</YueDisplay>
 
 ## String Multibaris YAML
 
@@ -4754,18 +2420,6 @@ str = |
     - #{expr}
 ```
 
-<YueDisplay>
-
-```yue
-str = |
-  key: value
-  list:
-    - item1
-    - #{expr}
-```
-
-</YueDisplay>
-
 Ini memungkinkan penulisan teks multibaris terstruktur dengan mudah. Semua pemisah baris dan indentasi dipertahankan relatif terhadap baris non-kosong pertama, dan ekspresi di dalam `#{...}` diinterpolasi otomatis sebagai `tostring(expr)`.
 
 String Multibaris YAML secara otomatis mendeteksi prefiks spasi awal yang sama (indentasi minimum di seluruh baris non-kosong) dan menghapusnya dari semua baris. Ini memudahkan untuk mengindentasi kode secara visual tanpa memengaruhi isi string yang dihasilkan.
@@ -4778,18 +2432,6 @@ fn = ->
   return str
 ```
 
-<YueDisplay>
-
-```yue
-fn = ->
-  str = |
-    foo:
-      bar: baz
-  return str
-```
-
-</YueDisplay>
-
 Indentasi internal dipertahankan relatif terhadap prefiks umum yang dihapus, sehingga struktur bertingkat tetap rapi.
 
 Semua karakter khusus seperti tanda kutip (`"`) dan backslash (`\`) di dalam blok YAMLMultiline di-escape secara otomatis agar string Lua yang dihasilkan valid secara sintaks dan berperilaku sebagaimana mestinya.
@@ -4799,16 +2441,6 @@ str = |
   path: "C:\Program Files\App"
   note: 'He said: "#{Hello}!"'
 ```
-
-<YueDisplay>
-
-```yue
-str = |
-  path: "C:\Program Files\App"
-  note: 'He said: "#{Hello}!"'
-```
-
-</YueDisplay>
 
 # Modul
 
@@ -4841,35 +2473,6 @@ do
   import "export" as {one, two, Something:{umm:{ch}}}
 ```
 
-<YueDisplay>
-
-```yue
--- digunakan sebagai destrukturisasi tabel
-do
-  import insert, concat from table
-  -- akan error saat meng-assign ke insert, concat
-  import C, Ct, Cmt from require "lpeg"
-  -- shortcut untuk require implisit
-  import x, y, z from 'mymodule'
-  -- import gaya Python
-  from 'module' import a, b, c
-
--- shortcut untuk require modul
-do
-  import 'module'
-  import 'module_x'
-  import "d-a-s-h-e-s"
-  import "module.part"
-
--- require modul dengan aliasing atau destrukturisasi tabel
-do
-  import "player" as PlayerModule
-  import "lpeg" as :C, :Ct, :Cmt
-  import "export" as {one, two, Something:{umm:{ch}}}
-```
-
-</YueDisplay>
-
 ## Import Global
 
 Anda dapat mengimpor global tertentu ke variabel local dengan `import`. Saat mengimpor rangkaian akses variabel global, field terakhir akan di-assign ke variabel local.
@@ -4880,17 +2483,6 @@ do
   import table.concat
   print concat ["a", tostring 1]
 ```
-
-<YueDisplay>
-
-```yue
-do
-  import tostring
-  import table.concat
-  print concat ["a", tostring 1]
-```
-
-</YueDisplay>
 
 ### Import Variabel Global Otomatis
 
@@ -4912,25 +2504,6 @@ do
   print FLAG
   FLAG = 123
 ```
-
-<YueDisplay>
-
-```yue
-do
-  import global
-  print "hello"
-  math.random 3
-  -- print = nil -- error: imported globals are const
-
-do
-  -- variabel global eksplisit tidak akan diimpor
-  import global
-  global FLAG
-  print FLAG
-  FLAG = 123
-```
-
-</YueDisplay>
 
 ## Export
 
@@ -4956,41 +2529,12 @@ export class Something
   umm: "cool"
 ```
 
-<YueDisplay>
-
-```yue
-export a, b, c = 1, 2, 3
-export cool = "cat"
-
-export What = if this
-  "abc"
-else
-  "def"
-
-export y = ->
-  hallo = 3434
-
-export class Something
-  umm: "cool"
-```
-
-</YueDisplay>
-
 Melakukan export bernama dengan destrukturisasi.
 
 ```yuescript
 export :loadstring, to_lua: tolua = yue
 export {itemA: {:fieldA = 'default'}} = tb
 ```
-
-<YueDisplay>
-
-```yue
-export :loadstring, to_lua: tolua = yue
-export {itemA: {:fieldA = 'default'}} = tb
-```
-
-</YueDisplay>
 
 Export item bernama dari modul tanpa membuat variabel local.
 
@@ -4999,16 +2543,6 @@ export.itemA = tb
 export.<index> = items
 export["a-b-c"] = 123
 ```
-
-<YueDisplay>
-
-```yue
-export.itemA = tb
-export.<index> = items
-export["a-b-c"] = 123
-```
-
-</YueDisplay>
 
 ### Export Tanpa Nama
 
@@ -5027,23 +2561,6 @@ export with tmp
   j = 2000
 ```
 
-<YueDisplay>
-
-```yue
-d, e, f = 3, 2, 1
-export d, e, f
-
-export if this
-  123
-else
-  456
-
-export with tmp
-  j = 2000
-```
-
-</YueDisplay>
-
 ### Export Default
 
 Gunakan kata kunci **default** dalam pernyataan export untuk mengganti tabel export dengan apa pun.
@@ -5053,16 +2570,6 @@ export default ->
   print "hello"
   123
 ```
-
-<YueDisplay>
-
-```yue
-export default ->
-  print "hello"
-  123
-```
-
-</YueDisplay>
 
 # Lisensi: MIT
 

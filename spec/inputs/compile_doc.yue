@@ -61,5 +61,9 @@ for [compiledFile, docFile, docFiles] in *docs
 	close output = with io.open "#{outputFolder}/#{compiledFile}", "w+"
 		\write table.concat codes
 	close output2 = with io.open "#{docFolder}/#{docFile}", "w+"
-		\write table.concat docTexts, "\n"
+		\write (table
+			.concat docTexts, "\n"
+			\gsub "<img .-/>\n\n", ""
+			\gsub "%-%-%-.-%-%-%-\n\n", ""
+			\gsub "<YueDisplay>.-</YueDisplay>\n\n", "")
 

@@ -1,10 +1,4 @@
----
-title: Referenz
----
-
 # YueScript-Dokumentation
-
-<img src="/image/yuescript.svg" width="250px" height="250px" alt="logo" style="padding-top: 3em; padding-bottom: 2em;"/>
 
 Willkommen in der offiziellen <b>YueScript</b>-Dokumentation!<br/>
 Hier findest du Sprachfeatures, Nutzung, Referenzbeispiele und Ressourcen.<br/>
@@ -21,17 +15,6 @@ do
 print var -- nil hier
 ```
 
-<YueDisplay>
-
-```yue
-do
-  var = "hallo"
-  print var
-print var -- nil hier
-```
-
-</YueDisplay>
-
 YueScripts **do** kann auch als Ausdruck verwendet werden. So kannst du mehrere Zeilen in einem Ausdruck kombinieren. Das Ergebnis des `do`-Ausdrucks ist die letzte Anweisung im Block. `do`-Ausdrücke unterstützen die Verwendung von `break`, um den Kontrollfluss zu unterbrechen und mehrere Rückgabewerte vorzeitig zurückzugeben.
 
 ```yuescript
@@ -42,18 +25,6 @@ status, value = do
   break "small", n
 ```
 
-<YueDisplay>
-
-```yue
-status, value = do
-  n = 12
-  if n > 10
-    break "large", n
-  break "small", n
-```
-
-</YueDisplay>
-
 ```yuescript
 counter = do
   i = 0
@@ -65,21 +36,6 @@ print counter!
 print counter!
 ```
 
-<YueDisplay>
-
-```yue
-counter = do
-  i = 0
-  ->
-    i += 1
-    i
-
-print counter!
-print counter!
-```
-
-</YueDisplay>
-
 ```yuescript
 tbl = {
   key: do
@@ -87,18 +43,6 @@ tbl = {
     1234
 }
 ```
-
-<YueDisplay>
-
-```yue
-tbl = {
-  key: do
-    print "Schlüssel wird zugewiesen!"
-    1234
-}
-```
-
-</YueDisplay>
 
 # Line-Decorators
 
@@ -108,27 +52,11 @@ Zur Vereinfachung können `for`-Schleifen und `if`-Anweisungen auf einzelne Anwe
 print "Hallo Welt" if name == "Rob"
 ```
 
-<YueDisplay>
-
-```yue
-print "Hallo Welt" if name == "Rob"
-```
-
-</YueDisplay>
-
 Und mit einfachen Schleifen:
 
 ```yuescript
 print "Element: ", item for item in *items
 ```
-
-<YueDisplay>
-
-```yue
-print "Element: ", item for item in *items
-```
-
-</YueDisplay>
 
 Und mit `while`-Schleifen:
 
@@ -137,16 +65,6 @@ game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
-
-<YueDisplay>
-
-```yue
-game\update! while game\isRunning!
-
-reader\parse_line! until reader\eof!
-```
-
-</YueDisplay>
 
 # Makros
 
@@ -183,39 +101,6 @@ if $and f1!, f2!, f3!
   print "OK"
 ```
 
-<YueDisplay>
-
-```yue
-macro PI2 = -> math.pi * 2
-area = $PI2 * 5
-
-macro HELLO = -> "'Hallo Welt'"
-print $HELLO
-
-macro config = (debugging) ->
-  global debugMode = debugging == "true"
-  ""
-
-macro asserts = (cond) ->
-  debugMode and "assert #{cond}" or ""
-
-macro assert = (cond) ->
-  debugMode and "assert #{cond}" or "#{cond}"
-
-$config true
-$asserts item ~= nil
-
-$config false
-value = $assert item
-
--- übergebene Ausdrücke werden als Strings behandelt
-macro and = (...) -> "#{ table.concat {...}, ' and ' }"
-if $and f1!, f2!, f3!
-  print "OK"
-```
-
-</YueDisplay>
-
 ## Rohcode einfügen
 
 Eine Makrofunktion kann entweder einen YueScript-String oder eine Konfigurationstabelle mit Lua-Code zurückgeben.
@@ -246,36 +131,6 @@ end
 ]==]
 ```
 
-<YueDisplay>
-
-```yue
-macro yueFunc = (var) -> "local #{var} = ->"
-$yueFunc funcA
-funcA = -> "Zuweisung an die vom Yue-Makro definierte Variable schlägt fehl"
-
-macro luaFunc = (var) -> {
-  code: "local function #{var}() end"
-  type: "lua"
-}
-$luaFunc funcB
-funcB = -> "Zuweisung an die vom Lua-Makro definierte Variable schlägt fehl"
-
-macro lua = (code) -> {
-  :code
-  type: "lua"
-}
-
--- führende und abschließende Symbole des Raw-Strings werden automatisch getrimmt
-$lua[==[
--- Einfügen von rohem Lua-Code
-if cond then
-  print("Ausgabe")
-end
-]==]
-```
-
-</YueDisplay>
-
 ## Makros exportieren
 
 Makrofunktionen können aus einem Modul exportiert und in ein anderes Modul importiert werden. Exportierte Makros müssen in einer einzelnen Datei liegen, und im Export-Modul dürfen nur Makrodefinitionen, Makro-Imports und Makro-Expansionen stehen.
@@ -295,28 +150,6 @@ import "utils" as {
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
 
-<YueDisplay>
-
-```yue
--- Datei: utils.yue
-export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
-export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
-export macro foreach = (items, action) -> "for _ in *#{items}
-  #{action}"
-
--- Datei main.yue
--- Import-Funktion im Browser nicht verfügbar, in echter Umgebung testen
---[[
-import "utils" as {
-  $, -- Symbol zum Importieren aller Makros
-  $foreach: $each -- Makro $foreach in $each umbenennen
-}
-[1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
-]]
-```
-
-</YueDisplay>
-
 ## Eingebaute Makros
 
 Es gibt einige eingebaute Makros, aber du kannst sie überschreiben, indem du Makros mit denselben Namen deklarierst.
@@ -325,15 +158,6 @@ Es gibt einige eingebaute Makros, aber du kannst sie überschreiben, indem du Ma
 print $FILE -- String des aktuellen Modulnamens
 print $LINE -- gibt 2 aus
 ```
-
-<YueDisplay>
-
-```yue
-print $FILE -- String des aktuellen Modulnamens
-print $LINE -- gibt 2 aus
-```
-
-</YueDisplay>
 
 ## Makros mit Makros erzeugen
 
@@ -357,28 +181,6 @@ print "Gültiger Enum-Typ:", $BodyType Static
 -- print "Kompilierungsfehler bei Enum-Typ:", $BodyType Unknown
 ```
 
-<YueDisplay>
-
-```yue
-macro Enum = (...) ->
-  items = {...}
-  itemSet = {item, true for item in *items}
-  (item) ->
-    error "erhalten: \"#{item}\", erwartet eines von #{table.concat items, ', '}" unless itemSet[item]
-    "\"#{item}\""
-
-macro BodyType = $Enum(
-  Static
-  Dynamic
-  Kinematic
-)
-
-print "Gültiger Enum-Typ:", $BodyType Static
--- print "Kompilierungsfehler bei Enum-Typ:", $BodyType Unknown
-```
-
-</YueDisplay>
-
 ## Argument-Validierung
 
 Du kannst erwartete AST-Knotentypen in der Argumentliste deklarieren und zur Compile-Zeit prüfen, ob die übergebenen Makroargumente den Erwartungen entsprechen.
@@ -393,20 +195,6 @@ macro printNumAndStr = (num `Num, str `String) -> |
 $printNumAndStr 123, "hallo"
 ```
 
-<YueDisplay>
-
-```yue
-macro printNumAndStr = (num `Num, str `String) -> |
-  print(
-    #{num}
-    #{str}
-  )
-
-$printNumAndStr 123, "hallo"
-```
-
-</YueDisplay>
-
 Wenn du flexiblere Argumentprüfungen brauchst, kannst du das eingebaute Makro `$is_ast` verwenden, um manuell an der passenden Stelle zu prüfen.
 
 ```yuescript
@@ -417,19 +205,6 @@ macro printNumAndStr = (num, str) ->
 
 $printNumAndStr 123, "hallo"
 ```
-
-<YueDisplay>
-
-```yue
-macro printNumAndStr = (num, str) ->
-  error "als erstes Argument Num erwartet" unless $is_ast Num, num
-  error "als zweites Argument String erwartet" unless $is_ast String, str
-  "print(#{num}, #{str})"
-
-$printNumAndStr 123, "hallo"
-```
-
-</YueDisplay>
 
 Weitere Details zu verfügbaren AST-Knoten findest du in den großgeschriebenen Definitionen in `yue_parser.cpp`.
 
@@ -465,38 +240,6 @@ catch err
   print result
 ```
 
-<YueDisplay>
-
-```yue
-try
-  func 1, 2, 3
-catch err
-  print yue.traceback err
-
-success, result = try
-  func 1, 2, 3
-catch err
-  yue.traceback err
-
-try func 1, 2, 3
-catch err
-  print yue.traceback err
-
-success, result = try func 1, 2, 3
-
-try
-  print "Versuche"
-  func 1, 2, 3
-
--- Verwendung mit if-Zuweisungsmuster
-if success, result := try func 1, 2, 3
-catch err
-    print yue.traceback err
-  print result
-```
-
-</YueDisplay>
-
 ## Try?
 
 `try?` ist eine vereinfachte Fehlerbehandlungs-Syntax, die den booleschen Status aus dem `try`-Statement weglässt. Bei Erfolg gibt sie das Ergebnis des `try`-Blocks zurück, ansonsten `nil` statt eines Fehlerobjekts.
@@ -519,43 +262,13 @@ catch e
   e
 ```
 
-<YueDisplay>
-
-```yue
-a, b, c = try? func!
-
--- mit Nil-Verschmelzungs-Operator
-a = (try? func!) ?? "Standardwert"
-
--- als Funktionsargument
-f try? func!
-
--- mit catch-Block
-f try?
-  print 123
-  func!
-catch e
-  print e
-  e
-```
-
-</YueDisplay>
-
 # Tabellenliterale
 
 Wie in Lua werden Tabellen mit geschweiften Klammern definiert.
 
 ```yuescript
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
-
-<YueDisplay>
-
-```yue
-some_values = [1, 2, 3, 4]
-```
-
-</YueDisplay>
 
 Anders als in Lua weist man einem Schlüssel in einer Tabelle mit **:** (statt **=**) einen Wert zu.
 
@@ -567,18 +280,6 @@ some_values = {
 }
 ```
 
-<YueDisplay>
-
-```yue
-some_values = {
-  name: "Bill",
-  age: 200,
-  ["Lieblingsessen"]: "Reis"
-}
-```
-
-</YueDisplay>
-
 Die geschweiften Klammern können weggelassen werden, wenn eine einzelne Tabelle aus Schlüssel-Wert-Paaren zugewiesen wird.
 
 ```yuescript
@@ -587,17 +288,6 @@ profile =
   shoe_size: 13,
   favorite_foods: ["Eis", "Donuts"]
 ```
-
-<YueDisplay>
-
-```yue
-profile =
-  height: "4 Fuß",
-  shoe_size: 13,
-  favorite_foods: ["Eis", "Donuts"]
-```
-
-</YueDisplay>
 
 Zeilenumbrüche können Werte statt eines Kommas trennen (oder zusätzlich):
 
@@ -610,19 +300,6 @@ values = {
 }
 ```
 
-<YueDisplay>
-
-```yue
-values = {
-  1, 2, 3, 4
-  5, 6, 7, 8
-  name: "Superman"
-  occupation: "Verbrechensbekämpfung"
-}
-```
-
-</YueDisplay>
-
 Beim Erstellen eines einzeiligen Tabellenliterals können die geschweiften Klammern ebenfalls weggelassen werden:
 
 ```yuescript
@@ -630,16 +307,6 @@ my_function dance: "Tango", partner: "keiner"
 
 y = type: "Hund", legs: 4, tails: 1
 ```
-
-<YueDisplay>
-
-```yue
-my_function dance: "Tango", partner: "keiner"
-
-y = type: "Hund", legs: 4, tails: 1
-```
-
-</YueDisplay>
 
 Die Schlüssel eines Tabellenliterals können Sprach-Schlüsselwörter sein, ohne sie zu escapen:
 
@@ -649,17 +316,6 @@ tbl = {
   end: "Hunger"
 }
 ```
-
-<YueDisplay>
-
-```yue
-tbl = {
-  do: "etwas"
-  end: "Hunger"
-}
-```
-
-</YueDisplay>
 
 Wenn du eine Tabelle aus Variablen konstruierst und die Schlüssel den Variablennamen entsprechen sollen, kannst du den Präfix-Operator **:** verwenden:
 
@@ -671,18 +327,6 @@ person = { :hair, :height, shoe_size: 40 }
 print_table :hair, :height
 ```
 
-<YueDisplay>
-
-```yue
-hair = "golden"
-height = 200
-person = { :hair, :height, shoe_size: 40 }
-
-print_table :hair, :height
-```
-
-</YueDisplay>
-
 Wenn der Schlüssel eines Feldes das Ergebnis eines Ausdrucks sein soll, kannst du ihn wie in Lua in **[ ]** setzen. Du kannst auch ein String-Literal direkt als Schlüssel verwenden und die eckigen Klammern weglassen. Das ist nützlich, wenn dein Schlüssel Sonderzeichen enthält.
 
 ```yuescript
@@ -692,32 +336,12 @@ t = {
 }
 ```
 
-<YueDisplay>
-
-```yue
-t = {
-  [1 + 2]: "hallo"
-  "Hallo Welt": true
-}
-```
-
-</YueDisplay>
-
-Lua-Tabellen haben einen Array-Teil und einen Hash-Teil, aber manchmal möchte man beim Schreiben von Lua-Tabellen eine semantische Unterscheidung zwischen Array- und Hash-Nutzung machen. Dann kannst du eine Lua-Tabelle mit **[ ]** statt **{ }** schreiben, um eine Array-Tabelle darzustellen, und das Schreiben von Schlüssel-Wert-Paaren in einer Listentabelle ist nicht erlaubt.
+Lua-Tabellen haben sowohl einen Array-Teil als auch einen Hash-Teil, aber manchmal ist es nützlich, hier eine semantische Unterscheidung zu treffen. Du kannst **[ ]** anstelle von **{ }** verwenden, um eine Tabelle explizit als Array zu deklarieren; dadurch wird verhindert, dass Schlüssel-Wert-Paare hineingeschrieben werden.
 
 ```yuescript
 some_values = [1, 2, 3, 4]
 list_with_one_element = [1, ]
 ```
-
-<YueDisplay>
-
-```yue
-some_values = [1, 2, 3, 4]
-list_with_one_element = [1, ]
-```
-
-</YueDisplay>
 
 # Comprehensions
 
@@ -732,42 +356,17 @@ items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
 ```
 
-<YueDisplay>
-
-```yue
-items = [ 1, 2, 3, 4 ]
-doubled = [item * 2 for i, item in ipairs items]
-```
-
-</YueDisplay>
-
 Die Elemente in der neuen Tabelle können mit einer `when`-Klausel eingeschränkt werden:
 
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
 
-<YueDisplay>
-
-```yue
-slice = [item for i, item in ipairs items when i > 1 and i < 3]
-```
-
-</YueDisplay>
-
 Da es üblich ist, über die Werte einer numerisch indizierten Tabelle zu iterieren, gibt es den **\***-Operator. Das Verdopplungsbeispiel kann so umgeschrieben werden:
 
 ```yuescript
 doubled = [item * 2 for item in *items]
 ```
-
-<YueDisplay>
-
-```yue
-doubled = [item * 2 for item in *items]
-```
-
-</YueDisplay>
 
 In Listen-Comprehensions kannst du außerdem den Spread-Operator `...` verwenden, um verschachtelte Listen zu flatten und einen Flat-Map-Effekt zu erzielen:
 
@@ -779,19 +378,6 @@ data =
 flat = [...v for k,v in pairs data]
 -- flat ist jetzt [1, 2, 3, 4, 5, 6]
 ```
-
-<YueDisplay>
-
-```yue
-data =
-  a: [1, 2, 3]
-  b: [4, 5, 6]
-
-flat = [...v for k,v in pairs data]
--- flat ist jetzt [1, 2, 3, 4, 5, 6]
-```
-
-</YueDisplay>
 
 Die `for`- und `when`-Klauseln können beliebig oft verkettet werden. Die einzige Anforderung ist, dass eine Comprehension mindestens eine `for`-Klausel enthält.
 
@@ -805,31 +391,11 @@ points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
 
-<YueDisplay>
-
-```yue
-x_coords = [4, 5, 6, 7]
-y_coords = [9, 2, 3]
-
-points = [ [x, y] for x in *x_coords \
-for y in *y_coords]
-```
-
-</YueDisplay>
-
 Numerische `for`-Schleifen können ebenfalls in Comprehensions verwendet werden:
 
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
-
-<YueDisplay>
-
-```yue
-evens = [i for i = 1, 100 when i % 2 == 0]
-```
-
-</YueDisplay>
 
 ## Tabellen-Comprehensions
 
@@ -847,31 +413,9 @@ thing = {
 thing_copy = {k, v for k, v in pairs thing}
 ```
 
-<YueDisplay>
-
-```yue
-thing = {
-  color: "rot"
-  name: "schnell"
-  width: 123
-}
-
-thing_copy = {k, v for k, v in pairs thing}
-```
-
-</YueDisplay>
-
 ```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
-
-<YueDisplay>
-
-```yue
-no_color = {k, v for k, v in pairs thing when k != "color"}
-```
-
-</YueDisplay>
 
 Der **\***-Operator wird ebenfalls unterstützt. Hier erstellen wir eine Nachschlagetabelle für Quadratwurzeln einiger Zahlen.
 
@@ -879,15 +423,6 @@ Der **\***-Operator wird ebenfalls unterstützt. Hier erstellen wir eine Nachsch
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
-
-<YueDisplay>
-
-```yue
-numbers = [1, 2, 3, 4]
-sqrts = {i, math.sqrt i for i in *numbers}
-```
-
-</YueDisplay>
 
 Das Schlüssel-Wert-Tupel in einer Tabellen-Comprehension kann auch aus einem einzelnen Ausdruck stammen; der Ausdruck muss dann zwei Werte zurückgeben. Der erste wird als Schlüssel und der zweite als Wert verwendet:
 
@@ -897,15 +432,6 @@ In diesem Beispiel konvertieren wir ein Array von Paaren in eine Tabelle, wobei 
 tuples = [ ["hallo", "Welt"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
-
-<YueDisplay>
-
-```yue
-tuples = [ ["hallo", "Welt"], ["foo", "bar"]]
-tbl = {unpack tuple for tuple in *tuples}
-```
-
-</YueDisplay>
 
 ## Slicing
 
@@ -917,41 +443,17 @@ Hier setzen wir die minimalen und maximalen Grenzen und nehmen alle Elemente mit
 slice = [item for item in *items[1, 5]]
 ```
 
-<YueDisplay>
-
-```yue
-slice = [item for item in *items[1, 5]]
-```
-
-</YueDisplay>
-
 Jedes der Slice-Argumente kann weggelassen werden, um einen sinnvollen Standard zu verwenden. Wenn der maximale Index weggelassen wird, entspricht er der Länge der Tabelle. Dieses Beispiel nimmt alles außer dem ersten Element:
 
 ```yuescript
 slice = [item for item in *items[2,]]
 ```
 
-<YueDisplay>
-
-```yue
-slice = [item for item in *items[2,]]
-```
-
-</YueDisplay>
-
 Wenn die Mindestgrenze weggelassen wird, ist sie standardmäßig 1. Hier geben wir nur die Schrittweite an und lassen die anderen Grenzen leer. Das nimmt alle ungerad indizierten Elemente (1, 3, 5, …):
 
 ```yuescript
 slice = [item for item in *items[,,2]]
 ```
-
-<YueDisplay>
-
-```yue
-slice = [item for item in *items[,,2]]
-```
-
-</YueDisplay>
 
 Sowohl die Mindest- als auch die Maximalgrenze können negativ sein; dann werden die Grenzen vom Ende der Tabelle gezählt.
 
@@ -960,28 +462,11 @@ Sowohl die Mindest- als auch die Maximalgrenze können negativ sein; dann werden
 slice = [item for item in *items[-4,-1]]
 ```
 
-<YueDisplay>
-
-```yue
--- die letzten 4 Elemente nehmen
-slice = [item for item in *items[-4,-1]]
-```
-
-</YueDisplay>
-
 Die Schrittweite kann ebenfalls negativ sein, wodurch die Elemente in umgekehrter Reihenfolge genommen werden.
 
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
-
-<YueDisplay>
-
-```yue
-reverse_slice = [item for item in *items[-1,1,-1]]
-```
-
-</YueDisplay>
 
 ### Slicing-Ausdruck
 
@@ -994,18 +479,6 @@ sub_list = items[2, 4]
 -- die letzten 4 Elemente nehmen
 last_four_items = items[-4, -1]
 ```
-
-<YueDisplay>
-
-```yue
--- das 2. und 4. Element als neue Liste nehmen
-sub_list = items[2, 4]
-
--- die letzten 4 Elemente nehmen
-last_four_items = items[-4, -1]
-```
-
-</YueDisplay>
 
 # Objektorientierte Programmierung
 
@@ -1025,22 +498,6 @@ class Inventory
       @items[name] = 1
 ```
 
-<YueDisplay>
-
-```yue
-class Inventory
-  new: =>
-    @items = {}
-
-  add_item: (name) =>
-    if @items[name]
-      @items[name] += 1
-    else
-      @items[name] = 1
-```
-
-</YueDisplay>
-
 Eine Klasse wird mit einem `class`-Statement deklariert, gefolgt von einer tabellenähnlichen Deklaration mit allen Methoden und Eigenschaften.
 
 Die Eigenschaft `new` ist besonders, da sie zum Konstruktor wird.
@@ -1056,16 +513,6 @@ inv = Inventory!
 inv\add_item "T-Shirt"
 inv\add_item "Hose"
 ```
-
-<YueDisplay>
-
-```yue
-inv = Inventory!
-inv\add_item "T-Shirt"
-inv\add_item "Hose"
-```
-
-</YueDisplay>
 
 Da die Instanz bei Methodenaufrufen an die Methoden übergeben werden muss, wird der `\`-Operator verwendet.
 
@@ -1089,26 +536,6 @@ b\give_item "Hemd"
 print item for item in *a.clothes
 ```
 
-<YueDisplay>
-
-```yue
-class Person
-  clothes: []
-  give_item: (name) =>
-    table.insert @clothes, name
-
-a = Person!
-b = Person!
-
-a\give_item "Hose"
-b\give_item "Hemd"
-
--- gibt sowohl Hose als auch Hemd aus
-print item for item in *a.clothes
-```
-
-</YueDisplay>
-
 Der richtige Weg, das zu vermeiden, ist, den veränderlichen Zustand im Konstruktor zu erstellen:
 
 ```yuescript
@@ -1116,16 +543,6 @@ class Person
   new: =>
     @clothes = []
 ```
-
-<YueDisplay>
-
-```yue
-class Person
-  new: =>
-    @clothes = []
-```
-
-</YueDisplay>
 
 ## Vererbung
 
@@ -1138,18 +555,6 @@ class BackPack extends Inventory
     if #@items > size then error "Rucksack ist voll"
     super name
 ```
-
-<YueDisplay>
-
-```yue
-class BackPack extends Inventory
-  size: 10
-  add_item: (name) =>
-    if #@items > size then error "Rucksack ist voll"
-    super name
-```
-
-</YueDisplay>
 
 Hier erweitern wir unsere `Inventory`-Klasse und begrenzen die Anzahl der Elemente.
 
@@ -1165,19 +570,6 @@ class Shelf
 -- gibt aus: Shelf wurde von Cupboard geerbt
 class Cupboard extends Shelf
 ```
-
-<YueDisplay>
-
-```yue
-class Shelf
-  @__inherited: (child) =>
-    print @__name, "wurde vererbt von", child.__name
-
--- gibt aus: Shelf wurde von Cupboard geerbt
-class Cupboard extends Shelf
-```
-
-</YueDisplay>
 
 ## Super
 
@@ -1205,22 +597,6 @@ class MyClass extends ParentClass
     assert super == ParentClass
 ```
 
-<YueDisplay>
-
-```yue
-class MyClass extends ParentClass
-  a_method: =>
-    -- Folgendes hat dieselbe Wirkung:
-    super "hallo", "Welt"
-    super\a_method "hallo", "Welt"
-    super.a_method self, "hallo", "Welt"
-
-    -- super als Wert entspricht der Elternklasse:
-    assert super == ParentClass
-```
-
-</YueDisplay>
-
 **super** kann auch links einer Funktions-Stub verwendet werden. Der einzige große Unterschied ist, dass die resultierende Funktion statt an `super` an `self` gebunden wird.
 
 ## Typen
@@ -1233,17 +609,6 @@ assert b.__class == BackPack
 
 print BackPack.size -- gibt 10 aus
 ```
-
-<YueDisplay>
-
-```yue
-b = BackPack!
-assert b.__class == BackPack
-
-print BackPack.size -- gibt 10 aus
-```
-
-</YueDisplay>
 
 ## Klassenobjekte
 
@@ -1265,14 +630,6 @@ Der Name der Klasse, wie sie deklariert wurde, wird im Feld `__name` gespeichert
 print BackPack.__name -- gibt Backpack aus
 ```
 
-<YueDisplay>
-
-```yue
-print BackPack.__name -- gibt Backpack aus
-```
-
-</YueDisplay>
-
 Die Basistabelle ist in `__base` gespeichert. Du kannst diese Tabelle ändern, um Instanzen Funktionalität hinzuzufügen, die bereits existieren oder noch erstellt werden.
 
 Wenn die Klasse von etwas erbt, ist das Elternklassenobjekt in `__parent` gespeichert.
@@ -1291,20 +648,6 @@ Things\some_func!
 assert Things().some_func == nil
 ```
 
-<YueDisplay>
-
-```yue
-class Things
-  @some_func: => print "Hallo von", @__name
-
-Things\some_func!
-
--- Klassenvariablen in Instanzen nicht sichtbar
-assert Things().some_func == nil
-```
-
-</YueDisplay>
-
 In Ausdrücken können wir `@@` verwenden, um auf einen Wert zuzugreifen, der in `self.__class` gespeichert ist. `@@hello` ist also eine Kurzform für `self.__class.hello`.
 
 ```yuescript
@@ -1320,36 +663,11 @@ Counter!
 print Counter.count -- gibt 2 aus
 ```
 
-<YueDisplay>
-
-```yue
-class Counter
-  @count: 0
-
-  new: =>
-    @@count += 1
-
-Counter!
-Counter!
-
-print Counter.count -- gibt 2 aus
-```
-
-</YueDisplay>
-
 Die Aufrufsemantik von `@@` ist ähnlich wie bei `@`. Wenn du einen `@@`-Namen aufrufst, wird die Klasse als erstes Argument übergeben (Lua-`:`-Syntax).
 
 ```yuescript
 @@hello 1,2,3,4
 ```
-
-<YueDisplay>
-
-```yue
-@@hello 1,2,3,4
-```
-
-</YueDisplay>
 
 ## Klassendeklarations-Statements
 
@@ -1361,15 +679,6 @@ Hier ist eine alternative Möglichkeit, eine Klassenvariable zu erstellen:
 class Things
   @class_var = "Hallo Welt"
 ```
-
-<YueDisplay>
-
-```yue
-class Things
-  @class_var = "Hallo Welt"
-```
-
-</YueDisplay>
 
 Diese Ausdrücke werden ausgeführt, nachdem alle Eigenschaften zur Basis hinzugefügt wurden.
 
@@ -1384,19 +693,6 @@ class MoreThings
     log "Hallo Welt: " .. secret
 ```
 
-<YueDisplay>
-
-```yue
-class MoreThings
-  secret = 123
-  log = (msg) -> print "LOG:", msg
-
-  some_method: =>
-    log "Hallo Welt: " .. secret
-```
-
-</YueDisplay>
-
 ## @- und @@-Werte
 
 Wenn `@` und `@@` vor einem Namen stehen, repräsentieren sie den Namen in `self` bzw. `self.__class`.
@@ -1408,28 +704,11 @@ assert @ == self
 assert @@ == self.__class
 ```
 
-<YueDisplay>
-
-```yue
-assert @ == self
-assert @@ == self.__class
-```
-
-</YueDisplay>
-
 Zum Beispiel kannst du mit `@@` in einer Instanzmethode schnell eine neue Instanz derselben Klasse erzeugen:
 
 ```yuescript
 some_instance_method = (...) => @@ ...
 ```
-
-<YueDisplay>
-
-```yue
-some_instance_method = (...) => @@ ...
-```
-
-</YueDisplay>
 
 ## Konstruktor-Property-Promotion
 
@@ -1449,24 +728,6 @@ class Something
     @@baz = baz
 ```
 
-<YueDisplay>
-
-```yue
-class Something
-  new: (@foo, @bar, @@biz, @@baz) =>
-
--- Kurzform für
-
-class Something
-  new: (foo, bar, biz, baz) =>
-    @foo = foo
-    @bar = bar
-    @@biz = biz
-    @@baz = baz
-```
-
-</YueDisplay>
-
 Du kannst diese Syntax auch für eine gemeinsame Funktion verwenden, um Objektfelder zu initialisieren.
 
 ```yuescript
@@ -1474,16 +735,6 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
-
-<YueDisplay>
-
-```yue
-new = (@fieldA, @fieldB) => @
-obj = new {}, 123, "abc"
-print obj
-```
-
-</YueDisplay>
 
 ## Klassenausdrücke
 
@@ -1494,16 +745,6 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
-
-<YueDisplay>
-
-```yue
-x = class Bucket
-  drops: 0
-  add_drop: => @drops += 1
-```
-
-</YueDisplay>
 
 ## Anonyme Klassen
 
@@ -1516,30 +757,11 @@ BigBucket = class extends Bucket
 assert Bucket.__name == "BigBucket"
 ```
 
-<YueDisplay>
-
-```yue
-BigBucket = class extends Bucket
-  add_drop: => @drops += 10
-
-assert Bucket.__name == "BigBucket"
-```
-
-</YueDisplay>
-
 Du kannst sogar den Körper weglassen und eine leere anonyme Klasse schreiben:
 
 ```yuescript
 x = class
 ```
-
-<YueDisplay>
-
-```yue
-x = class
-```
-
-</YueDisplay>
 
 ## Class Mixing
 
@@ -1563,28 +785,6 @@ y\func!
 assert y.__class.__parent ~= X -- X ist nicht die Elternklasse von Y
 ```
 
-<YueDisplay>
-
-```yue
-MyIndex = __index: var: 1
-
-class X using MyIndex
-  func: =>
-    print 123
-
-x = X!
-print x.var
-
-class Y using X
-
-y = Y!
-y\func!
-
-assert y.__class.__parent ~= X -- X ist nicht die Elternklasse von Y
-```
-
-</YueDisplay>
-
 # With-Statement
 
 Ein häufiges Muster bei der Erstellung eines Objekts ist, unmittelbar danach eine Reihe von Funktionen aufzurufen und Eigenschaften zu setzen.
@@ -1603,18 +803,6 @@ with Person!
   print .name
 ```
 
-<YueDisplay>
-
-```yue
-with Person!
-  .name = "Oswald"
-  \add_relative my_dad
-  \save!
-  print .name
-```
-
-</YueDisplay>
-
 Das `with`-Statement kann auch als Ausdruck verwendet werden und gibt den Wert zurück, auf den es Zugriff gewährt.
 
 ```yuescript
@@ -1622,30 +810,12 @@ file = with File "Lieblingsessen.txt"
   \set_encoding "utf8"
 ```
 
-<YueDisplay>
-
-```yue
-file = with File "Lieblingsessen.txt"
-  \set_encoding "utf8"
-```
-
-</YueDisplay>
-
 `with`-Ausdrücke unterstützen `break` mit genau einem Wert:
 
 ```yuescript
 result = with obj
   break .value
 ```
-
-<YueDisplay>
-
-```yue
-result = with obj
-  break .value
-```
-
-</YueDisplay>
 
 Sobald `break value` in `with` verwendet wird, gibt der `with`-Ausdruck nicht mehr sein Zielobjekt zurück, sondern den von `break` gelieferten Wert.
 
@@ -1658,20 +828,6 @@ b = with obj
   break .x
 -- b ist .x, nicht obj
 ```
-
-<YueDisplay>
-
-```yue
-a = with obj
-  .x = 1
--- a ist obj
-
-b = with obj
-  break .x
--- b ist .x, nicht obj
-```
-
-</YueDisplay>
 
 Im Unterschied zu `for` / `while` / `repeat` / `do` unterstützt `with` nur einen `break`-Wert.
 
@@ -1686,19 +842,6 @@ create_person = (name,  relatives) ->
 me = create_person "Leaf", [dad, mother, sister]
 ```
 
-<YueDisplay>
-
-```yue
-create_person = (name,  relatives) ->
-  with Person!
-    .name = name
-    \add_relative relative for relative in *relatives
-
-me = create_person "Leaf", [dad, mother, sister]
-```
-
-</YueDisplay>
-
 In dieser Verwendung kann `with` als spezielle Form des K-Kombinators gesehen werden.
 
 Der Ausdruck im `with`-Statement kann auch eine Zuweisung sein, wenn du dem Ausdruck einen Namen geben willst.
@@ -1708,16 +851,6 @@ with str := "Hallo"
   print "Original:", str
   print "Großbuchstaben:", \upper!
 ```
-
-<YueDisplay>
-
-```yue
-with str := "Hallo"
-  print "Original:", str
-  print "Großbuchstaben:", \upper!
-```
-
-</YueDisplay>
 
 Du kannst in einem `with`-Statement über `[]` auf spezielle Schlüssel zugreifen.
 
@@ -1731,35 +864,12 @@ with tb
   [] = "abc" -- an "tb" anhängen
 ```
 
-<YueDisplay>
-
-```yue
-with tb
-  [1] = 1
-  print [2]
-  with [abc]
-    [3] = [2]\func!
-    ["key-name"] = value
-  [] = "abc" -- an "tb" anhängen
-```
-
-</YueDisplay>
-
 `with?` ist eine erweiterte Version der `with`-Syntax, die einen Existenz-Check einführt, um Objekte, die `nil` sein könnten, sicher zuzugreifen, ohne explizite Nullprüfungen.
 
 ```yuescript
 with? obj
   print obj.name
 ```
-
-<YueDisplay>
-
-```yue
-with? obj
-  print obj.name
-```
-
-</YueDisplay>
 
 # Zuweisung
 
@@ -1770,16 +880,6 @@ hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- nutzt die bestehende Variable
 ```
-
-<YueDisplay>
-
-```yue
-hello = "world"
-a, b, c = 1, 2, 3
-hello = 123 -- nutzt die bestehende Variable
-```
-
-</YueDisplay>
 
 ## Update-Zuweisung
 
@@ -1796,21 +896,6 @@ s ..= "world" -- legt eine neue lokale Variable an, wenn sie nicht existiert
 arg or= "default value"
 ```
 
-<YueDisplay>
-
-```yue
-x = 1
-x += 1
-x -= 1
-x *= 10
-x /= 10
-x %= 10
-s ..= "world" -- legt eine neue lokale Variable an, wenn sie nicht existiert
-arg or= "default value"
-```
-
-</YueDisplay>
-
 ## Verkettete Zuweisung
 
 Mit verketteten Zuweisungen kannst du mehrere Variablen auf denselben Wert setzen.
@@ -1819,15 +904,6 @@ Mit verketteten Zuweisungen kannst du mehrere Variablen auf denselben Wert setze
 a = b = c = d = e = 0
 x = y = z = f!
 ```
-
-<YueDisplay>
-
-```yue
-a = b = c = d = e = 0
-x = y = z = f!
-```
-
-</YueDisplay>
 
 ## Explizite Locals
 
@@ -1848,27 +924,6 @@ do
   B = 2
 ```
 
-<YueDisplay>
-
-```yue
-do
-  local a = 1
-  local *
-  print "forward declare all variables as locals"
-  x = -> 1 + y + z
-  y, z = 2, 3
-  global instance = Item\new!
-
-do
-  local X = 1
-  local ^
-  print "only forward declare upper case variables"
-  a = 1
-  B = 2
-```
-
-</YueDisplay>
-
 ## Explizite Globals
 
 ```yuescript
@@ -1888,27 +943,6 @@ do
   local Temp = "a local value"
 ```
 
-<YueDisplay>
-
-```yue
-do
-  global a = 1
-  global *
-  print "declare all variables as globals"
-  x = -> 1 + y + z
-  y, z = 2, 3
-
-do
-  global X = 1
-  global ^
-  print "only declare upper case variables as globals"
-  a = 1
-  B = 2
-  local Temp = "a local value"
-```
-
-</YueDisplay>
-
 # Varargs-Zuweisung
 
 Du kannst Rückgabewerte einer Funktion dem Varargs-Symbol `...` zuweisen und dann den Inhalt auf die Lua-Weise auslesen.
@@ -1922,19 +956,6 @@ first = select 1, ...
 print ok, count, first
 ```
 
-<YueDisplay>
-
-```yue
-list = [1, 2, 3, 4, 5]
-fn = (ok) -> ok, table.unpack list
-ok, ... = fn true
-count = select '#', ...
-first = select 1, ...
-print ok, count, first
-```
-
-</YueDisplay>
-
 # If-Zuweisung
 
 `if`- und `elseif`-Blöcke können eine Zuweisung anstelle eines Bedingungsausdrucks enthalten. Beim Auswerten der Bedingung findet die Zuweisung statt, und der zugewiesene Wert wird als Bedingung verwendet. Die zugewiesene Variable ist nur im Geltungsbereich des Bedingungsblocks verfügbar, d. h. sie ist nicht verfügbar, wenn der Wert nicht truthy ist. Für die Zuweisung musst du den "Walrus-Operator" `:=` statt `=` verwenden.
@@ -1944,15 +965,6 @@ if user := database.find_user "moon"
   print user.name
 ```
 
-<YueDisplay>
-
-```yue
-if user := database.find_user "moon"
-  print user.name
-```
-
-</YueDisplay>
-
 ```yuescript
 if hello := os.getenv "hello"
   print "Du hast hello", hello
@@ -1961,19 +973,6 @@ elseif world := os.getenv "world"
 else
   print "nichts :("
 ```
-
-<YueDisplay>
-
-```yue
-if hello := os.getenv "hello"
-  print "Du hast hello", hello
-elseif world := os.getenv "world"
-  print "Du hast world", world
-else
-  print "nichts :("
-```
-
-</YueDisplay>
 
 If-Zuweisung mit mehreren Rückgabewerten. Nur der erste Wert wird geprüft, andere Werte bleiben im Scope.
 
@@ -1982,16 +981,6 @@ if success, result := pcall -> "Ergebnis ohne Probleme erhalten"
   print result -- Variable result ist im Scope
 print "OK"
 ```
-
-<YueDisplay>
-
-```yue
-if success, result := pcall -> "Ergebnis ohne Probleme erhalten"
-  print result -- Variable result ist im Scope
-print "OK"
-```
-
-</YueDisplay>
 
 ## While-Zuweisung
 
@@ -2002,16 +991,6 @@ while byte := stream\read_one!
   -- mit dem Byte etwas anfangen
   print byte
 ```
-
-<YueDisplay>
-
-```yue
-while byte := stream\read_one!
-  -- mit dem Byte etwas anfangen
-  print byte
-```
-
-</YueDisplay>
 
 # Destructuring-Zuweisung
 
@@ -2028,17 +1007,6 @@ thing = [1, 2]
 print a, b
 ```
 
-<YueDisplay>
-
-```yue
-thing = [1, 2]
-
-[a, b] = thing
-print a, b
-```
-
-</YueDisplay>
-
 Im Destructuring-Tabellenliteral repräsentiert der Schlüssel den zu lesenden Schlüssel der rechten Seite, und der Wert ist der Name, dem der gelesene Wert zugewiesen wird.
 
 ```yuescript
@@ -2053,23 +1021,6 @@ print hello, the_day
 
 :day = obj -- einfache Destructuring-Zuweisung ohne Klammern ist ok
 ```
-
-<YueDisplay>
-
-```yue
-obj = {
-  hello: "Welt"
-  day: "Dienstag"
-  length: 20
-}
-
-{hello: hello, day: the_day} = obj
-print hello, the_day
-
-:day = obj -- einfache Destructuring-Zuweisung ohne Klammern ist ok
-```
-
-</YueDisplay>
 
 Das funktioniert auch mit verschachtelten Datenstrukturen:
 
@@ -2086,23 +1037,6 @@ obj2 = {
 print first, second, color
 ```
 
-<YueDisplay>
-
-```yue
-obj2 = {
-  numbers: [1, 2, 3, 4]
-  properties: {
-    color: "grün"
-    height: 13.5
-  }
-}
-
-{numbers: [first, second], properties: {color: color}} = obj2
-print first, second, color
-```
-
-</YueDisplay>
-
 Wenn die Destructuring-Anweisung kompliziert ist, kannst du sie gerne auf mehrere Zeilen verteilen. Ein etwas komplexeres Beispiel:
 
 ```yuescript
@@ -2114,32 +1048,11 @@ Wenn die Destructuring-Anweisung kompliziert ist, kannst du sie gerne auf mehrer
 } = obj2
 ```
 
-<YueDisplay>
-
-```yue
-{
-  numbers: [first, second]
-  properties: {
-    color: color
-  }
-} = obj2
-```
-
-</YueDisplay>
-
 Es ist üblich, Werte aus einer Tabelle zu extrahieren und ihnen lokale Variablen mit demselben Namen wie der Schlüssel zuzuweisen. Um Wiederholungen zu vermeiden, kannst du den Präfix-Operator **:** verwenden:
 
 ```yuescript
 {:concat, :insert} = table
 ```
-
-<YueDisplay>
-
-```yue
-{:concat, :insert} = table
-```
-
-</YueDisplay>
 
 Das ist effektiv dasselbe wie `import`, aber du kannst Felder umbenennen, indem du die Syntax mischst:
 
@@ -2147,41 +1060,17 @@ Das ist effektiv dasselbe wie `import`, aber du kannst Felder umbenennen, indem 
 {:mix, :max, random: rand} = math
 ```
 
-<YueDisplay>
-
-```yue
-{:mix, :max, random: rand} = math
-```
-
-</YueDisplay>
-
 Du kannst Standardwerte beim Destructuring angeben, z. B.:
 
 ```yuescript
 {:name = "namenlos", :job = "arbeitlos"} = person
 ```
 
-<YueDisplay>
-
-```yue
-{:name = "namenlos", :job = "arbeitlos"} = person
-```
-
-</YueDisplay>
-
 Du kannst `_` als Platzhalter verwenden, wenn du eine Listen-Destructuring-Zuweisung machst:
 
 ```yuescript
 [_, two, _, four] = items
 ```
-
-<YueDisplay>
-
-```yue
-[_, two, _, four] = items
-```
-
-</YueDisplay>
 
 ## Bereichs-Destructuring
 
@@ -2194,18 +1083,6 @@ print first  -- gibt aus: erster
 print bulk   -- gibt aus: {"zweiter", "dritter", "vierter"}
 print last   -- gibt aus: letzter
 ```
-
-<YueDisplay>
-
-```yue
-orders = ["erster", "zweiter", "dritter", "vierter", "letzter"]
-[first, ...bulk, last] = orders
-print first  -- gibt aus: erster
-print bulk   -- gibt aus: {"zweiter", "dritter", "vierter"}
-print last   -- gibt aus: letzter
-```
-
-</YueDisplay>
 
 Der Spread-Operator kann an unterschiedlichen Positionen verwendet werden, um unterschiedliche Bereiche zu erfassen, und du kannst `_` als Platzhalter für Werte verwenden, die du nicht erfassen willst:
 
@@ -2220,21 +1097,6 @@ Der Spread-Operator kann an unterschiedlichen Positionen verwendet werden, um un
 [first, ..._, last] = orders
 ```
 
-<YueDisplay>
-
-```yue
--- Alles nach dem ersten Element erfassen
-[first, ...rest] = orders
-
--- Alles vor dem letzten Element erfassen
-[...start, last] = orders
-
--- Alles außer den mittleren Elementen erfassen
-[first, ..._, last] = orders
-```
-
-</YueDisplay>
-
 ## Destructuring an anderen Stellen
 
 Destructuring kann auch an Stellen vorkommen, an denen eine Zuweisung implizit erfolgt. Ein Beispiel ist eine `for`-Schleife:
@@ -2248,20 +1110,6 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
-
-<YueDisplay>
-
-```yue
-tuples = [
-  ["hallo", "Welt"]
-  ["Ei", "Kopf"]
-]
-
-for [left, right] in *tuples
-  print left, right
-```
-
-</YueDisplay>
 
 Wir wissen, dass jedes Element der Array-Tabelle ein 2er-Tupel ist, daher können wir es direkt in der Namensliste der `for`-Anweisung mittels Destructuring entpacken.
 
@@ -2285,26 +1133,6 @@ my_func!
 print i -- wird 0 ausgeben
 ```
 
-<YueDisplay>
-
-```yue
-i = 100
-
--- viele Zeilen Code...
-
-my_func = ->
-  i = 10
-  while i > 0
-    print i
-    i -= 1
-
-my_func!
-
-print i -- wird 0 ausgeben
-```
-
-</YueDisplay>
-
 In `my_func` haben wir den Wert von `i` versehentlich überschrieben. In diesem Beispiel ist es offensichtlich, aber in einer großen oder fremden Codebasis ist oft nicht klar, welche Namen bereits deklariert wurden.
 
 Es wäre hilfreich, anzugeben, welche Variablen aus dem umschließenden Scope wir verändern wollen, um versehentliche Änderungen zu vermeiden.
@@ -2321,20 +1149,6 @@ my_func!
 print i -- gibt 100 aus, i bleibt unverändert
 ```
 
-<YueDisplay>
-
-```yue
-i = 100
-
-my_func = (using nil) ->
-  i = "hello" -- hier wird eine neue lokale Variable erstellt
-
-my_func!
-print i -- gibt 100 aus, i bleibt unverändert
-```
-
-</YueDisplay>
-
 Mehrere Namen können durch Kommas getrennt werden. Closure-Werte können weiterhin gelesen, aber nicht verändert werden:
 
 ```yuescript
@@ -2349,23 +1163,6 @@ my_func = (add using k, i) ->
 my_func(22)
 print i, k -- diese wurden aktualisiert
 ```
-
-<YueDisplay>
-
-```yue
-tmp = 1213
-i, k = 100, 50
-
-my_func = (add using k, i) ->
-  tmp = tmp + add -- ein neues lokales tmp wird erstellt
-  i += tmp
-  k += tmp
-
-my_func(22)
-print i, k -- diese wurden aktualisiert
-```
-
-</YueDisplay>
 
 # Verwendung
 
@@ -2536,55 +1333,6 @@ with apple
 export 🌛 = "Skript des Mondes"
 ```
 
-<YueDisplay>
-
-```yue
--- Import-Syntax
-import p, to_lua from "yue"
-
--- Objekt-Literale
-inventory =
-  equipment:
-    - "Schwert"
-    - "Schild"
-  items:
-    - name: "Trank"
-      count: 10
-    - name: "Brot"
-      count: 3
-
--- Listen-Abstraktion
-map = (arr, action) ->
-  [action item for item in *arr]
-
-filter = (arr, cond) ->
-  [item for item in *arr when cond item]
-
-reduce = (arr, init, action): init ->
-  init = action init, item for item in *arr
-
--- Pipe-Operator
-[1, 2, 3]
-  |> map (x) -> x * 2
-  |> filter (x) -> x > 4
-  |> reduce 0, (a, b) -> a + b
-  |> print
-
--- Metatable-Manipulation
-apple =
-  size: 15
-  <index>:
-    color: 0x00ffff
-
-with apple
-  p .size, .color, .<index> if .<>?
-
--- export-Syntax (ähnlich wie in JavaScript)
-export 🌛 = "Skript des Mondes"
-```
-
-</YueDisplay>
-
 ## Über Dora SSR
 
 YueScript wird zusammen mit der Open-Source-Spiel-Engine [Dora SSR](https://github.com/Dora-SSR/Dora-SSR) entwickelt und gepflegt. Es wird zum Erstellen von Engine-Tools, Spiel-Demos und Prototypen eingesetzt und hat seine Leistungsfähigkeit in realen Szenarien unter Beweis gestellt, während es gleichzeitig die Dora-SSR-Entwicklungserfahrung verbessert.
@@ -2643,18 +1391,6 @@ else
   print "Keine Münzen"
 ```
 
-<YueDisplay>
-
-```yue
-have_coins = false
-if have_coins
-  print "Münzen erhalten"
-else
-  print "Keine Münzen"
-```
-
-</YueDisplay>
-
 Eine Kurzsyntax für einzelne Anweisungen kann ebenfalls verwendet werden:
 
 ```yuescript
@@ -2662,30 +1398,12 @@ have_coins = false
 if have_coins then print "Münzen erhalten" else print "Keine Münzen"
 ```
 
-<YueDisplay>
-
-```yue
-have_coins = false
-if have_coins then print "Münzen erhalten" else print "Keine Münzen"
-```
-
-</YueDisplay>
-
 Da `if`-Anweisungen als Ausdrücke verwendet werden können, kann man das auch so schreiben:
 
 ```yuescript
 have_coins = false
 print if have_coins then "Münzen erhalten" else "Keine Münzen"
 ```
-
-<YueDisplay>
-
-```yue
-have_coins = false
-print if have_coins then "Münzen erhalten" else "Keine Münzen"
-```
-
-</YueDisplay>
 
 Bedingungen können auch in `return`-Anweisungen und Zuweisungen verwendet werden:
 
@@ -2704,25 +1422,6 @@ else
 print message -- gibt aus: Ich bin sehr groß
 ```
 
-<YueDisplay>
-
-```yue
-is_tall = (name) ->
-  if name == "Rob"
-    true
-  else
-    false
-
-message = if is_tall "Rob"
-  "Ich bin sehr groß"
-else
-  "Ich bin nicht so groß"
-
-print message -- gibt aus: Ich bin sehr groß
-```
-
-</YueDisplay>
-
 Das Gegenteil von `if` ist `unless`:
 
 ```yuescript
@@ -2730,26 +1429,9 @@ unless os.date("%A") == "Monday"
   print "Es ist nicht Montag!"
 ```
 
-<YueDisplay>
-
-```yue
-unless os.date("%A") == "Monday"
-  print "Es ist nicht Montag!"
-```
-
-</YueDisplay>
-
 ```yuescript
 print "You're lucky!" unless math.random! > 0.1
 ```
-
-<YueDisplay>
-
-```yue
-print "You're lucky!" unless math.random! > 0.1
-```
-
-</YueDisplay>
 
 ## In-Ausdruck
 
@@ -2765,20 +1447,6 @@ if a in list
   print "Prüfen, ob `a` in einer Liste ist"
 ```
 
-<YueDisplay>
-
-```yue
-a = 5
-
-if a in [1, 3, 5, 7]
-  print "Gleichheitsprüfung mit diskreten Werten"
-
-if a in list
-  print "Prüfen, ob `a` in einer Liste ist"
-```
-
-</YueDisplay>
-
 Der `in`-Operator kann auch mit Tabellen verwendet werden und unterstützt die Variante `not in` für Verneinungen:
 
 ```yuescript
@@ -2791,21 +1459,6 @@ not_exist = item not in list
 
 check = -> value not in table
 ```
-
-<YueDisplay>
-
-```yue
-has = "foo" in {"bar", "foo"}
-
-if a in {1, 2, 3}
-  print "a ist in der Tabelle"
-
-not_exist = item not in list
-
-check = -> value not in table
-```
-
-</YueDisplay>
 
 Eine Ein-Element-Liste oder Tabelle prüft auf Gleichheit mit diesem Element:
 
@@ -2820,22 +1473,6 @@ c = a in {1}
 with tb
   c = a in [1]
 ```
-
-<YueDisplay>
-
-```yue
--- [1,] prüft, ob wert == 1
-c = a in [1,]
-
--- {1} prüft auch, ob wert == 1
-c = a in {1}
-
--- Ohne Komma ist [1] ein Indexzugriff (tb[1])
-with tb
-  c = a in [1]
-```
-
-</YueDisplay>
 
 # For-Schleife
 
@@ -2852,36 +1489,12 @@ for key, value in pairs object
   print key, value
 ```
 
-<YueDisplay>
-
-```yue
-for i = 10, 20
-  print i
-
-for k = 1, 15, 2 -- ein optionaler Schritt
-  print k
-
-for key, value in pairs object
-  print key, value
-```
-
-</YueDisplay>
-
 Die Slicing- und **\***-Operatoren können verwendet werden, genau wie bei Comprehensions:
 
 ```yuescript
 for item in *items[2, 4]
   print item
 ```
-
-<YueDisplay>
-
-```yue
-for item in *items[2, 4]
-  print item
-```
-
-</YueDisplay>
 
 Eine kürzere Syntax ist für alle Varianten verfügbar, wenn der Rumpf nur eine Zeile hat:
 
@@ -2890,16 +1503,6 @@ for item in *items do print item
 
 for j = 1, 10, 3 do print j
 ```
-
-<YueDisplay>
-
-```yue
-for item in *items do print item
-
-for j = 1, 10, 3 do print j
-```
-
-</YueDisplay>
 
 Eine `for`-Schleife kann auch als Ausdruck verwendet werden. Die letzte Anweisung im Schleifenrumpf wird in einen Ausdruck umgewandelt und an eine wachsende Array-Tabelle angehängt.
 
@@ -2913,18 +1516,6 @@ doubled_evens = for i = 1, 20
     i
 ```
 
-<YueDisplay>
-
-```yue
-doubled_evens = for i = 1, 20
-  if i % 2 == 0
-    i * 2
-  else
-    i
-```
-
-</YueDisplay>
-
 Zusätzlich unterstützen `for`-Schleifen `break` mit Rückgabewerten, sodass die Schleife selbst als Ausdruck verwendet werden kann, der früh mit einem sinnvollen Ergebnis endet. `for`-Ausdrücke unterstützen mehrere `break`-Werte.
 
 Beispiel: die erste Zahl größer als 10 finden:
@@ -2934,30 +1525,12 @@ first_large = for n in *numbers
   break n if n > 10
 ```
 
-<YueDisplay>
-
-```yue
-first_large = for n in *numbers
-  break n if n > 10
-```
-
-</YueDisplay>
-
 Diese `break`-mit-Wert-Syntax ermöglicht knappe und ausdrucksstarke Such- bzw. Early-Exit-Muster direkt in Schleifenausdrücken.
 
 ```yuescript
 key, score = for k, v in pairs data
   break k, v * 10 if k == "target"
 ```
-
-<YueDisplay>
-
-```yue
-key, score = for k, v in pairs data
-  break k, v * 10 if k == "target"
-```
-
-</YueDisplay>
 
 Du kannst Werte auch filtern, indem du den `for`-Ausdruck mit `continue` kombinierst.
 
@@ -2970,18 +1543,6 @@ func_b = -> return for i = 1, 10 do i
 print func_a! -- gibt nil aus
 print func_b! -- gibt Tabellenobjekt aus
 ```
-
-<YueDisplay>
-
-```yue
-func_a = -> for i = 1, 10 do print i
-func_b = -> return for i = 1, 10 do i
-
-print func_a! -- gibt nil aus
-print func_b! -- gibt Tabellenobjekt aus
-```
-
-</YueDisplay>
 
 Das verhindert die unnötige Erstellung von Tabellen in Funktionen, die die Ergebnisse der Schleife nicht zurückgeben müssen.
 
@@ -2997,18 +1558,6 @@ while i < 10
   print i
 ```
 
-<YueDisplay>
-
-```yue
-i = 0
-while i < 10
-  i += 1
-  continue if i % 2 == 0
-  print i
-```
-
-</YueDisplay>
-
 `continue` kann auch mit Schleifenausdrücken verwendet werden, um zu verhindern, dass diese Iteration in das Ergebnis akkumuliert wird. Dieses Beispiel filtert die Array-Tabelle auf gerade Zahlen:
 
 ```yuescript
@@ -3017,17 +1566,6 @@ odds = for x in *my_numbers
   continue if x % 2 == 1
   x
 ```
-
-<YueDisplay>
-
-```yue
-my_numbers = [1, 2, 3, 4, 5, 6]
-odds = for x in *my_numbers
-  continue if x % 2 == 1
-  x
-```
-
-</YueDisplay>
 
 # Switch
 
@@ -3042,20 +1580,6 @@ switch name := "Dan"
   else
     print "Ich kenne dich nicht mit dem Namen #{name}"
 ```
-
-<YueDisplay>
-
-```yue
-switch name := "Dan"
-  when "Robert"
-    print "Du bist Robert"
-  when "Dan", "Daniel"
-    print "Dein Name ist Dan"
-  else
-    print "Ich kenne dich nicht mit dem Namen #{name}"
-```
-
-</YueDisplay>
 
 Eine `when`-Klausel kann mehrere Werte prüfen, indem sie kommasepariert aufgelistet werden.
 
@@ -3072,21 +1596,6 @@ next_number = switch b
     error "so hoch kann ich nicht zählen!"
 ```
 
-<YueDisplay>
-
-```yue
-b = 1
-next_number = switch b
-  when 1
-    2
-  when 2
-    3
-  else
-    error "so hoch kann ich nicht zählen!"
-```
-
-</YueDisplay>
-
 Du kannst das Schlüsselwort `then` verwenden, um einen `when`-Block in einer Zeile zu schreiben. Für den `else`-Block braucht es kein zusätzliches Schlüsselwort.
 
 ```yuescript
@@ -3095,17 +1604,6 @@ msg = switch math.random(1, 5)
   when 2 then "Du hast fast Glück"
   else "nicht so viel Glück"
 ```
-
-<YueDisplay>
-
-```yue
-msg = switch math.random(1, 5)
-  when 1 then "Du hast Glück"
-  when 2 then "Du hast fast Glück"
-  else "nicht so viel Glück"
-```
-
-</YueDisplay>
 
 Wenn du eine Einrückung weniger möchtest, kannst du die erste `when`-Klausel in die Startzeile der Anweisung setzen und alle weiteren Klauseln mit einer Einrückung weniger schreiben.
 
@@ -3121,23 +1619,6 @@ switch math.random(1, 5) when 1
 else
   print "nicht so viel Glück"
 ```
-
-<YueDisplay>
-
-```yue
-switch math.random(1, 5)
-  when 1
-    print "Du hast Glück" -- zwei Einrückungen
-  else
-    print "nicht so viel Glück"
-
-switch math.random(1, 5) when 1
-  print "Du hast Glück" -- eine Einrückung
-else
-  print "nicht so viel Glück"
-```
-
-</YueDisplay>
 
 Beachte die Reihenfolge des Case-Vergleichsausdrucks. Der Case-Ausdruck steht auf der linken Seite. Das kann nützlich sein, wenn der Case-Ausdruck die Vergleichslogik über eine `__eq`-Metamethod selbst definiert.
 
@@ -3160,25 +1641,6 @@ for item in *items
       print "Größe #{width}, #{height}"
 ```
 
-<YueDisplay>
-
-```yue
-items =
-  * x: 100
-    y: 200
-  * width: 300
-    height: 400
-
-for item in *items
-  switch item
-    when :x, :y
-      print "Vec2 #{x}, #{y}"
-    when :width, :height
-      print "Größe #{width}, #{height}"
-```
-
-</YueDisplay>
-
 Du kannst Standardwerte verwenden, um bestimmte Felder optional zu destrukturieren.
 
 ```yuescript
@@ -3190,20 +1652,6 @@ switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- Tabellen-Destrukturierung greift trotzdem
 ```
-
-<YueDisplay>
-
-```yue
-item = {}
-
-{pos: {:x = 50, :y = 200}} = item -- Fehler: Versuch, einen nil-Wert zu indexieren (Feld 'pos')
-
-switch item
-  when {pos: {:x = 50, :y = 200}}
-    print "Vec2 #{x}, #{y}" -- Tabellen-Destrukturierung greift trotzdem
-```
-
-</YueDisplay>
 
 Du kannst auch gegen Array-Elemente, Tabellenfelder und sogar verschachtelte Strukturen mit Array- oder Tabellenliteralen matchen.
 
@@ -3219,20 +1667,6 @@ switch tb
     print "1, 2, #{b}"
 ```
 
-<YueDisplay>
-
-```yue
-switch tb
-  when [1, 2, 3]
-    print "1, 2, 3"
-  when [1, b, 3]
-    print "1, #{b}, 3"
-  when [1, 2, b = 3] -- b hat einen Standardwert
-    print "1, 2, #{b}"
-```
-
-</YueDisplay>
-
 Matchen gegen Tabellenfelder mit Destructuring.
 
 ```yuescript
@@ -3245,20 +1679,6 @@ switch tb
     print "ungültig"
 ```
 
-<YueDisplay>
-
-```yue
-switch tb
-  when success: true, :result
-    print "Erfolg", result
-  when success: false
-    print "fehlgeschlagen", result
-  else
-    print "ungültig"
-```
-
-</YueDisplay>
-
 Matchen gegen verschachtelte Tabellenstrukturen.
 
 ```yuescript
@@ -3270,20 +1690,6 @@ switch tb
   else
     print "ungültig"
 ```
-
-<YueDisplay>
-
-```yue
-switch tb
-  when data: {type: "success", :content}
-    print "Erfolg", content
-  when data: {type: "error", :content}
-    print "fehlgeschlagen", content
-  else
-    print "ungültig"
-```
-
-</YueDisplay>
 
 Matchen gegen Array von Tabellen.
 
@@ -3298,21 +1704,6 @@ switch tb
     print "getroffen", fourth
 ```
 
-<YueDisplay>
-
-```yue
-switch tb
-  when [
-      {a: 1, b: 2}
-      {a: 3, b: 4}
-      {a: 5, b: 6}
-      fourth
-    ]
-    print "getroffen", fourth
-```
-
-</YueDisplay>
-
 Matchen gegen eine Liste und einen Bereich von Elementen erfassen.
 
 ```yuescript
@@ -3323,19 +1714,6 @@ switch segments
     print "Ressource:", resource -- gibt aus: "logs"
     print "Aktion:", action -- gibt aus: "view"
 ```
-
-<YueDisplay>
-
-```yue
-segments = ["admin", "users", "logs", "view"]
-switch segments
-  when [...groups, resource, action]
-    print "Gruppe:", groups -- gibt aus: {"admin", "users"}
-    print "Ressource:", resource -- gibt aus: "logs"
-    print "Aktion:", action -- gibt aus: "view"
-```
-
-</YueDisplay>
 
 # While-Schleife
 
@@ -3350,19 +1728,6 @@ while i > 0
 while running == true do my_function!
 ```
 
-<YueDisplay>
-
-```yue
-i = 10
-while i > 0
-  print i
-  i -= 1
-
-while running == true do my_function!
-```
-
-</YueDisplay>
-
 ```yuescript
 i = 10
 until i == 0
@@ -3371,18 +1736,6 @@ until i == 0
 
 until running == false do my_function!
 ```
-
-<YueDisplay>
-
-```yue
-i = 10
-until i == 0
-  print i
-  i -= 1
-until running == false do my_function!
-```
-
-</YueDisplay>
 
 Wie bei `for`-Schleifen kann die `while`-Schleife auch als Ausdruck verwendet werden. `while`- und `until`-Ausdrücke unterstützen `break` mit mehreren Rückgabewerten.
 
@@ -3391,16 +1744,6 @@ value, doubled = while true
   n = get_next!
   break n, n * 2 if n > 10
 ```
-
-<YueDisplay>
-
-```yue
-value, doubled = while true
-  n = get_next!
-  break n, n * 2 if n > 10
-```
-
-</YueDisplay>
 
 Damit eine Funktion den akkumulierten Wert einer `while`-Schleife zurückgibt, muss die Anweisung explizit mit `return` zurückgegeben werden.
 
@@ -3416,18 +1759,6 @@ repeat
 until i == 0
 ```
 
-<YueDisplay>
-
-```yue
-i = 10
-repeat
-  print i
-  i -= 1
-until i == 0
-```
-
-</YueDisplay>
-
 `repeat`-Ausdrücke unterstützen ebenfalls `break` mit mehreren Rückgabewerten:
 
 ```yuescript
@@ -3437,18 +1768,6 @@ value, scaled = repeat
   i += 1
 until false
 ```
-
-<YueDisplay>
-
-```yue
-i = 1
-value, scaled = repeat
-  break i, i * 100 if i > 3
-  i += 1
-until false
-```
-
-</YueDisplay>
 
 # Funktions-Stubs
 
@@ -3477,29 +1796,6 @@ run_callback my_object.write
 run_callback my_object\write
 ```
 
-<YueDisplay>
-
-```yue
-my_object = {
-  value: 1000
-  write: => print "der Wert:", @value
-}
-
-run_callback = (func) ->
-  print "Callback wird ausgeführt..."
-  func!
-
--- das funktioniert nicht:
--- die Funktion darf keine Referenz auf my_object haben
-run_callback my_object.write
-
--- Funktions-Stub-Syntax
--- bindet das Objekt in eine neue Funktion ein
-run_callback my_object\write
-```
-
-</YueDisplay>
-
 # Backcalls
 
 Backcalls werden verwendet, um Callbacks zu entkoppeln (unnesting). Sie werden mit Pfeilen nach links definiert und füllen standardmäßig als letzter Parameter einen Funktionsaufruf. Die Syntax ist weitgehend wie bei normalen Pfeilfunktionen, nur dass der Pfeil in die andere Richtung zeigt und der Funktionskörper keine Einrückung benötigt.
@@ -3509,15 +1805,6 @@ x <- f
 print "hallo" .. x
 ```
 
-<YueDisplay>
-
-```yue
-x <- f
-print "hallo" .. x
-```
-
-</YueDisplay>
-
 Fat-Arrow-Funktionen sind ebenfalls verfügbar.
 
 ```yuescript
@@ -3525,30 +1812,12 @@ Fat-Arrow-Funktionen sind ebenfalls verfügbar.
 print @value
 ```
 
-<YueDisplay>
-
-```yue
-<= f
-print @value
-```
-
-</YueDisplay>
-
 Du kannst einen Platzhalter angeben, an welcher Stelle die Backcall-Funktion als Parameter eingesetzt werden soll.
 
 ```yuescript
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
-
-<YueDisplay>
-
-```yue
-(x) <- map _, [1, 2, 3]
-x * 2
-```
-
-</YueDisplay>
 
 Wenn du nach deinen Backcalls weiteren Code haben willst, kannst du sie mit einem `do`-Statement absetzen. Bei Nicht-Fat-Arrow-Funktionen können die Klammern weggelassen werden.
 
@@ -3561,19 +1830,6 @@ result, msg = do
 print result, msg
 ```
 
-<YueDisplay>
-
-```yue
-result, msg = do
-  data <- readAsync "dateiname.txt"
-  print data
-  info <- processAsync data
-  check info
-print result, msg
-```
-
-</YueDisplay>
-
 # Funktionsliterale
 
 Alle Funktionen werden mit einem Funktionsausdruck erstellt. Eine einfache Funktion wird mit dem Pfeil **->** notiert.
@@ -3582,15 +1838,6 @@ Alle Funktionen werden mit einem Funktionsausdruck erstellt. Eine einfache Funkt
 my_function = ->
 my_function() -- leere Funktion aufrufen
 ```
-
-<YueDisplay>
-
-```yue
-my_function = ->
-my_function() -- leere Funktion aufrufen
-```
-
-</YueDisplay>
 
 Der Funktionskörper kann entweder eine einzelne Anweisung direkt nach dem Pfeil sein oder aus mehreren Anweisungen bestehen, die in den folgenden Zeilen eingerückt werden:
 
@@ -3602,18 +1849,6 @@ func_b = ->
   print "Der Wert:", value
 ```
 
-<YueDisplay>
-
-```yue
-func_a = -> print "Hallo Welt"
-
-func_b = ->
-  value = 100
-  print "Der Wert:", value
-```
-
-</YueDisplay>
-
 Wenn eine Funktion keine Argumente hat, kann sie mit dem `!`-Operator statt leerer Klammern aufgerufen werden. Der `!`-Aufruf ist die bevorzugte Art, Funktionen ohne Argumente aufzurufen.
 
 ```yuescript
@@ -3621,28 +1856,11 @@ func_a!
 func_b()
 ```
 
-<YueDisplay>
-
-```yue
-func_a!
-func_b()
-```
-
-</YueDisplay>
-
 Funktionen mit Argumenten werden erstellt, indem der Pfeil von einer Argumentliste in Klammern eingeleitet wird:
 
 ```yuescript
 sum = (x, y) -> print "Summe", x + y
 ```
-
-<YueDisplay>
-
-```yue
-sum = (x, y) -> print "Summe", x + y
-```
-
-</YueDisplay>
 
 Funktionen können aufgerufen werden, indem die Argumente hinter dem Namen eines Ausdrucks stehen, der zu einer Funktion evaluiert. Beim Verketten mehrerer Funktionsaufrufe werden die Argumente der nächstliegenden Funktion links zugeordnet.
 
@@ -3653,30 +1871,11 @@ print sum 10, 20
 a b c "a", "b", "c"
 ```
 
-<YueDisplay>
-
-```yue
-sum 10, 20
-print sum 10, 20
-
-a b c "a", "b", "c"
-```
-
-</YueDisplay>
-
 Um Mehrdeutigkeiten beim Aufruf zu vermeiden, können die Argumente auch in Klammern gesetzt werden. Das ist hier nötig, damit die richtigen Argumente an die richtigen Funktionen gehen.
 
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
-
-<YueDisplay>
-
-```yue
-print "x:", sum(10, 20), "y:", sum(30, 40)
-```
-
-</YueDisplay>
 
 Zwischen öffnender Klammer und Funktionsname darf kein Leerzeichen stehen.
 
@@ -3687,28 +1886,11 @@ sum = (x, y) -> x + y
 print "Die Summe ist ", sum 10, 20
 ```
 
-<YueDisplay>
-
-```yue
-sum = (x, y) -> x + y
-print "Die Summe ist ", sum 10, 20
-```
-
-</YueDisplay>
-
 Wenn du explizit zurückgeben willst, verwende `return`:
 
 ```yuescript
 sum = (x, y) -> return x + y
 ```
-
-<YueDisplay>
-
-```yue
-sum = (x, y) -> return x + y
-```
-
-</YueDisplay>
 
 Wie in Lua können Funktionen mehrere Werte zurückgeben. Die letzte Anweisung muss eine Liste von Werten sein, getrennt durch Kommas:
 
@@ -3717,15 +1899,6 @@ mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
 
-<YueDisplay>
-
-```yue
-mystery = (x, y) -> x + y, x - y
-a, b = mystery 10, 20
-```
-
-</YueDisplay>
-
 ## Fat Arrows
 
 Da es in Lua üblich ist, beim Methodenaufruf ein Objekt als erstes Argument zu übergeben, gibt es eine spezielle Syntax zum Erstellen von Funktionen, die automatisch ein `self`-Argument enthalten.
@@ -3733,14 +1906,6 @@ Da es in Lua üblich ist, beim Methodenaufruf ein Objekt als erstes Argument zu 
 ```yuescript
 func = (num) => @value + num
 ```
-
-<YueDisplay>
-
-```yue
-func = (num) => @value + num
-```
-
-</YueDisplay>
 
 ## Standardwerte für Argumente
 
@@ -3752,31 +1917,12 @@ my_function = (name = "etwas", height = 100) ->
   print "Meine Größe ist", height
 ```
 
-<YueDisplay>
-
-```yue
-my_function = (name = "etwas", height = 100) ->
-  print "Hallo, ich bin", name
-  print "Meine Größe ist", height
-```
-
-</YueDisplay>
-
 Der Ausdruck für den Standardwert wird im Funktionskörper in der Reihenfolge der Argumentdeklarationen ausgewertet. Daher können Standardwerte auf zuvor deklarierte Argumente zugreifen.
 
 ```yuescript
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
-
-<YueDisplay>
-
-```yue
-some_args = (x = 100, y = x + 1000) ->
-  print x + y
-```
-
-</YueDisplay>
 
 ## Hinweise
 
@@ -3791,17 +1937,6 @@ c = x -y
 d = x- z
 ```
 
-<YueDisplay>
-
-```yue
-a = x - 10
-b = x-10
-c = x -y
-d = x- z
-```
-
-</YueDisplay>
-
 Die Präzedenz des ersten Arguments eines Funktionsaufrufs kann mit Leerraum gesteuert werden, wenn das Argument ein String-Literal ist. In Lua lässt man bei Aufrufen mit einem einzelnen String- oder Tabellenliteral häufig die Klammern weg.
 
 Wenn kein Leerzeichen zwischen Variable und String-Literal steht, hat der Funktionsaufruf Vorrang vor nachfolgenden Ausdrücken. In dieser Form können keine weiteren Argumente übergeben werden.
@@ -3812,15 +1947,6 @@ Steht ein Leerzeichen zwischen Variable und String-Literal, verhält sich der Au
 x = func"hallo" + 100
 y = func "hallo" + 100
 ```
-
-<YueDisplay>
-
-```yue
-x = func"hallo" + 100
-y = func "hallo" + 100
-```
-
-</YueDisplay>
 
 ## Mehrzeilige Argumente
 
@@ -3838,20 +1964,6 @@ cool_func 1, 2,
   7, 8
 ```
 
-<YueDisplay>
-
-```yue
-my_func 5, 4, 3,
-  8, 9, 10
-
-cool_func 1, 2,
-  3, 4,
-  5, 6,
-  7, 8
-```
-
-</YueDisplay>
-
 Diese Art des Aufrufs kann verschachtelt werden. Die Einrückungsebene bestimmt, zu welcher Funktion die Argumente gehören.
 
 ```yuescript
@@ -3860,17 +1972,6 @@ my_func 5, 6, 7,
     9, 1, 2,
   5, 4
 ```
-
-<YueDisplay>
-
-```yue
-my_func 5, 6, 7,
-  6, another_func 6, 7, 8,
-    9, 1, 2,
-  5, 4
-```
-
-</YueDisplay>
 
 Da Tabellen ebenfalls das Komma als Trennzeichen verwenden, hilft diese Einrückungssyntax dabei, Werte zur Argumentliste gehören zu lassen, statt zur Tabelle.
 
@@ -3882,18 +1983,6 @@ x = [
 ]
 ```
 
-<YueDisplay>
-
-```yue
-x = [
-  1, 2, 3, 4, a_func 4, 5,
-    5, 6,
-  8, 9, 10
-]
-```
-
-</YueDisplay>
-
 Obwohl es selten ist: Du kannst Funktionsargumente tiefer einrücken, wenn du weißt, dass du später eine geringere Einrückungsebene verwenden wirst.
 
 ```yuescript
@@ -3902,17 +1991,6 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
-
-<YueDisplay>
-
-```yue
-y = [ my_func 1, 2, 3,
-   4, 5,
-  5, 6, 7
-]
-```
-
-</YueDisplay>
 
 Dasselbe lässt sich mit anderen Block-Statements wie Bedingungen machen. Wir können die Einrückungsebene verwenden, um zu bestimmen, zu welcher Anweisung ein Wert gehört:
 
@@ -3929,24 +2007,6 @@ if func 1, 2, 3,
   print "hallo"
   print "Ich bin innerhalb der if-Bedingung"
 ```
-
-<YueDisplay>
-
-```yue
-if func 1, 2, 3,
-  "hallo",
-  "Welt"
-    print "hallo"
-    print "Ich bin innerhalb der if-Bedingung"
-
-if func 1, 2, 3,
-    "hallo",
-    "Welt"
-  print "hallo"
-  print "Ich bin innerhalb der if-Bedingung"
-```
-
-</YueDisplay>
 
 ## Parameter-Destructuring
 
@@ -3968,23 +2028,6 @@ arg1 = {a: 0}
 f2 arg1, arg2
 ```
 
-<YueDisplay>
-
-```yue
-f1 = (:a, :b, :c) ->
-  print a, b, c
-
-f1 a: 1, b: "2", c: {}
-
-f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
-print a1, b, c
-
-arg1 = {a: 0}
-f2 arg1, arg2
-```
-
-</YueDisplay>
-
 ## Präfixiertes Return-Expression
 
 Wenn du mit tief verschachtelten Funktionskörpern arbeitest, kann es mühsam sein, die Lesbarkeit und Konsistenz des Rückgabewerts zu erhalten. Dafür führt YueScript die Syntax der **präfixierten Return-Expression** ein. Sie hat folgende Form:
@@ -3998,19 +2041,6 @@ findFirstEven = (list): nil ->
           return sub
 ```
 
-<YueDisplay>
-
-```yue
-findFirstEven = (list): nil ->
-  for item in *list
-    if type(item) == "table"
-      for sub in *item
-        if sub % 2 == 0
-          return sub
-```
-
-</YueDisplay>
-
 Das ist äquivalent zu:
 
 ```yuescript
@@ -4022,20 +2052,6 @@ findFirstEven = (list) ->
           return sub
   nil
 ```
-
-<YueDisplay>
-
-```yue
-findFirstEven = (list) ->
-  for item in *list
-    if type(item) == "table"
-      for sub in *item
-        if sub % 2 == 0
-          return sub
-  nil
-```
-
-</YueDisplay>
 
 Der einzige Unterschied ist, dass du den finalen Rückgabeausdruck vor das `->`- oder `=>`-Token ziehen kannst, um den impliziten Rückgabewert der Funktion als letzte Anweisung zu kennzeichnen. So musst du selbst bei Funktionen mit mehreren verschachtelten Schleifen oder bedingten Zweigen kein abschließendes `return` am Ende des Funktionskörpers mehr schreiben, was die Logikstruktur klarer und leichter nachvollziehbar macht.
 
@@ -4065,32 +2081,6 @@ process = (...args) ->
 process 1, nil, 3, nil, 5
 ```
 
-<YueDisplay>
-
-```yue
-f = (...t) ->
-  print "Anzahl der Argumente:", t.n
-  print "Tabellenlänge:", #t
-  for i = 1, t.n
-    print t[i]
-
-f 1, 2, 3
-f "a", "b", "c", "d"
-f!
-
--- Fälle mit nil-Werten behandeln
-process = (...args) ->
-  sum = 0
-  for i = 1, args.n
-    if args[i] != nil and type(args[i]) == "number"
-      sum += args[i]
-  sum
-
-process 1, nil, 3, nil, 5
-```
-
-</YueDisplay>
-
 # Leerraum
 
 YueScript ist eine whitespace-sensible Sprache. Du musst bestimmte Code-Blöcke mit derselben Einrückung (Leerzeichen **' '** oder Tab **'\t'**) schreiben, z. B. Funktionskörper, Wertelisten und Kontrollblöcke. Ausdrücke mit unterschiedlichem Leerraum können unterschiedliche Bedeutungen haben. Ein Tab wird wie 4 Leerzeichen behandelt, aber es ist besser, Leerzeichen und Tabs nicht zu mischen.
@@ -4102,14 +2092,6 @@ Eine Anweisung endet normalerweise an einem Zeilenumbruch. Du kannst auch ein Se
 ```yuescript
 a = 1; b = 2; print a + b
 ```
-
-<YueDisplay>
-
-```yue
-a = 1; b = 2; print a + b
-```
-
-</YueDisplay>
 
 ## Mehrzeiliges Chaining
 
@@ -4123,19 +2105,6 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
-
-<YueDisplay>
-
-```yue
-Rx.Observable
-  .fromRange 1, 8
-  \filter (x) -> x % 2 == 0
-  \concat Rx.Observable.of 'who do we appreciate'
-  \map (value) -> value .. '!'
-  \subscribe print
-```
-
-</YueDisplay>
 
 # Kommentare
 
@@ -4152,23 +2121,6 @@ Alles okay.
 func --[[Port]] 3000, --[[IP]] "192.168.1.1"
 ```
 
-<YueDisplay>
-
-```yue
--- Ich bin ein Kommentar
-
-str = --[[
-Dies ist ein mehrzeiliger Kommentar.
-Alles okay.
-]] strA \ -- Kommentar 1
-  .. strB \ -- Kommentar 2
-  .. strC
-
-func --[[Port]] 3000, --[[IP]] "192.168.1.1"
-```
-
-</YueDisplay>
-
 # Attribute
 
 Syntax-Unterstützung für Lua-5.4-Attribute. Du kannst weiterhin die Deklarationen `const` und `close` verwenden und erhältst Konstantenprüfung sowie Scoped-Callbacks, wenn du auf Lua-Versionen unter 5.4 zielst.
@@ -4178,15 +2130,6 @@ const a = 123
 close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs."
 ```
 
-<YueDisplay>
-
-```yue
-const a = 123
-close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs."
-```
-
-</YueDisplay>
-
 Du kannst Destructuring mit als konstant markierten Variablen verwenden.
 
 ```yuescript
@@ -4194,30 +2137,12 @@ const {:a, :b, c, d} = tb
 -- a = 1
 ```
 
-<YueDisplay>
-
-```yue
-const {:a, :b, c, d} = tb
--- a = 1
-```
-
-</YueDisplay>
-
 Du kannst auch eine globale Variable als `const` deklarieren.
 
 ```yuescript
 global const Constant = 123
 -- Constant = 1
 ```
-
-<YueDisplay>
-
-```yue
-global const Constant = 123
--- Constant = 1
-```
-
-</YueDisplay>
 
 # Operatoren
 
@@ -4227,15 +2152,6 @@ Alle binären und unären Operatoren von Lua sind verfügbar. Zusätzlich ist **
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
-
-<YueDisplay>
-
-```yue
-tb\func! if tb ~= nil
-tb::func! if tb != nil
-```
-
-</YueDisplay>
 
 ## Verkettete Vergleiche
 
@@ -4249,19 +2165,6 @@ a = 5
 print 1 <= a <= 10
 -- Ausgabe: true
 ```
-
-<YueDisplay>
-
-```yue
-print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
--- Ausgabe: true
-
-a = 5
-print 1 <= a <= 10
--- Ausgabe: true
-```
-
-</YueDisplay>
 
 Beachte das Auswertungsverhalten verketteter Vergleiche:
 
@@ -4288,33 +2191,6 @@ print v(1) > v(2) <= v(3)
 ]]
 ```
 
-<YueDisplay>
-
-```yue
-v = (x) ->
-  print x
-  x
-
-print v(1) < v(2) <= v(3)
---[[
-  Ausgabe:
-  2
-  1
-  3
-  true
-]]
-
-print v(1) > v(2) <= v(3)
---[[
-  Ausgabe:
-  2
-  1
-  false
-]]
-```
-
-</YueDisplay>
-
 Der mittlere Ausdruck wird nur einmal ausgewertet, nicht zweimal wie bei `v(1) < v(2) and v(2) <= v(3)`. Die Auswertungsreihenfolge in verketteten Vergleichen ist jedoch undefiniert. Es wird dringend empfohlen, in verketteten Vergleichen keine Ausdrücke mit Seiteneffekten (z. B. `print`) zu verwenden. Wenn Seiteneffekte nötig sind, sollte der Short-Circuit-Operator `and` explizit verwendet werden.
 
 ## Tabellenerweiterung
@@ -4326,15 +2202,6 @@ tab = []
 tab[] = "Wert"
 ```
 
-<YueDisplay>
-
-```yue
-tab = []
-tab[] = "Wert"
-```
-
-</YueDisplay>
-
 Du kannst auch den Spread-Operator `...` verwenden, um alle Elemente einer Liste an eine andere anzuhängen:
 
 ```yuescript
@@ -4343,17 +2210,6 @@ tbB = [4, 5, 6]
 tbA[] = ...tbB
 -- tbA ist jetzt [1, 2, 3, 4, 5, 6]
 ```
-
-<YueDisplay>
-
-```yue
-tbA = [1, 2, 3]
-tbB = [4, 5, 6]
-tbA[] = ...tbB
--- tbA ist jetzt [1, 2, 3, 4, 5, 6]
-```
-
-</YueDisplay>
 
 ## Tabellen-Spread
 
@@ -4376,27 +2232,6 @@ b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
 
-<YueDisplay>
-
-```yue
-parts =
-  * "Schultern"
-  * "Knie"
-lyrics =
-  * "Kopf"
-  * ...parts
-  * "und"
-  * "Zehen"
-
-copy = {...other}
-
-a = {1, 2, 3, x: 1}
-b = {4, 5, y: 1}
-merge = {...a, ...b}
-```
-
-</YueDisplay>
-
 ## Umgekehrter Tabellenindex
 
 Mit dem Operator **#** kannst du auf die letzten Elemente einer Tabelle zugreifen.
@@ -4406,16 +2241,6 @@ last = data.items[#]
 second_last = data.items[#-1]
 data.items[#] = 1
 ```
-
-<YueDisplay>
-
-```yue
-last = data.items[#]
-second_last = data.items[#-1]
-data.items[#] = 1
-```
-
-</YueDisplay>
 
 ## Metatable
 
@@ -4441,26 +2266,6 @@ print d.value
 close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs"
 ```
 
-<YueDisplay>
-
-```yue
-mt = {}
-add = (right) => <>: mt, value: @value + right.value
-mt.__add = add
-
-a = <>: mt, value: 1
- -- Feld mit gleichnamiger Variable setzen
-b = :<add>, value: 2
-c = <add>: mt.__add, value: 3
-
-d = a + b + c
-print d.value
-
-close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs"
-```
-
-</YueDisplay>
-
 ### Metatable-Zugriff
 
 Metatable mit **<>** oder einem von **<>** umschlossenen Metamethod-Namen aufrufen oder einen Ausdruck in **<>** schreiben.
@@ -4475,19 +2280,6 @@ tb.<> = __index: {item: "hallo"}
 print tb.item
 ```
 
-<YueDisplay>
-
-```yue
--- erstellen mit Metatable, das das Feld "value" enthält
-tb = <"value">: 123
-tb.<index> = tb.<>
-print tb.value
-tb.<> = __index: {item: "hallo"}
-print tb.item
-```
-
-</YueDisplay>
-
 ### Metatable-Destrukturierung
 
 Destrukturiere Metatable mit Metamethoden-Schlüssel, der von **<>** umschlossen ist.
@@ -4496,15 +2288,6 @@ Destrukturiere Metatable mit Metamethoden-Schlüssel, der von **<>** umschlossen
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
-
-<YueDisplay>
-
-```yue
-{item, :new, :<close>, <index>: getter} = tb
-print item, new, close, getter
-```
-
-</YueDisplay>
 
 ## Existenz
 
@@ -4525,25 +2308,6 @@ with? io.open "test.txt", "w"
   \close!
 ```
 
-<YueDisplay>
-
-```yue
-func?!
-print abc?["hello world"]?.xyz
-
-x = tab?.value
-len = utf8?.len or string?.len or (o) -> #o
-
-if print and x?
-  print x
-
-with? io.open "test.txt", "w"
-  \write "hello"
-  \close!
-```
-
-</YueDisplay>
-
 ## Piping
 
 Anstelle einer Reihe verschachtelter Funktionsaufrufe kannst du Werte mit dem Operator **|>** weiterleiten.
@@ -4562,24 +2326,6 @@ readFile "example.txt"
   |> print
 ```
 
-<YueDisplay>
-
-```yue
-"hello" |> print
-1 |> print 2 -- Pipe-Element als erstes Argument einfügen
-2 |> print 1, _, 3 -- Pipe mit Platzhalter
-
--- Pipe-Ausdruck über mehrere Zeilen
-readFile "example.txt"
-  |> extract language, {}
-  |> parse language
-  |> emit
-  |> render
-  |> print
-```
-
-</YueDisplay>
-
 ## Nil-Coalescing
 
 Der Nil-Coalescing-Operator **??** gibt den Wert des linken Operanden zurück, wenn er nicht **nil** ist; andernfalls wird der rechte Operand ausgewertet und sein Ergebnis zurückgegeben. Der **??**-Operator wertet seinen rechten Operanden nicht aus, wenn der linke Operand nicht nil ergibt.
@@ -4591,17 +2337,6 @@ func a ?? {}
 
 a ??= false
 ```
-
-<YueDisplay>
-
-```yue
-local a, b, c, d
-a = b ?? c ?? d
-func a ?? {}
-a ??= false
-```
-
-</YueDisplay>
 
 ## Implizites Objekt
 
@@ -4650,52 +2385,6 @@ tb =
 
 ```
 
-<YueDisplay>
-
-```yue
--- Zuweisung mit implizitem Objekt
-list =
-  * 1
-  * 2
-  * 3
-
--- Funktionsaufruf mit implizitem Objekt
-func
-  * 1
-  * 2
-  * 3
-
--- Rückgabe mit implizitem Objekt
-f = ->
-  return
-    * 1
-    * 2
-    * 3
-
--- Tabelle mit implizitem Objekt
-tb =
-  name: "abc"
-
-  values:
-    - "a"
-    - "b"
-    - "c"
-
-  objects:
-    - name: "a"
-      value: 1
-      func: => @value + 1
-      tb:
-        fieldA: 1
-
-    - name: "b"
-      value: 2
-      func: => @value + 2
-      tb: { }
-```
-
-</YueDisplay>
-
 # Literale
 
 Alle primitiven Literale in Lua können verwendet werden. Das gilt für Zahlen, Strings, Booleans und **nil**.
@@ -4711,19 +2400,6 @@ some_string = "Hier ist ein String
 print "Ich bin mir zu #{math.random! * 100}% sicher."
 ```
 
-<YueDisplay>
-
-```yue
-some_string = "Hier ist ein String
-  mit einem Zeilenumbruch."
-
--- Mit der #{}-Syntax kannst du Ausdrücke in String-Literale einbinden.
--- String-Interpolation gibt es nur in doppelt angeführten Strings.
-print "Ich bin mir zu #{math.random! * 100}% sicher."
-```
-
-</YueDisplay>
-
 ## Zahlenliterale
 
 Du kannst Unterstriche in Zahlenliteralen verwenden, um die Lesbarkeit zu erhöhen.
@@ -4733,16 +2409,6 @@ integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
 ```
-
-<YueDisplay>
-
-```yue
-integer = 1_000_000
-hex = 0xEF_BB_BF
-binary = 0B10011
-```
-
-</YueDisplay>
 
 ## YAML-Mehrzeilen-String
 
@@ -4756,18 +2422,6 @@ str = |
     - #{expr}
 ```
 
-<YueDisplay>
-
-```yue
-str = |
-  key: value
-  list:
-    - item1
-    - #{expr}
-```
-
-</YueDisplay>
-
 Damit lässt sich strukturierter, mehrzeiliger Text bequem schreiben. Alle Zeilenumbrüche und Einrückungen bleiben relativ zur ersten nicht-leeren Zeile erhalten, und Ausdrücke innerhalb von `#{...}` werden automatisch als `tostring(expr)` interpoliert.
 
 Der YAML-Mehrzeilen-String erkennt automatisch das gemeinsame führende Leerraumpräfix (minimale Einrückung über alle nicht-leeren Zeilen) und entfernt es aus allen Zeilen. So kannst du deinen Code optisch einrücken, ohne den resultierenden String zu verändern.
@@ -4780,18 +2434,6 @@ fn = ->
   return str
 ```
 
-<YueDisplay>
-
-```yue
-fn = ->
-  str = |
-    foo:
-      bar: baz
-  return str
-```
-
-</YueDisplay>
-
 Die interne Einrückung bleibt relativ zum entfernten gemeinsamen Präfix erhalten, wodurch saubere, verschachtelte Strukturen möglich sind.
 
 Alle Sonderzeichen wie Anführungszeichen (`"`) und Backslashes (`\`) im YAML-Mehrzeilen-Block werden automatisch escaped, sodass der erzeugte Lua-String syntaktisch korrekt ist und wie erwartet funktioniert.
@@ -4801,16 +2443,6 @@ str = |
   path: "C:\Program Files\App"
   note: 'He said: "#{Hello}!"'
 ```
-
-<YueDisplay>
-
-```yue
-str = |
-  path: "C:\Program Files\App"
-  note: 'He said: "#{Hello}!"'
-```
-
-</YueDisplay>
 
 # Module
 
@@ -4843,35 +2475,6 @@ do
   import "export" as {one, two, Something:{umm:{ch}}}
 ```
 
-<YueDisplay>
-
-```yue
--- als Tabellen-Destrukturierung
-do
-  import insert, concat from table
-  -- Fehler beim Zuweisen zu insert, concat
-  import C, Ct, Cmt from require "lpeg"
-  -- Kurzform für implizites Require
-  import x, y, z from 'mymodule'
-  -- Import im Python-Stil
-  from 'module' import a, b, c
-
--- Kurzform zum Laden eines Moduls
-do
-  import 'module'
-  import 'module_x'
-  import "d-a-s-h-e-s"
-  import "module.part"
-
--- Modul mit Alias oder Tabellen-Destrukturierung laden
-do
-  import "player" as PlayerModule
-  import "lpeg" as :C, :Ct, :Cmt
-  import "export" as {one, two, Something:{umm:{ch}}}
-```
-
-</YueDisplay>
-
 ## Import von Globals
 
 Du kannst mit `import` bestimmte Globals in lokale Variablen importieren. Wenn du eine Kette von Globalzugriffen importierst, wird das letzte Feld der lokalen Variable zugewiesen.
@@ -4882,17 +2485,6 @@ do
   import table.concat
   print concat ["a", tostring 1]
 ```
-
-<YueDisplay>
-
-```yue
-do
-  import tostring
-  import table.concat
-  print concat ["a", tostring 1]
-```
-
-</YueDisplay>
 
 ### Automatischer Global-Import
 
@@ -4914,25 +2506,6 @@ do
   print FLAG
   FLAG = 123
 ```
-
-<YueDisplay>
-
-```yue
-do
-  import global
-  print "hallo"
-  math.random 3
-  -- print = nil -- Fehler: importierte Globals sind const
-
-do
-  -- explizite globale Variable wird nicht importiert
-  import global
-  global FLAG
-  print FLAG
-  FLAG = 123
-```
-
-</YueDisplay>
 
 ## Export
 
@@ -4958,41 +2531,12 @@ export class Something
   umm: "cool"
 ```
 
-<YueDisplay>
-
-```yue
-export a, b, c = 1, 2, 3
-export cool = "Katze"
-
-export What = if this
-  "abc"
-else
-  "def"
-
-export y = ->
-  hallo = 3434
-
-export class Something
-  umm: "cool"
-```
-
-</YueDisplay>
-
 Benannter Export mit Destructuring.
 
 ```yuescript
 export :loadstring, to_lua: tolua = yue
 export {itemA: {:fieldA = 'default'}} = tb
 ```
-
-<YueDisplay>
-
-```yue
-export :loadstring, to_lua: tolua = yue
-export {itemA: {:fieldA = 'default'}} = tb
-```
-
-</YueDisplay>
 
 Benannte Elemente aus dem Modul exportieren, ohne lokale Variablen zu erstellen.
 
@@ -5001,16 +2545,6 @@ export.itemA = tb
 export.<index> = items
 export["a-b-c"] = 123
 ```
-
-<YueDisplay>
-
-```yue
-export.itemA = tb
-export.<index> = items
-export["a-b-c"] = 123
-```
-
-</YueDisplay>
 
 ### Unbenannter Export
 
@@ -5029,23 +2563,6 @@ export with tmp
   j = 2000
 ```
 
-<YueDisplay>
-
-```yue
-d, e, f = 3, 2, 1
-export d, e, f
-
-export if this
-  123
-else
-  456
-
-export with tmp
-  j = 2000
-```
-
-</YueDisplay>
-
 ### Default-Export
 
 Mit dem Schlüsselwort **default** in einer `export`-Anweisung wird die exportierte Tabelle durch ein beliebiges Objekt ersetzt.
@@ -5055,16 +2572,6 @@ export default ->
   print "hallo"
   123
 ```
-
-<YueDisplay>
-
-```yue
-export default ->
-  print "hallo"
-  123
-```
-
-</YueDisplay>
 
 # Lizenz: MIT
 
