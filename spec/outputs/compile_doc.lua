@@ -44,7 +44,7 @@ getFiles = function(locale)
 		"doc/docs/" .. tostring(locale) .. "doc/language-basics/operator.md",
 		"doc/docs/" .. tostring(locale) .. "doc/language-basics/literals.md",
 		"doc/docs/" .. tostring(locale) .. "doc/language-basics/module.md",
-		"doc/docs/" .. tostring(locale) .. "doc/reference/license-mit.md",
+		"doc/docs/" .. tostring(locale) .. "doc/extras/license-mit.md",
 		"doc/docs/" .. tostring(locale) .. "doc/advanced/the-yuescript-library.md"
 	}
 end

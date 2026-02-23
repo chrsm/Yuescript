@@ -34,7 +34,7 @@ getFiles = (locale) ->
 		"doc/docs/#{locale}doc/language-basics/operator.md"
 		"doc/docs/#{locale}doc/language-basics/literals.md"
 		"doc/docs/#{locale}doc/language-basics/module.md"
-		"doc/docs/#{locale}doc/reference/license-mit.md"
+		"doc/docs/#{locale}doc/extras/license-mit.md"
 		"doc/docs/#{locale}doc/advanced/the-yuescript-library.md"
 	]
 docs = [ ["codes_from_doc_#{locale}.lua", "yue-#{locale}.md", getFiles locale] for locale in *["en", "zh", "pt-br", "de", "id-id"]]

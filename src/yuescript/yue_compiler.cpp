@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.33.1"sv;
+const std::string_view version = "0.33.2"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -9955,9 +9955,11 @@ private:
 		auto baseVar = getUnusedName("_base_"sv);
 		addToScope(baseVar);
 		temp.push_back(indent() + "local "s + baseVar + " = "s);
-		str_list builtins;
-		std::vector<std::pair<std::string, bool>> baseEntries;
-		str_list statements;
+		using ClassMemberEntry = std::tuple<std::string, std::string, bool>;
+		std::list<ClassMemberEntry> builtinFields;
+		std::list<ClassMemberEntry> classFields;
+		std::list<ClassMemberEntry> commentOrEmpty;
+		str_list initStatements;
 		if (body) {
 			std::list<ClassMember> members;
 			for (auto content : classDecl->body->contents.objects()) {
@@ -9969,11 +9971,19 @@ private:
 						for (; it != members.end(); ++it) {
 							auto& member = *it;
 							if (member.type == MemType::Property) {
-								statements.push_back(indent() + member.item + nl(content));
+								initStatements.push_back(indent() + member.item + nl(content));
 							} else if (member.type == MemType::Builtin) {
-								builtins.push_back((builtins.empty() ? Empty : ',' + nl(member.node)) + indent(1) + member.item);
+								if (!commentOrEmpty.empty()) {
+									builtinFields.insert(builtinFields.end(), commentOrEmpty.begin(), commentOrEmpty.end());
+									commentOrEmpty.clear();
+								}
+								builtinFields.emplace_back(indent(1) + member.item, nl(member.node), false);
 							} else {
-								baseEntries.emplace_back(indent(1) + member.item + nl(member.node), true);
+								if (!commentOrEmpty.empty()) {
+									classFields.insert(classFields.end(), commentOrEmpty.begin(), commentOrEmpty.end());
+									commentOrEmpty.clear();
+								}
+								classFields.emplace_back(indent(1) + member.item, nl(member.node), false);
 							}
 						}
 						break;
@@ -9981,13 +9991,13 @@ private:
 					case id<YueComment_t>(): {
 						if (_config.reserveComment) {
 							auto comment = static_cast<YueComment_t*>(content);
-							baseEntries.emplace_back(indent(1) + comment->to_string(&_config) + '\n', false);
+							commentOrEmpty.emplace_back(indent(1) + comment->to_string(&_config), "\n"s, true);
 						}
 						break;
 					}
 					case id<EmptyLine_t>(): {
 						if (_config.reserveComment) {
-							baseEntries.emplace_back("\n"s, false);
+							commentOrEmpty.emplace_back(Empty, "\n"s, true);
 						}
 						break;
 					}
@@ -10002,37 +10012,23 @@ private:
 			forceAddToScope("self"s);
 			for (auto stmt_ : block->statementOrComments.objects()) {
 				if (auto stmt = ast_cast<Statement_t>(stmt_)) {
-					transformStatement(stmt, statements);
+					transformStatement(stmt, initStatements);
 				}
 			}
-			if (!baseEntries.empty()) {
+			if (!classFields.empty()) {
 				temp.back() += '{' + nl(body);
-				int lastValue = -1;
-				for (int i = static_cast<int>(baseEntries.size()) - 1; i >= 0; --i) {
-					if (baseEntries[i].second) {
-						lastValue = i;
-						break;
+				str_list fieldItems;
+				for (auto& field : classFields) {
+					auto [item, newLine, isComment] = std::move(field);
+					bool isLast = &field == &classFields.back();
+					bool needComma = !isLast && !isComment;
+					if (needComma) {
+						fieldItems.emplace_back(item + ',' + newLine);
+					} else {
+						fieldItems.emplace_back(item + newLine);
 					}
 				}
-				str_list baseItems;
-				for (int i = 0; i < static_cast<int>(baseEntries.size()); ++i) {
-					auto item = baseEntries[i].first;
-					if (baseEntries[i].second && i != lastValue) {
-						auto pos = item.rfind('\n');
-						if (pos != std::string::npos) {
-							auto comment = item.rfind("-- ");
-							if (comment != std::string::npos && comment < pos) {
-								item.insert(comment - 1, ",");
-							} else {
-								item.insert(pos, ",");
-							}
-						} else {
-							item.push_back(',');
-						}
-					}
-					baseItems.push_back(std::move(item));
-				}
-				temp.push_back(join(baseItems));
+				temp.push_back(join(fieldItems));
 				temp.push_back(indent() + '}' + nl(body));
 			} else {
 				temp.back() += "{ }"s + nl(body);
@@ -10074,8 +10070,18 @@ private:
 			_buf << indent() << "setmetatable("sv << baseVar << ", "sv << parentVar << ".__base)"sv << nl(classDecl);
 		}
 		_buf << indent() << classVar << " = "sv << globalVar("setmetatable"sv, classDecl, AccessType::Read) << "({"sv << nl(classDecl);
-		if (!builtins.empty()) {
-			_buf << join(builtins) << ',' << nl(classDecl);
+		if (!builtinFields.empty()) {
+			str_list builtinItems;
+			for (auto& field : builtinFields) {
+				auto [item, newLine, isComment] = std::move(field);
+				bool needComma = !isComment;
+				if (needComma) {
+					builtinItems.emplace_back(item + ',' + newLine);
+				} else {
+					builtinItems.emplace_back(item + newLine);
+				}
+			}
+			_buf << join(builtinItems);
 		} else {
 			if (extend) {
 				_buf << indent(1) << "__init = function(self, ...)"sv << nl(classDecl);
@@ -10122,10 +10128,10 @@ private:
 		_buf << indent(1) << "end"sv << nl(classDecl);
 		_buf << indent() << "})"sv << nl(classDecl);
 		_buf << indent() << baseVar << ".__class = "sv << classVar << nl(classDecl);
-		if (!statements.empty()) {
+		if (!initStatements.empty()) {
 			_buf << indent() << "local self = "sv << classVar << ';' << nl(classDecl);
 		}
-		_buf << join(statements);
+		_buf << join(initStatements);
 		if (extend) {
 			_buf << indent() << "if "sv << parentVar << ".__inherited then"sv << nl(classDecl);
 			_buf << indent(1) << parentVar << ".__inherited("sv << parentVar << ", "sv << classVar << ")"sv << nl(classDecl);
