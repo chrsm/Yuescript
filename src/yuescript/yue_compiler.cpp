@@ -10020,7 +10020,12 @@ private:
 					if (baseEntries[i].second && i != lastValue) {
 						auto pos = item.rfind('\n');
 						if (pos != std::string::npos) {
-							item.insert(pos, ",");
+							auto comment = item.rfind("-- ");
+							if (comment != std::string::npos && comment < pos) {
+								item.insert(comment - 1, ",");
+							} else {
+								item.insert(pos, ",");
+							}
 						} else {
 							item.push_back(',');
 						}
