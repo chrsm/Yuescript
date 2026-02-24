@@ -2,6 +2,305 @@
 
 The implementation for the original Moonscript language 0.5.0 can be found in the `0.5.0` branch of Yuescript. The Moonscript with fixes and new features is in the main branch of Yuescript. Here are the changelogs for each Yuescript version.
 
+## v0.33.x
+
+### Added Features
+
+* Expanded documentation deliverables with an all-in-one documentation output.
+* Improved `break` feature set by supporting multiple break values (extends the `break with value` work introduced in `v0.28.x`).
+* Further improved reserved-comment preservation behavior for table/class blocks (parser, AST and code generation), with dedicated test coverage.
+
+### Fixed Issues
+
+* Fixed formatter issues and improved formatting stability.
+* Fixed comma placement/insertion issues when line-number comments are enabled (including class-member cases, issue #240).
+* Fixed more comment-preserving code paths and issue #245.
+* Improved documentation site rendering/highlighting and updated documentation content/assets.
+
+## v0.32.x
+
+### Added Features
+
+* Added `;` as a statement separator.
+  ```moonscript
+  a = 1; b = 2; result = a + b
+  ```
+* Migrated the documentation site to VitePress and added/expanded localized docs (including German and Portuguese-Brazil).
+* Added substantial compiler test coverage (including large regression/spec batches).
+
+### Fixed Issues
+
+* Fixed `import global` related issues after the `v0.31.x` syntax addition.
+* Fixed global-variable lint behavior.
+* Improved cross-platform build support (LuaJIT, MSVC/Windows, CMake, rockspec updates).
+* Added Lua 5.5 support in CMake configuration and fixed CI/build workflow issues.
+* Fixed issue #227 and multiple documentation/site regressions.
+
+## v0.31.x
+
+### Added Features
+
+* Added const attributes.
+  ```moonscript
+  const a = 123
+  const {:x, :y} = point
+  ```
+* Added `import global` syntax.
+  ```moonscript
+  import global
+  print "hello"
+  math.random 10
+  ```
+* These are the primary language-level additions in `v0.31.x` (with follow-up fixes landing in `v0.32.x`).
+
+### Fixed Issues
+
+* Fixed global import ordering.
+* Fixed a crash issue in `v0.31.1`.
+* Updated Windows workflow/build-related integration.
+
+## v0.30.x
+
+### Added Features
+
+* Added named vararg support.
+  ```moonscript
+  f = (...t) ->
+    for i = 1, t.n
+      print t[i]
+  ```
+* Improved syntax error messages with more contextual details (not syntax-changing, but a meaningful compiler UX improvement).
+
+### Fixed Issues
+
+* Fixed empty-line-as-block parsing issue.
+* Fixed formatter crash and other formatting-related issues.
+* Refactored `FnArgsDef` rules and fixed issue #224.
+* Updated reserved-comments behavior/functionality.
+
+## v0.29.x
+
+### Added Features
+
+* Introduced/iterated new syntax around `try` flow, including `try!` / `try?` related changes.
+  ```moonscript
+  a, b, c = try? func!
+  a = (try? func!) ?? "default"
+  
+  f try?
+    print 123
+    func!
+  catch e
+    print e
+    e
+  ```
+* Added more reversed-index support for slice expressions and later fixed reversed-index edge cases.
+  ```moonscript
+  tab = [1, 2, 3, 4, 5]
+  print tab[#], tab[#-1]
+  ```
+* Added function argument destructuring.
+  ```moonscript
+  f = ({:x, :y}) -> x + y
+  print f x: 1, y: 2
+  ```
+* Added YAML multiline string support and macro argument checking.
+  ```moonscript
+  config = |
+    database:
+      host: localhost
+      port: 5432
+  ```
+
+### Fixed Issues
+
+* Fixed a crash in `yue.to_ast()` and additional reference/crash issues.
+* Stopped linting explicitly defined global variables.
+* Fixed issue #222 and #223.
+* Improved platform/build compatibility: Windows x64, Lua 5.1, Termux, WASM/build pipeline issues.
+* Renamed builtin JSON library to `cojson`, included a minimal JSON lib in the compiler tool, and removed `codecvt` usage for C++26 compatibility.
+
+## v0.28.x
+
+### Added Features
+
+* Allowed backcall without parentheses.
+  ```moonscript
+  results = do
+    data <- readAsync "data.txt"
+    process data
+  ```
+* Added global `const` declaration support, including declaration without initializer.
+  ```moonscript
+  import global
+  global const Flag = 1
+  global const math, table
+  ```
+* Added `break with value` syntax.
+  ```moonscript
+  x, y = for i = 1, 10
+    if i > 5
+      break i, i * 2
+  ```
+* Added `-` for implicit object.
+  ```moonscript
+  items =
+    - "a"
+    - "b"
+    - "c"
+  ```
+
+### Fixed Issues
+
+* Added/expanded related tests/docs and table-matching support around the new syntax behaviors.
+
+## v0.27.x
+
+### Added Features
+
+* Adjusted macro behavior by aligning Lua inserter macro behavior with common Yue macro behavior (semantic behavior alignment rather than new syntax).
+
+### Fixed Issues
+
+* Fixed issues #194, #195, #198, #201, #204, #206 and #209.
+* Updated `efsw` and fixed build-related issues.
+* Added/updated tests and documentation examples.
+
+## v0.26.x
+
+### Added Features
+
+* Added WASM distribution support for ESM/CommonJS modules and TypeScript integration (#176).
+
+### Fixed Issues
+
+* Fixed WASM build issues and updated WASM build pipeline.
+* Fixed issues #174, #175, #177, #178, #183, #185 and #188.
+* Fixed MoonScript issue #459.
+* Fixed build flags and related release/build issues; refreshed specs/docs/readme.
+
+## v0.25.x
+
+### Added Features
+
+* This series mainly improves semantic correctness and code generation consistency.
+
+### Fixed Issues
+
+* Fixed multi-value assignment evaluation order (including more edge cases in `v0.25.1`).
+* Disallowed some semantically incorrect syntax to improve code consistency.
+* Removed redundant/useless `do` blocks in generated code (`with` and related cases).
+* Fixed indentation/missed-indent issue and a few additional regressions.
+
+## v0.24.x
+
+### Added Features
+
+* Added reusable macro environment support.
+* Added builtin macros `$to_ast()` and `$is_ast()`.
+* Added `yue.is_ast()`.
+  ```moonscript
+  import "yue"
+  formated = yue.format code, 0, true
+  ```
+
+### Fixed Issues
+
+* Fixed macro function line-number handling.
+* Fixed Lua 5.1 build.
+* Fixed Lua stack size insufficiency issue.
+
+## v0.23.x
+
+### Added Features
+
+* Added macros-generating-macros feature (`v0.23.9`), expanding macro metaprogramming capability.
+  ```moonscript
+  macro Enum = (...) ->
+    items = {...}
+    itemSet = {item, true for item in *items}
+    (item) ->
+      error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+      "\"#{item}\""
+  
+  macro BodyType = $Enum(
+    Static
+    Dynamic
+    Kinematic
+  )
+  
+  print "Valid enum type:", $BodyType Static
+  ```
+* Most other `v0.23.x` changes focus on try-catch/code-generation correctness rather than new syntax forms.
+* Added more tests/spec cases and documentation updates (including object literal docs in README, #165).
+
+### Fixed Issues
+
+* Fixed multiple try-catch syntax ambiguity/corner cases and removed redundant generated `do` blocks.
+* Fixed spread expression list issue in up-value functions.
+* Prevented extra anonymous function generation from `const`/`close` declarations.
+* Fixed nil-coalescing/anonymous-function movement issue and anonymous-function argument ordering.
+* Fixed a for-each key variable const-marking issue and traceback rewrite/codegen checks.
+
+## v0.22.x
+
+### Added Features
+
+* Added default return declaration for function literals.
+  ```moonscript
+  findValue = (items): "not found" ->
+    for item in *items
+      if item.name == "target"
+        return item.name
+  ```
+* Added option to stop implicit returns on the root (#164).
+* `v0.22.x` also adjusts `for`-loop const behavior to align with Lua 5.5 changes, then refines the rule in `v0.22.1` (only index/key variable is const).
+
+### Fixed Issues
+
+* Fixed undeclared specifier in `yue_compiler.cpp` (#163).
+* Removed an unnecessary const declaration.
+* Corrected/refined `for`-loop const default behavior introduced in `v0.22.0`.
+
+## v0.21.x
+
+### Added Features
+
+* Changed the if-assignment syntax to prevent error-prone cases (syntax/grammar behavior change).
+  ```moonscript
+  if user := obj\find_user "valid"
+    print user.name
+  elseif other := obj\find_user "fallback"
+    print other.name
+  ```
+* Added `yue.format()` and fixed `yue` AST-to-code conversion related functionality.
+  ```moonscript
+  import "yue"
+  formated = yue.format code, 0, true
+  ```
+
+### Fixed Issues
+
+* Fixed issues #157 and #158 (including a web compiler issue).
+* Fixed invalid formatting/formation cases and in-expression formatting issues.
+* Fixed more invalid in-expression use cases.
+* Fixed const list destructuring, empty-check/empty-block-at-EOF cases, and crash/format edge cases.
+* Fixed `luaminify` related issue and updated Lua 5.4 integration/tooling.
+
+## v0.20.x (after v0.20.2)
+
+### Added Features
+
+* This interval mainly contains follow-up fixes for newly introduced `v0.20.2` features (chaining conditions, list/switch matching, import handling) plus release pipeline improvements.
+
+### Fixed Issues
+
+* Fixed table-matching syntax in `switch` statements with list tables.
+* Fixed a missing condition-chaining case.
+* Fixed a crash case for `import` statements.
+* Made function-call argument behavior consistent with table-list behavior.
+* Improved release/build pipeline setup (CI workflows, LuaRocks upload, docs code checks, test workflow setup).
+
 ## v0.20.2
 
 ### Added Features
