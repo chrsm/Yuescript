@@ -318,6 +318,7 @@ private:
 	NONE_AST_RULE(comment_line);
 	NONE_AST_RULE(yue_line_comment);
 	NONE_AST_RULE(yue_multiline_comment);
+	NONE_AST_RULE(yue_comment_block);
 	NONE_AST_RULE(line);
 	NONE_AST_RULE(shebang);
 	NONE_AST_RULE(is_lax);
