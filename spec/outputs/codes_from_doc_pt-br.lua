@@ -2820,7 +2820,7 @@ end), 0, function(a, b)
 	return a + b
 end))
 local apple = setmetatable({
-	size = 15,
+	size = 15
 }, {
 	__index = {
 		color = 0x00ffff
@@ -2898,7 +2898,7 @@ end), 0, function(a, b)
 	return a + b
 end))
 local apple = setmetatable({
-	size = 15,
+	size = 15
 }, {
 	__index = {
 		color = 0x00ffff

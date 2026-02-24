@@ -319,28 +319,28 @@ end):_u6467_u6bc1()
 end
 _u6253_u5370((setmetatable({
 	'abc',
-	["字段a"] = 123,
+	["字段a"] = 123
 }, {
 	__call = function(self)
 		return 998
 	end
 }))[1], (setmetatable({
 	'abc',
-	["字段a"] = 123,
+	["字段a"] = 123
 }, {
 	__call = function(self)
 		return 998
 	end
 }))["字段a"], (setmetatable({
 	'abc',
-	["字段a"] = 123,
+	["字段a"] = 123
 }, {
 	__call = function(self)
 		return 998
 	end
 }))(), setmetatable({
 	'abc',
-	["字段a"] = 123,
+	["字段a"] = 123
 }, {
 	__call = function(self)
 		return 998

@@ -289,4 +289,18 @@ do
 
 	handlePath ["admin", "logs", "view"]
 
+do
+	_check_cond_expr = (iftyp, n, args) ->
+		sw = { ct: iftyp, op: op }
+		why = switch sw
+			-- woo
+			when ct: 'if', op: '=='
+				'never'
+			when ct: 'if', op: '!='
+				'always'
+			when ct: 'unless', op: '=='
+				'always'
+			when ct: 'unless', op: '!='
+				'never'
+
 nil

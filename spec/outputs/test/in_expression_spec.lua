@@ -341,19 +341,19 @@ return describe("in expression", function()
 		local nested = {
 			setmetatable({
 				1,
-				2,
+				2
 			}, {
 				__eq = eq
 			}),
 			setmetatable({
 				3,
-				4,
+				4
 			}, {
 				__eq = eq
 			}),
 			setmetatable({
 				5,
-				6,
+				6
 			}, {
 				__eq = eq
 			})

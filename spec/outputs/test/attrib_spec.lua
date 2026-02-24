@@ -78,13 +78,13 @@ return describe("attrib", function()
 			local result
 			if true then
 				result = setmetatable({
-					value = 42,
+					value = 42
 				}, {
 					__close = function() end
 				})
 			else
 				result = setmetatable({
-					value = 0,
+					value = 0
 				}, {
 					__close = function() end
 				})

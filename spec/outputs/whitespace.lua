@@ -140,4 +140,47 @@ do
 	_base_0.__class = _class_0
 	tb3 = _class_0
 end
+do
+	local tb = setmetatable({
+		print(123),
+		abc = 1,
+		c = "",
+		z = 998
+	}, {
+		__close = function() end,
+		__eq = function() end,
+		__call = function() end
+	})
+	local CY
+	local _class_0
+	local xa, xb, xc, xd
+	local _base_0 = { }
+	if _base_0.__index == nil then
+		_base_0.__index = _base_0
+	end
+	_class_0 = setmetatable({
+		__init = function(self)
+			return print(xa, xb, xc, xd)
+		end,
+		__base = _base_0,
+		__name = "CY"
+	}, {
+		__index = _base_0,
+		__call = function(cls, ...)
+			local _self_0 = setmetatable({ }, _base_0)
+			cls.__init(_self_0, ...)
+			return _self_0
+		end
+	})
+	_base_0.__class = _class_0
+	local self = _class_0;
+	xa = 1
+	xb = 2
+	xc = 3
+	xd = setmetatable({ }, {
+		__close = function(self) end
+	})
+	local _close_0 <close> = xd
+	CY = _class_0
+end
 return nil

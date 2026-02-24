@@ -198,5 +198,52 @@ do
 		-- two
 		b: -> -- 2
 
+do
+	tb = {
+
+		-- hello
+		print 123
+		-- abc
+
+
+
+
+
+
+
+		abc: 1
+
+
+		-- xyz
+		c: ""
+
+
+		z: 998
+
+		<close>: ->
+
+		-- hello
+		<eq>: ->
+		--[[OK]]    --[[OK]]--good
+		<call>: ->
+	}
+
+	class CY
+		-- init xa
+		xa = 1
+		-- init xb
+		local xb = 2
+
+		-- new
+		new: => print xa, xb, xc, xd
+
+
+		-- init xc
+		const xc = 3
+
+		-- wait
+
+		-- init xd
+		close xd = <close>: =>
 
 nil

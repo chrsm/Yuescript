@@ -72,7 +72,7 @@ return describe("close attribute", function()
 	it("should work with fat arrow", function()
 		local closed = false
 		local obj = setmetatable({
-			value = 10,
+			value = 10
 		}, {
 			__close = function(self)
 				closed = true

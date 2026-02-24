@@ -777,4 +777,48 @@ do
 		"view"
 	})
 end
+do
+	local _check_cond_expr
+	_check_cond_expr = function(iftyp, n, args)
+		local sw = {
+			ct = iftyp,
+			op = op
+		}
+		local why
+		local _type_0 = type(sw)
+		local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+		local _match_0 = false
+		if _tab_0 then
+			if 'if' == sw.ct and '==' == sw.op then
+				_match_0 = true
+				why = 'never'
+			end
+		end
+		if not _match_0 then
+			local _match_1 = false
+			if _tab_0 then
+				if 'if' == sw.ct and '!=' == sw.op then
+					_match_1 = true
+					why = 'always'
+				end
+			end
+			if not _match_1 then
+				local _match_2 = false
+				if _tab_0 then
+					if 'unless' == sw.ct and '==' == sw.op then
+						_match_2 = true
+						why = 'always'
+					end
+				end
+				if not _match_2 then
+					if _tab_0 then
+						if 'unless' == sw.ct and '!=' == sw.op then
+							why = 'never'
+						end
+					end
+				end
+			end
+		end
+	end
+end
 return nil

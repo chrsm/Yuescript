@@ -301,28 +301,28 @@ end):Destroy()
 end
 print((setmetatable({
 	'abc',
-	a = 123,
+	a = 123
 }, {
 	__call = function(self)
 		return 998
 	end
 }))[1], (setmetatable({
 	'abc',
-	a = 123,
+	a = 123
 }, {
 	__call = function(self)
 		return 998
 	end
 })).a, (setmetatable({
 	'abc',
-	a = 123,
+	a = 123
 }, {
 	__call = function(self)
 		return 998
 	end
 }))(), setmetatable({
 	'abc',
-	a = 123,
+	a = 123
 }, {
 	__call = function(self)
 		return 998

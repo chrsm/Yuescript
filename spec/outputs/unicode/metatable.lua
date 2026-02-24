@@ -1,5 +1,5 @@
 local _u53d8_u91cfa = setmetatable({
-	["关闭"] = true,
+	["关闭"] = true
 }, {
 	__close = function(self)
 		return _u6253_u5370("离开作用域")

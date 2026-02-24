@@ -905,7 +905,7 @@ YueParser::YueParser() {
 			white >> '}'
 		);
 
-	table_block_inner = Seperator >> key_value_line >> *(+plain_space_break >> key_value_line);
+	table_block_inner = Seperator >> key_value_line >> *(line_break >> key_value_line);
 	TableBlock = +plain_space_break >> advance_match >> ensure(table_block_inner, pop_indent);
 	TableBlockIndent = ('*' | '-' >> space_one) >> Seperator >> disable_arg_table_block_rule(
 		space >> key_value_list >> -(space >> ',') >>
@@ -916,7 +916,7 @@ YueParser::YueParser() {
 	ClassBlock =
 		+plain_space_break >>
 		advance_match >> Seperator >>
-		class_line >> *(+plain_space_break >> class_line) >>
+		class_line >> *(line_break >> class_line) >>
 		pop_indent;
 
 	ClassDecl =
@@ -1007,7 +1007,7 @@ YueParser::YueParser() {
 	MetaNormalPairDef = MetaNormalPair >> destruct_def;
 	NormalDef = Exp >> Seperator >> destruct_def;
 
-	yue_comment_block = -EmptyLine >> YueComment >> *(line_break >> -EmptyLine >> YueComment) >> line_break;
+	yue_comment_block = -EmptyLine >> YueComment >> *(line_break >> -EmptyLine >> YueComment) >> line_break >> -EmptyLine | EmptyLine;
 
 	key_value =
 		VariablePair |

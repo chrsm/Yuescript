@@ -214,7 +214,7 @@ return describe("advanced tables", function()
 			item = "test",
 			new = function()
 				return "created"
-			end,
+			end
 		}, {
 			__close = function()
 				return "closed"

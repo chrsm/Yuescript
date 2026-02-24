@@ -1,5 +1,5 @@
 local a = setmetatable({
-	close = true,
+	close = true
 }, {
 	__close = function(self)
 		return print("out of scope")

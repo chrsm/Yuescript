@@ -920,7 +920,7 @@ AST_NODE(BreakLoop)
 	ast_sel<true, Break_t, Continue_t> type;
 	ast_ptr<false, ExpList_t> valueList;
 	AST_MEMBER(BreakLoop, &type, &valueList)
-	std::list<std::string> vars;
+	std::deque<std::string> vars;
 AST_END(BreakLoop)
 
 AST_NODE(PipeBody)
