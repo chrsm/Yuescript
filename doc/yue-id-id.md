@@ -15,16 +15,6 @@ do
 print var -- nil di sini
 ```
 
-`do` di YueScript juga bisa digunakan sebagai ekspresi, memungkinkan Anda menggabungkan beberapa baris menjadi satu. Hasil ekspresi `do` adalah pernyataan terakhir di badannya. Ekspresi `do` mendukung penggunaan `break` untuk memutus alur eksekusi dan mengembalikan banyak nilai lebih awal.
-
-```yuescript
-status, value = do
-  n = 12
-  if n > 10
-    break "large", n
-  break "small", n
-```
-
 ```yuescript
 counter = do
   i = 0
@@ -42,6 +32,16 @@ tbl = {
     print "assigning key!"
     1234
 }
+```
+
+`do` di YueScript juga bisa digunakan sebagai ekspresi, memungkinkan Anda menggabungkan beberapa baris menjadi satu. Hasil ekspresi `do` adalah pernyataan terakhir di badannya. Ekspresi `do` mendukung penggunaan `break` untuk memutus alur eksekusi dan mengembalikan banyak nilai lebih awal.
+
+```yuescript
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
 ```
 
 # Dekorator Baris
@@ -868,7 +868,7 @@ with tb
 
 ```yuescript
 with? obj
-  print obj.name
+  print .name
 ```
 
 # Penugasan

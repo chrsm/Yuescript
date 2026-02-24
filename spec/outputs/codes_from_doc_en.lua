@@ -3,18 +3,6 @@ do
 	print(var)
 end
 print(var)
-local status, value
-do
-	repeat
-		local n = 12
-		if n > 10 then
-			status, value = "large", n
-			break
-		end
-		status, value = "small", n
-		break
-	until true
-end
 local counter
 do
 	local i = 0
@@ -31,23 +19,23 @@ local tbl = {
 		return 1234
 	end)()
 }
+local status, value
+do
+	repeat
+		local n = 12
+		if n > 10 then
+			status, value = "large", n
+			break
+		end
+		status, value = "small", n
+		break
+	until true
+end
 do
 	local var = "hello"
 	print(var)
 end
 print(var)
-local status, value
-do
-	repeat
-		local n = 12
-		if n > 10 then
-			status, value = "large", n
-			break
-		end
-		status, value = "small", n
-		break
-	until true
-end
 local counter
 do
 	local i = 0
@@ -64,6 +52,18 @@ local tbl = {
 		return 1234
 	end)()
 }
+local status, value
+do
+	repeat
+		local n = 12
+		if n > 10 then
+			status, value = "large", n
+			break
+		end
+		status, value = "small", n
+		break
+	until true
+end
 if name == "Rob" then
 	print("hello world")
 end
@@ -2204,7 +2204,7 @@ end
 _with_0[#_with_0 + 1] = "abc"
 local _with_0 = obj
 if _with_0 ~= nil then
-	print(obj.name)
+	print(_with_0.name)
 end
 local _with_0 = Person()
 _with_0.name = "Oswald"
@@ -2262,7 +2262,7 @@ end
 _with_0[#_with_0 + 1] = "abc"
 local _with_0 = obj
 if _with_0 ~= nil then
-	print(obj.name)
+	print(_with_0.name)
 end
 local hello = "world"
 local a, b, c = 1, 2, 3

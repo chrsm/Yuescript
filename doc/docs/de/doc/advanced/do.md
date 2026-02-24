@@ -20,27 +20,7 @@ print var -- nil hier
 
 </YueDisplay>
 
-YueScripts **do** kann auch als Ausdruck verwendet werden. So kannst du mehrere Zeilen in einem Ausdruck kombinieren. Das Ergebnis des `do`-Ausdrucks ist die letzte Anweisung im Block. `do`-Ausdrücke unterstützen die Verwendung von `break`, um den Kontrollfluss zu unterbrechen und mehrere Rückgabewerte vorzeitig zurückzugeben.
-
-```yuescript
-status, value = do
-  n = 12
-  if n > 10
-    break "large", n
-  break "small", n
-```
-
-<YueDisplay>
-
-```yue
-status, value = do
-  n = 12
-  if n > 10
-    break "large", n
-  break "small", n
-```
-
-</YueDisplay>
+YueScripts **do** kann auch als Ausdruck verwendet werden. So kannst du mehrere Zeilen in einem Ausdruck kombinieren. Das Ergebnis des `do`-Ausdrucks ist die letzte Anweisung im Block.
 
 ```yuescript
 counter = do
@@ -84,6 +64,28 @@ tbl = {
     print "Schlüssel wird zugewiesen!"
     1234
 }
+```
+
+</YueDisplay>
+
+`do`-Ausdrücke unterstützen die Verwendung von `break`, um den Kontrollfluss zu unterbrechen und mehrere Rückgabewerte vorzeitig zurückzugeben.
+
+```yuescript
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
+```
+
+<YueDisplay>
+
+```yue
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
 ```
 
 </YueDisplay>

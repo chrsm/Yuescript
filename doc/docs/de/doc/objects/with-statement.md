@@ -162,14 +162,14 @@ with tb
 
 ```yuescript
 with? obj
-  print obj.name
+  print .name
 ```
 
 <YueDisplay>
 
 ```yue
 with? obj
-  print obj.name
+  print .name
 ```
 
 </YueDisplay>

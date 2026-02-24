@@ -15,18 +15,6 @@ do
 print var -- nil here
 ```
 
-YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
-
-`do` expressions also support using `break` to interrupt control flow and return multiple values early:
-
-```yuescript
-status, value = do
-  n = 12
-  if n > 10
-    break "large", n
-  break "small", n
-```
-
 ```yuescript
 counter = do
   i = 0
@@ -44,6 +32,18 @@ tbl = {
     print "assigning key!"
     1234
 }
+```
+
+YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+
+`do` expressions also support using `break` to interrupt control flow and return multiple values early:
+
+```yuescript
+status, value = do
+  n = 12
+  if n > 10
+    break "large", n
+  break "small", n
 ```
 
 # Line Decorators
@@ -870,7 +870,7 @@ with tb
 
 ```yuescript
 with? obj
-  print obj.name
+  print .name
 ```
 
 # Assignment
