@@ -15,6 +15,8 @@ do
 print var -- nil here
 ```
 
+YueScript's **do** can also be used an expression. Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+
 ```yuescript
 counter = do
   i = 0
@@ -33,8 +35,6 @@ tbl = {
     1234
 }
 ```
-
-YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
 
 `do` expressions also support using `break` to interrupt control flow and return multiple values early:
 

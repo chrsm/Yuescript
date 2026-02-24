@@ -20,7 +20,7 @@ print var -- nil here
 
 </YueDisplay>
 
-YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+YueScript's **do** can also be used an expression. Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
 
 ```yuescript
 counter = do
