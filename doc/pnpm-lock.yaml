@@ -27,8 +27,8 @@ importers:
         specifier: ^5.2.11
         version: 5.2.11
       '@fontsource/noto-serif-sc':
-        specifier: ^5.2.9
-        version: 5.2.9
+        specifier: ^5.2.8
+        version: 5.2.8
       '@lezer/highlight':
         specifier: ^1.2.3
         version: 1.2.3
@@ -323,8 +323,8 @@ packages:
   '@fontsource/merriweather@5.2.11':
     resolution: {integrity: sha512-ZiIMeUh5iT8d73o6xlSF8GKgjV5pgiFrufYc5jZTVAfExtWKqM2vQHnsqXSFMv4ELhAcjt6Vf+5T3oVGXhAizQ==}
 
-  '@fontsource/noto-serif-sc@5.2.9':
-    resolution: {integrity: sha512-+wosdNmyrtRjnqJ/4A6i99jApm6ye34n8Nh7jUO3P/+6Hd1ZBY1gB9yGaI5jVxb56RS1lM2kTc0DzX1ifRO2MA==}
+  '@fontsource/noto-serif-sc@5.2.8':
+    resolution: {integrity: sha512-C7fAr+d1GjOAw1qIbntsnqbA3l5dkdzcmNNgeCXLC8QZ7VNubL7MTrX8UcYKHceX4mI//z8gGtXbOeeQrB6P7g==}
 
   '@iconify-json/simple-icons@1.2.71':
     resolution: {integrity: sha512-rNoDFbq1fAYiEexBvrw613/xiUOPEu5MKVV/X8lI64AgdTzLQUUemr9f9fplxUMPoxCBP2rWzlhOEeTHk/Sf0Q==}
@@ -1157,7 +1157,7 @@ snapshots:
 
   '@fontsource/merriweather@5.2.11': {}
 
-  '@fontsource/noto-serif-sc@5.2.9': {}
+  '@fontsource/noto-serif-sc@5.2.8': {}
 
   '@iconify-json/simple-icons@1.2.71':
     dependencies:

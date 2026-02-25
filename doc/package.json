@@ -26,7 +26,7 @@
     "@codemirror/state": "^6.5.4",
     "@codemirror/view": "^6.39.12",
     "@fontsource/merriweather": "^5.2.11",
-    "@fontsource/noto-serif-sc": "^5.2.9",
+    "@fontsource/noto-serif-sc": "^5.2.8",
     "@lezer/highlight": "^1.2.3",
     "@shikijs/themes": "^3.22.0",
     "prismjs": "^1.29.0"
