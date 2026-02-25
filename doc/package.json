@@ -7,7 +7,7 @@
     "name": "Li Jin",
     "email": "dragon-fly@qq.com"
   },
-  "repository": "https://github.com/pigpigyyy/Yuescript/doc",
+  "repository": "https://github.com/IppClub/YueScript/tree/main/doc",
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
