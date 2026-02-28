@@ -138,6 +138,8 @@ tbA[] = ...tbB
 
 Anda bisa menggabungkan tabel array atau tabel hash menggunakan operator spread `...` sebelum ekspresi di literal tabel.
 
+Saat melakukan spread ke literal tabel dengan kurung kurawal (misalnya `{...other}`), bagian array dan bagian hash dari tabel Lua akan disalin.
+
 ```yuescript
 parts =
   * "shoulders"
@@ -172,6 +174,30 @@ copy = {...other}
 a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
+```
+
+</YueDisplay>
+
+### Penyebaran Tabel List
+
+Saat melakukan spread ke literal tabel dengan kurung siku (misalnya `[...other,]`), hanya bagian array yang disalin.
+
+```yuescript
+source = {1, 2, 3, name: "Yue"}
+fullCopy = {...source}
+listCopy = [...source,]
+-- fullCopy => {1, 2, 3, name: "Yue"}
+-- listCopy => [1, 2, 3]
+```
+
+<YueDisplay>
+
+```yue
+source = {1, 2, 3, name: "Yue"}
+fullCopy = {...source}
+listCopy = [...source,]
+-- fullCopy => {1, 2, 3, name: "Yue"}
+-- listCopy => [1, 2, 3]
 ```
 
 </YueDisplay>

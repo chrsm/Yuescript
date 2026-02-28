@@ -138,6 +138,8 @@ tbA[] = ...tbB
 
 &emsp;&emsp;你可以使用前置 `...` 操作符在 Lua 表中插入数组表或哈希表。
 
+&emsp;&emsp;使用花括号字面量做表扩展（例如 `{...other}`）时，会复制 Lua 表中的数组部分和哈希部分。
+
 ```yuescript
 parts =
   * "shoulders"
@@ -172,6 +174,30 @@ copy = {...other}
 a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
+```
+
+</YueDisplay>
+
+### 列表表扩展
+
+&emsp;&emsp;使用中括号字面量做表扩展（例如 `[...other,]`）时，只会复制 Lua 表中的数组部分。
+
+```yuescript
+source = {1, 2, 3, name: "Yue"}
+fullCopy = {...source}
+listCopy = [...source,]
+-- fullCopy => {1, 2, 3, name: "Yue"}
+-- listCopy => [1, 2, 3]
+```
+
+<YueDisplay>
+
+```yue
+source = {1, 2, 3, name: "Yue"}
+fullCopy = {...source}
+listCopy = [...source,]
+-- fullCopy => {1, 2, 3, name: "Yue"}
+-- listCopy => [1, 2, 3]
 ```
 
 </YueDisplay>

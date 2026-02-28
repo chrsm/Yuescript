@@ -2219,6 +2219,8 @@ tbA[] = ...tbB
 
 You can concatenate array tables or hash tables using spread operator `...` before expressions in table literals.
 
+When spreading into a brace table literal (for example, `{...other}`), both the array part and hash part of the Lua table are copied.
+
 ```yuescript
 parts =
   * "shoulders"
@@ -2234,6 +2236,18 @@ copy = {...other}
 a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
+```
+
+### List Table Spreading
+
+When spreading into a bracket table literal (for example, `[...other,]`), only the array part is copied.
+
+```yuescript
+source = {1, 2, 3, name: "Yue"}
+fullCopy = {...source}
+listCopy = [...source,]
+-- fullCopy => {1, 2, 3, name: "Yue"}
+-- listCopy => [1, 2, 3]
 ```
 
 ## Table Reversed Indexing

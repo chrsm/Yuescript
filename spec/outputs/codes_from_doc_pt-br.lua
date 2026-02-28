@@ -4613,6 +4613,35 @@ for _key_0, _value_0 in pairs(b) do
 	end
 end
 merge = _tab_0
+local source = {
+	1,
+	2,
+	3,
+	name = "Yue"
+}
+local fullCopy
+do
+	local _tab_0 = { }
+	local _idx_0 = 1
+	for _key_0, _value_0 in pairs(source) do
+		if _idx_0 == _key_0 then
+			_tab_0[#_tab_0 + 1] = _value_0
+			_idx_0 = _idx_0 + 1
+		else
+			_tab_0[_key_0] = _value_0
+		end
+	end
+	fullCopy = _tab_0
+end
+local listCopy
+local _tab_0 = { }
+local _idx_0 = #_tab_0 + 1
+for _index_0 = 1, #source do
+	local _value_0 = source[_index_0]
+	_tab_0[_idx_0] = _value_0
+	_idx_0 = _idx_0 + 1
+end
+listCopy = _tab_0
 local last
 do
 	local _item_0 = data.items
@@ -4906,6 +4935,35 @@ for _key_0, _value_0 in pairs(b) do
 	end
 end
 merge = _tab_0
+local source = {
+	1,
+	2,
+	3,
+	name = "Yue"
+}
+local fullCopy
+do
+	local _tab_0 = { }
+	local _idx_0 = 1
+	for _key_0, _value_0 in pairs(source) do
+		if _idx_0 == _key_0 then
+			_tab_0[#_tab_0 + 1] = _value_0
+			_idx_0 = _idx_0 + 1
+		else
+			_tab_0[_key_0] = _value_0
+		end
+	end
+	fullCopy = _tab_0
+end
+local listCopy
+local _tab_0 = { }
+local _idx_0 = #_tab_0 + 1
+for _index_0 = 1, #source do
+	local _value_0 = source[_index_0]
+	_tab_0[_idx_0] = _value_0
+	_idx_0 = _idx_0 + 1
+end
+listCopy = _tab_0
 local last
 do
 	local _item_0 = data.items

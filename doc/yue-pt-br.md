@@ -2217,6 +2217,8 @@ tbA[] = ...tbB
 
 Você pode concatenar tabelas de array ou tabelas hash usando o operador spread `...` antes de expressões em literais de tabela.
 
+Ao fazer spread em um literal de tabela com chaves (por exemplo, `{...other}`), tanto a parte de array quanto a parte hash da tabela Lua são copiadas.
+
 ```yuescript
 parts =
   * "shoulders"
@@ -2232,6 +2234,18 @@ copy = {...other}
 a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
+```
+
+### Spread de tabela de lista
+
+Ao fazer spread em um literal de tabela com colchetes (por exemplo, `[...other,]`), apenas a parte de array é copiada.
+
+```yuescript
+source = {1, 2, 3, name: "Yue"}
+fullCopy = {...source}
+listCopy = [...source,]
+-- fullCopy => {1, 2, 3, name: "Yue"}
+-- listCopy => [1, 2, 3]
 ```
 
 ## Indexação reversa de tabela
