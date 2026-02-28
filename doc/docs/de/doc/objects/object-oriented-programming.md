@@ -40,6 +40,28 @@ Beachte, dass alle Methoden in der Klasse die Fat-Arrow-Syntax verwenden. Beim A
 
 Das `@`-Präfix ist Kurzform für `self.`. `@items` wird zu `self.items`.
 
+Der Klassenblock unterstützt auch Metatable-Felder, indem Metamethod-Schlüssel in spitzen Klammern geschrieben werden, zum Beispiel `<tostring>`.
+
+```yuescript
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
+<YueDisplay>
+
+```yue
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
+</YueDisplay>
+
 Eine Instanz der Klasse wird erstellt, indem man den Klassennamen wie eine Funktion aufruft.
 
 ```yuescript

@@ -506,6 +506,16 @@ class Inventory
 
 &emsp;&emsp;此外，“@” 前缀在变量名上起到了简化作用，代表 “self”。例如，`@items` 就等同于 `self.items`。
 
+&emsp;&emsp;类定义块中也支持通过尖括号写元方法字段，例如 `<tostring>`。
+
+```yuescript
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
 &emsp;&emsp;为了创建类的一个新实例，可以将类名当作一个函数来调用，这样就可以生成并返回一个新的实例。
 
 ```yuescript

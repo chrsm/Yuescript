@@ -508,6 +508,16 @@ Notice how all the methods in the class use the fat arrow function syntax. When 
 
 The @ prefix on a variable name is shorthand for self.. @items becomes self.items.
 
+The class block also supports metatable fields by writing metamethod keys in angle brackets, such as `<tostring>`.
+
+```yuescript
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
 Creating an instance of the class is done by calling the name of the class as a function.
 
 ```yuescript

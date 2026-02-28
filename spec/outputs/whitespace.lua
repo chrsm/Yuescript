@@ -183,4 +183,9 @@ do
 	local _close_0 <close> = xd
 	CY = _class_0
 end
+do
+	local first, second, color
+	local _obj_0 = obj2
+	first, second, color = _obj_0.numbers[1], _obj_0.numbers[2], _obj_0.properties.color
+end
 return nil

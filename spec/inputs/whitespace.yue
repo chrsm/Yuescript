@@ -246,4 +246,17 @@ do
 		-- init xd
 		close xd = <close>: =>
 
+
+do
+	{
+		numbers: [
+			first
+			second
+		]
+		properties:
+			:color
+
+		-- dsd
+	} = obj2
+
 nil

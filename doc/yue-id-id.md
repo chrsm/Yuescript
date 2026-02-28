@@ -508,6 +508,16 @@ Perhatikan bahwa semua method di kelas menggunakan sintaks fungsi panah tebal. S
 
 Prefiks `@` pada nama variabel adalah singkatan untuk `self.`. `@items` menjadi `self.items`.
 
+Blok kelas juga mendukung field metatable dengan menulis key metamethod dalam tanda kurung sudut, misalnya `<tostring>`.
+
+```yuescript
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
 Membuat instance kelas dilakukan dengan memanggil nama kelas sebagai fungsi.
 
 ```yuescript

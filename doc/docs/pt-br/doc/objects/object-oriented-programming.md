@@ -40,6 +40,28 @@ Observe como todos os métodos da classe usam a sintaxe de função seta fat. Ao
 
 O prefixo @ em um nome de variável é abreviação para self.. @items torna-se self.items.
 
+O bloco da classe também suporta campos de metatable escrevendo chaves de metamétodo entre `<>`, como `<tostring>`.
+
+```yuescript
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
+<YueDisplay>
+
+```yue
+class User
+  new: (@name) =>
+  <tostring>: => "User(#{@name})"
+
+print tostring User "Yue"
+```
+
+</YueDisplay>
+
 Criar uma instância da classe é feito chamando o nome da classe como uma função.
 
 ```yuescript
