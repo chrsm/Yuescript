@@ -178,7 +178,7 @@ Xiaoyu (小玉) is YueScript's official mascot, a cyber rabbit often seen perche
 
 - [Vim](https://github.com/pigpigyyy/YueScript-vim)
 - [ZeroBraneStudio](https://github.com/pkulchenko/ZeroBraneStudio/issues/1134) (Syntax highlighting)
-- [Visual Studio Code](https://github.com/pigpigyyy/yuescript-vscode)
+- [Visual Studio Code](https://github.com/pigpigyyy/yuescript-vscode) (Supports diagnostics and completion using [Lua Language Server](https://github.com/LuaLS/lua-language-server))
 
 ## License
 
